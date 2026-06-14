@@ -1,0 +1,7 @@
+.next/
+node_modules/
+.yarn/
+public/**/*.webp
+yarn.lock
+AGENTS.md
+CLAUDE.md
