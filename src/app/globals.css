@@ -1,0 +1,107 @@
+@layer theme, base, mui, components, utilities;
+@import "tailwindcss";
+
+:root,
+[data-mui-color-scheme="light"] {
+  --background: #f4fbfd;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --text: #172033;
+  --heading: #102a43;
+  --muted: #64748b;
+  --border: #d9edf1;
+  --brand-turquoise: #49bfd1;
+  --action-blue: #2563eb;
+  --sunny-yellow: #ffc857;
+  --coral: #ff6b6b;
+  --gradient-cta: linear-gradient(135deg, #0e7490 0%, #2563eb 100%);
+  --gradient-hero: linear-gradient(135deg, #eafbfd 0%, #eef4ff 58%, #ffffff 100%);
+  --gradient-accent: linear-gradient(135deg, #ffc857 0%, #ff8a5b 100%);
+  --shadow-soft: 0 20px 60px rgb(16 42 67 / 9%);
+  color-scheme: light;
+}
+
+[data-mui-color-scheme="dark"] {
+  --background: #071521;
+  --surface: #0e2233;
+  --surface-elevated: #132c3f;
+  --text: #eaf7fa;
+  --heading: #eaf7fa;
+  --muted: #9cb0c0;
+  --border: #1d3b4a;
+  --brand-turquoise: #62d0df;
+  --action-blue: #7ca7ff;
+  --sunny-yellow: #ffd679;
+  --coral: #ff8b8b;
+  --gradient-hero: linear-gradient(135deg, #0b2230 0%, #0d1c34 58%, #071521 100%);
+  --shadow-soft: 0 22px 70px rgb(0 0 0 / 24%);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-text: var(--text);
+  --color-heading: var(--heading);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand-turquoise);
+  --color-action: var(--action-blue);
+  --color-sun: var(--sunny-yellow);
+  --color-coral: var(--coral);
+  --font-sans: var(--font-geist-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-geist-sans), sans-serif;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+::selection {
+  color: #102a43;
+  background: #9ee6ef;
+}
+
+a,
+button,
+input,
+textarea,
+select {
+  outline-color: var(--action-blue);
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--action-blue) 60%, white);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
