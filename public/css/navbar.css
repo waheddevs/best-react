@@ -1,0 +1,71 @@
+.navbar {
+  @apply sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-xl;
+}
+
+.navbar__2 {
+  @apply flex min-h-20 items-center justify-between gap-4;
+}
+
+.navbar__3 {
+  @apply flex min-h-11 items-center gap-3;
+}
+
+.navbar__4 {
+  @apply grid size-10 place-items-center rounded-xl bg-brand font-black text-heading transition-transform;
+}
+
+.navbar__3:hover .navbar__4 {
+  @apply rotate-3;
+}
+
+.navbar__5 {
+  @apply leading-none;
+}
+
+.navbar__6 {
+  @apply block text-xl font-black tracking-[-0.05em] text-heading;
+}
+
+.navbar__7 {
+  @apply mt-1 block text-[9px] font-bold tracking-[0.18em] text-muted;
+}
+
+.navbar__8 {
+  @apply hidden items-center gap-1 lg:flex;
+}
+
+.navbar__9 {
+  @apply rounded-xl px-3 py-2 text-sm font-semibold text-heading transition-colors hover:bg-[color-mix(in_srgb,var(--brand-turquoise)_10%,transparent)];
+}
+
+.navbar__10 {
+  @apply flex items-center gap-1.5;
+}
+
+.navbar__12 {
+  @apply hidden min-h-11 items-center rounded-xl bg-(image:--gradient-cta) px-4 text-sm font-bold text-white shadow-[0_10px_24px_rgb(37_99_235_/_20%)] transition-transform hover:-translate-y-0.5 xl:inline-flex;
+}
+
+.mobile-navigation {
+  @apply lg:hidden;
+}
+
+.mobile-navigation__2 {
+  @apply flex items-center justify-between border-b border-border pb-4;
+}
+
+.mobile-navigation__3 {
+  @apply text-xl font-black tracking-[-0.04em] text-heading;
+}
+
+.mobile-navigation__4 {
+  @apply mt-6 flex flex-col gap-1;
+}
+
+.mobile-navigation__link {
+  @apply flex min-h-12 items-center rounded-xl px-4 font-semibold text-text transition-colors hover:bg-[color-mix(in_srgb,var(--brand-turquoise)_8%,transparent)];
+}
+
+.mobile-navigation__link--active {
+  @apply bg-[color-mix(in_srgb,var(--brand-turquoise)_16%,transparent)] text-heading;
+}

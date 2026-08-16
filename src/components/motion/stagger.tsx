@@ -1,10 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
+import { useMotionPreference } from "@/hooks/useMotionPreference";
+
 export function StaggerGroup({ children, className }: { children: ReactNode; className?: string }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   return (
     <motion.div
       className={className}
@@ -22,7 +24,7 @@ export function StaggerGroup({ children, className }: { children: ReactNode; cla
 }
 
 export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   return (
     <motion.div
       className={className}

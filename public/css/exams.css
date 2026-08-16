@@ -1,0 +1,87 @@
+.exams-page {
+  @apply flex gap-3 rounded-3xl border border-coral/30 bg-[color-mix(in_srgb,var(--coral)_8%,var(--surface))] p-5;
+}
+
+.exams-page__2 {
+  @apply shrink-0 text-coral;
+}
+
+.exams-page__3 {
+  @apply leading-7 text-text;
+}
+
+.exams-page__4 {
+  @apply mt-12;
+}
+
+.exams-page__5 {
+  @apply mt-8 grid gap-5 md:grid-cols-3;
+}
+
+.exams-page__6 {
+  @apply rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.exams-page__7 {
+  @apply text-xl font-black text-heading;
+}
+
+.exams-page__8 {
+  @apply mt-3 text-sm leading-7 text-muted;
+}
+
+.exams-page__9 {
+  @apply bg-surface;
+}
+
+.exams-page__10 {
+  @apply grid gap-10 lg:grid-cols-2;
+}
+
+.exams-page__11 {
+  @apply mt-8 space-y-4;
+}
+
+.exams-page__12 {
+  @apply flex gap-3 leading-7 text-muted;
+}
+
+.exams-page__13 {
+  @apply mt-0.5 shrink-0 text-brand;
+}
+
+.exams-page__14 {
+  @apply rounded-[1.75rem] border border-border bg-background p-7;
+}
+
+.exams-page__15 {
+  @apply text-2xl font-black text-heading;
+}
+
+.exams-page__16 {
+  @apply mt-4 leading-7 text-muted;
+}
+
+.exams-page__17 {
+  @apply mt-7;
+}
+
+.exams-page__18 {
+  @apply mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4;
+}
+
+.exams-page__19 {
+  @apply rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.exams-page__20 {
+  @apply grid size-11 place-items-center rounded-full bg-(image:--gradient-cta) text-sm font-black text-white;
+}
+
+.exams-page__21 {
+  @apply mt-7 text-lg font-black text-heading;
+}
+
+.exams-page__22 {
+  @apply mt-3 text-sm leading-6 text-muted;
+}

@@ -28,57 +28,47 @@ export function HomeSections({ locale, copy }: HomeSectionsProps) {
   return (
     <>
       <Section>
-        <Reveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+        <Reveal className="home-sections">
           <SectionHeading
             eyebrow={copy.home.coursesEyebrow}
             title={copy.home.coursesTitle}
             description={copy.home.coursesDescription}
           />
-          <ButtonLink href={`/${locale}/courses`} variant="secondary">
+          <ButtonLink href={`/website/courses`} variant="secondary">
             {copy.common.coursesCta}
           </ButtonLink>
         </Reveal>
-        <StaggerGroup className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <StaggerGroup className="home-sections__2">
           {courses.map((course) => (
-            <StaggerItem key={course.slug} className="h-full">
+            <StaggerItem key={course.slug} className="home-sections__3">
               <CourseCard course={course} locale={locale} copy={copy} />
             </StaggerItem>
           ))}
         </StaggerGroup>
       </Section>
 
-      <Section className="bg-surface">
+      <Section className="home-sections__4">
         <SectionHeading eyebrow={copy.home.whyEyebrow} title={copy.home.whyTitle} />
-        <div className="mt-10 grid gap-5 lg:grid-cols-[1.15fr_0.85fr_0.85fr]">
+        <div className="home-sections__5">
           {copy.home.whyItems.map((item, index) => {
             const Icon = whyIcons[index];
             return (
               <article
                 key={item.title}
-                className={`relative overflow-hidden rounded-[1.75rem] border border-border p-7 ${
-                  index === 0
-                    ? "bg-(image:--gradient-cta) text-white lg:min-h-80"
-                    : "bg-background text-text"
-                }`}
+                className={`why-card ${index === 0 ? "why-card--featured" : ""}`}
               >
-                <span
-                  className={`grid size-12 place-items-center rounded-2xl ${index === 0 ? "bg-white/15 text-white" : "bg-brand/15 text-heading"}`}
-                >
+                <span className={`why-card__icon ${index === 0 ? "why-card__icon--featured" : ""}`}>
                   <Icon aria-hidden="true" />
                 </span>
-                <h3
-                  className={`mt-12 text-2xl font-black tracking-[-0.04em] ${index === 0 ? "text-white" : "text-heading"}`}
-                >
+                <h3 className={`why-card__title ${index === 0 ? "why-card__title--featured" : ""}`}>
                   {item.title}
                 </h3>
                 <p
-                  className={`mt-3 max-w-md text-sm leading-7 ${index === 0 ? "text-white/80" : "text-muted"}`}
+                  className={`why-card__description ${index === 0 ? "why-card__description--featured" : ""}`}
                 >
                   {item.description}
                 </p>
-                {index === 0 ? (
-                  <div className="absolute -right-16 -bottom-20 size-56 rounded-full border-34 border-white/10" />
-                ) : null}
+                {index === 0 ? <div className="home-sections__6" /> : null}
               </article>
             );
           })}
@@ -87,56 +77,49 @@ export function HomeSections({ locale, copy }: HomeSectionsProps) {
 
       <Section>
         <SectionHeading eyebrow={copy.home.processEyebrow} title={copy.home.processTitle} />
-        <ol className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <ol className="home-sections__7">
           {copy.home.processItems.map((item, index) => (
-            <li
-              key={item.title}
-              className="relative rounded-[1.75rem] border border-border bg-surface p-6"
-            >
-              <span className="grid size-11 place-items-center rounded-full bg-sun text-sm font-black text-heading">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-8 text-xl font-black tracking-[-0.03em] text-heading">
-                {item.title}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-muted">{item.description}</p>
+            <li key={item.title} className="home-sections__8">
+              <span className="home-sections__9">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="home-sections__10">{item.title}</h3>
+              <p className="home-sections__11">{item.description}</p>
             </li>
           ))}
         </ol>
       </Section>
 
-      <Section className="bg-surface">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
+      <Section className="home-sections__12">
+        <div className="home-sections__13">
           <div>
             <SectionHeading
               eyebrow={copy.home.resultsEyebrow}
               title={copy.home.resultsTitle}
               description={copy.home.resultsDescription}
             />
-            <div className="mt-7">
-              <ButtonLink href={`/${locale}/results`} variant="secondary">
+            <div className="home-sections__14">
+              <ButtonLink href={`/website/results`} variant="secondary">
                 {copy.common.learnMore}
               </ButtonLink>
             </div>
           </div>
-          <div className="rounded-4xl border border-border bg-background p-6 sm:p-8">
-            <div className="grid gap-4 sm:grid-cols-2">
+          <div className="home-sections__15">
+            <div className="home-sections__16">
               {[copy.results.journeySteps[0], copy.results.journeySteps[1]].map((item, index) => (
                 <div
                   key={item.title}
-                  className={`rounded-2xl p-5 ${index === 0 ? "bg-(image:--gradient-cta) text-white" : "bg-surface"}`}
+                  className={`result-preview-card ${index === 0 ? "result-preview-card--featured" : ""}`}
                 >
                   <CheckCircleRounded
                     aria-hidden="true"
-                    className={index === 0 ? "text-white" : "text-brand"}
+                    className={`result-preview-card__icon ${index === 0 ? "result-preview-card__icon--featured" : ""}`}
                   />
                   <h3
-                    className={`mt-7 font-extrabold ${index === 0 ? "text-white" : "text-heading"}`}
+                    className={`result-preview-card__title ${index === 0 ? "result-preview-card__title--featured" : ""}`}
                   >
                     {item.title}
                   </h3>
                   <p
-                    className={`mt-2 text-sm leading-6 ${index === 0 ? "text-white/75" : "text-muted"}`}
+                    className={`result-preview-card__description ${index === 0 ? "result-preview-card__description--featured" : ""}`}
                   >
                     {item.description}
                   </p>
@@ -148,27 +131,27 @@ export function HomeSections({ locale, copy }: HomeSectionsProps) {
       </Section>
 
       <Section>
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+        <div className="home-sections__17">
           <SectionHeading eyebrow={copy.home.eventsEyebrow} title={copy.home.eventsTitle} />
-          <ButtonLink href={`/${locale}/events`} variant="secondary">
+          <ButtonLink href={`/website/events`} variant="secondary">
             {copy.common.learnMore}
           </ButtonLink>
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
+        <div className="home-sections__18">
           {events.map((event) => (
             <EventCard key={event.slug} event={event} locale={locale} copy={copy} />
           ))}
         </div>
       </Section>
 
-      <Section className="bg-surface">
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+      <Section className="home-sections__19">
+        <div className="home-sections__20">
           <SectionHeading eyebrow={copy.home.libraryEyebrow} title={copy.home.libraryTitle} />
-          <ButtonLink href={`/${locale}/library`} variant="secondary">
+          <ButtonLink href={`/website/library`} variant="secondary">
             {copy.common.learnMore}
           </ButtonLink>
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="home-sections__21">
           {libraryResources.map((resource) => (
             <ResourceCard key={resource.slug} resource={resource} locale={locale} copy={copy} />
           ))}
@@ -177,46 +160,30 @@ export function HomeSections({ locale, copy }: HomeSectionsProps) {
 
       <Section>
         <SectionHeading eyebrow={copy.home.faqEyebrow} title={copy.home.faqTitle} />
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
+        <div className="home-sections__22">
           {faqItems.slice(0, 3).map((item) => (
-            <article
-              key={item.id}
-              className="rounded-[1.75rem] border border-border bg-surface p-6"
-            >
-              <h3 className="leading-6 font-extrabold text-heading">{item.question[locale]}</h3>
-              <p className="mt-3 text-sm leading-6 text-muted">{item.answer[locale]}</p>
+            <article key={item.id} className="home-sections__23">
+              <h3 className="home-sections__24">{item.question[locale]}</h3>
+              <p className="home-sections__25">{item.answer[locale]}</p>
             </article>
           ))}
         </div>
-        <Link
-          href={`/${locale}/faq`}
-          className="mt-7 inline-flex min-h-11 items-center gap-2 font-bold text-action hover:underline"
-        >
+        <Link href={`/website/faq`} className="home-sections__26">
           {copy.common.learnMore}
           <ArrowForwardRounded aria-hidden="true" />
         </Link>
       </Section>
 
-      <Section className="pt-0">
-        <div className="relative overflow-hidden rounded-4xl bg-(image:--gradient-cta) px-6 py-12 text-center text-white sm:px-10 sm:py-16">
-          <div className="absolute -top-20 -left-16 size-56 rounded-full border-30 border-white/10" />
-          <h2 className="relative mx-auto max-w-3xl text-[clamp(2.2rem,5vw,4.5rem)] leading-[1] font-black tracking-[-0.06em] text-white">
-            {copy.home.finalTitle}
-          </h2>
-          <p className="relative mx-auto mt-5 max-w-2xl text-base leading-7 text-white/80">
-            {copy.home.finalDescription}
-          </p>
-          <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link
-              href={`/${locale}/courses`}
-              className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 font-bold text-[#102A43]"
-            >
+      <Section className="home-sections__27">
+        <div className="home-sections__28">
+          <div className="home-sections__29" />
+          <h2 className="home-sections__30">{copy.home.finalTitle}</h2>
+          <p className="home-sections__31">{copy.home.finalDescription}</p>
+          <div className="home-sections__32">
+            <Link href={`/website/courses`} className="home-sections__33">
               {copy.common.coursesCta}
             </Link>
-            <Link
-              href={`/${locale}/contact`}
-              className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/30 px-6 font-bold text-white hover:bg-white/10"
-            >
+            <Link href={`/website/contact`} className="home-sections__34">
               {copy.common.contactCta}
             </Link>
           </div>

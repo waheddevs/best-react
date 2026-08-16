@@ -1,9 +1,3 @@
-export const locales = ["uz", "ru", "en"] as const;
-
-export type Locale = (typeof locales)[number];
+export type Locale = "uz" | "ru" | "en";
 
 export const defaultLocale: Locale = "uz";
-
-export function isLocale(value: string): value is Locale {
-  return locales.includes(value as Locale);
-}

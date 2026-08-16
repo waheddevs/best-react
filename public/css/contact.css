@@ -1,0 +1,43 @@
+.contact-page {
+  @apply grid gap-8 lg:grid-cols-[0.8fr_1.2fr];
+}
+
+.contact-page__2 {
+  @apply h-fit rounded-4xl border border-border bg-surface p-7 sm:p-9;
+}
+
+.contact-page__3 {
+  @apply grid size-14 place-items-center rounded-2xl bg-brand/15 text-heading;
+}
+
+.contact-page__4 {
+  @apply mt-8 text-2xl font-black tracking-[-0.04em] text-heading;
+}
+
+.contact-page__5 {
+  @apply mt-4 leading-7 text-muted;
+}
+
+.contact-page__6 {
+  @apply mt-8 rounded-2xl bg-background p-5 text-sm leading-6 text-muted;
+}
+
+.contact-page__7 {
+  @apply rounded-4xl border border-border bg-surface p-6 sm:p-9;
+}
+
+.contact-page__8 {
+  @apply mb-7 text-2xl font-black tracking-[-0.04em] text-heading;
+}
+
+.contact-form {
+  @apply grid gap-5;
+}
+
+.contact-form__2 {
+  @apply text-xs leading-5 text-muted;
+}
+
+.contact-form__3 {
+  @apply min-h-12 rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white shadow-[0_12px_30px_rgb(37_99_235_/_20%)] transition-transform hover:-translate-y-0.5;
+}

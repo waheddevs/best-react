@@ -7,10 +7,10 @@ type DraftNoticeProps = {
 
 export function DraftNotice({ badge, note }: DraftNoticeProps) {
   return (
-    <div className="flex gap-3 rounded-2xl border border-[color-mix(in_srgb,var(--sunny-yellow)_55%,var(--border))] bg-[color-mix(in_srgb,var(--sunny-yellow)_12%,var(--surface))] p-4 text-sm leading-6 text-text">
-      <InfoRounded aria-hidden="true" className="mt-0.5 shrink-0 text-heading" />
+    <div className="draft-notice">
+      <InfoRounded aria-hidden="true" className="draft-notice__2" />
       <p>
-        <strong className="text-heading">{badge}.</strong> {note}
+        <strong className="draft-notice__3">{badge}.</strong> {note}
       </p>
     </div>
   );

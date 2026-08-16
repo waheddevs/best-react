@@ -11,22 +11,24 @@ For development:
 ```bash
 corepack enable
 yarn install
-yarn dev
+yarn run start
 ```
 
-If the current Windows installation does not allow Corepack to create global shims, run the same commands as `corepack yarn install` and `corepack yarn dev`.
+If the current Windows installation does not allow Corepack to create global
+shims, use `corepack yarn install` and `corepack yarn run start`.
 
-Open `http://localhost:3000`; the locale proxy redirects the root path to `/uz`.
+Open the public website at `http://localhost:3001/website`.
 
 For a production build and local production server:
 
 ```bash
 corepack yarn build
-corepack yarn start
+corepack yarn run start:production
 ```
 
-Run Next.js through Yarn; `next start` by itself expects a global `next`
-executable and is not the project command.
+`yarn run start` launches the development server on port `3001`. Use
+`yarn run start:production` after a production build when testing the optimized
+server locally.
 
 ## Verification
 
@@ -42,7 +44,7 @@ Prettier automatically when a supported file is saved.
 
 ## Public routes
 
-The site provides locale-prefixed Uzbek, Russian, and English versions of Home, Courses, Events, Results, Library, Exams, About, FAQ, and Contact pages. Course, event, and library detail routes are statically generated from typed local data.
+The public website lives under `src/app/website` and uses `/website` routes. Course, event, and library detail routes are statically generated from typed local data. Future application areas such as teachers, student, and admin can be added as sibling folders under `src/app` with their own layouts.
 
 ## Content status
 

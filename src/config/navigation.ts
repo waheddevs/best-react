@@ -1,13 +1,13 @@
 export const navigationItems = [
-  { key: "home", href: "" },
-  { key: "courses", href: "/courses" },
-  { key: "events", href: "/events" },
-  { key: "results", href: "/results" },
-  { key: "library", href: "/library" },
-  { key: "exams", href: "/exams" },
-  { key: "about", href: "/about" },
-  { key: "faq", href: "/faq" },
-  { key: "contact", href: "/contact" },
+  { key: "home", href: "/website" },
+  { key: "courses", href: "/website/courses" },
+  { key: "events", href: "/website/events" },
+  { key: "results", href: "/website/results" },
+  { key: "library", href: "/website/library" },
+  { key: "exams", href: "/website/exams" },
+  { key: "about", href: "/website/about" },
+  { key: "faq", href: "/website/faq" },
+  { key: "contact", href: "/website/contact" },
 ] as const;
 
 export type NavigationKey = (typeof navigationItems)[number]["key"];

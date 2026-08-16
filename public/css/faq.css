@@ -1,0 +1,35 @@
+.faq-page {
+  @apply mt-12 rounded-[1.75rem] border border-border bg-surface p-7 text-center;
+}
+
+.faq-page__2 {
+  @apply text-2xl font-black text-heading;
+}
+
+.faq-page__3 {
+  @apply mt-5 flex justify-center;
+}
+
+.faq-list {
+  @apply mb-7 flex flex-wrap gap-2;
+}
+
+.faq-list__2 {
+  @apply space-y-3;
+}
+
+.faq-list__3 {
+  @apply pr-4 text-base font-extrabold text-heading sm:text-lg;
+}
+
+.faq-list__4 {
+  @apply max-w-[75ch] text-sm leading-7 text-muted sm:text-base;
+}
+
+.faq-filter {
+  @apply min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-bold text-heading transition-colors hover:border-brand;
+}
+
+.faq-filter--selected {
+  @apply border-transparent bg-(image:--gradient-cta) text-white;
+}
