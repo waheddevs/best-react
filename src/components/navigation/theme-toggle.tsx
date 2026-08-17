@@ -4,8 +4,7 @@ import DarkModeRounded from "@mui/icons-material/DarkModeRounded";
 import LightModeRounded from "@mui/icons-material/LightModeRounded";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-
-import { useThemeMode } from "@/hooks/useThemeMode";
+import { useColorScheme } from "@mui/material/styles";
 
 type ThemeToggleProps = {
   lightLabel: string;
@@ -13,14 +12,15 @@ type ThemeToggleProps = {
 };
 
 export function ThemeToggle({ lightLabel, darkLabel }: ThemeToggleProps) {
-  const { isDark, toggleTheme } = useThemeMode();
+  const { mode, setMode } = useColorScheme();
+  const isDark = mode === "dark";
   const label = isDark ? lightLabel : darkLabel;
 
   return (
     <Tooltip title={label} arrow>
       <IconButton
         aria-label={label}
-        onClick={toggleTheme}
+        onClick={() => setMode(isDark ? "light" : "dark")}
         size="small"
         sx={{ width: 44, height: 44 }}
       >

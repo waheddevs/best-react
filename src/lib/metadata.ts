@@ -1,29 +1,33 @@
 import type { Metadata } from "next";
 
+import { locales, type Locale } from "@/config/locales";
 import { siteConfig } from "@/config/site";
 
 export function createPageMetadata(
+  locale: Locale,
   title: string,
   description: string,
   path = "",
   socialImage: string | null = "/og.webp",
 ): Metadata {
-  const publicPath = `/website${path}`;
+  const localizedPath = `/${locale}${path}`;
+  const languages = Object.fromEntries(locales.map((item) => [item, `/${item}${path}`]));
 
   return {
     metadataBase: siteConfig.url,
     title,
     description,
     alternates: {
-      canonical: publicPath,
+      canonical: localizedPath,
+      languages,
     },
     openGraph: {
       type: "website",
       siteName: siteConfig.name,
-      locale: "uz_UZ",
+      locale,
       title,
       description,
-      url: publicPath,
+      url: localizedPath,
       images: socialImage
         ? [
             socialImage === "/og.webp"
