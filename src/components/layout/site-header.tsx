@@ -2,8 +2,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { MobileNavigation } from "@/components/navigation/mobile-navigation";
-import { ThemeToggle } from "@/components/navigation/theme-toggle";
-import { navigationItems } from "@/config/navigation";
+import { navbarNavigationItems } from "@/config/navigation";
 import type { Dictionary } from "@/dictionaries/types";
 
 type SiteHeaderProps = {
@@ -11,10 +10,6 @@ type SiteHeaderProps = {
 };
 
 export function SiteHeader({ labels }: SiteHeaderProps) {
-  const primaryItems = navigationItems.filter((item) =>
-    ["courses", "events", "results", "library", "about"].includes(item.key),
-  );
-
   return (
     <header className="navbar">
       <Container className="navbar__2">
@@ -27,7 +22,7 @@ export function SiteHeader({ labels }: SiteHeaderProps) {
         </Link>
 
         <nav aria-label={labels.menu} className="navbar__8">
-          {primaryItems.map((item) => (
+          {navbarNavigationItems.map((item) => (
             <Link key={item.key} href={item.href} className="navbar__9">
               {labels[item.key]}
             </Link>
@@ -35,10 +30,14 @@ export function SiteHeader({ labels }: SiteHeaderProps) {
         </nav>
 
         <div className="navbar__10">
-          <ThemeToggle lightLabel={labels.themeLight} darkLabel={labels.themeDark} />
-          <Link href="/website/courses" className="navbar__12">
-            {labels.coursesCta}
-          </Link>
+          <div className="navbar__auth-actions">
+            <button type="button" className="navbar__login">
+              {labels.login}
+            </button>
+            <button type="button" className="navbar__signup">
+              {labels.signup}
+            </button>
+          </div>
           <MobileNavigation labels={labels} />
         </div>
       </Container>

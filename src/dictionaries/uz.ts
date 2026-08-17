@@ -17,6 +17,8 @@ export const uzDictionary = {
     themeLight: "Yorug‘ rejimga o‘tish",
     themeDark: "Tungi rejimga o‘tish",
     coursesCta: "Kurslarni ko‘rish",
+    login: "Kirish",
+    signup: "Ro‘yxatdan o‘tish",
   },
   home: {
     eyebrow: "Amaliy bilim. Ishonchli yo‘nalish.",

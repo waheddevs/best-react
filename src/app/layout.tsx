@@ -30,7 +30,7 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="uz" className={geist.variable} suppressHydrationWarning>
+    <html lang="en" className={geist.variable} suppressHydrationWarning>
       <body>
         <InitColorSchemeScript defaultMode="light" modeStorageKey="best-lc-theme" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>

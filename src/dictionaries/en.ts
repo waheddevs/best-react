@@ -17,6 +17,8 @@ export const enDictionary = {
     themeLight: "Switch to light mode",
     themeDark: "Switch to dark mode",
     coursesCta: "Explore courses",
+    login: "Login",
+    signup: "Signup",
   },
   home: {
     eyebrow: "Practical knowledge. A confident direction.",

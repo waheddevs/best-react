@@ -8,6 +8,8 @@ export type Dictionary = {
     themeLight: string;
     themeDark: string;
     coursesCta: string;
+    login: string;
+    signup: string;
   };
   home: {
     eyebrow: string;

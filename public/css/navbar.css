@@ -19,7 +19,7 @@
 }
 
 .navbar__5 {
-  @apply leading-none;
+  @apply hidden leading-none sm:block;
 }
 
 .navbar__6 {
@@ -31,7 +31,7 @@
 }
 
 .navbar__8 {
-  @apply hidden items-center gap-1 lg:flex;
+  @apply hidden items-center gap-1 xl:flex;
 }
 
 .navbar__9 {
@@ -42,12 +42,25 @@
   @apply flex items-center gap-1.5;
 }
 
-.navbar__12 {
-  @apply hidden min-h-11 items-center rounded-xl bg-(image:--gradient-cta) px-4 text-sm font-bold text-white shadow-[0_10px_24px_rgb(37_99_235_/_20%)] transition-transform hover:-translate-y-0.5 xl:inline-flex;
+.navbar__auth-actions {
+  @apply flex items-center gap-2;
+}
+
+.navbar__login,
+.navbar__signup {
+  @apply inline-flex min-h-10 items-center justify-center rounded-xl px-3 text-xs font-bold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--best-blue)] sm:px-4 sm:text-sm;
+}
+
+.navbar__login {
+  @apply border border-[var(--best-navy)] bg-transparent text-[var(--best-navy)] hover:bg-[var(--best-navy)] hover:text-white;
+}
+
+.navbar__signup {
+  @apply border border-transparent bg-(image:--gradient-cta) text-white shadow-[0_8px_20px_rgb(37_99_235_/_20%)] hover:-translate-y-0.5 hover:brightness-105;
 }
 
 .mobile-navigation {
-  @apply lg:hidden;
+  @apply xl:hidden;
 }
 
 .mobile-navigation__2 {

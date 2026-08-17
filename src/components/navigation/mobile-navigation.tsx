@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Link from "next/link";
 
-import { navigationItems } from "@/config/navigation";
+import { navbarNavigationItems } from "@/config/navigation";
 import type { Dictionary } from "@/dictionaries/types";
 import { useMobileNavigation } from "@/hooks/useMobileNavigation";
 
@@ -51,7 +51,7 @@ export function MobileNavigation({ labels }: MobileNavigationProps) {
           </IconButton>
         </div>
         <nav aria-label={labels.menu} className="mobile-navigation__4">
-          {navigationItems.map((item) => {
+          {navbarNavigationItems.map((item) => {
             const href = item.href;
             const isActive = pathname === href;
             return (

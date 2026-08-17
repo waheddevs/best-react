@@ -17,6 +17,8 @@ export const ruDictionary = {
     themeLight: "Включить светлую тему",
     themeDark: "Включить тёмную тему",
     coursesCta: "Посмотреть курсы",
+    login: "Войти",
+    signup: "Регистрация",
   },
   home: {
     eyebrow: "Практические знания. Уверенный путь.",
