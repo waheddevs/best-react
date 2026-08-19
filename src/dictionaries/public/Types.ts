@@ -1,4 +1,8 @@
-import type { NavigationKey } from "@/config/navigation";
+import type {
+  CourseNavigationKey,
+  ExamNavigationKey,
+  NavigationKey,
+} from "@/config/Navigation";
 
 export type Dictionary = {
   navigation: Record<NavigationKey, string> & {
@@ -10,6 +14,8 @@ export type Dictionary = {
     coursesCta: string;
     login: string;
     signup: string;
+    courseMenu: Record<CourseNavigationKey, string>;
+    examMenu: Record<ExamNavigationKey, string>;
   };
   home: {
     eyebrow: string;

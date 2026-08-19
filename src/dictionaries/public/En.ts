@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/dictionaries/types";
+import type { Dictionary } from "@/dictionaries/public/Types";
 
 export const enDictionary = {
   navigation: {
@@ -19,6 +19,20 @@ export const enDictionary = {
     coursesCta: "Explore courses",
     login: "Login",
     signup: "Signup",
+    courseMenu: {
+      ielts: "IELTS",
+      cefr: "CEFR",
+      englishGeneral: "English (general)",
+      russian: "Russian",
+      french: "French",
+      german: "German",
+      chinese: "Chinese",
+    },
+    examMenu: {
+      ielts: "IELTS",
+      cefr: "CEFR",
+      mock: "MOCK",
+    },
   },
   home: {
     eyebrow: "Practical knowledge. A confident direction.",

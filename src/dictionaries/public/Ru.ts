@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/dictionaries/types";
+import type { Dictionary } from "@/dictionaries/public/Types";
 
 export const ruDictionary = {
   navigation: {
@@ -19,6 +19,20 @@ export const ruDictionary = {
     coursesCta: "Посмотреть курсы",
     login: "Войти",
     signup: "Регистрация",
+    courseMenu: {
+      ielts: "IELTS",
+      cefr: "CEFR",
+      englishGeneral: "Английский (общий)",
+      russian: "Русский",
+      french: "Французский",
+      german: "Немецкий",
+      chinese: "Китайский",
+    },
+    examMenu: {
+      ielts: "IELTS",
+      cefr: "CEFR",
+      mock: "MOCK",
+    },
   },
   home: {
     eyebrow: "Практические знания. Уверенный путь.",

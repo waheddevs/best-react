@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/dictionaries/types";
+import type { Dictionary } from "@/dictionaries/public/Types";
 
 export const uzDictionary = {
   navigation: {
@@ -19,6 +19,20 @@ export const uzDictionary = {
     coursesCta: "Kurslarni ko‘rish",
     login: "Kirish",
     signup: "Ro‘yxatdan o‘tish",
+    courseMenu: {
+      ielts: "IELTS",
+      cefr: "CEFR",
+      englishGeneral: "Ingliz tili (umumiy)",
+      russian: "Rus tili",
+      french: "Fransuz tili",
+      german: "Nemis tili",
+      chinese: "Xitoy tili",
+    },
+    examMenu: {
+      ielts: "IELTS",
+      cefr: "CEFR",
+      mock: "MOCK",
+    },
   },
   home: {
     eyebrow: "Amaliy bilim. Ishonchli yo‘nalish.",
