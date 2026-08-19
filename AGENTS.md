@@ -116,7 +116,7 @@ Rules:
 - Do not turn an entire route into a Client Component solely for animation.
 - Use `next/link` for internal navigation.
 - Use `next/image` for raster images and provide meaningful `alt` text.
-- Use `next/font` for optimized typography.
+- Use the locally bundled official `geist` package for optimized typography.
 - Use the Metadata API for route metadata.
 - Use static local data and static rendering for this frontend milestone.
 - Use `generateStaticParams` for locale and local dynamic routes when suitable.
@@ -148,6 +148,13 @@ src/
           HeroVisual.tsx
           page.tsx
         courses/
+          IELTS.tsx
+          CEFR.tsx
+          EnglishGeneral.tsx
+          Russian.tsx
+          French.tsx
+          German.tsx
+          Chinese.tsx
           CoursesHero.tsx
           CoursesCatalog.tsx
           page.tsx
@@ -237,9 +244,50 @@ src/
     results/
     library/
     exams/
+  hooks/
+    useCurrentLocale.ts
+    navigation/
+      useNavbarDropdown.ts
+      useMobileNavigation.ts
+      useLocaleSwitcher.ts
+      useThemeToggle.ts
+    public/
+      courses/
+        useCourseCatalog.ts
+      library/
+        useResourceCatalog.ts
+      faq/
+        useFaqFilter.ts
+      contact/
+        useContactForm.ts
   config/
   data/
   dictionaries/
+    public/
+      En.ts
+      Ru.ts
+      Uz.ts
+      Types.ts
+      PageCopy.ts
+      GetDictionary.ts
+    student/.gitkeep
+    teacher/.gitkeep
+    admin/.gitkeep
+  css/
+    public/
+      home.module.css
+      about.module.css
+      contact.module.css
+      courses.module.css
+      events.module.css
+      exams.module.css
+      faq.module.css
+      library.module.css
+      results.module.css
+      shared.module.css
+    layout/
+      navbar.module.css
+      footer.module.css
     student/.gitkeep
     teacher/.gitkeep
     admin/.gitkeep
@@ -261,15 +309,75 @@ name (`Mission.tsx` exports `Mission`). Framework-reserved files such as
 `page.tsx`, `layout.tsx`, and `not-found.tsx` remain lowercase. Do not use
 ordinal names such as `FirstSection` or generic wrappers such as `Component1`.
 
+All `.ts` and `.tsx` filenames inside `components/cards`, `components/layout`,
+`components/motion`, `components/navigation`, `components/ui`, `config`,
+`data`, `dictionaries`, `features`, `lib`, `theme`, and `types` must use
+PascalCase. Every React
+component file must have one primary named component export whose name exactly
+matches the filename, for example `CourseCard.tsx` exports `CourseCard`. Split
+multiple component exports into separate matching files, as with
+`StaggerGroup.tsx` and `StaggerItem.tsx`.
+
+Non-component module symbols continue to follow TypeScript semantics: functions,
+constants, and data values use camelCase, while types use PascalCase. Their
+PascalCase module filename describes the module and does not force functions
+such as `getDictionary` or constants such as `navigationItems` to masquerade as
+React components. Next.js framework-reserved route files remain lowercase.
+
+Custom hooks are an explicit exception to the PascalCase file rule. Every hook
+filename and its named export must use the same React-standard camelCase name
+beginning with `use`, for example `useCourseCatalog.ts` exports
+`useCourseCatalog`. Keep a small number of genuinely shared hooks directly in
+`src/hooks/`. When page- or area-owned hooks grow, group them by ownership, such
+as `hooks/public/courses/`, `hooks/public/contact/`, or `hooks/navigation/`;
+do not reorganize hooks based only on an arbitrary numeric threshold.
+
+Move reusable state, derived data, effects, router integration, refs, and
+interaction rules out of presentation components into focused custom hooks.
+Do not wrap an existing library hook with a pass-through custom hook unless the
+wrapper adds real project behavior. Event callback names must contain the
+`handle` prefix and describe the interaction, such as `handleSubmit`,
+`handleMenuClose`, or `handleCategoryChange`. In interactive components and
+custom hooks, separate hook declarations and event handlers with the exact
+comments `/* HOOKS */` and `/* HANDLERS */` whenever those sections exist.
+
 The homepage uses the `(home)` route group so its components can live beside its
 `page.tsx` without adding `/home` to localized URLs. Keep reusable primitives in
 `components/`, and keep reusable or interactive domain logic in `features/`;
 route-local components may compose those shared layers.
 
-When the user introduces and explicitly approves a new project-wide
-architecture or source-organization convention, update this `AGENTS.md` in the
-same change so future work follows it. Do not change architectural conventions
-or this instruction file without the user's explicit permission.
+Keep all public-website localization files under `dictionaries/public/`,
+including the locale dictionaries, their shared types, page copy, and the
+dictionary loader. Reserve `dictionaries/student/`, `dictionaries/teacher/`,
+and `dictionaries/admin/` exclusively for their future role areas.
+
+All component styling must live under `src/css/` as scoped CSS Modules. Keep
+one stylesheet per public page under `css/public/`, named after its route, such
+as `home.module.css` or `about.module.css`. Keep reusable public primitives in
+`css/public/shared.module.css`, and keep Navbar/Footer styling in
+`css/layout/navbar.module.css` and `css/layout/footer.module.css`. Reserve the
+empty `css/student/`, `css/teacher/`, and `css/admin/` directories for their
+future role areas.
+
+Within each page stylesheet, separate ownership with exact section comments,
+for example `/* HomeHero */`, `/* FeaturedCourses */`, and `/* FaqPreview */`.
+Use a page-scoped BEM namespace with camelCase element names, such as `.home`,
+`.home__hero`, and `.home__heroImage`. Components must import the owning module
+through the `@/*` alias and reference `styles.home__hero`; do not place long
+Tailwind utility strings directly in TSX.
+
+CSS Modules that use Tailwind v4 utilities must begin with an `@reference` to
+`app/globals.css`, then group those utilities with `@apply`. Keep
+`app/globals.css` limited to Tailwind setup, semantic design tokens, theme/base
+rules, and truly global behavior. Use CSS variables directly for selectors or
+MUI overrides that are clearer as plain CSS. Avoid styling the same property in
+both a CSS Module and an inline utility or `sx` block.
+
+Whenever the user introduces or changes a project-wide architecture, naming,
+source-organization, styling, or workflow convention, update this `AGENTS.md`
+in the same change so future work follows it. This standing instruction is the
+user's ongoing permission to maintain the file; do not ask for separate
+permission each time.
 
 ## 7. Clean source rules
 
@@ -289,10 +397,10 @@ Apply clean-code and clean-source practices throughout the project:
 - Avoid deeply nested conditionals and duplicated markup.
 - Prefer composition over oversized components and prop-heavy abstractions.
 - Do not build abstractions before at least two real use cases exist.
-- Do not create one-off global CSS classes when a local Tailwind composition is
-  clearer.
-- Do not repeat long Tailwind class sets; extract a component or a small typed
-  variant helper when repetition is real.
+- Do not create page or component classes in global CSS; use the owning scoped
+  CSS Module.
+- Do not repeat long utility sets across CSS Modules; move genuinely shared
+  styles into `public/shared.module.css` or a focused reusable component.
 - Do not hardcode brand colors repeatedly in JSX.
 - Do not leave dead code, commented-out experiments, unused imports, or console
   statements.
@@ -320,7 +428,7 @@ Integration rules:
   so style precedence is predictable.
 - Create a typed BEST LC MUI theme that mirrors the approved brand tokens,
   typography, radius, spacing, light/dark modes, and component states.
-- Use the same `next/font` variable in both Tailwind and the MUI theme.
+- Use the same Geist font variable in both Tailwind and the MUI theme.
 - Do not load Roboto or Material Icon fonts from a CDN.
 - Do not let default MUI blue, default typography, ripple behavior, shadows, or
   border radius define the website's visual identity.
@@ -426,9 +534,10 @@ Requirements:
 
 ## 10. Typography and visual rhythm
 
-- Use one optimized variable sans-serif family through `next/font`.
-- Prefer **Geist** or another clean modern sans-serif supported by the current
-  `next/font` documentation.
+- Use the official locally bundled `geist` package as the single optimized
+  variable sans-serif family.
+- Keep `GeistSans.variable` connected to the shared `--font-geist-sans` token
+  used by Tailwind and the MUI theme.
 - Use large editorial headings with tight, deliberate line-height.
 - Use fluid type with `clamp()` where appropriate.
 - Keep body copy readable at approximately 16–18 px.
@@ -569,6 +678,27 @@ use `proxy.ts`, follow that documentation rather than older middleware examples.
 - Light/dark mode toggle
 - Primary CTA: `Kurslarni ko‘rish`
 - Responsive mobile menu
+
+The shared layout component filenames and named exports must be exactly
+`Navbar.tsx` / `Navbar` and `Footer.tsx` / `Footer`. Do not restore the older
+`site-header.tsx` or `site-footer.tsx` naming.
+
+On desktop, both Courses and Exams own matching hover and keyboard-focus
+dropdown menus. Courses uses this order: IELTS, CEFR, English (general),
+Russian, French, German, and Chinese. Exams uses this order: IELTS, CEFR, and
+MOCK. Every dropdown item must be a locale-prefixed `next/link` pointing to its
+reserved future detail path. Keep item keys and hrefs in shared navigation
+config and their labels in typed locale dictionaries. Dropdown links must use
+the exact same hover background and focus-ring treatment as the top-level
+Navbar links. Keep dropdown interaction in the focused `NavbarDropdown` Client
+Component: close immediately after any dropdown navigation, close on pointer
+leave or focus leaving the menu, and support Escape without allowing persistent
+Navbar focus to reopen the menu after an App Router navigation.
+
+Until the user supplies the future course and exam page ideas, do not implement
+their page logic merely because the Navbar links exist. The matching PascalCase
+files beside `courses/page.tsx` remain empty placeholders and do not create
+routes or contain component logic.
 
 Suggested Uzbek labels:
 
@@ -919,7 +1049,8 @@ Accessibility is part of the design, not a final optional pass.
 - Limit client JavaScript and Motion usage.
 - Avoid large animation dependencies beyond the approved Motion package.
 - Optimize images with `next/image`.
-- Use `next/font` to prevent typography layout shifts.
+- Use the locally bundled Geist variable font to prevent typography layout
+  shifts.
 - Avoid autoplay video in the initial hero.
 - Lazy-load noncritical imagery.
 - Prevent cumulative layout shift with explicit dimensions/aspect ratios.
