@@ -1194,6 +1194,13 @@ The milestone is complete only when:
 
 - Read this entire file before making project changes.
 - Inspect existing files before editing and preserve unrelated user work.
+- Keep commits local until the user has had a chance to review the pending
+  commit hashes, messages, and scope.
+- Before pushing, summarize every local commit that is ahead of the target
+  remote branch and wait for explicit user approval. A user message that names
+  the exact remote and branch to push counts as that approval.
+- Push only the reviewed commits to the explicitly approved remote and branch;
+  do not create a pull request unless the user separately requests one.
 - Make reasonable implementation decisions within this scope.
 - Ask only when a missing choice would materially change the product.
 - Do not silently broaden scope.
