@@ -6,13 +6,10 @@ export const navigationItems = [
   { key: "exams", href: "/exams" },
   { key: "about", href: "/about" },
   { key: "contact", href: "/contact" },
-  { key: "library", href: "/library" },
   { key: "faq", href: "/faq" },
 ] as const;
 
-export const navbarNavigationItems = navigationItems.filter(
-  (item) => item.key !== "library" && item.key !== "faq",
-);
+export const navbarNavigationItems = navigationItems.filter((item) => item.key !== "faq");
 
 export const courseNavigationItems = [
   { key: "ielts", href: "/courses/ielts" },

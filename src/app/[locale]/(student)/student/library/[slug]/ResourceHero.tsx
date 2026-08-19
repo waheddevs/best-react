@@ -1,6 +1,6 @@
 import { PageHero } from "@/components/ui/PageHero";
 import type { Locale } from "@/config/Locales";
-import type { LibraryResource } from "@/types/PublicContent";
+import type { LibraryResource } from "@/types/student/Library";
 
 type ResourceHeroProps = {
   resource: LibraryResource;

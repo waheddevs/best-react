@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { isLocale, locales } from "@/config/Locales";
-import { libraryResources } from "@/data/PublicContent";
-import styles from "@/css/public/library.module.css";
-import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import styles from "@/css/student/library.module.css";
+import { libraryResources } from "@/data/student/LibraryResources";
+import { getStudentLibraryCopy } from "@/dictionaries/student/Library";
 import { createPageMetadata } from "@/lib/Metadata";
 
 import { RelatedResources } from "./RelatedResources";
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: ResourceDetailPageProps): Pro
     locale,
     resource.title[locale],
     resource.summary[locale],
-    `/library/${slug}`,
+    `/student/library/${slug}`,
     null,
   );
 }
@@ -40,7 +40,7 @@ export default async function ResourceDetailPage({ params }: ResourceDetailPageP
   const resource = libraryResources.find((item) => item.slug === slug);
   if (!resource) notFound();
 
-  const copy = getPageCopy(locale);
+  const copy = getStudentLibraryCopy(locale);
   const relatedResources = libraryResources.filter((item) => item.slug !== slug).slice(0, 2);
 
   return (

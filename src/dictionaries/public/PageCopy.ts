@@ -28,8 +28,6 @@ export type PageCopy = {
     resultsDescription: string;
     eventsEyebrow: string;
     eventsTitle: string;
-    libraryEyebrow: string;
-    libraryTitle: string;
     faqEyebrow: string;
     faqTitle: string;
     finalTitle: string;
@@ -74,14 +72,6 @@ export type PageCopy = {
     categoriesTitle: string;
     categories: Array<{ title: string; description: string }>;
     ctaTitle: string;
-  };
-  library: {
-    title: string;
-    description: string;
-    searchPlaceholder: string;
-    types: Record<"all" | "guide" | "checklist" | "article", string>;
-    related: string;
-    readResource: string;
   };
   exams: {
     title: string;
@@ -201,8 +191,6 @@ const uz: PageCopy = {
       "Tasdiqlangan o‘quvchi hikoyalari va natijalar taqdim etilgach, ular shu bo‘limda faktlar bilan e’lon qilinadi.",
     eventsEyebrow: "Tadbirlar",
     eventsTitle: "O‘rganish uchun yangi uchrashuvlar",
-    libraryEyebrow: "Ochiq kutubxona",
-    libraryTitle: "Bugunoq qo‘llash mumkin bo‘lgan resurslar",
     faqEyebrow: "Savollar",
     faqTitle: "Boshlashdan oldin bilish foydali bo‘lgan javoblar",
     finalTitle: "Keyingi qadamingizni birga aniqlaymiz",
@@ -286,19 +274,6 @@ const uz: PageCopy = {
       },
     ],
     ctaTitle: "O‘z o‘quv yo‘lingizni boshlashga tayyormisiz?",
-  },
-  library: {
-    title: "Kutubxona",
-    description: "O‘qish, rejalash va tayyorgarlik uchun ochiq maqola, qo‘llanma va chek-listlar.",
-    searchPlaceholder: "Resurs nomi yoki mavzusini qidiring",
-    types: {
-      all: "Barchasi",
-      guide: "Qo‘llanmalar",
-      checklist: "Chek-listlar",
-      article: "Maqolalar",
-    },
-    related: "O‘xshash resurslar",
-    readResource: "O‘qish",
   },
   exams: {
     title: "Imtihonlar",
@@ -489,8 +464,6 @@ const ru: PageCopy = {
       "Когда будут предоставлены подтверждённые истории и результаты учеников, они появятся здесь вместе с фактами.",
     eventsEyebrow: "События",
     eventsTitle: "Новые встречи для обучения",
-    libraryEyebrow: "Открытая библиотека",
-    libraryTitle: "Материалы, которые можно применить сегодня",
     faqEyebrow: "Вопросы",
     faqTitle: "Полезные ответы перед началом",
     finalTitle: "Определим ваш следующий шаг вместе",
@@ -571,14 +544,6 @@ const ru: PageCopy = {
       },
     ],
     ctaTitle: "Готовы начать свой учебный путь?",
-  },
-  library: {
-    title: "Библиотека",
-    description: "Открытые статьи, руководства и чек-листы для учёбы, планирования и подготовки.",
-    searchPlaceholder: "Поиск по названию или теме",
-    types: { all: "Все", guide: "Руководства", checklist: "Чек-листы", article: "Статьи" },
-    related: "Похожие материалы",
-    readResource: "Читать",
   },
   exams: {
     title: "Экзамены",
@@ -764,8 +729,6 @@ const en: PageCopy = {
       "When verified learner stories and outcomes are supplied, they will be published here with supporting facts.",
     eventsEyebrow: "Events",
     eventsTitle: "New sessions that support learning",
-    libraryEyebrow: "Open library",
-    libraryTitle: "Resources you can use today",
     faqEyebrow: "Questions",
     faqTitle: "Useful answers before you begin",
     finalTitle: "Let’s clarify your next step together",
@@ -847,14 +810,6 @@ const en: PageCopy = {
       },
     ],
     ctaTitle: "Ready to start your learning path?",
-  },
-  library: {
-    title: "Library",
-    description: "Open articles, guides, and checklists for studying, planning, and preparation.",
-    searchPlaceholder: "Search by resource title or topic",
-    types: { all: "All", guide: "Guides", checklist: "Checklists", article: "Articles" },
-    related: "Related resources",
-    readResource: "Read",
   },
   exams: {
     title: "Exams",

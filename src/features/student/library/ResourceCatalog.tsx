@@ -4,18 +4,19 @@ import SearchRounded from "@mui/icons-material/SearchRounded";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 
-import { ResourceCard } from "@/components/cards/ResourceCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/library.module.css";
-import type { PageCopy } from "@/dictionaries/public/PageCopy";
-import { useResourceCatalog } from "@/hooks/public/library/useResourceCatalog";
-import type { LibraryResource } from "@/types/PublicContent";
+import styles from "@/css/student/library.module.css";
+import type { StudentLibraryCopy } from "@/dictionaries/student/Library";
+import { useResourceCatalog } from "@/hooks/student/library/useResourceCatalog";
+import type { LibraryResource } from "@/types/student/Library";
+
+import { ResourceCard } from "./ResourceCard";
 
 type ResourceCatalogProps = {
   resources: LibraryResource[];
   locale: Locale;
-  copy: PageCopy;
+  copy: StudentLibraryCopy;
 };
 
 export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProps) {
@@ -31,8 +32,8 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
       <div className={styles.library__catalogFilters}>
         <TextField
           fullWidth
-          label={copy.common.search}
-          placeholder={copy.library.searchPlaceholder}
+          label={copy.searchLabel}
+          placeholder={copy.searchPlaceholder}
           value={query}
           onChange={handleQueryChange}
           slotProps={{
@@ -45,7 +46,7 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
             },
           }}
         />
-        <div className={styles.library__catalogTypes} aria-label={copy.library.title}>
+        <div className={styles.library__catalogTypes} aria-label={copy.title}>
           {resourceTypes.map((item) => {
             const selected = type === item;
             return (
@@ -56,7 +57,7 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
                 onClick={() => handleTypeChange(item)}
                 className={`${styles.library__catalogType} ${selected ? styles.library__catalogTypeActive : ""}`}
               >
-                {copy.library.types[item]}
+                {copy.types[item]}
               </button>
             );
           })}
@@ -68,7 +69,7 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
             <ResourceCard key={resource.slug} resource={resource} locale={locale} copy={copy} />
           ))
         ) : (
-          <EmptyState message={copy.common.noResults} />
+          <EmptyState message={copy.noResults} />
         )}
       </div>
     </div>

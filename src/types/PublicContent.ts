@@ -36,18 +36,6 @@ export type PublicEvent = {
   requiresConfirmation: true;
 };
 
-export type LibraryResourceType = "guide" | "checklist" | "article";
-
-export type LibraryResource = {
-  slug: string;
-  type: LibraryResourceType;
-  title: LocalizedText;
-  summary: LocalizedText;
-  typeLabel: LocalizedText;
-  readingTime: LocalizedText;
-  sections: Record<Locale, Array<{ heading: string; body: string }>>;
-};
-
 export type FaqCategory = "courses" | "format" | "exams" | "events" | "registration";
 
 export type FaqItem = {

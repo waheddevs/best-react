@@ -1,12 +1,12 @@
 import { Section } from "@/components/ui/Section";
 import type { Locale } from "@/config/Locales";
-import { libraryResources } from "@/data/PublicContent";
-import type { PageCopy } from "@/dictionaries/public/PageCopy";
-import { ResourceCatalog } from "@/features/library/ResourceCatalog";
+import { libraryResources } from "@/data/student/LibraryResources";
+import type { StudentLibraryCopy } from "@/dictionaries/student/Library";
+import { ResourceCatalog } from "@/features/student/library/ResourceCatalog";
 
 type LibraryCatalogProps = {
   locale: Locale;
-  copy: PageCopy;
+  copy: StudentLibraryCopy;
 };
 
 export function LibraryCatalog({ locale, copy }: LibraryCatalogProps) {

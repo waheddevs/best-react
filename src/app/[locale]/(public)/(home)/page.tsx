@@ -12,7 +12,6 @@ import { FeaturedCourses } from "./FeaturedCourses";
 import { FinalCta } from "./FinalCta";
 import { HomeHero } from "./HomeHero";
 import { LearningProcess } from "./LearningProcess";
-import { LibraryPreview } from "./LibraryPreview";
 import { ResultsPreview } from "./ResultsPreview";
 import { TrustStrip } from "./TrustStrip";
 import { UpcomingEvents } from "./UpcomingEvents";
@@ -48,7 +47,6 @@ export default async function HomePage({ params }: HomePageProps) {
       <LearningProcess copy={copy} />
       <ResultsPreview locale={locale} copy={copy} />
       <UpcomingEvents locale={locale} copy={copy} />
-      <LibraryPreview locale={locale} copy={copy} />
       <FaqPreview locale={locale} copy={copy} />
       <FinalCta locale={locale} copy={copy} />
     </main>

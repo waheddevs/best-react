@@ -1,7 +1,7 @@
 import { useMemo, useState, type ChangeEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
-import type { LibraryResource, LibraryResourceType } from "@/types/PublicContent";
+import type { LibraryResource, LibraryResourceType } from "@/types/student/Library";
 
 export type ResourceTypeFilter = "all" | LibraryResourceType;
 
