@@ -3,7 +3,7 @@
 import { ThemeProvider } from "@mui/material/styles";
 import type { ReactNode } from "react";
 
-import { bestTheme } from "@/theme/best-theme";
+import { bestTheme } from "@/theme/BestTheme";
 
 export function BestThemeProvider({ children }: { children: ReactNode }) {
   return (

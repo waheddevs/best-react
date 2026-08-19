@@ -4,7 +4,7 @@ import type {
   FaqItem,
   LibraryResource,
   PublicEvent,
-} from "@/types/public-content";
+} from "@/types/PublicContent";
 
 export const courses = [
   {

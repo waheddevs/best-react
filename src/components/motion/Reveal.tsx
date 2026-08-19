@@ -10,6 +10,7 @@ type RevealProps = {
 };
 
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
+  /* HOOKS */
   const reduceMotion = useReducedMotion();
 
   return (

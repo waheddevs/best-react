@@ -1,26 +1,20 @@
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { MotionProvider } from "@/components/motion/motion-provider";
-import { isLocale, locales } from "@/config/locales";
-import { getDictionary } from "@/dictionaries/get-dictionary";
-import { getPageCopy } from "@/dictionaries/page-copy";
-import { createPageMetadata } from "@/lib/metadata";
-import { BestThemeProvider } from "@/theme/theme-provider";
+import { Footer } from "@/components/layout/Footer";
+import { Navbar } from "@/components/layout/Navbar";
+import { MotionProvider } from "@/components/motion/MotionProvider";
+import { isLocale, locales } from "@/config/Locales";
+import { getDictionary } from "@/dictionaries/public/GetDictionary";
+import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import { createPageMetadata } from "@/lib/Metadata";
+import { BestThemeProvider } from "@/theme/BestThemeProvider";
 
 import "@/app/globals.css";
-
-const geist = Geist({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-geist-sans",
-  display: "swap",
-});
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -66,19 +60,15 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const pageCopy = getPageCopy(locale);
 
   return (
-    <html lang={locale} className={geist.variable} suppressHydrationWarning>
+    <html lang={locale} className={GeistSans.variable} suppressHydrationWarning>
       <body>
         <InitColorSchemeScript defaultMode="light" modeStorageKey="best-lc-theme" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <BestThemeProvider>
             <MotionProvider>
-              <SiteHeader locale={locale} labels={dictionary.navigation} />
+              <Navbar locale={locale} labels={dictionary.navigation} />
               {children}
-              <SiteFooter
-                locale={locale}
-                navigation={dictionary.navigation}
-                copy={pageCopy.footer}
-              />
+              <Footer locale={locale} navigation={dictionary.navigation} copy={pageCopy.footer} />
             </MotionProvider>
           </BestThemeProvider>
         </AppRouterCacheProvider>

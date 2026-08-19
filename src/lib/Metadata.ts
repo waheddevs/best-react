@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { locales, type Locale } from "@/config/locales";
-import { siteConfig } from "@/config/site";
+import { locales, type Locale } from "@/config/Locales";
+import { siteConfig } from "@/config/Site";
 
 export function createPageMetadata(
   locale: Locale,

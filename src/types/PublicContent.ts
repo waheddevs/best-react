@@ -1,4 +1,4 @@
-import type { Locale } from "@/config/locales";
+import type { Locale } from "@/config/Locales";
 
 export type LocalizedText = Record<Locale, string>;
 
