@@ -39,8 +39,16 @@
   @apply mt-7 text-[clamp(3rem,7vw,6.5rem)] leading-[0.92] font-black tracking-[-0.07em] text-heading;
 }
 
+.home__heroTitleLine {
+  @apply block overflow-hidden pb-[0.08em];
+}
+
+.home__heroTitleLineInner {
+  @apply block;
+}
+
 .home__heroTitleAccent {
-  @apply mt-2 block text-action;
+  @apply mt-2 text-action;
 }
 
 .home__heroDescription {
@@ -59,6 +67,7 @@
 
 .home__heroVisualShape {
   @apply absolute inset-[4%] rounded-[38%_62%_48%_52%/44%_38%_62%_56%] bg-[color-mix(in_srgb,var(--brand-turquoise)_18%,transparent)];
+  animation: homeHeroVisualDrift 8s ease-in-out infinite alternate;
 }
 
 .home__heroVisualCard {
@@ -118,7 +127,7 @@
 }
 
 .home__heroVisualProgressValue {
-  @apply h-full w-3/4 rounded-full bg-(image:--gradient-cta);
+  @apply h-full w-full origin-left rounded-full bg-(image:--gradient-cta);
 }
 
 .home__heroVisualDot {
@@ -139,8 +148,12 @@
   @apply grid overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-(--shadow-soft) md:grid-cols-3;
 }
 
+.home__trustMotionItem {
+  @apply border-b border-border last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0;
+}
+
 .home__trustItem {
-  @apply flex gap-4 border-b border-border p-6 last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0 lg:p-7;
+  @apply flex h-full gap-4 p-6 lg:p-7;
 }
 
 .home__trustIcon {
@@ -302,20 +315,6 @@
   @apply mt-10 grid gap-5 md:grid-cols-2;
 }
 
-/* LibraryPreview */
-
-.home__library {
-  @apply bg-surface;
-}
-
-.home__libraryHeader {
-  @apply flex flex-col justify-between gap-6 lg:flex-row lg:items-end;
-}
-
-.home__libraryGrid {
-  @apply mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3;
-}
-
 /* FaqPreview */
 
 .home__faqGrid {
@@ -370,4 +369,14 @@
 
 .home__finalCtaSecondary {
   @apply inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/30 px-6 font-bold text-white hover:bg-white/10;
+}
+
+@keyframes homeHeroVisualDrift {
+  from {
+    transform: translate3d(-6px, 4px, 0) rotate(-1deg);
+  }
+
+  to {
+    transform: translate3d(7px, -5px, 0) rotate(1.5deg);
+  }
 }
