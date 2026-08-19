@@ -13,13 +13,11 @@ described in the BEST LC Notion plan:
 - Events
 - Courses
 - Results
-- Library
 - Exams
 - About us
 - FAQ
 - Contact
 - Language switching
-- Light/dark mode
 
 Source plan:
 https://strong-cartwheel-b38.notion.site/BEST-LC-3a7609e0e68d80639a23c4c941e8ad5d
@@ -28,7 +26,8 @@ https://strong-cartwheel-b38.notion.site/BEST-LC-3a7609e0e68d80639a23c4c941e8ad5
 
 Do not implement or scaffold any of the following in this milestone:
 
-- Student dashboard or student account pages
+- Student dashboard or student account pages, except the explicitly approved
+  localized Student Library catalogue described below
 - Teacher dashboard or teacher account pages
 - Administrator dashboard or admin tools
 - Login, registration, password reset, role selection, or authentication logic
@@ -44,12 +43,13 @@ but users must not be able to take an exam in this frontend milestone.
 If a requested change expands the project into dashboards, authentication, or a
 backend, stop and ask for explicit approval before implementing it.
 
-The user has approved directory-only placeholders for future localized student,
-teacher, and administrator areas. These placeholders may contain only
-`.gitkeep`; they do not authorize `page.tsx`, `layout.tsx`, components,
-dashboard behavior, authentication, authorization, data access, or any other
-dashboard implementation. Obtain fresh explicit approval before adding any of
-those items.
+The user has approved one narrow student-area exception: move the existing
+localized Library catalogue and its detail routes from public ownership to
+`/[locale]/student/library`. Its route components, feature logic, hook, CSS,
+typed data, types, and dictionary must remain under student-owned directories.
+The route is currently frontend-only and unprotected because authentication is
+out of scope. Other student, teacher, and administrator placeholders remain
+`.gitkeep`-only; obtain fresh explicit approval before implementing them.
 
 ## 3. Required technical stack
 
@@ -105,6 +105,9 @@ Rules:
 - Do not copy Tailwind v3 configuration into a newer Tailwind project.
 - Do not suppress framework, TypeScript, or ESLint errors to make a build pass.
 - When documentation and an assumption conflict, follow the documentation.
+- Keep `devIndicators: false` in `next.config.ts` so the Next.js development
+  tools launcher does not overlap the website UI. This hides only the launcher;
+  build and runtime errors must remain visible through the normal dev tooling.
 
 ## 5. Next.js architecture rules
 
@@ -136,13 +139,13 @@ src/
       (public)/
         (home)/
           HomeHero.tsx
+          HeroCopy.tsx
           TrustStrip.tsx
           FeaturedCourses.tsx
           WhyBest.tsx
           LearningProcess.tsx
           ResultsPreview.tsx
           UpcomingEvents.tsx
-          LibraryPreview.tsx
           FaqPreview.tsx
           FinalCta.tsx
           HeroVisual.tsx
@@ -183,15 +186,6 @@ src/
           OutcomeCategories.tsx
           ResultsCta.tsx
           page.tsx
-        library/
-          LibraryHero.tsx
-          LibraryCatalog.tsx
-          page.tsx
-          [slug]/
-            ResourceHero.tsx
-            ResourceContent.tsx
-            RelatedResources.tsx
-            page.tsx
         exams/
           ExamsHero.tsx
           ExamDirections.tsx
@@ -214,6 +208,15 @@ src/
           page.tsx
       (student)/
         student/
+          library/
+            LibraryHero.tsx
+            LibraryCatalog.tsx
+            page.tsx
+            [slug]/
+              ResourceHero.tsx
+              ResourceContent.tsx
+              RelatedResources.tsx
+              page.tsx
           courses/.gitkeep
           progress/.gitkeep
           settings/.gitkeep
@@ -242,26 +245,32 @@ src/
     courses/
     events/
     results/
-    library/
     exams/
+    student/
+      library/
+        ResourceCatalog.tsx
+        ResourceCard.tsx
   hooks/
     useCurrentLocale.ts
     navigation/
       useNavbarDropdown.ts
       useMobileNavigation.ts
       useLocaleSwitcher.ts
-      useThemeToggle.ts
+      useActivePath.ts
     public/
       courses/
         useCourseCatalog.ts
-      library/
-        useResourceCatalog.ts
       faq/
         useFaqFilter.ts
       contact/
         useContactForm.ts
+    student/
+      library/
+        useResourceCatalog.ts
   config/
   data/
+    student/
+      LibraryResources.ts
   dictionaries/
     public/
       En.ts
@@ -270,7 +279,8 @@ src/
       Types.ts
       PageCopy.ts
       GetDictionary.ts
-    student/.gitkeep
+    student/
+      Library.ts
     teacher/.gitkeep
     admin/.gitkeep
   css/
@@ -282,19 +292,22 @@ src/
       events.module.css
       exams.module.css
       faq.module.css
-      library.module.css
       results.module.css
       shared.module.css
     layout/
       navbar.module.css
       footer.module.css
-    student/.gitkeep
+    student/
+      library.module.css
     teacher/.gitkeep
     admin/.gitkeep
   lib/
   types/
+    student/
+      Library.ts
 public/
-  brand/
+  icons/
+    logo.svg
   images/
 ```
 
@@ -348,16 +361,17 @@ route-local components may compose those shared layers.
 
 Keep all public-website localization files under `dictionaries/public/`,
 including the locale dictionaries, their shared types, page copy, and the
-dictionary loader. Reserve `dictionaries/student/`, `dictionaries/teacher/`,
-and `dictionaries/admin/` exclusively for their future role areas.
+dictionary loader. Keep Student Library copy in
+`dictionaries/student/Library.ts`. Reserve `dictionaries/teacher/` and
+`dictionaries/admin/` exclusively for their future role areas.
 
 All component styling must live under `src/css/` as scoped CSS Modules. Keep
 one stylesheet per public page under `css/public/`, named after its route, such
 as `home.module.css` or `about.module.css`. Keep reusable public primitives in
 `css/public/shared.module.css`, and keep Navbar/Footer styling in
-`css/layout/navbar.module.css` and `css/layout/footer.module.css`. Reserve the
-empty `css/student/`, `css/teacher/`, and `css/admin/` directories for their
-future role areas.
+`css/layout/navbar.module.css` and `css/layout/footer.module.css`. Student
+Library styles belong in `css/student/library.module.css`; reserve the empty
+`css/teacher/` and `css/admin/` directories for their future role areas.
 
 Within each page stylesheet, separate ownership with exact section comments,
 for example `/* HomeHero */`, `/* FeaturedCourses */`, and `/* FaqPreview */`.
@@ -372,6 +386,12 @@ CSS Modules that use Tailwind v4 utilities must begin with an `@reference` to
 rules, and truly global behavior. Use CSS variables directly for selectors or
 MUI overrides that are clearer as plain CSS. Avoid styling the same property in
 both a CSS Module and an inline utility or `sx` block.
+
+Keep the official Tailwind CSS IntelliSense VS Code extension in workspace
+recommendations. The workspace may ignore only the native CSS validator's
+`unknownAtRules` diagnostic because Tailwind v4 directives such as `@apply`,
+`@reference`, and `@theme` are validated by Tailwind tooling; do not disable
+general CSS validation or Tailwind linting.
 
 Whenever the user introduces or changes a project-wide architecture, naming,
 source-organization, styling, or workflow convention, update this `AGENTS.md`
@@ -426,8 +446,8 @@ Integration rules:
   Next.js major version. Do not hardcode an outdated versioned import path.
 - When combining MUI with Tailwind CSS, enable the documented CSS layer option
   so style precedence is predictable.
-- Create a typed BEST LC MUI theme that mirrors the approved brand tokens,
-  typography, radius, spacing, light/dark modes, and component states.
+- Create a typed, light-only BEST LC MUI theme that mirrors the approved brand
+  tokens, typography, radius, spacing, and component states.
 - Use the same Geist font variable in both Tailwind and the MUI theme.
 - Do not load Roboto or Material Icon fonts from a CDN.
 - Do not let default MUI blue, default typography, ripple behavior, shadows, or
@@ -494,7 +514,7 @@ Use the following approved palette as the design source of truth.
 
 ### Color rules
 
-- Keep the official logo turquoise unchanged.
+- Use Action blue `#2563EB` for the Navbar logo icon.
 - Do not place normal-size white text on `#49BFD1`; contrast is insufficient.
 - On brand turquoise, use deep navy text.
 - White CTA text is allowed on the dark teal-to-blue CTA gradient.
@@ -505,32 +525,13 @@ Use the following approved palette as the design source of truth.
 - Define semantic CSS variables in `globals.css`, then expose them through the
   current Tailwind theme-variable approach.
 
-## 9. Dark mode
+## 9. Light theme
 
-Light mode is the primary brand experience. Dark mode is a supported public
-feature, not a second unrelated design.
-
-Suggested dark semantic tokens:
-
-```css
---background: #071521;
---surface: #0e2233;
---surface-elevated: #132c3f;
---text: #eaf7fa;
---muted: #9cb0c0;
---border: #1d3b4a;
---brand-turquoise: #62d0df;
-```
-
-Requirements:
-
-- Default to light mode.
-- On a first visit, system preference may be honored if implemented without a
-  flash of the wrong theme.
-- Persist the visitor's explicit choice locally.
-- Use a typed, accessible theme toggle with a clear label.
-- Verify every section in both themes.
-- Do not simply invert colors or make all surfaces pure black.
+The website uses one fixed light BEST LC theme. Do not add a dark/light toggle,
+color-scheme state, browser-preference detection, theme persistence, dark
+semantic tokens, or dark-mode locale labels unless the user explicitly
+reintroduces that feature. Keep `BestThemeProvider` only as the light BEST MUI
+theme integration.
 
 ## 10. Typography and visual rhythm
 
@@ -642,6 +643,14 @@ Create a small reusable motion system instead of ad hoc animation values:
 
 Do not make every component a motion component.
 
+The current homepage motion pilot is intentionally limited to `HomeHero` and
+`TrustStrip`: `HeroCopy` uses a staggered transform/opacity entrance with
+masked title lines, `HeroVisual` uses a one-time scale/fade entrance plus one
+slow CSS transform drift, and TrustStrip items reveal once with the shared
+stagger system. Preserve reduced-motion behavior. Do not add a blocking loader,
+WebGL/Three.js scene, autoplay background video, or additional continuous hero
+animations when extending this pilot.
+
 ## 14. Public route map
 
 Use locale-prefixed public routes following the current Next.js App Router i18n
@@ -654,13 +663,16 @@ guidance:
 /uz/events
 /uz/events/[slug]
 /uz/results
-/uz/library
-/uz/library/[slug]
 /uz/exams
 /uz/about
 /uz/faq
 /uz/contact
 ```
+
+The Library is not a public route. Its approved localized student routes are
+`/uz/student/library` and `/uz/student/library/[slug]`, with equivalent `/ru`
+and `/en` paths. Do not add Student Library routes to the public sitemap or
+public navigation.
 
 Prepare equivalent `/ru` and `/en` routes. Default locale is `uz`. The locale
 switcher should preserve the corresponding current path when possible.
@@ -672,12 +684,17 @@ use `proxy.ts`, follow that documentation rather than older middleware examples.
 
 ### Header
 
-- Official BEST logo at the left
+- BEST icon from `public/icons/logo.svg` at the left, followed by the `BEST LC`
+  wordmark in the main Geist font at `font-bold` weight. Render the Navbar icon
+  at 36×36 px.
 - Public navigation only
 - Language switcher
-- Light/dark mode toggle
 - Primary CTA: `Kurslarni ko‘rish`
 - Responsive mobile menu
+
+A top-level Navbar link is active for its exact route and nested detail routes;
+active links use the Action blue token (`--action-blue`, the same color as
+“today” in the hero).
 
 The shared layout component filenames and named exports must be exactly
 `Navbar.tsx` / `Navbar` and `Footer.tsx` / `Footer`. Do not restore the older
@@ -706,7 +723,6 @@ Suggested Uzbek labels:
 - Kurslar
 - Tadbirlar
 - Natijalar
-- Kutubxona
 - Imtihonlar
 - Biz haqimizda
 - FAQ
@@ -762,11 +778,9 @@ Build the home page as a deliberate conversion journey:
 
 7. **Upcoming events preview**
 
-8. **Library preview**
+8. **FAQ preview**
 
-9. **FAQ preview**
-
-10. **Final CTA**
+9. **Final CTA**
     - Clear next action leading to Courses or Contact
 
 Do not place every public page as an equally weighted card on the home page.
@@ -828,9 +842,13 @@ exam results.
 Never fabricate student names, photos, quotes, scores, certifications, or
 employment claims. Keep placeholder content centralized and easy to replace.
 
-## 20. Library
+## 20. Student Library
 
-The public Library is a resource catalogue, not protected course content.
+The Library belongs only to the localized student route at
+`/[locale]/student/library`; public navigation, home, public dictionaries,
+public data, and the public sitemap must not reference it. Until authentication
+is approved, this is an unprotected frontend route rather than a claim of
+private access.
 
 - Resource search
 - Category filters
@@ -840,8 +858,10 @@ The public Library is a resource catalogue, not protected course content.
 - Related resources
 - Useful empty state
 
-No upload system, user bookmarks, protected downloads, or CMS integration in
-this milestone.
+Keep its route components, catalogue/card features, filter hook, page CSS,
+typed content, type declarations, and translations under their corresponding
+student-owned directories. No upload system, user bookmarks, protected
+downloads, authentication, or CMS integration is authorized in this milestone.
 
 ## 21. Exams
 
@@ -917,7 +937,7 @@ Create explicit TypeScript types for public entities, for example:
 - `CourseCategory`
 - `Event`
 - `ResultStory`
-- `LibraryResource`
+- `LibraryResource` (student-owned)
 - `ExamInfo`
 - `FaqItem`
 - `ContactDetails`
@@ -946,7 +966,6 @@ Create a coherent reusable component system. Likely primitives include:
 - SearchField
 - FilterChips
 - EmptyState
-- ThemeToggle
 - LocaleSwitcher
 - MobileNavigation
 
@@ -960,16 +979,23 @@ Every interactive component must define relevant states:
 - Empty
 - Validation error when applicable
 
+Every anchor with an `href` and every enabled button must use the pointer
+cursor globally. Disabled buttons use `cursor: not-allowed`; do not override
+these cursor states in page-level CSS without a specific interaction reason.
+
 Use a visible, brand-consistent focus ring. Never remove outlines without an
 accessible replacement.
 
 ## 28. Images and logo
 
-- The official BEST logo is a source asset; do not redesign, distort, recolor,
-  or regenerate it.
-- Expected location: `public/brand/best-logo.*`.
-- If no official logo asset exists in the project, use a temporary text mark and
-  report the missing asset. Do not trace or fabricate a replacement logo.
+- The official BEST logo is a source asset; do not redesign, distort, trace, or
+  regenerate it. The user has explicitly approved recoloring the extracted
+  Navbar icon to Action blue `#2563EB`.
+- The approved Navbar icon is the exact vector artwork extracted from the
+  supplied official PDF and stored at `public/icons/logo.svg`, recolored to the
+  user-approved Action blue `#2563EB`. Do not replace, distort, trace, or
+  regenerate it. Use this SVG as the site favicon and render `BEST LC` beside
+  it using the main Geist font rather than embedding wordmark text into the SVG.
 - Use a varied, visually interesting set of education-related images across the
   public website. Placeholder images may be selected freely to keep the design
   creative and avoid repetitive cards.
@@ -990,7 +1016,7 @@ accessible replacement.
   random stock photography.
 - All website raster content assets must be stored and delivered as high-quality
   `.webp` files. This includes generated hero images, building concepts, course
-  thumbnails, event images, library covers, result stories, and background
+  thumbnails, event images, student-library covers, result stories, and background
   textures.
 - Official vector logos and icons are exempt: preserve supplied SVG assets, and
   use MUI's SVG icon components for interface icons. Do not rasterize vectors
@@ -1100,7 +1126,8 @@ Follow this sequence unless the existing repository requires a safer order:
 6. Build header, footer, mobile navigation, and shared UI components.
 7. Build the Home page.
 8. Build Courses and Events list/detail routes.
-9. Build Results, Library, Exams, About, FAQ, and Contact.
+9. Build Results, Exams, About, FAQ, and Contact; maintain the separately
+   approved Student Library under student ownership.
 10. Add purposeful motion with reduced-motion support.
 11. Add metadata, sitemap, robots, not-found UI, and final responsive polish.
 12. Run full verification and fix every relevant issue.
@@ -1132,7 +1159,7 @@ Also verify manually:
 - Reduced-motion behavior is respected.
 - There is no horizontal overflow at supported breakpoints.
 - There are no console errors, React warnings, or broken internal links.
-- Light and dark themes both have sufficient contrast.
+- The fixed light theme has sufficient contrast.
 - No dashboard, authentication, or backend code entered the scope.
 
 Do not hide failures with `eslint-disable`, `@ts-ignore`, unsafe casts, or skipped
