@@ -44,6 +44,13 @@ but users must not be able to take an exam in this frontend milestone.
 If a requested change expands the project into dashboards, authentication, or a
 backend, stop and ask for explicit approval before implementing it.
 
+The user has approved directory-only placeholders for future localized student,
+teacher, and administrator areas. These placeholders may contain only
+`.gitkeep`; they do not authorize `page.tsx`, `layout.tsx`, components,
+dashboard behavior, authentication, authorization, data access, or any other
+dashboard implementation. Obtain fresh explicit approval before adding any of
+those items.
+
 ## 3. Required technical stack
 
 - Latest stable **Next.js** using the **App Router**
@@ -127,21 +134,92 @@ src/
   app/
     [locale]/
       (public)/
-        page.tsx
+        (home)/
+          HomeHero.tsx
+          TrustStrip.tsx
+          FeaturedCourses.tsx
+          WhyBest.tsx
+          LearningProcess.tsx
+          ResultsPreview.tsx
+          UpcomingEvents.tsx
+          LibraryPreview.tsx
+          FaqPreview.tsx
+          FinalCta.tsx
+          HeroVisual.tsx
+          page.tsx
         courses/
+          CoursesHero.tsx
+          CoursesCatalog.tsx
           page.tsx
-          [slug]/page.tsx
+          [slug]/
+            CourseHero.tsx
+            CourseOverview.tsx
+            CourseAudience.tsx
+            CourseOutcomes.tsx
+            CourseCurriculum.tsx
+            CoursePrerequisites.tsx
+            CourseSidebar.tsx
+            page.tsx
         events/
+          EventsHero.tsx
+          EventsCatalog.tsx
           page.tsx
-          [slug]/page.tsx
-        results/page.tsx
+          [slug]/
+            EventHero.tsx
+            EventTopics.tsx
+            EventDetails.tsx
+            page.tsx
+        results/
+          ResultsHero.tsx
+          ResultsNotice.tsx
+          LearningJourney.tsx
+          OutcomeCategories.tsx
+          ResultsCta.tsx
+          page.tsx
         library/
+          LibraryHero.tsx
+          LibraryCatalog.tsx
           page.tsx
-          [slug]/page.tsx
-        exams/page.tsx
-        about/page.tsx
-        faq/page.tsx
-        contact/page.tsx
+          [slug]/
+            ResourceHero.tsx
+            ResourceContent.tsx
+            RelatedResources.tsx
+            page.tsx
+        exams/
+          ExamsHero.tsx
+          ExamDirections.tsx
+          ExamRules.tsx
+          ExamPreparation.tsx
+          page.tsx
+        about/
+          AboutHero.tsx
+          Mission.tsx
+          Values.tsx
+          Story.tsx
+          page.tsx
+        faq/
+          FaqHero.tsx
+          FaqContent.tsx
+          page.tsx
+        contact/
+          ContactHero.tsx
+          ContactContent.tsx
+          page.tsx
+      (student)/
+        student/
+          courses/.gitkeep
+          progress/.gitkeep
+          settings/.gitkeep
+      (teacher)/
+        teacher/
+          courses/.gitkeep
+          students/.gitkeep
+          settings/.gitkeep
+      (admin)/
+        admin/
+          users/.gitkeep
+          courses/.gitkeep
+          settings/.gitkeep
       layout.tsx
       not-found.tsx
     globals.css
@@ -162,6 +240,9 @@ src/
   config/
   data/
   dictionaries/
+    student/.gitkeep
+    teacher/.gitkeep
+    admin/.gitkeep
   lib/
   types/
 public/
@@ -169,8 +250,26 @@ public/
   images/
 ```
 
-Keep route files thin. A route should assemble typed feature and section
-components rather than contain hundreds of lines of JSX.
+Keep route files thin. A route should resolve params, validate local entities,
+create metadata, load typed data and dictionaries, and assemble its route-local
+section components. Substantial section JSX must not accumulate in `page.tsx`.
+
+Page-specific section components must be colocated directly beside the owning
+`page.tsx`. Use semantic PascalCase filenames such as `Mission.tsx` or
+`CourseOutcomes.tsx`, and make the named component export exactly match the file
+name (`Mission.tsx` exports `Mission`). Framework-reserved files such as
+`page.tsx`, `layout.tsx`, and `not-found.tsx` remain lowercase. Do not use
+ordinal names such as `FirstSection` or generic wrappers such as `Component1`.
+
+The homepage uses the `(home)` route group so its components can live beside its
+`page.tsx` without adding `/home` to localized URLs. Keep reusable primitives in
+`components/`, and keep reusable or interactive domain logic in `features/`;
+route-local components may compose those shared layers.
+
+When the user introduces and explicitly approves a new project-wide
+architecture or source-organization convention, update this `AGENTS.md` in the
+same change so future work follows it. Do not change architectural conventions
+or this instruction file without the user's explicit permission.
 
 ## 7. Clean source rules
 
