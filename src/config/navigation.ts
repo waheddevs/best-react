@@ -14,4 +14,22 @@ export const navbarNavigationItems = navigationItems.filter(
   (item) => item.key !== "library" && item.key !== "faq",
 );
 
+export const courseNavigationItems = [
+  { key: "ielts", href: "/courses/ielts" },
+  { key: "cefr", href: "/courses/cefr" },
+  { key: "englishGeneral", href: "/courses/english-general" },
+  { key: "russian", href: "/courses/russian" },
+  { key: "french", href: "/courses/french" },
+  { key: "german", href: "/courses/german" },
+  { key: "chinese", href: "/courses/chinese" },
+] as const;
+
+export const examNavigationItems = [
+  { key: "ielts", href: "/exams/ielts" },
+  { key: "cefr", href: "/exams/cefr" },
+  { key: "mock", href: "/exams/mock" },
+] as const;
+
 export type NavigationKey = (typeof navigationItems)[number]["key"];
+export type CourseNavigationKey = (typeof courseNavigationItems)[number]["key"];
+export type ExamNavigationKey = (typeof examNavigationItems)[number]["key"];
