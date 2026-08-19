@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { isLocale } from "@/config/locales";
-import { getDictionary } from "@/dictionaries/get-dictionary";
-import { getPageCopy } from "@/dictionaries/page-copy";
-import { createPageMetadata } from "@/lib/metadata";
+import { isLocale } from "@/config/Locales";
+import { getDictionary } from "@/dictionaries/public/GetDictionary";
+import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import styles from "@/css/public/faq.module.css";
+import { createPageMetadata } from "@/lib/Metadata";
 
 import { FaqContent } from "./FaqContent";
 import { FaqHero } from "./FaqHero";
@@ -26,7 +27,7 @@ export default async function FaqPage({ params }: FaqPageProps) {
   const dictionary = getDictionary(locale);
 
   return (
-    <main>
+    <main className={styles.faq}>
       <FaqHero eyebrow={dictionary.navigation.faq} copy={copy} />
       <FaqContent locale={locale} copy={copy} />
     </main>

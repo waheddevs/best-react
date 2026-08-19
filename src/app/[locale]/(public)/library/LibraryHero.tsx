@@ -1,5 +1,5 @@
-import { PageHero } from "@/components/ui/page-hero";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { PageHero } from "@/components/ui/PageHero";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type LibraryHeroProps = {
   eyebrow: string;

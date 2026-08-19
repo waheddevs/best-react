@@ -1,6 +1,7 @@
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import styles from "@/css/public/home.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type LearningProcessProps = {
   copy: PageCopy;
@@ -10,19 +11,19 @@ export function LearningProcess({ copy }: LearningProcessProps) {
   return (
     <Section>
       <SectionHeading eyebrow={copy.home.processEyebrow} title={copy.home.processTitle} />
-      <ol className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <ol className={styles.home__processList}>
         {copy.home.processItems.map((item, index) => (
           <li
             key={item.title}
-            className="relative rounded-[1.75rem] border border-border bg-surface p-6"
+            className={styles.home__processItem}
           >
-            <span className="grid size-11 place-items-center rounded-full bg-sun text-sm font-black text-heading">
+            <span className={styles.home__processNumber}>
               {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="mt-8 text-xl font-black tracking-[-0.03em] text-heading">
+            <h3 className={styles.home__processTitle}>
               {item.title}
             </h3>
-            <p className="mt-3 text-sm leading-6 text-muted">{item.description}</p>
+            <p className={styles.home__processDescription}>{item.description}</p>
           </li>
         ))}
       </ol>

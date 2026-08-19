@@ -1,10 +1,11 @@
 import ContactSupportRounded from "@mui/icons-material/ContactSupportRounded";
 
-import { Section } from "@/components/ui/section";
-import type { Locale } from "@/config/locales";
-import { contactDetails, courses } from "@/data/public-content";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import { ContactForm } from "@/features/contact/contact-form";
+import { Section } from "@/components/ui/Section";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/contact.module.css";
+import { contactDetails, courses } from "@/data/PublicContent";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import { ContactForm } from "@/features/contact/ContactForm";
 
 type ContactContentProps = {
   locale: Locale;
@@ -14,23 +15,23 @@ type ContactContentProps = {
 export function ContactContent({ locale, copy }: ContactContentProps) {
   return (
     <Section>
-      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-        <aside className="h-fit rounded-4xl border border-border bg-surface p-7 sm:p-9">
-          <span className="grid size-14 place-items-center rounded-2xl bg-brand/15 text-heading">
-            <ContactSupportRounded aria-hidden="true" sx={{ fontSize: 30 }} />
+      <div className={styles.contact__contentLayout}>
+        <aside className={styles.contact__details}>
+          <span className={styles.contact__detailsIcon}>
+            <ContactSupportRounded aria-hidden="true" className={styles.contact__detailsIconSvg} />
           </span>
-          <h2 className="mt-8 text-2xl font-black tracking-[-0.04em] text-heading">
+          <h2 className={styles.contact__detailsTitle}>
             {copy.contact.detailsTitle}
           </h2>
           {contactDetails.requiresConfirmation ? (
-            <p className="mt-4 leading-7 text-muted">{copy.contact.placeholder}</p>
+            <p className={styles.contact__placeholder}>{copy.contact.placeholder}</p>
           ) : null}
-          <div className="mt-8 rounded-2xl bg-background p-5 text-sm leading-6 text-muted">
+          <div className={styles.contact__privacyCard}>
             {copy.contact.privacyNotice}
           </div>
         </aside>
-        <section className="rounded-4xl border border-border bg-surface p-6 sm:p-9">
-          <h2 className="mb-7 text-2xl font-black tracking-[-0.04em] text-heading">
+        <section className={styles.contact__formPanel}>
+          <h2 className={styles.contact__formTitle}>
             {copy.contact.formTitle}
           </h2>
           <ContactForm locale={locale} copy={copy} courses={courses} />

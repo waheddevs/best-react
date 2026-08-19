@@ -1,12 +1,14 @@
-import { CourseCard } from "@/components/cards/course-card";
-import { Reveal } from "@/components/motion/reveal";
-import { StaggerGroup, StaggerItem } from "@/components/motion/stagger";
-import { ButtonLink } from "@/components/ui/button-link";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { Locale } from "@/config/locales";
-import { courses } from "@/data/public-content";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { CourseCard } from "@/components/cards/CourseCard";
+import { Reveal } from "@/components/motion/Reveal";
+import { StaggerGroup } from "@/components/motion/StaggerGroup";
+import { StaggerItem } from "@/components/motion/StaggerItem";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/home.module.css";
+import { courses } from "@/data/PublicContent";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type FeaturedCoursesProps = {
   locale: Locale;
@@ -16,7 +18,7 @@ type FeaturedCoursesProps = {
 export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
   return (
     <Section>
-      <Reveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+      <Reveal className={styles.home__featuredCoursesHeader}>
         <SectionHeading
           eyebrow={copy.home.coursesEyebrow}
           title={copy.home.coursesTitle}
@@ -26,9 +28,9 @@ export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
           {copy.common.coursesCta}
         </ButtonLink>
       </Reveal>
-      <StaggerGroup className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <StaggerGroup className={styles.home__featuredCoursesGrid}>
         {courses.map((course) => (
-          <StaggerItem key={course.slug} className="h-full">
+          <StaggerItem key={course.slug} className={styles.home__featuredCoursesItem}>
             <CourseCard course={course} locale={locale} copy={copy} />
           </StaggerItem>
         ))}

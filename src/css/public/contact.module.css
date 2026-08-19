@@ -1,0 +1,57 @@
+@reference "../../app/globals.css";
+
+.contact {
+  @apply min-h-screen;
+}
+
+/* ContactContent */
+
+.contact__contentLayout {
+  @apply grid gap-8 lg:grid-cols-[0.8fr_1.2fr];
+}
+
+.contact__details {
+  @apply h-fit rounded-4xl border border-border bg-surface p-7 sm:p-9;
+}
+
+.contact__detailsIcon {
+  @apply grid size-14 place-items-center rounded-2xl bg-brand/15 text-heading;
+}
+
+.contact__detailsIconSvg {
+  font-size: 30px !important;
+}
+
+.contact__detailsTitle {
+  @apply mt-8 text-2xl font-black tracking-[-0.04em] text-heading;
+}
+
+.contact__placeholder {
+  @apply mt-4 leading-7 text-muted;
+}
+
+.contact__privacyCard {
+  @apply mt-8 rounded-2xl bg-background p-5 text-sm leading-6 text-muted;
+}
+
+.contact__formPanel {
+  @apply rounded-4xl border border-border bg-surface p-6 sm:p-9;
+}
+
+.contact__formTitle {
+  @apply mb-7 text-2xl font-black tracking-[-0.04em] text-heading;
+}
+
+/* ContactForm */
+
+.contact__form {
+  @apply grid gap-5;
+}
+
+.contact__formPrivacy {
+  @apply text-xs leading-5 text-muted;
+}
+
+.contact__formSubmit {
+  @apply min-h-12 rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white shadow-[0_12px_30px_rgb(37_99_235/20%)] transition-transform hover:-translate-y-0.5;
+}

@@ -1,10 +1,11 @@
 import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
 
-import { ButtonLink } from "@/components/ui/button-link";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/home.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type ResultsPreviewProps = {
   locale: Locale;
@@ -15,38 +16,38 @@ export function ResultsPreview({ locale, copy }: ResultsPreviewProps) {
   const journeyPreview = copy.results.journeySteps.slice(0, 2);
 
   return (
-    <Section className="bg-surface">
-      <div className="grid items-center gap-10 lg:grid-cols-2">
+    <Section className={styles.home__results}>
+      <div className={styles.home__resultsLayout}>
         <div>
           <SectionHeading
             eyebrow={copy.home.resultsEyebrow}
             title={copy.home.resultsTitle}
             description={copy.home.resultsDescription}
           />
-          <div className="mt-7">
+          <div className={styles.home__resultsAction}>
             <ButtonLink href={`/${locale}/results`} variant="secondary">
               {copy.common.learnMore}
             </ButtonLink>
           </div>
         </div>
-        <div className="rounded-4xl border border-border bg-background p-6 sm:p-8">
-          <div className="grid gap-4 sm:grid-cols-2">
+        <div className={styles.home__resultsPanel}>
+          <div className={styles.home__resultsGrid}>
             {journeyPreview.map((item, index) => (
               <div
                 key={item.title}
-                className={`rounded-2xl p-5 ${index === 0 ? "bg-(image:--gradient-cta) text-white" : "bg-surface"}`}
+                className={`${styles.home__resultsCard} ${index === 0 ? styles.home__resultsCardPrimary : ""}`}
               >
                 <CheckCircleRounded
                   aria-hidden="true"
-                  className={index === 0 ? "text-white" : "text-brand"}
+                  className={`${styles.home__resultsIcon} ${index === 0 ? styles.home__resultsIconPrimary : ""}`}
                 />
                 <h3
-                  className={`mt-7 font-extrabold ${index === 0 ? "text-white" : "text-heading"}`}
+                  className={`${styles.home__resultsTitle} ${index === 0 ? styles.home__resultsTitlePrimary : ""}`}
                 >
                   {item.title}
                 </h3>
                 <p
-                  className={`mt-2 text-sm leading-6 ${index === 0 ? "text-white/75" : "text-muted"}`}
+                  className={`${styles.home__resultsDescription} ${index === 0 ? styles.home__resultsDescriptionPrimary : ""}`}
                 >
                   {item.description}
                 </p>

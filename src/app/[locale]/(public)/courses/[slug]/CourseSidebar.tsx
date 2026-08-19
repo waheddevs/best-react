@@ -1,9 +1,10 @@
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 
-import { ButtonLink } from "@/components/ui/button-link";
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import type { Course } from "@/types/public-content";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/courses.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { Course } from "@/types/PublicContent";
 
 type CourseSidebarProps = {
   course: Course;
@@ -13,28 +14,28 @@ type CourseSidebarProps = {
 
 export function CourseSidebar({ course, locale, copy }: CourseSidebarProps) {
   return (
-    <aside className="h-fit rounded-[1.75rem] border border-border bg-surface p-6 lg:sticky lg:top-28">
-      <dl className="grid gap-5 text-sm">
+    <aside className={styles.courses__sidebar}>
+      <dl className={styles.courses__sidebarMeta}>
         <div>
-          <dt className="text-muted">{copy.courses.level}</dt>
-          <dd className="mt-1 font-extrabold text-heading">{course.level[locale]}</dd>
+          <dt className={styles.courses__sidebarLabel}>{copy.courses.level}</dt>
+          <dd className={styles.courses__sidebarValue}>{course.level[locale]}</dd>
         </div>
         <div>
-          <dt className="text-muted">{copy.courses.format}</dt>
-          <dd className="mt-1 font-extrabold text-heading">{course.formatLabel[locale]}</dd>
+          <dt className={styles.courses__sidebarLabel}>{copy.courses.format}</dt>
+          <dd className={styles.courses__sidebarValue}>{course.formatLabel[locale]}</dd>
         </div>
         <div>
-          <dt className="flex items-center gap-2 text-muted">
-            <ScheduleRounded aria-hidden="true" sx={{ fontSize: 18 }} />
+          <dt className={styles.courses__sidebarIconLabel}>
+            <ScheduleRounded aria-hidden="true" className={styles.courses__sidebarIcon} />
             {copy.courses.duration}
           </dt>
-          <dd className="mt-1 font-extrabold text-heading">{course.duration[locale]}</dd>
+          <dd className={styles.courses__sidebarValue}>{course.duration[locale]}</dd>
         </div>
       </dl>
-      <h2 className="mt-8 text-xl font-black tracking-[-0.03em] text-heading">
+      <h2 className={styles.courses__sidebarTitle}>
         {copy.courses.detailCtaTitle}
       </h2>
-      <div className="mt-5">
+      <div className={styles.courses__sidebarAction}>
         <ButtonLink href={`/${locale}/contact`}>{copy.common.contactCta}</ButtonLink>
       </div>
     </aside>

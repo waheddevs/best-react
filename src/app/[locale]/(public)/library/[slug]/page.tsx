@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { isLocale, locales } from "@/config/locales";
-import { libraryResources } from "@/data/public-content";
-import { getPageCopy } from "@/dictionaries/page-copy";
-import { createPageMetadata } from "@/lib/metadata";
+import { isLocale, locales } from "@/config/Locales";
+import { libraryResources } from "@/data/PublicContent";
+import styles from "@/css/public/library.module.css";
+import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import { createPageMetadata } from "@/lib/Metadata";
 
 import { RelatedResources } from "./RelatedResources";
 import { ResourceContent } from "./ResourceContent";
@@ -43,7 +44,7 @@ export default async function ResourceDetailPage({ params }: ResourceDetailPageP
   const relatedResources = libraryResources.filter((item) => item.slug !== slug).slice(0, 2);
 
   return (
-    <main>
+    <main className={styles.library}>
       <ResourceHero resource={resource} locale={locale} />
       <ResourceContent resource={resource} locale={locale} copy={copy} />
       <RelatedResources resources={relatedResources} locale={locale} copy={copy} />

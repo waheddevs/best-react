@@ -1,6 +1,7 @@
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import styles from "@/css/public/results.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type LearningJourneyProps = {
   copy: PageCopy;
@@ -8,16 +9,16 @@ type LearningJourneyProps = {
 
 export function LearningJourney({ copy }: LearningJourneyProps) {
   return (
-    <Section className="bg-surface">
+    <Section className={styles.results__journey}>
       <SectionHeading title={copy.results.journeyTitle} />
-      <ol className="mt-10 grid gap-5 lg:grid-cols-3">
+      <ol className={styles.results__journeyList}>
         {copy.results.journeySteps.map((step, index) => (
-          <li key={step.title} className="rounded-[1.75rem] border border-border bg-background p-6">
-            <span className="grid size-11 place-items-center rounded-full bg-(image:--gradient-cta) text-sm font-black text-white">
+          <li key={step.title} className={styles.results__journeyItem}>
+            <span className={styles.results__journeyNumber}>
               {index + 1}
             </span>
-            <h2 className="mt-8 text-xl font-black text-heading">{step.title}</h2>
-            <p className="mt-3 text-sm leading-7 text-muted">{step.description}</p>
+            <h2 className={styles.results__journeyTitle}>{step.title}</h2>
+            <p className={styles.results__journeyDescription}>{step.description}</p>
           </li>
         ))}
       </ol>

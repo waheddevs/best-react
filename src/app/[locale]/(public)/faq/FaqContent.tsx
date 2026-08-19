@@ -1,9 +1,10 @@
-import { ButtonLink } from "@/components/ui/button-link";
-import { Section } from "@/components/ui/section";
-import type { Locale } from "@/config/locales";
-import { faqItems } from "@/data/public-content";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import { FaqList } from "@/features/faq/faq-list";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Section } from "@/components/ui/Section";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/faq.module.css";
+import { faqItems } from "@/data/PublicContent";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import { FaqList } from "@/features/faq/FaqList";
 
 type FaqContentProps = {
   locale: Locale;
@@ -14,9 +15,9 @@ export function FaqContent({ locale, copy }: FaqContentProps) {
   return (
     <Section>
       <FaqList items={faqItems} locale={locale} copy={copy} />
-      <div className="mt-12 rounded-[1.75rem] border border-border bg-surface p-7 text-center">
-        <h2 className="text-2xl font-black text-heading">{copy.faq.ctaTitle}</h2>
-        <div className="mt-5 flex justify-center">
+      <div className={styles.faq__cta}>
+        <h2 className={styles.faq__ctaTitle}>{copy.faq.ctaTitle}</h2>
+        <div className={styles.faq__ctaAction}>
           <ButtonLink href={`/${locale}/contact`}>{copy.common.contactCta}</ButtonLink>
         </div>
       </div>

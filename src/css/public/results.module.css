@@ -1,0 +1,93 @@
+@reference "../../app/globals.css";
+
+.results {
+  @apply min-h-screen;
+}
+
+/* ResultsNotice */
+
+.results__notice {
+  @apply grid items-center gap-8 rounded-4xl border border-border bg-surface p-7 sm:p-10 lg:grid-cols-[auto_1fr];
+}
+
+.results__noticeIcon {
+  @apply grid size-16 place-items-center rounded-2xl bg-sun text-heading;
+}
+
+.results__noticeIconSvg {
+  font-size: 32px !important;
+}
+
+.results__noticeTitle {
+  @apply text-2xl font-black tracking-[-0.04em] text-heading;
+}
+
+.results__noticeBody {
+  @apply mt-3 max-w-4xl leading-7 text-muted;
+}
+
+/* LearningJourney */
+
+.results__journey {
+  @apply bg-surface;
+}
+
+.results__journeyList {
+  @apply mt-10 grid gap-5 lg:grid-cols-3;
+}
+
+.results__journeyItem {
+  @apply rounded-[1.75rem] border border-border bg-background p-6;
+}
+
+.results__journeyNumber {
+  @apply grid size-11 place-items-center rounded-full bg-(image:--gradient-cta) text-sm font-black text-white;
+}
+
+.results__journeyTitle {
+  @apply mt-8 text-xl font-black text-heading;
+}
+
+.results__journeyDescription {
+  @apply mt-3 text-sm leading-7 text-muted;
+}
+
+/* OutcomeCategories */
+
+.results__categoriesGrid {
+  @apply mt-10 grid gap-5 md:grid-cols-3;
+}
+
+.results__category {
+  @apply rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.results__categoryIcon {
+  @apply text-brand;
+}
+
+.results__categoryTitle {
+  @apply mt-7 text-xl font-black text-heading;
+}
+
+.results__categoryDescription {
+  @apply mt-3 text-sm leading-7 text-muted;
+}
+
+/* ResultsCta */
+
+.results__ctaSection {
+  @apply pt-0;
+}
+
+.results__cta {
+  @apply rounded-4xl bg-(image:--gradient-cta) p-8 text-center sm:p-12;
+}
+
+.results__ctaTitle {
+  @apply text-3xl font-black tracking-[-0.04em] text-white;
+}
+
+.results__ctaAction {
+  @apply mt-6 flex justify-center;
+}

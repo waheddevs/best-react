@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { isLocale } from "@/config/locales";
-import { getDictionary } from "@/dictionaries/get-dictionary";
-import { getPageCopy } from "@/dictionaries/page-copy";
-import { createPageMetadata } from "@/lib/metadata";
+import { isLocale } from "@/config/Locales";
+import { getDictionary } from "@/dictionaries/public/GetDictionary";
+import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import { createPageMetadata } from "@/lib/Metadata";
+import styles from "@/css/public/home.module.css";
 
 import { FaqPreview } from "./FaqPreview";
 import { FeaturedCourses } from "./FeaturedCourses";
@@ -39,7 +40,7 @@ export default async function HomePage({ params }: HomePageProps) {
   const copy = getPageCopy(locale);
 
   return (
-    <main>
+    <main className={styles.home}>
       <HomeHero locale={locale} content={dictionary.home} />
       <TrustStrip content={dictionary.home} />
       <FeaturedCourses locale={locale} copy={copy} />

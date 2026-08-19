@@ -1,9 +1,10 @@
-import { ResourceCard } from "@/components/cards/resource-card";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import type { LibraryResource } from "@/types/public-content";
+import { ResourceCard } from "@/components/cards/ResourceCard";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/library.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { LibraryResource } from "@/types/PublicContent";
 
 type RelatedResourcesProps = {
   resources: LibraryResource[];
@@ -13,9 +14,9 @@ type RelatedResourcesProps = {
 
 export function RelatedResources({ resources, locale, copy }: RelatedResourcesProps) {
   return (
-    <Section className="bg-surface">
+    <Section className={styles.library__related}>
       <SectionHeading title={copy.library.related} />
-      <div className="mt-8 grid gap-5 md:grid-cols-2">
+      <div className={styles.library__relatedGrid}>
         {resources.map((resource) => (
           <ResourceCard key={resource.slug} resource={resource} locale={locale} copy={copy} />
         ))}

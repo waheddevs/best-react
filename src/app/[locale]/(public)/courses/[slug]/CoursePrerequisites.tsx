@@ -1,6 +1,7 @@
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import type { Course } from "@/types/public-content";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/courses.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { Course } from "@/types/PublicContent";
 
 type CoursePrerequisitesProps = {
   course: Course;
@@ -11,10 +12,10 @@ type CoursePrerequisitesProps = {
 export function CoursePrerequisites({ course, locale, copy }: CoursePrerequisitesProps) {
   return (
     <section>
-      <h2 className="text-2xl font-black tracking-[-0.04em] text-heading">
+      <h2 className={styles.courses__detailHeading}>
         {copy.courses.prerequisites}
       </h2>
-      <p className="mt-4 leading-8 text-muted">{course.prerequisites[locale]}</p>
+      <p className={styles.courses__detailText}>{course.prerequisites[locale]}</p>
     </section>
   );
 }

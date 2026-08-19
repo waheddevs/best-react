@@ -1,0 +1,99 @@
+@reference "../../app/globals.css";
+
+.exams {
+  @apply min-h-screen;
+}
+
+/* ExamDirections */
+
+.exams__notice {
+  @apply flex gap-3 rounded-3xl border border-coral/30 bg-[color-mix(in_srgb,var(--coral)_8%,var(--surface))] p-5;
+}
+
+.exams__noticeIcon {
+  @apply shrink-0 text-coral;
+}
+
+.exams__noticeText {
+  @apply leading-7 text-text;
+}
+
+.exams__directionsHeading {
+  @apply mt-12;
+}
+
+.exams__directionsGrid {
+  @apply mt-8 grid gap-5 md:grid-cols-3;
+}
+
+.exams__directionCard {
+  @apply rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.exams__directionTitle {
+  @apply text-xl font-black text-heading;
+}
+
+.exams__directionDescription {
+  @apply mt-3 text-sm leading-7 text-muted;
+}
+
+/* ExamRules */
+
+.exams__rules {
+  @apply bg-surface;
+}
+
+.exams__rulesLayout {
+  @apply grid gap-10 lg:grid-cols-2;
+}
+
+.exams__rulesList {
+  @apply mt-8 space-y-4;
+}
+
+.exams__rule {
+  @apply flex gap-3 leading-7 text-muted;
+}
+
+.exams__ruleIcon {
+  @apply mt-0.5 shrink-0 text-brand;
+}
+
+.exams__schedule {
+  @apply rounded-[1.75rem] border border-border bg-background p-7;
+}
+
+.exams__scheduleTitle {
+  @apply text-2xl font-black text-heading;
+}
+
+.exams__scheduleDescription {
+  @apply mt-4 leading-7 text-muted;
+}
+
+.exams__scheduleAction {
+  @apply mt-7;
+}
+
+/* ExamPreparation */
+
+.exams__preparationList {
+  @apply mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4;
+}
+
+.exams__preparationItem {
+  @apply rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.exams__preparationNumber {
+  @apply grid size-11 place-items-center rounded-full bg-(image:--gradient-cta) text-sm font-black text-white;
+}
+
+.exams__preparationTitle {
+  @apply mt-7 text-lg font-black text-heading;
+}
+
+.exams__preparationDescription {
+  @apply mt-3 text-sm leading-6 text-muted;
+}

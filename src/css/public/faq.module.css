@@ -1,0 +1,80 @@
+@reference "../../app/globals.css";
+
+.faq {
+  @apply min-h-screen;
+}
+
+/* FaqContent */
+
+.faq__cta {
+  @apply mt-12 rounded-[1.75rem] border border-border bg-surface p-7 text-center;
+}
+
+.faq__ctaTitle {
+  @apply text-2xl font-black text-heading;
+}
+
+.faq__ctaAction {
+  @apply mt-5 flex justify-center;
+}
+
+/* FaqList */
+
+.faq__filters {
+  @apply mb-7 flex flex-wrap gap-2;
+}
+
+.faq__filter {
+  @apply min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-bold text-heading transition-colors hover:border-brand;
+}
+
+.faq__filterActive {
+  @apply border-transparent bg-(image:--gradient-cta) text-white;
+}
+
+.faq__list {
+  @apply space-y-3;
+}
+
+.faq__item {
+  overflow: hidden;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px !important;
+}
+
+.faq__item::before {
+  display: none;
+}
+
+.faq__summary {
+  min-height: 64px !important;
+  padding-inline: 1rem !important;
+}
+
+.faq__summary :global(.MuiAccordionSummary-content) {
+  margin-block: 1rem;
+}
+
+.faq__question {
+  @apply pr-4 text-base font-extrabold text-heading sm:text-lg;
+}
+
+.faq__details {
+  padding: 0 1rem 1.25rem !important;
+}
+
+.faq__answer {
+  @apply max-w-[75ch] text-sm leading-7 text-muted sm:text-base;
+}
+
+@media (min-width: 640px) {
+  .faq__summary {
+    padding-inline: 1.25rem !important;
+  }
+
+  .faq__details {
+    padding-inline: 1.25rem !important;
+  }
+}

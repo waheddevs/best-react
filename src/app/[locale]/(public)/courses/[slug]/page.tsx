@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { Section } from "@/components/ui/section";
-import { isLocale, locales } from "@/config/locales";
-import { courses } from "@/data/public-content";
-import { getPageCopy } from "@/dictionaries/page-copy";
-import { createPageMetadata } from "@/lib/metadata";
+import { Section } from "@/components/ui/Section";
+import { isLocale, locales } from "@/config/Locales";
+import { courses } from "@/data/PublicContent";
+import styles from "@/css/public/courses.module.css";
+import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import { createPageMetadata } from "@/lib/Metadata";
 
 import { CourseAudience } from "./CourseAudience";
 import { CourseCurriculum } from "./CourseCurriculum";
@@ -47,11 +48,11 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   const copy = getPageCopy(locale);
 
   return (
-    <main>
+    <main className={styles.courses}>
       <CourseHero course={course} locale={locale} copy={copy} />
       <Section>
-        <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-          <div className="space-y-10">
+        <div className={styles.courses__detailLayout}>
+          <div className={styles.courses__detailContent}>
             <CourseOverview course={course} locale={locale} copy={copy} />
             <CourseAudience course={course} locale={locale} copy={copy} />
             <CourseOutcomes course={course} locale={locale} copy={copy} />

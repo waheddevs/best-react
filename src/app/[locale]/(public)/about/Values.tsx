@@ -3,9 +3,10 @@ import LightbulbRounded from "@mui/icons-material/LightbulbRounded";
 import VerifiedRounded from "@mui/icons-material/VerifiedRounded";
 import VolunteerActivismRounded from "@mui/icons-material/VolunteerActivismRounded";
 
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import styles from "@/css/public/about.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 const valueIcons = [
   LightbulbRounded,
@@ -20,22 +21,22 @@ type ValuesProps = {
 
 export function Values({ copy }: ValuesProps) {
   return (
-    <Section className="bg-surface">
+    <Section className={styles.about__values}>
       <SectionHeading title={copy.about.approachTitle} />
-      <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className={styles.about__valuesGrid}>
         {copy.about.values.map((value, index) => {
           const Icon = valueIcons[index];
 
           return (
             <article
               key={value.title}
-              className="rounded-[1.75rem] border border-border bg-background p-6"
+              className={styles.about__valueCard}
             >
-              <span className="grid size-12 place-items-center rounded-2xl bg-brand/15 text-heading">
+              <span className={styles.about__valueIcon}>
                 <Icon aria-hidden="true" />
               </span>
-              <h2 className="mt-8 text-xl font-black text-heading">{value.title}</h2>
-              <p className="mt-3 text-sm leading-7 text-muted">{value.description}</p>
+              <h2 className={styles.about__valueTitle}>{value.title}</h2>
+              <p className={styles.about__valueDescription}>{value.description}</p>
             </article>
           );
         })}

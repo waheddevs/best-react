@@ -2,8 +2,9 @@ import HandymanRounded from "@mui/icons-material/HandymanRounded";
 import PsychologyRounded from "@mui/icons-material/PsychologyRounded";
 import TrackChangesRounded from "@mui/icons-material/TrackChangesRounded";
 
-import { Container } from "@/components/ui/container";
-import type { Dictionary } from "@/dictionaries/types";
+import { Container } from "@/components/ui/Container";
+import styles from "@/css/public/home.module.css";
+import type { Dictionary } from "@/dictionaries/public/Types";
 
 const benefitIcons = [HandymanRounded, PsychologyRounded, TrackChangesRounded];
 
@@ -13,25 +14,25 @@ type TrustStripProps = {
 
 export function TrustStrip({ content }: TrustStripProps) {
   return (
-    <section aria-label={content.eyebrow} className="relative -mt-1 pb-14 sm:pb-20">
+    <section aria-label={content.eyebrow} className={styles.home__trustStrip}>
       <Container>
-        <div className="grid overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-(--shadow-soft) md:grid-cols-3">
+        <div className={styles.home__trustGrid}>
           {content.benefits.map((benefit, index) => {
             const BenefitIcon = benefitIcons[index];
 
             return (
               <article
                 key={benefit.title}
-                className="group flex gap-4 border-b border-border p-6 last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0 lg:p-7"
+                className={styles.home__trustItem}
               >
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--brand-turquoise)_14%,transparent)] text-heading transition-transform group-hover:-rotate-3">
+                <span className={styles.home__trustIcon}>
                   <BenefitIcon aria-hidden="true" />
                 </span>
                 <div>
-                  <h2 className="font-extrabold tracking-[-0.02em] text-heading">
+                  <h2 className={styles.home__trustTitle}>
                     {benefit.title}
                   </h2>
-                  <p className="mt-1.5 text-sm leading-6 text-muted">{benefit.description}</p>
+                  <p className={styles.home__trustDescription}>{benefit.description}</p>
                 </div>
               </article>
             );

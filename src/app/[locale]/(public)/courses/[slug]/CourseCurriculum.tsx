@@ -1,6 +1,7 @@
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import type { Course } from "@/types/public-content";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/courses.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { Course } from "@/types/PublicContent";
 
 type CourseCurriculumProps = {
   course: Course;
@@ -11,19 +12,19 @@ type CourseCurriculumProps = {
 export function CourseCurriculum({ course, locale, copy }: CourseCurriculumProps) {
   return (
     <section>
-      <h2 className="text-2xl font-black tracking-[-0.04em] text-heading">
+      <h2 className={styles.courses__detailHeading}>
         {copy.courses.curriculum}
       </h2>
-      <ol className="mt-5 space-y-3">
+      <ol className={styles.courses__curriculumList}>
         {course.curriculum[locale].map((item, index) => (
           <li
             key={item}
-            className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4"
+            className={styles.courses__curriculumItem}
           >
-            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sun text-sm font-black text-heading">
+            <span className={styles.courses__curriculumNumber}>
               {index + 1}
             </span>
-            <span className="font-semibold text-heading">{item}</span>
+            <span className={styles.courses__curriculumText}>{item}</span>
           </li>
         ))}
       </ol>

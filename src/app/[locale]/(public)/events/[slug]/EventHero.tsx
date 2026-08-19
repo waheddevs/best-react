@@ -1,7 +1,7 @@
-import { PageHero } from "@/components/ui/page-hero";
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import type { PublicEvent } from "@/types/public-content";
+import { PageHero } from "@/components/ui/PageHero";
+import type { Locale } from "@/config/Locales";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { PublicEvent } from "@/types/PublicContent";
 
 type EventHeroProps = {
   event: PublicEvent;

@@ -1,0 +1,59 @@
+@reference "../../app/globals.css";
+
+/* Footer */
+
+.footer {
+  @apply border-t border-border bg-surface;
+}
+
+.footer__container {
+  @apply grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr] lg:py-16;
+}
+
+.footer__brandColumn {
+  @apply max-w-sm;
+}
+
+.footer__brand {
+  @apply inline-flex items-center gap-3;
+}
+
+.footer__brandMark {
+  @apply grid size-11 place-items-center rounded-xl bg-brand text-lg font-black text-heading;
+}
+
+.footer__brandName {
+  @apply text-2xl font-black tracking-tighter text-heading;
+}
+
+.footer__summary {
+  @apply mt-5 text-sm leading-6 text-muted;
+}
+
+.footer__heading {
+  @apply text-sm font-black tracking-[0.16em] text-heading uppercase;
+}
+
+.footer__nav {
+  @apply mt-4 grid grid-cols-2 gap-x-4 gap-y-3;
+}
+
+.footer__link {
+  @apply text-sm text-muted transition-colors hover:text-action;
+}
+
+.footer__contact {
+  @apply mt-4 text-sm leading-6 text-muted;
+}
+
+.footer__legal {
+  @apply mt-4 text-xs leading-5 text-muted;
+}
+
+.footer__copyright {
+  @apply border-t border-border;
+}
+
+.footer__copyrightContainer {
+  @apply py-5 text-xs text-muted;
+}

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { Section } from "@/components/ui/section";
-import { isLocale, locales } from "@/config/locales";
-import { events } from "@/data/public-content";
-import { getPageCopy } from "@/dictionaries/page-copy";
-import { createPageMetadata } from "@/lib/metadata";
+import { Section } from "@/components/ui/Section";
+import { isLocale, locales } from "@/config/Locales";
+import { events } from "@/data/PublicContent";
+import styles from "@/css/public/events.module.css";
+import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import { createPageMetadata } from "@/lib/Metadata";
 
 import { EventDetails } from "./EventDetails";
 import { EventHero } from "./EventHero";
@@ -41,10 +42,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   const copy = getPageCopy(locale);
 
   return (
-    <main>
+    <main className={styles.events}>
       <EventHero event={event} locale={locale} copy={copy} />
       <Section>
-        <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
+        <div className={styles.events__detailLayout}>
           <EventTopics event={event} locale={locale} copy={copy} />
           <EventDetails event={event} locale={locale} copy={copy} />
         </div>

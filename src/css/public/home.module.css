@@ -1,0 +1,373 @@
+@reference "../../app/globals.css";
+
+.home {
+  @apply min-h-screen;
+}
+
+/* HomeHero */
+
+.home__hero {
+  @apply relative overflow-hidden bg-(image:--gradient-hero) pt-14 pb-12 sm:pt-20 sm:pb-16 lg:pt-24 lg:pb-20;
+}
+
+.home__heroGlowStart {
+  @apply pointer-events-none absolute top-0 -left-40 size-80 rounded-full bg-brand/10 blur-3xl;
+}
+
+.home__heroGlowEnd {
+  @apply pointer-events-none absolute -right-32 bottom-0 size-96 rounded-full bg-action/10 blur-3xl;
+}
+
+.home__heroContainer {
+  @apply relative grid items-center gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-8;
+}
+
+.home__heroCopy {
+  @apply max-w-2xl;
+}
+
+.home__heroEyebrow {
+  @apply inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-2 text-sm font-bold text-heading shadow-sm;
+}
+
+.home__heroEyebrowIcon {
+  @apply text-coral;
+  font-size: 18px !important;
+}
+
+.home__heroTitle {
+  @apply mt-7 text-[clamp(3rem,7vw,6.5rem)] leading-[0.92] font-black tracking-[-0.07em] text-heading;
+}
+
+.home__heroTitleAccent {
+  @apply mt-2 block text-action;
+}
+
+.home__heroDescription {
+  @apply mt-7 max-w-[62ch] text-base leading-7 text-muted sm:text-lg sm:leading-8;
+}
+
+.home__heroActions {
+  @apply mt-8 flex flex-col gap-3 sm:flex-row;
+}
+
+/* HeroVisual */
+
+.home__heroVisual {
+  @apply relative mx-auto aspect-5/4 w-full max-w-147.5;
+}
+
+.home__heroVisualShape {
+  @apply absolute inset-[4%] rounded-[38%_62%_48%_52%/44%_38%_62%_56%] bg-[color-mix(in_srgb,var(--brand-turquoise)_18%,transparent)];
+}
+
+.home__heroVisualCard {
+  @apply absolute inset-x-[10%] top-[10%] bottom-[8%] overflow-hidden rounded-4xl border border-white/70 bg-surface/90 p-5 shadow-(--shadow-soft) backdrop-blur-sm sm:p-7;
+}
+
+.home__heroVisualHeader {
+  @apply flex items-center justify-between;
+}
+
+.home__heroVisualLabel {
+  @apply rounded-full bg-[color-mix(in_srgb,var(--brand-turquoise)_16%,transparent)] px-3 py-1.5 text-xs font-bold text-heading;
+}
+
+.home__heroVisualBolt {
+  @apply grid size-10 place-items-center rounded-xl bg-sun text-heading;
+}
+
+.home__heroVisualCenter {
+  @apply mt-7 grid place-items-center sm:mt-9;
+}
+
+.home__heroVisualIcon {
+  @apply relative grid size-32 place-items-center rounded-full border-14 border-[color-mix(in_srgb,var(--brand-turquoise)_20%,transparent)] bg-(image:--gradient-cta) text-white shadow-[0_18px_40px_rgb(37_99_235/24%)] sm:size-40;
+}
+
+.home__heroVisualSchoolIcon {
+  font-size: 52px !important;
+}
+
+.home__heroVisualTrend {
+  @apply absolute -right-6 bottom-1 grid size-12 place-items-center rounded-2xl border border-border bg-surface text-action shadow-lg;
+}
+
+.home__heroVisualTitle {
+  @apply mx-auto mt-7 max-w-sm text-center text-xl font-extrabold tracking-[-0.03em] text-heading sm:text-2xl;
+}
+
+.home__heroVisualProgress {
+  @apply mt-5 flex items-center gap-3 rounded-2xl border border-border bg-background/70 p-3;
+}
+
+.home__heroVisualProgressIcon {
+  @apply grid size-10 shrink-0 place-items-center rounded-xl bg-[color-mix(in_srgb,var(--action-blue)_10%,transparent)] text-action;
+}
+
+.home__heroVisualProgressContent {
+  @apply min-w-0 flex-1;
+}
+
+.home__heroVisualProgressLabel {
+  @apply truncate text-xs font-semibold text-muted;
+}
+
+.home__heroVisualProgressTrack {
+  @apply mt-2 h-2 overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--border)_65%,transparent)];
+}
+
+.home__heroVisualProgressValue {
+  @apply h-full w-3/4 rounded-full bg-(image:--gradient-cta);
+}
+
+.home__heroVisualDot {
+  @apply absolute top-[18%] left-[2%] size-4 rounded-full bg-sun shadow-[0_0_0_8px_color-mix(in_srgb,var(--sunny-yellow)_20%,transparent)];
+}
+
+.home__heroVisualAccent {
+  @apply absolute right-[1%] bottom-[16%] size-5 rotate-12 rounded-lg bg-brand/70;
+}
+
+/* TrustStrip */
+
+.home__trustStrip {
+  @apply relative -mt-1 pb-14 sm:pb-20;
+}
+
+.home__trustGrid {
+  @apply grid overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-(--shadow-soft) md:grid-cols-3;
+}
+
+.home__trustItem {
+  @apply flex gap-4 border-b border-border p-6 last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0 lg:p-7;
+}
+
+.home__trustIcon {
+  @apply grid size-12 shrink-0 place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--brand-turquoise)_14%,transparent)] text-heading transition-transform;
+}
+
+.home__trustItem:hover .home__trustIcon {
+  @apply -rotate-3;
+}
+
+.home__trustTitle {
+  @apply font-extrabold tracking-[-0.02em] text-heading;
+}
+
+.home__trustDescription {
+  @apply mt-1.5 text-sm leading-6 text-muted;
+}
+
+/* FeaturedCourses */
+
+.home__featuredCoursesHeader {
+  @apply flex flex-col justify-between gap-6 lg:flex-row lg:items-end;
+}
+
+.home__featuredCoursesGrid {
+  @apply mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3;
+}
+
+.home__featuredCoursesItem {
+  @apply h-full;
+}
+
+/* WhyBest */
+
+.home__whyBest {
+  @apply bg-surface;
+}
+
+.home__whyGrid {
+  @apply mt-10 grid gap-5 lg:grid-cols-[1.15fr_0.85fr_0.85fr];
+}
+
+.home__whyCard {
+  @apply relative overflow-hidden rounded-[1.75rem] border border-border bg-background p-7 text-text;
+}
+
+.home__whyCardPrimary {
+  @apply bg-(image:--gradient-cta) text-white lg:min-h-80;
+}
+
+.home__whyIcon {
+  @apply grid size-12 place-items-center rounded-2xl bg-brand/15 text-heading;
+}
+
+.home__whyIconPrimary {
+  @apply bg-white/15 text-white;
+}
+
+.home__whyTitle {
+  @apply mt-12 text-2xl font-black tracking-[-0.04em] text-heading;
+}
+
+.home__whyTitlePrimary {
+  @apply text-white;
+}
+
+.home__whyDescription {
+  @apply mt-3 max-w-md text-sm leading-7 text-muted;
+}
+
+.home__whyDescriptionPrimary {
+  @apply text-white/80;
+}
+
+.home__whyDecoration {
+  @apply absolute -right-16 -bottom-20 size-56 rounded-full border-34 border-white/10;
+}
+
+/* LearningProcess */
+
+.home__processList {
+  @apply mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4;
+}
+
+.home__processItem {
+  @apply relative rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.home__processNumber {
+  @apply grid size-11 place-items-center rounded-full bg-sun text-sm font-black text-heading;
+}
+
+.home__processTitle {
+  @apply mt-8 text-xl font-black tracking-[-0.03em] text-heading;
+}
+
+.home__processDescription {
+  @apply mt-3 text-sm leading-6 text-muted;
+}
+
+/* ResultsPreview */
+
+.home__results {
+  @apply bg-surface;
+}
+
+.home__resultsLayout {
+  @apply grid items-center gap-10 lg:grid-cols-2;
+}
+
+.home__resultsAction {
+  @apply mt-7;
+}
+
+.home__resultsPanel {
+  @apply rounded-4xl border border-border bg-background p-6 sm:p-8;
+}
+
+.home__resultsGrid {
+  @apply grid gap-4 sm:grid-cols-2;
+}
+
+.home__resultsCard {
+  @apply rounded-2xl bg-surface p-5;
+}
+
+.home__resultsCardPrimary {
+  @apply bg-(image:--gradient-cta) text-white;
+}
+
+.home__resultsIcon {
+  @apply text-brand;
+}
+
+.home__resultsIconPrimary,
+.home__resultsTitlePrimary {
+  @apply text-white;
+}
+
+.home__resultsTitle {
+  @apply mt-7 font-extrabold text-heading;
+}
+
+.home__resultsDescription {
+  @apply mt-2 text-sm leading-6 text-muted;
+}
+
+.home__resultsDescriptionPrimary {
+  @apply text-white/75;
+}
+
+/* UpcomingEvents */
+
+.home__eventsHeader {
+  @apply flex flex-col justify-between gap-6 lg:flex-row lg:items-end;
+}
+
+.home__eventsGrid {
+  @apply mt-10 grid gap-5 md:grid-cols-2;
+}
+
+/* LibraryPreview */
+
+.home__library {
+  @apply bg-surface;
+}
+
+.home__libraryHeader {
+  @apply flex flex-col justify-between gap-6 lg:flex-row lg:items-end;
+}
+
+.home__libraryGrid {
+  @apply mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3;
+}
+
+/* FaqPreview */
+
+.home__faqGrid {
+  @apply mt-10 grid gap-4 lg:grid-cols-3;
+}
+
+.home__faqCard {
+  @apply rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.home__faqQuestion {
+  @apply leading-6 font-extrabold text-heading;
+}
+
+.home__faqAnswer {
+  @apply mt-3 text-sm leading-6 text-muted;
+}
+
+.home__faqLink {
+  @apply mt-7 inline-flex min-h-11 items-center gap-2 font-bold text-action hover:underline;
+}
+
+/* FinalCta */
+
+.home__finalCtaSection {
+  @apply pt-0;
+}
+
+.home__finalCta {
+  @apply relative overflow-hidden rounded-4xl bg-(image:--gradient-cta) px-6 py-12 text-center text-white sm:px-10 sm:py-16;
+}
+
+.home__finalCtaDecoration {
+  @apply absolute -top-20 -left-16 size-56 rounded-full border-30 border-white/10;
+}
+
+.home__finalCtaTitle {
+  @apply relative mx-auto max-w-3xl text-[clamp(2.2rem,5vw,4.5rem)] leading-none font-black tracking-[-0.06em] text-white;
+}
+
+.home__finalCtaDescription {
+  @apply relative mx-auto mt-5 max-w-2xl text-base leading-7 text-white/80;
+}
+
+.home__finalCtaActions {
+  @apply relative mt-8 flex flex-col justify-center gap-3 sm:flex-row;
+}
+
+.home__finalCtaPrimary {
+  @apply inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 font-bold text-[#102A43];
+}
+
+.home__finalCtaSecondary {
+  @apply inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/30 px-6 font-bold text-white hover:bg-white/10;
+}

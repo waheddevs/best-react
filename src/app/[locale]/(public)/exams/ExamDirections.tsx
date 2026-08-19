@@ -1,8 +1,9 @@
 import InfoRounded from "@mui/icons-material/InfoRounded";
 
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import styles from "@/css/public/exams.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type ExamDirectionsProps = {
   copy: PageCopy;
@@ -11,21 +12,21 @@ type ExamDirectionsProps = {
 export function ExamDirections({ copy }: ExamDirectionsProps) {
   return (
     <Section>
-      <div className="flex gap-3 rounded-3xl border border-coral/30 bg-[color-mix(in_srgb,var(--coral)_8%,var(--surface))] p-5">
-        <InfoRounded aria-hidden="true" className="shrink-0 text-coral" />
-        <p className="leading-7 text-text">{copy.exams.notice}</p>
+      <div className={styles.exams__notice}>
+        <InfoRounded aria-hidden="true" className={styles.exams__noticeIcon} />
+        <p className={styles.exams__noticeText}>{copy.exams.notice}</p>
       </div>
-      <div className="mt-12">
+      <div className={styles.exams__directionsHeading}>
         <SectionHeading title={copy.exams.directionsTitle} />
       </div>
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
+      <div className={styles.exams__directionsGrid}>
         {copy.exams.directions.map((item) => (
           <article
             key={item.title}
-            className="rounded-[1.75rem] border border-border bg-surface p-6"
+            className={styles.exams__directionCard}
           >
-            <h2 className="text-xl font-black text-heading">{item.title}</h2>
-            <p className="mt-3 text-sm leading-7 text-muted">{item.description}</p>
+            <h2 className={styles.exams__directionTitle}>{item.title}</h2>
+            <p className={styles.exams__directionDescription}>{item.description}</p>
           </article>
         ))}
       </div>

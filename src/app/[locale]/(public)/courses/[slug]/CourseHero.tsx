@@ -1,7 +1,7 @@
-import { PageHero } from "@/components/ui/page-hero";
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import type { Course } from "@/types/public-content";
+import { PageHero } from "@/components/ui/PageHero";
+import type { Locale } from "@/config/Locales";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { Course } from "@/types/PublicContent";
 
 type CourseHeroProps = {
   course: Course;

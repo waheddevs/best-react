@@ -1,10 +1,11 @@
 import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
 
-import { ButtonLink } from "@/components/ui/button-link";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/exams.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type ExamRulesProps = {
   locale: Locale;
@@ -13,26 +14,26 @@ type ExamRulesProps = {
 
 export function ExamRules({ locale, copy }: ExamRulesProps) {
   return (
-    <Section className="bg-surface">
-      <div className="grid gap-10 lg:grid-cols-2">
+    <Section className={styles.exams__rules}>
+      <div className={styles.exams__rulesLayout}>
         <div>
           <SectionHeading title={copy.exams.rulesTitle} />
-          <ul className="mt-8 space-y-4">
+          <ul className={styles.exams__rulesList}>
             {copy.exams.rules.map((rule) => (
-              <li key={rule} className="flex gap-3 leading-7 text-muted">
+              <li key={rule} className={styles.exams__rule}>
                 <CheckCircleOutlineRounded
                   aria-hidden="true"
-                  className="mt-0.5 shrink-0 text-brand"
+                  className={styles.exams__ruleIcon}
                 />
                 {rule}
               </li>
             ))}
           </ul>
         </div>
-        <div className="rounded-[1.75rem] border border-border bg-background p-7">
-          <h2 className="text-2xl font-black text-heading">{copy.exams.scheduleTitle}</h2>
-          <p className="mt-4 leading-7 text-muted">{copy.exams.scheduleBody}</p>
-          <div className="mt-7">
+        <div className={styles.exams__schedule}>
+          <h2 className={styles.exams__scheduleTitle}>{copy.exams.scheduleTitle}</h2>
+          <p className={styles.exams__scheduleDescription}>{copy.exams.scheduleBody}</p>
+          <div className={styles.exams__scheduleAction}>
             <ButtonLink href={`/${locale}/contact`} variant="secondary">
               {copy.common.contactCta}
             </ButtonLink>

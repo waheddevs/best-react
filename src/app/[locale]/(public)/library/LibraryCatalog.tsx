@@ -1,8 +1,8 @@
-import { Section } from "@/components/ui/section";
-import type { Locale } from "@/config/locales";
-import { libraryResources } from "@/data/public-content";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import { ResourceCatalog } from "@/features/library/resource-catalog";
+import { Section } from "@/components/ui/Section";
+import type { Locale } from "@/config/Locales";
+import { libraryResources } from "@/data/PublicContent";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import { ResourceCatalog } from "@/features/library/ResourceCatalog";
 
 type LibraryCatalogProps = {
   locale: Locale;

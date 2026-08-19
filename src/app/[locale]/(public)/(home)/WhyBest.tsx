@@ -2,9 +2,10 @@ import ExploreRounded from "@mui/icons-material/ExploreRounded";
 import GroupsRounded from "@mui/icons-material/GroupsRounded";
 import InsightsRounded from "@mui/icons-material/InsightsRounded";
 
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import type { PageCopy } from "@/dictionaries/page-copy";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import styles from "@/css/public/home.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 const whyIcons = [ExploreRounded, GroupsRounded, InsightsRounded];
 
@@ -14,38 +15,34 @@ type WhyBestProps = {
 
 export function WhyBest({ copy }: WhyBestProps) {
   return (
-    <Section className="bg-surface">
+    <Section className={styles.home__whyBest}>
       <SectionHeading eyebrow={copy.home.whyEyebrow} title={copy.home.whyTitle} />
-      <div className="mt-10 grid gap-5 lg:grid-cols-[1.15fr_0.85fr_0.85fr]">
+      <div className={styles.home__whyGrid}>
         {copy.home.whyItems.map((item, index) => {
           const Icon = whyIcons[index];
 
           return (
             <article
               key={item.title}
-              className={`relative overflow-hidden rounded-[1.75rem] border border-border p-7 ${
-                index === 0
-                  ? "bg-(image:--gradient-cta) text-white lg:min-h-80"
-                  : "bg-background text-text"
-              }`}
+              className={`${styles.home__whyCard} ${index === 0 ? styles.home__whyCardPrimary : ""}`}
             >
               <span
-                className={`grid size-12 place-items-center rounded-2xl ${index === 0 ? "bg-white/15 text-white" : "bg-brand/15 text-heading"}`}
+                className={`${styles.home__whyIcon} ${index === 0 ? styles.home__whyIconPrimary : ""}`}
               >
                 <Icon aria-hidden="true" />
               </span>
               <h3
-                className={`mt-12 text-2xl font-black tracking-[-0.04em] ${index === 0 ? "text-white" : "text-heading"}`}
+                className={`${styles.home__whyTitle} ${index === 0 ? styles.home__whyTitlePrimary : ""}`}
               >
                 {item.title}
               </h3>
               <p
-                className={`mt-3 max-w-md text-sm leading-7 ${index === 0 ? "text-white/80" : "text-muted"}`}
+                className={`${styles.home__whyDescription} ${index === 0 ? styles.home__whyDescriptionPrimary : ""}`}
               >
                 {item.description}
               </p>
               {index === 0 ? (
-                <div className="absolute -right-16 -bottom-20 size-56 rounded-full border-34 border-white/10" />
+                <div className={styles.home__whyDecoration} />
               ) : null}
             </article>
           );

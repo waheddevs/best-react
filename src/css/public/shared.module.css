@@ -1,0 +1,142 @@
+@reference "../../app/globals.css";
+
+/* Container */
+
+.publicShared__container {
+  @apply mx-auto w-full max-w-[1280px] px-5 sm:px-7 lg:px-10;
+}
+
+/* Section */
+
+.publicShared__section {
+  @apply py-16 sm:py-20 lg:py-24;
+}
+
+/* SectionHeading */
+
+.publicShared__sectionHeading {
+  @apply flex max-w-3xl flex-col items-start;
+}
+
+.publicShared__sectionHeadingCenter {
+  @apply mx-auto items-center text-center;
+}
+
+.publicShared__sectionEyebrow {
+  @apply mb-4 text-xs font-black tracking-[0.2em] text-action uppercase;
+}
+
+.publicShared__sectionTitle {
+  @apply text-[clamp(2rem,4vw,3.75rem)] leading-[1.02] font-black tracking-[-0.055em] text-heading;
+}
+
+.publicShared__sectionDescription {
+  @apply mt-5 max-w-[68ch] text-base leading-7 text-muted sm:text-lg sm:leading-8;
+}
+
+/* ButtonLink */
+
+.publicShared__buttonLink {
+  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border px-5 py-3 text-sm font-bold transition duration-200 sm:px-6 sm:text-base;
+}
+
+.publicShared__buttonLinkPrimary {
+  @apply border-transparent bg-(image:--gradient-cta) text-white shadow-[0_12px_30px_rgb(37_99_235/22%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgb(37_99_235/28%)];
+}
+
+.publicShared__buttonLinkSecondary {
+  @apply border-border bg-surface text-heading hover:border-brand hover:bg-[color-mix(in_srgb,var(--brand-turquoise)_8%,var(--surface))];
+}
+
+.publicShared__buttonLinkIcon {
+  @apply text-[20px];
+}
+
+/* DraftNotice */
+
+.publicShared__draftNotice {
+  @apply flex gap-3 rounded-2xl border border-[color-mix(in_srgb,var(--sunny-yellow)_55%,var(--border))] bg-[color-mix(in_srgb,var(--sunny-yellow)_12%,var(--surface))] p-4 text-sm leading-6 text-text;
+}
+
+.publicShared__draftNoticeIcon {
+  @apply mt-0.5 shrink-0 text-heading;
+}
+
+.publicShared__draftNoticeBadge {
+  @apply text-heading;
+}
+
+/* EmptyState */
+
+.publicShared__emptyState {
+  @apply col-span-full grid min-h-64 place-items-center rounded-[1.75rem] border border-dashed border-border bg-surface p-8 text-center;
+}
+
+.publicShared__emptyStateIcon {
+  @apply mx-auto grid size-14 place-items-center rounded-2xl bg-[color-mix(in_srgb,var(--brand-turquoise)_14%,transparent)] text-heading;
+}
+
+.publicShared__emptyStateMessage {
+  @apply mt-4 font-semibold text-muted;
+}
+
+/* PageHero */
+
+.publicShared__pageHero {
+  @apply relative overflow-hidden border-b border-border bg-(image:--gradient-hero) py-16 sm:py-20 lg:py-24;
+}
+
+.publicShared__pageHeroGlow {
+  @apply absolute -top-28 -right-20 size-80 rounded-full bg-brand/15 blur-3xl;
+}
+
+.publicShared__pageHeroContainer {
+  @apply relative;
+}
+
+.publicShared__pageHeroEyebrow {
+  @apply inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-2 text-sm font-bold text-heading;
+}
+
+.publicShared__pageHeroIcon {
+  @apply text-coral;
+  font-size: 18px !important;
+}
+
+.publicShared__pageHeroTitle {
+  @apply mt-6 max-w-4xl text-[clamp(3rem,7vw,6rem)] leading-[0.94] font-black tracking-[-0.07em] text-heading;
+}
+
+.publicShared__pageHeroDescription {
+  @apply mt-6 max-w-[70ch] text-base leading-7 text-muted sm:text-lg sm:leading-8;
+}
+
+/* NotFound */
+
+.publicShared__notFound {
+  @apply grid min-h-[70vh] place-items-center px-5 py-20 text-center;
+}
+
+.publicShared__notFoundIcon {
+  @apply mx-auto grid size-16 place-items-center rounded-2xl bg-brand/15 text-heading;
+}
+
+.publicShared__notFoundIconSvg {
+  font-size: 32px !important;
+}
+
+.publicShared__notFoundCode {
+  @apply mt-6 text-sm font-black tracking-[0.2em] text-action uppercase;
+}
+
+.publicShared__notFoundTitle {
+  @apply mt-3 text-4xl font-black tracking-tighter text-heading;
+}
+
+.publicShared__notFoundDescription {
+  @apply mt-4 text-muted;
+}
+
+.publicShared__notFoundLink {
+  @apply mt-7 inline-flex min-h-12 items-center rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white;
+}

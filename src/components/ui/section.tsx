@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Container } from "@/components/ui/container";
+import { Container } from "@/components/ui/Container";
+import styles from "@/css/public/shared.module.css";
 
 type SectionProps = {
   children: ReactNode;
@@ -11,7 +12,7 @@ type SectionProps = {
 
 export function Section({ children, className = "", containerClassName = "", id }: SectionProps) {
   return (
-    <section id={id} className={`py-16 sm:py-20 lg:py-24 ${className}`}>
+    <section id={id} className={`${styles.publicShared__section} ${className}`}>
       <Container className={containerClassName}>{children}</Container>
     </section>
   );

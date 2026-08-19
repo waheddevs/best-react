@@ -1,0 +1,132 @@
+@reference "../../app/globals.css";
+
+.events {
+  @apply min-h-screen;
+}
+
+/* EventsCatalog */
+
+.events__catalogHeading {
+  @apply mt-10;
+}
+
+.events__catalogHeadingPast {
+  @apply mt-16;
+}
+
+.events__catalogGrid {
+  @apply mt-8 grid gap-5 md:grid-cols-2;
+}
+
+.events__catalogEmpty {
+  @apply mt-8 rounded-[1.75rem] border border-dashed border-border bg-surface p-8 text-center text-muted;
+}
+
+/* EventCard */
+
+.events__card {
+  @apply flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[0_12px_34px_rgb(16_42_67/6%)] transition duration-200 hover:-translate-y-1 hover:border-brand;
+}
+
+.events__cardVisual {
+  @apply relative min-h-44 overflow-hidden bg-(image:--gradient-hero) p-6;
+}
+
+.events__cardDecoration {
+  @apply absolute -top-12 -right-12 size-40 rounded-full border-24 border-brand/15;
+}
+
+.events__cardIcon {
+  @apply relative grid size-14 place-items-center rounded-2xl bg-surface text-action shadow-sm;
+}
+
+.events__cardDate {
+  @apply relative mt-7 inline-flex rounded-full bg-sun px-3 py-1.5 text-xs font-black text-heading;
+}
+
+.events__cardContent {
+  @apply flex flex-1 flex-col p-6;
+}
+
+.events__cardTitle {
+  @apply text-2xl font-black tracking-[-0.04em] text-heading;
+}
+
+.events__cardSummary {
+  @apply mt-3 flex-1 text-sm leading-6 text-muted;
+}
+
+.events__cardLocation {
+  @apply mt-5 flex items-center gap-2 text-sm font-semibold text-heading;
+}
+
+.events__cardLocationIcon {
+  @apply text-brand;
+  font-size: 19px !important;
+}
+
+.events__cardLink {
+  @apply mt-6 inline-flex min-h-11 items-center justify-between rounded-xl border border-border px-4 font-bold text-heading transition-colors;
+}
+
+.events__card:hover .events__cardLink {
+  @apply border-action text-action;
+}
+
+/* EventDetail */
+
+.events__detailLayout {
+  @apply grid gap-8 lg:grid-cols-[1fr_360px];
+}
+
+/* EventTopics */
+
+.events__topicsTitle {
+  @apply mt-10 text-3xl font-black tracking-[-0.04em] text-heading;
+}
+
+.events__topicsList {
+  @apply mt-6 grid gap-4;
+}
+
+.events__topic {
+  @apply flex items-center gap-4 rounded-2xl border border-border bg-surface p-5;
+}
+
+.events__topicNumber {
+  @apply grid size-10 place-items-center rounded-full bg-sun text-sm font-black text-heading;
+}
+
+.events__topicText {
+  @apply font-bold text-heading;
+}
+
+/* EventDetails */
+
+.events__details {
+  @apply h-fit rounded-[1.75rem] border border-border bg-surface p-6;
+}
+
+.events__detailsList {
+  @apply space-y-5 text-sm;
+}
+
+.events__detailsLabel {
+  @apply flex items-center gap-2 text-muted;
+}
+
+.events__detailsIcon {
+  font-size: 19px !important;
+}
+
+.events__detailsValue {
+  @apply mt-1.5 font-extrabold text-heading;
+}
+
+.events__detailsNotice {
+  @apply mt-7 rounded-2xl bg-background p-4 text-xs leading-5 text-muted;
+}
+
+.events__detailsAction {
+  @apply mt-5;
+}

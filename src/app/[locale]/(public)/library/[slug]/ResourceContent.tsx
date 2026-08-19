@@ -1,10 +1,11 @@
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import Link from "next/link";
 
-import { Section } from "@/components/ui/section";
-import type { Locale } from "@/config/locales";
-import type { PageCopy } from "@/dictionaries/page-copy";
-import type { LibraryResource } from "@/types/public-content";
+import { Section } from "@/components/ui/Section";
+import type { Locale } from "@/config/Locales";
+import styles from "@/css/public/library.module.css";
+import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { LibraryResource } from "@/types/PublicContent";
 
 type ResourceContentProps = {
   resource: LibraryResource;
@@ -14,28 +15,28 @@ type ResourceContentProps = {
 
 export function ResourceContent({ resource, locale, copy }: ResourceContentProps) {
   return (
-    <Section containerClassName="max-w-[980px]">
+    <Section containerClassName={styles.library__contentContainer}>
       <Link
         href={`/${locale}/library`}
-        className="inline-flex min-h-11 items-center gap-2 font-bold text-action hover:underline"
+        className={styles.library__backLink}
       >
         <ArrowBackRounded aria-hidden="true" />
         {copy.common.back}
       </Link>
-      <article className="mt-8 space-y-10">
+      <article className={styles.library__article}>
         {resource.sections[locale].map((section, index) => (
           <section
             key={section.heading}
-            className="grid gap-5 border-b border-border pb-10 sm:grid-cols-[56px_1fr]"
+            className={styles.library__articleSection}
           >
-            <span className="grid size-12 place-items-center rounded-full bg-sun font-black text-heading">
+            <span className={styles.library__articleNumber}>
               {index + 1}
             </span>
             <div>
-              <h2 className="text-2xl font-black tracking-[-0.04em] text-heading">
+              <h2 className={styles.library__articleHeading}>
                 {section.heading}
               </h2>
-              <p className="mt-4 text-base leading-8 text-muted">{section.body}</p>
+              <p className={styles.library__articleBody}>{section.body}</p>
             </div>
           </section>
         ))}
