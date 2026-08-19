@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { HomeHero } from "@/components/sections/home-hero";
-import { HomeSections } from "@/components/sections/home-sections";
 import { isLocale } from "@/config/locales";
 import { getDictionary } from "@/dictionaries/get-dictionary";
 import { getPageCopy } from "@/dictionaries/page-copy";
 import { createPageMetadata } from "@/lib/metadata";
+
+import { FaqPreview } from "./FaqPreview";
+import { FeaturedCourses } from "./FeaturedCourses";
+import { FinalCta } from "./FinalCta";
+import { HomeHero } from "./HomeHero";
+import { LearningProcess } from "./LearningProcess";
+import { LibraryPreview } from "./LibraryPreview";
+import { ResultsPreview } from "./ResultsPreview";
+import { TrustStrip } from "./TrustStrip";
+import { UpcomingEvents } from "./UpcomingEvents";
+import { WhyBest } from "./WhyBest";
 
 type HomePageProps = {
   params: Promise<{ locale: string }>;
@@ -32,7 +41,15 @@ export default async function HomePage({ params }: HomePageProps) {
   return (
     <main>
       <HomeHero locale={locale} content={dictionary.home} />
-      <HomeSections locale={locale} copy={copy} />
+      <TrustStrip content={dictionary.home} />
+      <FeaturedCourses locale={locale} copy={copy} />
+      <WhyBest copy={copy} />
+      <LearningProcess copy={copy} />
+      <ResultsPreview locale={locale} copy={copy} />
+      <UpcomingEvents locale={locale} copy={copy} />
+      <LibraryPreview locale={locale} copy={copy} />
+      <FaqPreview locale={locale} copy={copy} />
+      <FinalCta locale={locale} copy={copy} />
     </main>
   );
 }

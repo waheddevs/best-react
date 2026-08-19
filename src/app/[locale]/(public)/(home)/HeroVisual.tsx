@@ -11,7 +11,7 @@ type HeroVisualProps = {
 
 export function HeroVisual({ label, title, progress }: HeroVisualProps) {
   return (
-    <div className="relative mx-auto aspect-5/4 w-full max-w-[590px]" aria-label={label} role="img">
+    <div className="relative mx-auto aspect-5/4 w-full max-w-147.5" aria-label={label} role="img">
       <div className="absolute inset-[4%] rounded-[38%_62%_48%_52%/44%_38%_62%_56%] bg-[color-mix(in_srgb,var(--brand-turquoise)_18%,transparent)]" />
       <div className="absolute inset-x-[10%] top-[10%] bottom-[8%] overflow-hidden rounded-4xl border border-white/70 bg-surface/90 p-5 shadow-(--shadow-soft) backdrop-blur-sm sm:p-7">
         <div className="flex items-center justify-between">
@@ -23,7 +23,7 @@ export function HeroVisual({ label, title, progress }: HeroVisualProps) {
           </span>
         </div>
         <div className="mt-7 grid place-items-center sm:mt-9">
-          <div className="relative grid size-32 place-items-center rounded-full border-14 border-[color-mix(in_srgb,var(--brand-turquoise)_20%,transparent)] bg-(image:--gradient-cta) text-white shadow-[0_18px_40px_rgb(37_99_235_/_24%)] sm:size-40">
+          <div className="relative grid size-32 place-items-center rounded-full border-14 border-[color-mix(in_srgb,var(--brand-turquoise)_20%,transparent)] bg-(image:--gradient-cta) text-white shadow-[0_18px_40px_rgb(37_99_235/24%)] sm:size-40">
             <SchoolRounded aria-hidden="true" sx={{ fontSize: 52 }} />
             <span className="absolute -right-6 bottom-1 grid size-12 place-items-center rounded-2xl border border-border bg-surface text-action shadow-lg">
               <TrendingUpRounded aria-hidden="true" />
