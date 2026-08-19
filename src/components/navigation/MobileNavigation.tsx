@@ -61,7 +61,10 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
         <nav aria-label={labels.menu} className={styles.navbar__mobileNav}>
           {navbarNavigationItems.map((item) => {
             const href = `/${locale}${item.href}`;
-            const isActive = pathname === href;
+            const isActive =
+              item.href === ""
+                ? pathname === href
+                : pathname === href || pathname.startsWith(`${href}/`);
             return (
               <Link
                 key={item.key}

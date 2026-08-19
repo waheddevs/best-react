@@ -15,7 +15,7 @@
 }
 
 .navbar__brandMark {
-  @apply grid size-10 place-items-center rounded-xl bg-brand font-black text-heading transition-transform;
+  @apply grid size-10 shrink-0 place-items-center transition-transform;
 }
 
 .navbar__brand:hover .navbar__brandMark {
@@ -23,15 +23,15 @@
 }
 
 .navbar__brandCopy {
-  @apply hidden leading-none sm:block;
+  @apply leading-none;
 }
 
 .navbar__brandName {
-  @apply block text-xl font-black tracking-tighter text-heading;
+  @apply block font-sans text-xl font-bold tracking-[-0.04em] text-heading;
 }
 
-.navbar__brandCaption {
-  @apply mt-1 block text-[9px] font-bold tracking-[0.18em] text-muted;
+.navbar__brandIcon {
+  @apply size-9;
 }
 
 .navbar__desktopNav {
@@ -40,6 +40,10 @@
 
 .navbar__link {
   @apply rounded-xl px-3 py-2 text-sm font-semibold text-heading transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action;
+}
+
+.navbar__linkActive {
+  @apply text-action;
 }
 
 .navbar__link:hover,
@@ -141,7 +145,7 @@
 }
 
 .navbar__mobileLinkActive {
-  @apply bg-[color-mix(in_srgb,var(--brand-turquoise)_16%,transparent)] text-heading;
+  @apply bg-[color-mix(in_srgb,var(--action-blue)_10%,transparent)] text-action;
 }
 
 .navbar__mobileLocale {

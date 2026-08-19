@@ -1,9 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { NavbarDropdown } from "@/components/navigation/NavbarDropdown";
-import { Container } from "@/components/ui/Container";
 import { LocaleSwitcher } from "@/components/navigation/LocaleSwitcher";
 import { MobileNavigation } from "@/components/navigation/MobileNavigation";
+import { NavbarLink } from "@/components/navigation/NavbarLink";
+import { Container } from "@/components/ui/Container";
 import {
   courseNavigationItems,
   examNavigationItems,
@@ -22,19 +24,19 @@ export function Navbar({ locale, labels }: NavbarProps) {
   return (
     <header className={styles.navbar}>
       <Container className={styles.navbar__container}>
-        <Link
-          href={`/${locale}`}
-          aria-label={labels.home}
-          className={styles.navbar__brand}
-        >
+        <Link href={`/${locale}`} aria-label={labels.home} className={styles.navbar__brand}>
           <span className={styles.navbar__brandMark}>
-            B
+            <Image
+              src="/icons/logo.svg"
+              alt=""
+              width={36}
+              height={36}
+              className={styles.navbar__brandIcon}
+              priority
+            />
           </span>
           <span className={styles.navbar__brandCopy}>
-            <span className={styles.navbar__brandName}>BEST</span>
-            <span className={styles.navbar__brandCaption}>
-              LEARNING CENTER
-            </span>
+            <span className={styles.navbar__brandName}>BEST LC</span>
           </span>
         </Link>
 
@@ -42,13 +44,12 @@ export function Navbar({ locale, labels }: NavbarProps) {
           {navbarNavigationItems.map((item) => {
             if (item.key !== "courses" && item.key !== "exams") {
               return (
-                <Link
+                <NavbarLink
                   key={item.key}
-                  href={`/${locale}${item.href}`}
-                  className={styles.navbar__link}
-                >
-                  {labels[item.key]}
-                </Link>
+                  locale={locale}
+                  href={item.href}
+                  label={labels[item.key]}
+                />
               );
             }
 
@@ -80,16 +81,10 @@ export function Navbar({ locale, labels }: NavbarProps) {
             <LocaleSwitcher locale={locale} label={labels.language} />
           </div>
           <div className={styles.navbar__auth}>
-            <button
-              type="button"
-              className={styles.navbar__login}
-            >
+            <button type="button" className={styles.navbar__login}>
               {labels.login}
             </button>
-            <button
-              type="button"
-              className={styles.navbar__signup}
-            >
+            <button type="button" className={styles.navbar__signup}>
               {labels.signup}
             </button>
           </div>

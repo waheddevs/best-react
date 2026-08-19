@@ -1,4 +1,3 @@
-import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -30,13 +29,16 @@ export async function generateMetadata({
   }
 
   const descriptions = {
-    uz: "BEST LC kurslari, tadbirlari va ochiq ta’lim resurslari uchun rasmiy veb-sayt.",
-    ru: "Официальный сайт курсов, событий и открытых образовательных ресурсов BEST LC.",
-    en: "The official website for BEST LC courses, events, and open learning resources.",
+    uz: "BEST LC kurslari, tadbirlari va ta’lim yo‘nalishlari uchun rasmiy veb-sayt.",
+    ru: "Официальный сайт курсов, событий и образовательных направлений BEST LC.",
+    en: "The official website for BEST LC courses, events, and learning programmes.",
   };
 
   return {
     ...createPageMetadata(locale, "BEST LC", descriptions[locale]),
+    icons: {
+      icon: [{ url: "/icons/logo.svg", type: "image/svg+xml" }],
+    },
     title: {
       default: "BEST LC",
       template: "%s | BEST LC",
@@ -62,7 +64,6 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <html lang={locale} className={GeistSans.variable} suppressHydrationWarning>
       <body>
-        <InitColorSchemeScript defaultMode="light" modeStorageKey="best-lc-theme" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <BestThemeProvider>
             <MotionProvider>

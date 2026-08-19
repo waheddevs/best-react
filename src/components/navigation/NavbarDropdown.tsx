@@ -4,6 +4,7 @@ import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import Link from "next/link";
 
 import styles from "@/css/layout/navbar.module.css";
+import { useActivePath } from "@/hooks/navigation/useActivePath";
 import { useNavbarDropdown } from "@/hooks/navigation/useNavbarDropdown";
 
 type NavbarDropdownItem = {
@@ -22,6 +23,7 @@ type NavbarDropdownProps = {
 export function NavbarDropdown({ locale, href, label, items }: NavbarDropdownProps) {
   /* HOOKS */
   const dropdown = useNavbarDropdown();
+  const isActive = useActivePath(locale, href);
   const { isOpen, triggerRef } = dropdown;
 
   /* HANDLERS */
@@ -46,7 +48,8 @@ export function NavbarDropdown({ locale, href, label, items }: NavbarDropdownPro
       <Link
         ref={triggerRef}
         href={`/${locale}${href}`}
-        className={`${styles.navbar__link} ${styles.navbar__dropdownTrigger}`}
+        className={`${styles.navbar__link} ${styles.navbar__dropdownTrigger} ${isActive ? styles.navbar__linkActive : ""}`}
+        aria-current={isActive ? "page" : undefined}
         aria-expanded={isOpen}
         onClick={handleNavigation}
       >
