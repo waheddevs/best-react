@@ -238,6 +238,7 @@ src/
   components/
     layout/
     navigation/
+      ScrollToTopLink.tsx
     sections/
     ui/
     motion/
@@ -257,6 +258,7 @@ src/
       useMobileNavigation.ts
       useLocaleSwitcher.ts
       useActivePath.ts
+      useScrollToTop.ts
     public/
       courses/
         useCourseCatalog.ts
@@ -695,6 +697,12 @@ use `proxy.ts`, follow that documentation rather than older middleware examples.
 A top-level Navbar link is active for its exact route and nested detail routes;
 active links use the Action blue token (`--action-blue`, the same color as
 “today” in the hero).
+
+Every Navbar link, including the brand, desktop dropdown items, mobile links,
+and mobile locale links, must scroll a newly selected route to the top during
+client-side navigation. Keep this behavior in the shared `ScrollToTopLink`
+component and `useScrollToTop` hook. Do not implement a pathname effect that
+overrides the browser's normal Back/Forward scroll restoration.
 
 The shared layout component filenames and named exports must be exactly
 `Navbar.tsx` / `Navbar` and `Footer.tsx` / `Footer`. Do not restore the older
