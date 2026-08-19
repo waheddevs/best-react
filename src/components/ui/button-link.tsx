@@ -11,7 +11,7 @@ type ButtonLinkProps = {
 export function ButtonLink({ href, children, variant = "primary" }: ButtonLinkProps) {
   const variantClass =
     variant === "primary"
-      ? "border-transparent bg-(image:--gradient-cta) text-white shadow-[0_12px_30px_rgb(37_99_235_/_22%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgb(37_99_235_/_28%)]"
+      ? "border-transparent bg-(image:--gradient-cta) text-white shadow-[0_12px_30px_rgb(37_99_235/22%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgb(37_99_235/28%)]"
       : "border-border bg-surface text-heading hover:border-brand hover:bg-[color-mix(in_srgb,var(--brand-turquoise)_8%,var(--surface))]";
 
   return (

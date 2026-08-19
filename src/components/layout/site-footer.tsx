@@ -21,7 +21,7 @@ export function SiteFooter({ locale, navigation, copy }: SiteFooterProps) {
             <span className="grid size-11 place-items-center rounded-xl bg-brand text-lg font-black text-heading">
               B
             </span>
-            <span className="text-2xl font-black tracking-[-0.05em] text-heading">BEST LC</span>
+            <span className="text-2xl font-black tracking-tighter text-heading">BEST LC</span>
           </Link>
           <p className="mt-5 text-sm leading-6 text-muted">{copy.summary}</p>
         </div>

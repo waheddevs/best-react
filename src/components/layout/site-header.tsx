@@ -25,7 +25,7 @@ export function SiteHeader({ locale, labels }: SiteHeaderProps) {
             B
           </span>
           <span className="hidden leading-none sm:block">
-            <span className="block text-xl font-black tracking-[-0.05em] text-heading">BEST</span>
+            <span className="block text-xl font-black tracking-tighter text-heading">BEST</span>
             <span className="mt-1 block text-[9px] font-bold tracking-[0.18em] text-muted">
               LEARNING CENTER
             </span>
@@ -57,7 +57,7 @@ export function SiteHeader({ locale, labels }: SiteHeaderProps) {
             </button>
             <button
               type="button"
-              className="inline-flex min-h-10 items-center justify-center rounded-xl border border-transparent bg-(image:--gradient-cta) px-3 text-xs font-bold text-white shadow-[0_8px_20px_rgb(37_99_235_/_20%)] transition-all duration-200 hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action sm:px-4 sm:text-sm"
+              className="inline-flex min-h-10 items-center justify-center rounded-xl border border-transparent bg-(image:--gradient-cta) px-3 text-xs font-bold text-white shadow-[0_8px_20px_rgb(37_99_235/20%)] transition-all duration-200 hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action sm:px-4 sm:text-sm"
             >
               {labels.signup}
             </button>

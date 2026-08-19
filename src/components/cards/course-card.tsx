@@ -16,7 +16,7 @@ type CourseCardProps = {
 
 export function CourseCard({ course, locale, copy }: CourseCardProps) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[0_12px_34px_rgb(16_42_67_/_6%)] transition duration-200 hover:-translate-y-1 hover:border-brand hover:shadow-(--shadow-soft)">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[0_12px_34px_rgb(16_42_67/6%)] transition duration-200 hover:-translate-y-1 hover:border-brand hover:shadow-(--shadow-soft)">
       <Image
         src={course.image}
         alt={course.imageAlt[locale]}

@@ -37,7 +37,7 @@ export default function NotFound() {
           <SearchOffRounded aria-hidden="true" sx={{ fontSize: 32 }} />
         </span>
         <p className="mt-6 text-sm font-black tracking-[0.2em] text-action uppercase">404</p>
-        <h1 className="mt-3 text-4xl font-black tracking-[-0.05em] text-heading">{labels.title}</h1>
+        <h1 className="mt-3 text-4xl font-black tracking-tighter text-heading">{labels.title}</h1>
         <p className="mt-4 text-muted">{labels.description}</p>
         <Link
           href={`/${locale}`}

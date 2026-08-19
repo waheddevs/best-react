@@ -15,7 +15,7 @@ type EventCardProps = {
 
 export function EventCard({ event, locale, copy }: EventCardProps) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[0_12px_34px_rgb(16_42_67_/_6%)] transition duration-200 hover:-translate-y-1 hover:border-brand">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[0_12px_34px_rgb(16_42_67/6%)] transition duration-200 hover:-translate-y-1 hover:border-brand">
       <div className="relative min-h-44 overflow-hidden bg-(image:--gradient-hero) p-6">
         <div className="absolute -top-12 -right-12 size-40 rounded-full border-24 border-brand/15" />
         <span className="relative grid size-14 place-items-center rounded-2xl bg-surface text-action shadow-sm">

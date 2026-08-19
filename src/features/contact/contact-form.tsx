@@ -105,7 +105,7 @@ export function ContactForm({ locale, copy, courses }: ContactFormProps) {
       <p className="text-xs leading-5 text-muted">{copy.contact.privacyNotice}</p>
       <button
         type="submit"
-        className="min-h-12 rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white shadow-[0_12px_30px_rgb(37_99_235_/_20%)] transition-transform hover:-translate-y-0.5"
+        className="min-h-12 rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white shadow-[0_12px_30px_rgb(37_99_235/20%)] transition-transform hover:-translate-y-0.5"
       >
         {copy.contact.submit}
       </button>
