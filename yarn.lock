@@ -1942,6 +1942,7 @@ __metadata:
     "@types/react-dom": "npm:^19"
     eslint: "npm:^9"
     eslint-config-next: "npm:16.3.1"
+    geist: "npm:^1.7.2"
     motion: "npm:^13.1.0"
     next: "npm:16.3.1"
     prettier: "npm:^3.9.6"
@@ -2917,6 +2918,15 @@ __metadata:
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
   checksum: 10c0/33e77fd29bddc2d9bb78ab3eb854c165909201f88c75faa8272e35899e2d35a8a642a15e7420ef945e1f64a9670d6aa3ec744106b2aa42be68ca5114025954ca
+  languageName: node
+  linkType: hard
+
+"geist@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "geist@npm:1.7.2"
+  peerDependencies:
+    next: ">=13.2.0"
+  checksum: 10c0/ee523706786297a72db6adc62cf56a8d31e51926d785c195403e7115bfa1dea71bdef84853a9c1a362699b1b91484a8c2fc98048a0cfef7efdd0b478d403cc65
   languageName: node
   linkType: hard
 
