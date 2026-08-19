@@ -5,8 +5,8 @@ import MenuRounded from "@mui/icons-material/MenuRounded";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Link from "next/link";
 
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { navbarNavigationItems } from "@/config/Navigation";
 import { locales, type Locale } from "@/config/Locales";
 import styles from "@/css/layout/navbar.module.css";
@@ -66,7 +66,7 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
                 ? pathname === href
                 : pathname === href || pathname.startsWith(`${href}/`);
             return (
-              <Link
+              <ScrollToTopLink
                 key={item.key}
                 href={href}
                 onClick={handleCloseNavigation}
@@ -74,7 +74,7 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
                 className={`${styles.navbar__mobileLink} ${isActive ? styles.navbar__mobileLinkActive : ""}`}
               >
                 {labels[item.key]}
-              </Link>
+              </ScrollToTopLink>
             );
           })}
         </nav>
@@ -83,7 +83,7 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
           <div className={styles.navbar__mobileLocaleList}>
             {locales.map((item) => {
               return (
-                <Link
+                <ScrollToTopLink
                   key={item}
                   href={getLocaleHref(item)}
                   onClick={handleCloseNavigation}
@@ -91,7 +91,7 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
                   className={`${styles.navbar__mobileLocaleLink} ${item === locale ? styles.navbar__mobileLocaleLinkActive : ""}`}
                 >
                   {item.toUpperCase()}
-                </Link>
+                </ScrollToTopLink>
               );
             })}
           </div>

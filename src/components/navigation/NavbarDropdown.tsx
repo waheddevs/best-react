@@ -1,8 +1,8 @@
 "use client";
 
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
-import Link from "next/link";
 
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import styles from "@/css/layout/navbar.module.css";
 import { useActivePath } from "@/hooks/navigation/useActivePath";
 import { useNavbarDropdown } from "@/hooks/navigation/useNavbarDropdown";
@@ -45,7 +45,7 @@ export function NavbarDropdown({ locale, href, label, items }: NavbarDropdownPro
       onBlurCapture={handleBlur}
       onKeyDown={handleKeyDown}
     >
-      <Link
+      <ScrollToTopLink
         ref={triggerRef}
         href={`/${locale}${href}`}
         className={`${styles.navbar__link} ${styles.navbar__dropdownTrigger} ${isActive ? styles.navbar__linkActive : ""}`}
@@ -55,20 +55,20 @@ export function NavbarDropdown({ locale, href, label, items }: NavbarDropdownPro
       >
         {label}
         <ExpandMoreRounded aria-hidden="true" className={styles.navbar__dropdownArrow} />
-      </Link>
+      </ScrollToTopLink>
       <div className={styles.navbar__dropdownPanel}>
         <div className={styles.navbar__dropdownMenu}>
           <ul aria-label={label} className={styles.navbar__dropdownList}>
             {items.map((item) => (
               <li key={item.key}>
-                <Link
+                <ScrollToTopLink
                   href={`/${locale}${item.href}`}
                   className={styles.navbar__dropdownItem}
                   onClick={handleNavigation}
                 >
                   <span aria-hidden="true" className={styles.navbar__dropdownBullet} />
                   {item.label}
-                </Link>
+                </ScrollToTopLink>
               </li>
             ))}
           </ul>

@@ -1,10 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import { NavbarDropdown } from "@/components/navigation/NavbarDropdown";
 import { LocaleSwitcher } from "@/components/navigation/LocaleSwitcher";
 import { MobileNavigation } from "@/components/navigation/MobileNavigation";
 import { NavbarLink } from "@/components/navigation/NavbarLink";
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Container } from "@/components/ui/Container";
 import {
   courseNavigationItems,
@@ -24,7 +24,11 @@ export function Navbar({ locale, labels }: NavbarProps) {
   return (
     <header className={styles.navbar}>
       <Container className={styles.navbar__container}>
-        <Link href={`/${locale}`} aria-label={labels.home} className={styles.navbar__brand}>
+        <ScrollToTopLink
+          href={`/${locale}`}
+          aria-label={labels.home}
+          className={styles.navbar__brand}
+        >
           <span className={styles.navbar__brandMark}>
             <Image
               src="/icons/logo.svg"
@@ -38,7 +42,7 @@ export function Navbar({ locale, labels }: NavbarProps) {
           <span className={styles.navbar__brandCopy}>
             <span className={styles.navbar__brandName}>BEST LC</span>
           </span>
-        </Link>
+        </ScrollToTopLink>
 
         <nav aria-label={labels.menu} className={styles.navbar__desktopNav}>
           {navbarNavigationItems.map((item) => {

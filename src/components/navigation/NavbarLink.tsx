@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import styles from "@/css/layout/navbar.module.css";
 import { useActivePath } from "@/hooks/navigation/useActivePath";
 
@@ -16,12 +15,12 @@ export function NavbarLink({ locale, href, label }: NavbarLinkProps) {
   const isActive = useActivePath(locale, href);
 
   return (
-    <Link
+    <ScrollToTopLink
       href={`/${locale}${href}`}
       aria-current={isActive ? "page" : undefined}
       className={`${styles.navbar__link} ${isActive ? styles.navbar__linkActive : ""}`}
     >
       {label}
-    </Link>
+    </ScrollToTopLink>
   );
 }
