@@ -1,8 +1,7 @@
 @layer theme, base, mui, components, utilities;
 @import "tailwindcss";
 
-:root,
-[data-mui-color-scheme="light"] {
+:root {
   --background: #f4fbfd;
   --surface: #ffffff;
   --surface-elevated: #ffffff;
@@ -20,23 +19,6 @@
   --gradient-accent: linear-gradient(135deg, #ffc857 0%, #ff8a5b 100%);
   --shadow-soft: 0 20px 60px rgb(16 42 67 / 9%);
   color-scheme: light;
-}
-
-[data-mui-color-scheme="dark"] {
-  --background: #071521;
-  --surface: #0e2233;
-  --surface-elevated: #132c3f;
-  --text: #eaf7fa;
-  --heading: #eaf7fa;
-  --muted: #9cb0c0;
-  --border: #1d3b4a;
-  --brand-turquoise: #62d0df;
-  --action-blue: #7ca7ff;
-  --sunny-yellow: #ffd679;
-  --coral: #ff8b8b;
-  --gradient-hero: linear-gradient(135deg, #0b2230 0%, #0d1c34 58%, #071521 100%);
-  --shadow-soft: 0 22px 70px rgb(0 0 0 / 24%);
-  color-scheme: dark;
 }
 
 @theme inline {
@@ -69,9 +51,6 @@ body {
   background: var(--background);
   color: var(--text);
   font-family: var(--font-geist-sans), sans-serif;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease;
 }
 
 ::selection {
@@ -85,6 +64,15 @@ input,
 textarea,
 select {
   outline-color: var(--action-blue);
+}
+
+a[href],
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 :focus-visible {
