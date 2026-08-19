@@ -1,0 +1,179 @@
+@reference "../../app/globals.css";
+
+/* Navbar */
+
+.navbar {
+  @apply sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-xl;
+}
+
+.navbar__container {
+  @apply flex min-h-20 items-center justify-between gap-4;
+}
+
+.navbar__brand {
+  @apply flex min-h-11 items-center gap-3;
+}
+
+.navbar__brandMark {
+  @apply grid size-10 place-items-center rounded-xl bg-brand font-black text-heading transition-transform;
+}
+
+.navbar__brand:hover .navbar__brandMark {
+  @apply rotate-3;
+}
+
+.navbar__brandCopy {
+  @apply hidden leading-none sm:block;
+}
+
+.navbar__brandName {
+  @apply block text-xl font-black tracking-tighter text-heading;
+}
+
+.navbar__brandCaption {
+  @apply mt-1 block text-[9px] font-bold tracking-[0.18em] text-muted;
+}
+
+.navbar__desktopNav {
+  @apply hidden items-center gap-1 xl:flex;
+}
+
+.navbar__link {
+  @apply rounded-xl px-3 py-2 text-sm font-semibold text-heading transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action;
+}
+
+.navbar__link:hover,
+.navbar__dropdownItem:hover {
+  @apply bg-[color-mix(in_srgb,var(--brand-turquoise)_10%,transparent)];
+}
+
+.navbar__dropdown {
+  @apply relative;
+}
+
+.navbar__dropdownTrigger {
+  @apply inline-flex items-center gap-1;
+}
+
+.navbar__dropdownArrow {
+  @apply transition-transform duration-200;
+  font-size: 18px !important;
+}
+
+.navbar__dropdownOpen .navbar__dropdownArrow {
+  @apply rotate-180;
+}
+
+.navbar__dropdownPanel {
+  @apply invisible absolute top-full left-0 z-50 w-60 translate-y-1 pt-2 opacity-0 transition-[visibility,opacity,transform] duration-200;
+}
+
+.navbar__dropdownOpen .navbar__dropdownPanel {
+  @apply visible translate-y-0 opacity-100;
+}
+
+.navbar__dropdownMenu {
+  @apply rounded-2xl border border-border bg-surface p-3 shadow-(--shadow-soft);
+}
+
+.navbar__dropdownList {
+  @apply space-y-0.5;
+}
+
+.navbar__dropdownItem {
+  @apply flex min-h-10 items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-heading transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action;
+}
+
+.navbar__dropdownBullet {
+  @apply size-1.5 rounded-full bg-brand;
+}
+
+.navbar__actions {
+  @apply flex items-center gap-1.5;
+}
+
+.navbar__localeDesktop {
+  @apply hidden sm:block;
+}
+
+.navbar__auth {
+  @apply flex items-center gap-2;
+}
+
+.navbar__login {
+  @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-(--brand-navy) bg-transparent px-3 text-xs font-bold text-(--brand-navy) transition-all duration-200 hover:bg-(--brand-navy) hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action sm:px-4 sm:text-sm;
+}
+
+.navbar__signup {
+  @apply inline-flex min-h-10 items-center justify-center rounded-xl border border-transparent bg-(image:--gradient-cta) px-3 text-xs font-bold text-white shadow-[0_8px_20px_rgb(37_99_235/20%)] transition-all duration-200 hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action sm:px-4 sm:text-sm;
+}
+
+/* MobileNavigation */
+
+.navbar__mobile {
+  @apply xl:hidden;
+}
+
+.navbar__iconButton {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.navbar__mobileDrawer {
+  width: min(88vw, 360px) !important;
+  padding: 1.25rem;
+}
+
+.navbar__mobileHeader {
+  @apply flex items-center justify-between border-b border-border pb-4;
+}
+
+.navbar__mobileBrand {
+  @apply text-xl font-black tracking-[-0.04em] text-heading;
+}
+
+.navbar__mobileNav {
+  @apply mt-6 flex flex-col gap-1;
+}
+
+.navbar__mobileLink {
+  @apply flex min-h-12 items-center rounded-xl px-4 font-semibold text-text transition-colors hover:bg-[color-mix(in_srgb,var(--brand-turquoise)_8%,transparent)];
+}
+
+.navbar__mobileLinkActive {
+  @apply bg-[color-mix(in_srgb,var(--brand-turquoise)_16%,transparent)] text-heading;
+}
+
+.navbar__mobileLocale {
+  @apply mt-auto border-t border-border pt-5;
+}
+
+.navbar__mobileLocaleLabel {
+  @apply mb-3 text-xs font-black tracking-[0.16em] text-muted uppercase;
+}
+
+.navbar__mobileLocaleList {
+  @apply flex gap-2;
+}
+
+.navbar__mobileLocaleLink {
+  @apply grid min-h-11 min-w-14 place-items-center rounded-xl border border-border px-3 text-sm font-bold text-heading;
+}
+
+.navbar__mobileLocaleLinkActive {
+  @apply border-transparent bg-(image:--gradient-cta) text-white;
+}
+
+/* LocaleSwitcher */
+
+.navbar__localeButton {
+  min-height: 44px !important;
+  padding-inline: 0.625rem !important;
+  color: var(--heading) !important;
+  border-radius: 0.75rem !important;
+}
+
+.navbar__localeMenu {
+  min-width: 150px !important;
+  margin-top: 0.5rem;
+}
