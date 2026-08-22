@@ -15,8 +15,7 @@ described in the BEST LC Notion plan:
 - Results
 - Exams
 - About us
-- FAQ
-- Contact
+- Contact with an embedded FAQ section
 - Language switching
 
 Source plan:
@@ -50,6 +49,30 @@ typed data, types, and dictionary must remain under student-owned directories.
 The route is currently frontend-only and unprotected because authentication is
 out of scope. Other student, teacher, and administrator placeholders remain
 `.gitkeep`-only; obtain fresh explicit approval before implementing them.
+
+## 2A. Client-preview content convention
+
+This milestone is a client-preview prototype. Until the client supplies real
+business content, use complete, thematic fictional placeholder data throughout
+the public website so layouts, content density, filtering, detail pages, and
+conversion journeys can be reviewed realistically.
+
+- Placeholder content may include course details, event schedules, preview
+  statistics, fictional learner stories, teacher profiles, business history,
+  contact details, addresses, and social links.
+- Keep all replaceable content centralized in typed dictionaries or data
+  modules. Mark it at the data level as preview/placeholder content or add one
+  concise ownership comment so it cannot be mistaken for production truth.
+- Use obviously reserved values for technical contact identifiers where
+  practical, such as `.example` email domains and zero-filled phone numbers.
+- Do not use a real person's identity, photograph, quote, score, or private
+  information as fictional content. Fictional people and AI/editorial visuals
+  must remain clearly synthetic preview material.
+- Replace preview content with client-supplied real data before production
+  launch, while preserving the established types and presentation structure.
+- This convention authorizes fictional content, not fake functionality. Never
+  imply that registration, forms, payments, authentication, or persistence work
+  when no corresponding backend exists.
 
 ## 3. Required technical stack
 
@@ -198,13 +221,10 @@ src/
           Values.tsx
           Story.tsx
           page.tsx
-        faq/
-          FaqHero.tsx
-          FaqContent.tsx
-          page.tsx
         contact/
           ContactHero.tsx
           ContactContent.tsx
+          ContactFaq.tsx
           page.tsx
       (student)/
         student/
@@ -247,6 +267,9 @@ src/
     events/
     results/
     exams/
+    contact/
+      ContactForm.tsx
+      ContactFaqList.tsx
     student/
       library/
         ResourceCatalog.tsx
@@ -262,8 +285,6 @@ src/
     public/
       courses/
         useCourseCatalog.ts
-      faq/
-        useFaqFilter.ts
       contact/
         useContactForm.ts
     student/
@@ -293,7 +314,6 @@ src/
       courses.module.css
       events.module.css
       exams.module.css
-      faq.module.css
       results.module.css
       shared.module.css
     layout/
@@ -366,6 +386,11 @@ including the locale dictionaries, their shared types, page copy, and the
 dictionary loader. Keep Student Library copy in
 `dictionaries/student/Library.ts`. Reserve `dictionaries/teacher/` and
 `dictionaries/admin/` exclusively for their future role areas.
+
+Whenever any new user-facing copy, label, FAQ, content item, or fictional
+preview data is added, provide Uzbek (`uz`), Russian (`ru`), and English (`en`)
+versions in the same change. Do not ship a new content value in only one or two
+locales with the intention of translating it later.
 
 All component styling must live under `src/css/` as scoped CSS Modules. Keep
 one stylesheet per public page under `css/public/`, named after its route, such
@@ -484,6 +509,19 @@ Icon rules:
   `aria-label` and a visible tooltip when helpful.
 - Do not mix MUI icons with unrelated icon packs unless the official BEST logo
   or a uniquely required brand symbol has no MUI equivalent.
+- For every non-trivial illustration, follow this asset decision order to keep
+  the application source compact:
+  1. Research existing local assets, the approved Material icon family, and
+     suitable reusable visual material first. Prefer a direct MUI import inside
+     a branded wrapper when it meets the brief.
+  2. If no suitable material exists, generate a page-owned raster asset, verify
+     it visually, and render it through `next/image` inside a stable responsive
+     wrapper.
+  3. Build the illustration from CSS only when research and image generation
+     cannot satisfy the requirement. Keep that fallback focused and avoid large
+     collections of one-off shape selectors.
+- Simple layout, borders, backgrounds, glows, and small geometric decoration
+  may continue to use CSS without running the full illustration workflow.
 - Avoid large amounts of one-off `sx` styling. Prefer the shared MUI theme,
   component `styleOverrides`, and small branded wrapper components.
 
@@ -645,7 +683,7 @@ Create a small reusable motion system instead of ad hoc animation values:
 - `Reveal`
 - `StaggerGroup`
 - `StaggerItem`
-- `AnimatedCounter` only if real statistics are provided
+- `AnimatedCounter` only for centralized real or clearly marked preview statistics
 
 Do not make every component a motion component.
 
@@ -672,7 +710,6 @@ guidance:
 /uz/results
 /uz/exams
 /uz/about
-/uz/faq
 /uz/contact
 ```
 
@@ -754,14 +791,15 @@ needed. Do not squeeze every label into a crowded navigation bar.
 - Copyright
 - Privacy and terms placeholders
 
-The user explicitly approved clearly fictitious footer contact values for this
-layout iteration. Keep them centralized in the typed public footer dictionary,
-retain the zero-filled phone number and reserved `.example` email so they cannot
-be mistaken for verified business details, and replace them before production
-launch. This approval does not permit fabricated contact details elsewhere.
+Place the Footer FAQ link immediately after About us and target the localized
+Contact FAQ anchor (`/[locale]/contact#faq`). There is no standalone public FAQ
+route.
 
-Do not invent real phone numbers, addresses, social accounts, achievements, or
-legal claims. Put all replaceable business information in typed data files.
+The user explicitly approved fictitious contact and business values throughout
+the client-preview website. Keep them centralized in typed dictionaries, prefer
+zero-filled phone numbers and reserved `.example` email domains, mark them as
+preview content at the data level, and replace them before production launch.
+Do not copy real third-party identities or private contact information.
 
 ## 16. Home page requirements
 
@@ -776,9 +814,8 @@ Build the home page as a deliberate conversion journey:
    - Logo-derived geometric motion accents
 
 2. **Trust strip**
-   - Use real provided numbers only
-   - If real statistics are unavailable, use neutral benefits instead of fake
-     metrics
+   - Use real client-provided numbers when available
+   - Until then, use centralized thematic preview metrics marked for replacement
 
 3. **Featured courses**
    - A curated preview with clear level, format, and duration labels
@@ -787,13 +824,13 @@ Build the home page as a deliberate conversion journey:
    - Practical learning
    - Experienced teachers
    - Result-focused approach
-   - International-standard learning direction, only if verified
+   - International-standard learning direction may appear as marked preview copy
 
 5. **Learning process**
    - A concise three- or four-step visual explanation
 
 6. **Results preview**
-   - Real student outcomes or clearly replaceable case-study placeholders
+   - Real student outcomes or centralized fictional case-study placeholders
 
 7. **Upcoming events preview**
 
@@ -842,7 +879,7 @@ Use static local slugs and `generateStaticParams` where appropriate.
 - Event title and visual
 - Date, time, format, and location placeholder
 - Agenda or key topics
-- Speaker information only when supplied
+- Supplied speaker information or a centralized fictional preview profile
 - CTA to Contact or a non-submitting frontend registration modal
 
 Do not imply that registration was stored or sent when no backend exists.
@@ -852,14 +889,16 @@ Do not imply that registration was stored or sent when no backend exists.
 This page represents public student success and BEST LC outcomes, not private
 exam results.
 
-- Introductory story and verified aggregate metrics when available
-- Student case studies or testimonials
-- Before/after learning journeys when genuine content is supplied
+- Introductory story and real or marked preview aggregate metrics
+- Real or explicitly fictional preview student case studies and testimonials
+- Real or fictional preview before/after learning journeys
 - Outcome categories or visual timeline
 - CTA to explore courses
 
-Never fabricate student names, photos, quotes, scores, certifications, or
-employment claims. Keep placeholder content centralized and easy to replace.
+Never reuse a real person's identity or private information as placeholder
+content. Keep fictional names, synthetic visuals, quotes, scores,
+certifications, and employment outcomes centralized, marked as preview data,
+and easy to replace before production.
 
 ## 20. Student Library
 
@@ -901,31 +940,36 @@ or certificates.
 - Brand mission
 - Educational approach
 - Values
-- BEST story/timeline when supplied
+- Real BEST story/timeline when supplied, otherwise a marked preview timeline
 - Learning environment visual
-- Team/teacher preview only with supplied real content
+- Real team content or clearly fictional preview teacher profiles
 - CTA to Courses or Contact
 
-Do not invent the founding year, branch count, accreditation, or partnerships.
+Founding year, branch count, accreditation, and partnership placeholders are
+allowed only as centralized preview data and must be replaced or removed before
+production.
 
-## 23. FAQ
+## 23. Contact FAQ section
 
-- Category-aware accordion if there are enough questions
+- Keep the FAQ as an anchored section inside Contact, not a standalone route
+- Link to it from the Footer immediately after About us
+- Use an accessible accordion for the six contact-focused preview questions
 - Accessible buttons with `aria-expanded` and keyboard support
-- Questions about courses, format, exams, events, and registration
-- Contact CTA for unanswered questions
+- Questions about applying, course choice, level checks, schedules, format
+  changes, and response expectations
 
 FAQ content must live in typed data/dictionary files.
 
 ## 24. Contact
 
-- Contact information placeholders from centralized data
+- Fictional preview contact information from centralized typed data
 - Accessible contact form UI
-- Form fields: name, phone or email, interested course, message
+- Form fields: first name, last name, email, title, message
 - Client-side validation only
 - Clear disclosure that backend submission is not connected during this
   milestone
-- Location/map placeholder only when a verified address is supplied
+- Location/map preview using an obviously fictional address until a verified
+  address is supplied
 - Working `mailto:` or `tel:` links only when real values are supplied
 
 Do not send, store, or log submitted personal data.
@@ -964,8 +1008,9 @@ Create explicit TypeScript types for public entities, for example:
 Use local typed data modules for the current frontend. Keep data easy to replace
 with a future API or CMS without rewriting presentation components.
 
-Do not present invented business facts as real. Add a concise code comment or
-data-level marker where business content still requires confirmation.
+Fictional business facts are expected during client preview. Keep them
+centralized, add a concise code comment or data-level preview marker, and do not
+carry them into production as verified facts.
 
 ## 27. Components and states
 
@@ -1029,8 +1074,28 @@ accessible replacement.
   A generated building must be treated as a conceptual brand visual, not
   presented as a photograph of BEST LC's real location unless the user
   explicitly verifies that claim.
-- Save approved generated assets under `public/images/generated/` with clear,
-  descriptive filenames and reference them locally through `next/image`.
+- Keep page-owned raster assets in matching directories under `public/images/`:
+  `home-page`, `events-page`, `courses-page`, `results-page`, `exams-page`,
+  `about-page`, and `contact-page`. Use clear, descriptive filenames and
+  reference them locally through `next/image`. Reserve
+  `public/images/generated/` for generated assets that have not yet been
+  assigned to a page or are genuinely shared by multiple pages.
+- Public page heroes may use the approved recurring 3D character trio: the same
+  young boy, young girl, and cream-golden puppy. Preserve their established
+  faces, hair, proportions, medium-light warm-beige skin tone, puppy identity,
+  and premium matte 3D rendering style across pages. Vary only clothing, pose,
+  props, and mood to match the owning page. Preview each new composition for
+  user approval before integrating it, keep the final background genuinely
+  transparent, and store it in the owning page image directory.
+- Before presenting or integrating any generated image, inspect the complete
+  frame and targeted close-up crops at full resolution. Confirm that no head,
+  hair, hand, finger, limb, foot, paw, tail, clothing edge, prop, or intentional
+  shadow is cropped, erased, malformed, or unintentionally transparent.
+- Reject and regenerate or repair outputs containing duplicated body parts,
+  extra people or animals, unrequested props, stray shapes, accidental text,
+  logos, watermarks, checkerboard pixels, background remnants, halos, or other
+  generated artifacts. Recheck these invariants after background extraction and
+  after final WebP conversion on both light and contrasting solid backgrounds.
 - Do not use watermarked images, copyrighted brand assets, or visually unrelated
   random stock photography.
 - All website raster content assets must be stored and delivered as high-quality
@@ -1145,7 +1210,7 @@ Follow this sequence unless the existing repository requires a safer order:
 6. Build header, footer, mobile navigation, and shared UI components.
 7. Build the Home page.
 8. Build Courses and Events list/detail routes.
-9. Build Results, Exams, About, FAQ, and Contact; maintain the separately
+9. Build Results, Exams, About, and Contact with its embedded FAQ; maintain the separately
    approved Student Library under student ownership.
 10. Add purposeful motion with reduced-motion support.
 11. Add metadata, sitemap, robots, not-found UI, and final responsive polish.
@@ -1195,7 +1260,8 @@ The milestone is complete only when:
 - Animations are polished, purposeful, performant, and reduced-motion aware.
 - The site is responsive and accessible.
 - Public content is typed and centralized.
-- No unverified business claims are presented as facts.
+- Preview business claims are centralized, marked for replacement, and not
+  treated as production-verified facts.
 - No student, teacher, admin, authentication, or backend features exist.
 - Lint, type checking, and production build pass.
 - The final handoff lists implemented routes, verification results, remaining
