@@ -510,6 +510,7 @@ Use the following approved palette as the design source of truth.
 
 ```css
 --gradient-cta: linear-gradient(135deg, #0e7490 0%, #2563eb 100%);
+--gradient-cta-corner: linear-gradient(45deg, #0e7490 0%, #2563eb 100%);
 --gradient-hero: linear-gradient(135deg, #eafbfd 0%, #eef4ff 58%, #ffffff 100%);
 --gradient-accent: linear-gradient(135deg, #ffc857 0%, #ff8a5b 100%);
 ```
@@ -523,6 +524,9 @@ Use the following approved palette as the design source of truth.
 - Yellow must use deep navy text, not white text.
 - Coral is an accent, not a primary color.
 - Gradients must be focused accents, not backgrounds for every section or card.
+- Reserve `--gradient-cta-corner` for the homepage Explore Courses CTA and the
+  Navbar signup button, with the dark end at bottom-left and the lighter end at
+  top-right.
 - Avoid uncontrolled neon colors and rainbow gradients.
 - Define semantic CSS variables in `globals.css`, then expose them through the
   current Tailwind theme-variable approach.
@@ -646,12 +650,13 @@ Create a small reusable motion system instead of ad hoc animation values:
 Do not make every component a motion component.
 
 The current homepage motion pilot is intentionally limited to `HomeHero` and
-`TrustStrip`: `HeroCopy` uses a staggered transform/opacity entrance with
-masked title lines, `HeroVisual` uses a one-time scale/fade entrance plus one
-slow CSS transform drift, and TrustStrip items reveal once with the shared
-stagger system. Preserve reduced-motion behavior. Do not add a blocking loader,
-WebGL/Three.js scene, autoplay background video, or additional continuous hero
-animations when extending this pilot.
+`TrustStrip`: `HeroCopy` uses a staggered left-to-right transform/opacity
+entrance with masked title lines; `HeroVisual` enters once from right to left;
+each of the four decorative hero planes has one independent entrance; and
+`HeroLandmark` enters once from bottom to top. TrustStrip items reveal once with
+the shared stagger system. Preserve reduced-motion behavior. Do not add a
+blocking loader, WebGL/Three.js scene, autoplay background video, or continuous
+hero animations when extending this pilot.
 
 ## 14. Public route map
 
@@ -748,6 +753,12 @@ needed. Do not squeeze every label into a crowded navigation bar.
 - Language control if useful
 - Copyright
 - Privacy and terms placeholders
+
+The user explicitly approved clearly fictitious footer contact values for this
+layout iteration. Keep them centralized in the typed public footer dictionary,
+retain the zero-filled phone number and reserved `.example` email so they cannot
+be mistaken for verified business details, and replace them before production
+launch. This approval does not permit fabricated contact details elsewhere.
 
 Do not invent real phone numbers, addresses, social accounts, achievements, or
 legal claims. Put all replaceable business information in typed data files.
