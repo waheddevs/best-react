@@ -1,6 +1,8 @@
 import { PageHero } from "@/components/ui/PageHero";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
+import { ContactHeroVisual } from "./ContactHeroVisual";
+
 type ContactHeroProps = {
   eyebrow: string;
   copy: PageCopy;
@@ -8,6 +10,12 @@ type ContactHeroProps = {
 
 export function ContactHero({ eyebrow, copy }: ContactHeroProps) {
   return (
-    <PageHero eyebrow={eyebrow} title={copy.contact.title} description={copy.contact.description} />
+    <PageHero
+      animateCopy
+      eyebrow={eyebrow}
+      title={copy.contact.title}
+      description={copy.contact.description}
+      visual={<ContactHeroVisual copy={copy.contact} />}
+    />
   );
 }

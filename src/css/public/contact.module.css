@@ -4,6 +4,104 @@
   @apply min-h-screen;
 }
 
+/* ContactHero */
+
+.contact__heroVisual {
+  @apply relative size-full overflow-hidden rounded-[2.25rem] border border-white/80 bg-[linear-gradient(145deg,#ffffff_0%,#edf7ff_100%)] shadow-[0_24px_70px_rgb(16_42_67/10%)];
+  isolation: isolate;
+}
+
+.contact__heroOrbit {
+  @apply absolute top-[8%] left-[8%] size-[84%] rounded-full border-2 border-dashed border-action/20;
+}
+
+.contact__heroMessage {
+  @apply absolute top-[13%] left-[16%] h-[72%] w-[68%] -rotate-2 rounded-[2rem] border border-border bg-surface p-[8%] shadow-[0_22px_55px_rgb(16_42_67/14%)];
+}
+
+.contact__heroMessageMotion {
+  @apply relative flex size-full flex-col;
+}
+
+.contact__heroMessageIcon {
+  @apply grid size-13 place-items-center rounded-2xl bg-brand/15 text-heading;
+}
+
+.contact__heroMessageTitle {
+  @apply mt-5 max-w-[18ch] text-[clamp(0.78rem,2.2vw,1rem)] leading-tight font-black text-heading;
+}
+
+.contact__heroMessageMeta {
+  @apply mt-2 max-w-[24ch] text-[clamp(0.62rem,1.7vw,0.76rem)] leading-5 font-semibold text-muted;
+}
+
+.contact__heroMessageComposer {
+  @apply mt-auto flex min-w-0 items-center gap-2.5;
+}
+
+.contact__heroMessageInputShell {
+  @apply relative h-12 min-w-0 flex-1;
+}
+
+.contact__heroMessageInput {
+  @apply size-full min-w-0 rounded-2xl border border-border bg-background px-3 text-[clamp(0.56rem,1.45vw,0.72rem)] font-semibold text-heading outline-none;
+}
+
+.contact__heroMessageTypingLayer {
+  @apply pointer-events-none absolute inset-y-0 right-3 left-3 flex min-w-0 items-center overflow-hidden;
+}
+
+.contact__heroMessageInputMirror {
+  @apply max-w-full shrink truncate text-[clamp(0.56rem,1.45vw,0.72rem)] font-semibold whitespace-pre text-transparent;
+}
+
+.contact__heroMessageCaret {
+  @apply ml-px block h-4 w-0.5 shrink-0 rounded-full bg-action;
+  animation: contact-message-caret 0.8s steps(1, end) infinite;
+}
+
+.contact__heroMessageAction {
+  @apply relative z-20 grid size-12 shrink-0 place-items-center rounded-2xl bg-(image:--gradient-cta) text-white shadow-[0_10px_24px_rgb(37_99_235/22%)];
+}
+
+.contact__heroChannel {
+  @apply absolute z-10 grid size-14 place-items-center rounded-2xl border-4 border-surface shadow-[0_14px_30px_rgb(16_42_67/16%)];
+}
+
+.contact__heroChannel svg {
+  font-size: 26px !important;
+}
+
+.contact__heroChannelChat {
+  @apply top-[9%] right-[8%] bg-sun text-heading;
+}
+
+.contact__heroChannelLocation {
+  @apply right-[7%] bottom-[12%] bg-coral text-white;
+}
+
+.contact__heroAccent {
+  @apply absolute bottom-[13%] left-[8%] size-5 rotate-45 rounded-sm bg-brand;
+}
+
+@keyframes contact-message-caret {
+  0%,
+  48% {
+    opacity: 1;
+  }
+
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__heroMessageCaret {
+    animation: none;
+  }
+}
+
 /* ContactContent */
 
 .contact__contentLayout {
@@ -14,20 +112,40 @@
   @apply h-fit rounded-4xl border border-border bg-surface p-7 sm:p-9;
 }
 
-.contact__detailsIcon {
-  @apply grid size-14 place-items-center rounded-2xl bg-brand/15 text-heading;
+.contact__detailsBrand {
+  @apply flex items-center gap-3;
 }
 
-.contact__detailsIconSvg {
-  font-size: 30px !important;
+.contact__detailsLogo {
+  @apply grid size-14 place-items-center;
+}
+
+.contact__detailsLogo img {
+  @apply size-10;
+}
+
+.contact__detailsBrandName {
+  @apply text-xl font-black tracking-[-0.04em] text-heading;
 }
 
 .contact__detailsTitle {
   @apply mt-8 text-2xl font-black tracking-[-0.04em] text-heading;
 }
 
-.contact__placeholder {
-  @apply mt-4 leading-7 text-muted;
+.contact__detailsList {
+  @apply mt-6 grid gap-4;
+}
+
+.contact__detailsItem {
+  @apply flex items-center gap-3 text-sm leading-6 font-semibold text-muted;
+}
+
+.contact__detailsItemIcon {
+  @apply grid size-10 shrink-0 place-items-center rounded-xl bg-brand/15 text-heading;
+}
+
+.contact__detailsItemIcon svg {
+  font-size: 21px !important;
 }
 
 .contact__privacyCard {
@@ -48,10 +166,129 @@
   @apply grid gap-5;
 }
 
-.contact__formPrivacy {
-  @apply text-xs leading-5 text-muted;
+.contact__formNameRow {
+  @apply grid gap-5 sm:grid-cols-2;
+}
+
+.contact__form .contact__formSingleLineLabel:not(:global(.MuiInputLabel-shrink)) {
+  transform: translate(14px, 8px) scale(1);
+}
+
+.contact__form :global(.MuiInputBase-input:focus-visible) {
+  outline: none;
+}
+
+.contact__form
+  :global(.MuiOutlinedInput-root:not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: var(--brand-turquoise);
+}
+
+.contact__form
+  :global(.MuiOutlinedInput-root:not(.Mui-error):hover .MuiOutlinedInput-notchedOutline) {
+  border-color: var(--brand-turquoise);
+}
+
+.contact__form :global(.MuiInputLabel-root:not(.Mui-error).Mui-focused) {
+  color: var(--brand-turquoise);
 }
 
 .contact__formSubmit {
   @apply min-h-12 rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white shadow-[0_12px_30px_rgb(37_99_235/20%)] transition-transform hover:-translate-y-0.5;
+}
+
+/* ContactFaq */
+
+.contact__faqSection {
+  @apply scroll-mt-20 border-y border-border bg-[linear-gradient(145deg,#f4fbfd_0%,#eef4ff_100%)];
+}
+
+.contact__faqLayout {
+  @apply flex flex-col;
+}
+
+.contact__faqHeading {
+  @apply mx-auto w-full;
+}
+
+.contact__faqHeading > div {
+  max-width: none;
+  width: 100%;
+}
+
+.contact__faqHeading h2 {
+  font-size: clamp(1.5rem, 5vw, 3.75rem);
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.contact__faqList {
+  @apply mx-auto mt-12 grid w-full max-w-4xl gap-3 sm:mt-14;
+}
+
+.contact__faqItem {
+  overflow: hidden;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px !important;
+  box-shadow: 0 10px 28px rgb(16 42 67 / 5%);
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.contact__faqItem::before {
+  display: none;
+}
+
+.contact__faqItem:hover,
+.contact__faqItem:global(.Mui-expanded) {
+  border-color: color-mix(in srgb, var(--brand-turquoise) 62%, var(--border));
+  box-shadow: 0 14px 34px rgb(16 42 67 / 8%);
+}
+
+.contact__faqItem:global(.Mui-expanded) {
+  margin: 0;
+}
+
+.contact__faqSummary {
+  min-height: 72px !important;
+  padding-inline: 1rem !important;
+}
+
+.contact__faqSummary :global(.MuiAccordionSummary-content) {
+  @apply items-center gap-3;
+  margin-block: 1rem;
+}
+
+.contact__faqSummary :global(.MuiAccordionSummary-expandIconWrapper) {
+  @apply grid size-10 place-items-center rounded-xl bg-brand/15 text-heading;
+}
+
+.contact__faqNumber {
+  @apply text-xs font-black tracking-[0.12em] text-action;
+}
+
+.contact__faqQuestion {
+  @apply pr-3 text-sm leading-6 font-extrabold text-heading sm:text-base;
+}
+
+.contact__faqDetails {
+  padding: 0 1rem 1.25rem 3.5rem !important;
+}
+
+.contact__faqAnswer {
+  @apply max-w-[70ch] text-sm leading-7 text-muted sm:text-base;
+}
+
+@media (min-width: 640px) {
+  .contact__faqSummary {
+    padding-inline: 1.25rem !important;
+  }
+
+  .contact__faqDetails {
+    padding-right: 1.25rem !important;
+    padding-bottom: 1.5rem !important;
+    padding-left: 4rem !important;
+  }
 }

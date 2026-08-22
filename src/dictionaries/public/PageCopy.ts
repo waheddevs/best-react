@@ -108,19 +108,17 @@ export type PageCopy = {
   contact: {
     title: string;
     description: string;
-    detailsTitle: string;
-    placeholder: string;
     formTitle: string;
-    name: string;
-    contact: string;
-    interestedCourse: string;
-    selectCourse: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    subject: string;
     message: string;
-    submit: string;
+    send: string;
     required: string;
-    invalidContact: string;
+    invalidEmail: string;
     serviceNotice: string;
-    privacyNotice: string;
+    responseNotice: string;
   };
   footer: {
     summary: string;
@@ -206,7 +204,7 @@ const uz: PageCopy = {
   courses: {
     title: "Kurslar",
     description:
-      "Maqsad, daraja va o‘rganish formatiga mos yo‘nalishni toping. Katalogdagi biznes tafsilotlari hozircha tasdiqlanish jarayonida.",
+      "Tillar, imtihon tayyorgarligi va amaliy ko‘nikmalar uchun maqsadingizga mos o‘quv yo‘lini tanlang.",
     searchPlaceholder: "Kurs nomi yoki yo‘nalishini qidiring",
     categoryLabel: "Kurs toifasi",
     categories: {
@@ -228,7 +226,7 @@ const uz: PageCopy = {
   events: {
     title: "Tadbirlar",
     description:
-      "Ochiq darslar, amaliy uchrashuvlar va o‘rganishga yordam beradigan tadbirlar katalogi.",
+      "Ochiq darslar, suhbat uchrashuvlari va amaliy workshoplar orqali bilimni jonli muhitda sinab ko‘ring.",
     upcoming: "Kutilayotgan",
     past: "O‘tgan",
     date: "Sana",
@@ -243,7 +241,7 @@ const uz: PageCopy = {
   results: {
     title: "Natijalar",
     description:
-      "Bu sahifa shaxsiy imtihon natijalari emas, BEST LC o‘quvchilarining tasdiqlangan rivojlanish hikoyalari uchun mo‘ljallangan.",
+      "Maqsadni belgilang, muntazam mashq qiling va har bir bosqichdagi o‘sishni aniq mezonlar bilan kuzating.",
     noticeTitle: "Soxta raqamlar o‘rniga ochiq mezonlar",
     noticeBody:
       "Real statistika, ism, surat, iqtibos va ballar berilmagani sababli biz ularni uydirmaymiz. Tasdiqlangan materiallar kelgach, ular markazlashtirilgan kontent orqali qo‘shiladi.",
@@ -284,7 +282,7 @@ const uz: PageCopy = {
   exams: {
     title: "Imtihonlar",
     description:
-      "Imtihon yo‘nalishlari, umumiy qoidalar va tartibli tayyorgarlik bo‘yicha ochiq ma’lumot.",
+      "IELTS, CEFR va MOCK formatlarini tushuning, shaxsiy reja tuzing va tartibli tayyorgarlikni boshlang.",
     notice:
       "Bu sahifada imtihon topshirib bo‘lmaydi: savol, taymer, javob yuborish, ball va sertifikat funksiyasi mavjud emas.",
     directionsTitle: "Yo‘nalishlar",
@@ -334,7 +332,7 @@ const uz: PageCopy = {
   about: {
     title: "Biz haqimizda",
     description:
-      "BEST LC uchun ta’limni tushunarli, amaliy va insoniy qilishga qaratilgan ochiq brend sahifasi.",
+      "Aniq maqsad, amaliy mashq va insoniy qo‘llab-quvvatlashni birlashtiradigan zamonaviy ta’lim muhiti.",
     missionEyebrow: "Missiya",
     missionTitle: "O‘rganishni aniq yo‘lga aylantirish",
     missionBody:
@@ -382,21 +380,19 @@ const uz: PageCopy = {
   contact: {
     title: "Aloqa",
     description:
-      "Savolingiz yoki qiziqqan yo‘nalishingiz haqida yozishga tayyorlaning. Hozircha forma hech qanday ma’lumotni yubormaydi yoki saqlamaydi.",
-    detailsTitle: "Tasdiqlangan aloqa ma’lumotlari",
-    placeholder: "Telefon, email va manzil BEST LC tomonidan tasdiqlangach shu yerga qo‘shiladi.",
-    formTitle: "Savolingizni tayyorlang",
-    name: "Ismingiz",
-    contact: "Telefon yoki email",
-    interestedCourse: "Qiziqqan kurs",
-    selectCourse: "Kursni tanlang",
+      "Kurs tanlash, imtihon yo‘nalishi yoki o‘quv rejasi haqidagi savolingizni bir joyda tayyorlang.",
+    formTitle: "Savollaringiz bormi?",
+    firstName: "Ism",
+    lastName: "Familiya",
+    email: "Email manzilingiz",
+    subject: "Mavzu",
     message: "Xabaringiz",
-    submit: "Tekshirish",
+    send: "Yuborish",
     required: "Bu maydonni to‘ldiring.",
-    invalidContact: "Telefon yoki emailni to‘g‘ri kiriting.",
+    invalidEmail: "Email manzilini to‘g‘ri kiriting.",
     serviceNotice: "Yuborish xizmati keyingi bosqichda ulanadi.",
-    privacyNotice:
-      "Kiritilgan ma’lumot brauzerda saqlanmaydi, log qilinmaydi va serverga yuborilmaydi.",
+    responseNotice:
+      "Savolingiz bo‘lsa, biz bilan bog‘laning — jamoamiz sizga tez orada javob beradi.",
   },
   footer: {
     summary:
@@ -484,7 +480,7 @@ const ru: PageCopy = {
   courses: {
     title: "Курсы",
     description:
-      "Найдите направление по цели, уровню и формату. Деловые детали каталога пока проходят подтверждение.",
+      "Выберите понятный учебный маршрут: языки, подготовка к экзаменам и практические навыки в удобном формате.",
     searchPlaceholder: "Поиск по названию или направлению",
     categoryLabel: "Категория курса",
     categories: {
@@ -505,7 +501,7 @@ const ru: PageCopy = {
   },
   events: {
     title: "События",
-    description: "Каталог открытых уроков, практических встреч и образовательных мероприятий.",
+    description: "Открытые уроки, разговорные встречи и практические воркшопы для живого обучения.",
     upcoming: "Предстоящие",
     past: "Прошедшие",
     date: "Дата",
@@ -520,7 +516,7 @@ const ru: PageCopy = {
   results: {
     title: "Результаты",
     description:
-      "Эта страница предназначена для подтверждённых историй развития учеников BEST LC, а не для личных экзаменационных результатов.",
+      "Поставьте цель, практикуйтесь регулярно и отслеживайте каждый этап развития по понятным критериям.",
     noticeTitle: "Открытые критерии вместо вымышленных цифр",
     noticeBody:
       "Пока реальные показатели, имена, фотографии, цитаты и баллы не предоставлены, мы их не придумываем. Подтверждённые материалы будут добавлены централизованно.",
@@ -559,7 +555,7 @@ const ru: PageCopy = {
   },
   exams: {
     title: "Экзамены",
-    description: "Открытая информация о направлениях, общих правилах и системной подготовке.",
+    description: "Разберитесь в форматах IELTS, CEFR и MOCK, составьте план и готовьтесь системно.",
     notice:
       "Сдать экзамен на этой странице нельзя: здесь нет вопросов, таймера, отправки ответов, баллов или сертификатов.",
     directionsTitle: "Направления",
@@ -608,7 +604,8 @@ const ru: PageCopy = {
   },
   about: {
     title: "О нас",
-    description: "Открытая страница бренда BEST LC о понятном, практичном и человечном обучении.",
+    description:
+      "Современная учебная среда, объединяющая ясные цели, практику и человеческую поддержку.",
     missionEyebrow: "Миссия",
     missionTitle: "Превращать обучение в ясный маршрут",
     missionBody:
@@ -652,21 +649,19 @@ const ru: PageCopy = {
   contact: {
     title: "Контакты",
     description:
-      "Подготовьте вопрос или укажите интересующее направление. Сейчас форма ничего не отправляет и не сохраняет.",
-    detailsTitle: "Подтверждённые контакты",
-    placeholder: "Телефон, email и адрес появятся после подтверждения BEST LC.",
-    formTitle: "Подготовьте вопрос",
-    name: "Ваше имя",
-    contact: "Телефон или email",
-    interestedCourse: "Интересующий курс",
-    selectCourse: "Выберите курс",
+      "Подготовьте вопрос о выборе курса, экзаменационном направлении или учебном плане.",
+    formTitle: "У вас есть вопросы?",
+    firstName: "Имя",
+    lastName: "Фамилия",
+    email: "Ваш email",
+    subject: "Тема",
     message: "Сообщение",
-    submit: "Проверить",
+    send: "Отправить",
     required: "Заполните это поле.",
-    invalidContact: "Введите корректный телефон или email.",
+    invalidEmail: "Введите корректный email.",
     serviceNotice: "Отправка будет подключена на следующем этапе.",
-    privacyNotice:
-      "Данные не сохраняются в браузере, не записываются в журнал и не отправляются на сервер.",
+    responseNotice:
+      "Свяжитесь с нами, если у вас есть вопрос — наша команда ответит вам в ближайшее время.",
   },
   footer: {
     summary:
@@ -755,7 +750,7 @@ const en: PageCopy = {
   courses: {
     title: "Courses",
     description:
-      "Find a direction that fits your goal, level, and learning format. Business details in the catalogue are currently awaiting confirmation.",
+      "Choose a clear learning path for languages, exam preparation, and practical skills in a format that suits you.",
     searchPlaceholder: "Search by course name or direction",
     categoryLabel: "Course category",
     categories: {
@@ -777,7 +772,7 @@ const en: PageCopy = {
   events: {
     title: "Events",
     description:
-      "A catalogue of open classes, practical sessions, and events that support learning.",
+      "Explore open lessons, conversation sessions, and practical workshops designed for active learning.",
     upcoming: "Upcoming",
     past: "Past",
     date: "Date",
@@ -792,7 +787,7 @@ const en: PageCopy = {
   results: {
     title: "Results",
     description:
-      "This page is for verified BEST LC learner development stories, not private exam results.",
+      "Set a goal, practise consistently, and follow each stage of development through clear criteria.",
     noticeTitle: "Open criteria instead of invented numbers",
     noticeBody:
       "Because real metrics, names, photos, quotes, and scores have not been provided, we do not fabricate them. Confirmed materials will be added through centralised content.",
@@ -832,7 +827,7 @@ const en: PageCopy = {
   exams: {
     title: "Exams",
     description:
-      "Open information about exam directions, general rules, and structured preparation.",
+      "Understand IELTS, CEFR, and MOCK formats, build a plan, and prepare with a clear structure.",
     notice:
       "You cannot take an exam on this page: there are no questions, timer, answer submission, scoring, or certificates.",
     directionsTitle: "Directions",
@@ -881,7 +876,8 @@ const en: PageCopy = {
   },
   about: {
     title: "About us",
-    description: "An open BEST LC brand page focused on clear, practical, and human learning.",
+    description:
+      "A modern learning environment built around clear goals, practical work, and human support.",
     missionEyebrow: "Mission",
     missionTitle: "Turn learning into a clear path",
     missionBody:
@@ -929,20 +925,18 @@ const en: PageCopy = {
   contact: {
     title: "Contact",
     description:
-      "Prepare a question or note the direction that interests you. The form currently sends and stores nothing.",
-    detailsTitle: "Confirmed contact details",
-    placeholder: "Phone, email, and address will be added after BEST LC confirmation.",
-    formTitle: "Prepare your question",
-    name: "Your name",
-    contact: "Phone or email",
-    interestedCourse: "Interested course",
-    selectCourse: "Choose a course",
-    message: "Your message",
-    submit: "Check details",
+      "Prepare your question about choosing a course, an exam direction, or a personal learning plan.",
+    formTitle: "Do you have questions?",
+    firstName: "First name",
+    lastName: "Last name",
+    email: "Your email",
+    subject: "Title",
+    message: "Message",
+    send: "Send",
     required: "Complete this field.",
-    invalidContact: "Enter a valid phone number or email.",
+    invalidEmail: "Enter a valid email address.",
     serviceNotice: "Submission will be connected in the next phase.",
-    privacyNotice: "Entered data is not stored in the browser, logged, or sent to a server.",
+    responseNotice: "Have a question? Get in touch — our team will get back to you shortly.",
   },
   footer: {
     summary:

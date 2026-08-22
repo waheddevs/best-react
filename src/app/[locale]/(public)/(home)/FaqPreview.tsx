@@ -5,7 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/home.module.css";
-import { faqItems } from "@/data/PublicContent";
+import { contactFaqItems } from "@/data/PublicContent";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type FaqPreviewProps = {
@@ -18,17 +18,14 @@ export function FaqPreview({ locale, copy }: FaqPreviewProps) {
     <Section>
       <SectionHeading eyebrow={copy.home.faqEyebrow} title={copy.home.faqTitle} />
       <div className={styles.home__faqGrid}>
-        {faqItems.slice(0, 3).map((item) => (
+        {contactFaqItems.slice(0, 3).map((item) => (
           <article key={item.id} className={styles.home__faqCard}>
             <h3 className={styles.home__faqQuestion}>{item.question[locale]}</h3>
             <p className={styles.home__faqAnswer}>{item.answer[locale]}</p>
           </article>
         ))}
       </div>
-      <Link
-        href={`/${locale}/faq`}
-        className={styles.home__faqLink}
-      >
+      <Link href={`/${locale}/contact#faq`} className={styles.home__faqLink}>
         {copy.common.learnMore}
         <ArrowForwardRounded aria-hidden="true" />
       </Link>

@@ -3,15 +3,22 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type FormValues = {
-  name: string;
-  contact: string;
-  course: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  subject: string;
   message: string;
 };
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
-const initialValues: FormValues = { name: "", contact: "", course: "", message: "" };
+const initialValues: FormValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  subject: "",
+  message: "",
+};
 
 export function useContactForm(copy: PageCopy) {
   /* HOOKS */
@@ -28,19 +35,16 @@ export function useContactForm(copy: PageCopy) {
   const validate = () => {
     const nextErrors: FormErrors = {};
 
-    if (!values.name.trim()) nextErrors.name = copy.contact.required;
+    if (!values.firstName.trim()) nextErrors.firstName = copy.contact.required;
+    if (!values.lastName.trim()) nextErrors.lastName = copy.contact.required;
 
-    if (!values.contact.trim()) {
-      nextErrors.contact = copy.contact.required;
-    } else {
-      const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.contact);
-      const looksLikePhone = /^[+\d][\d\s()-]{6,}$/.test(values.contact);
-
-      if (!looksLikeEmail && !looksLikePhone) {
-        nextErrors.contact = copy.contact.invalidContact;
-      }
+    if (!values.email.trim()) {
+      nextErrors.email = copy.contact.required;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+      nextErrors.email = copy.contact.invalidEmail;
     }
 
+    if (!values.subject.trim()) nextErrors.subject = copy.contact.required;
     if (!values.message.trim()) nextErrors.message = copy.contact.required;
 
     setErrors(nextErrors);
@@ -53,16 +57,20 @@ export function useContactForm(copy: PageCopy) {
     if (validate()) setShowServiceNotice(true);
   };
 
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    updateField("name", event.target.value);
+  const handleFirstNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateField("firstName", event.target.value);
   };
 
-  const handleContactChange = (event: ChangeEvent<HTMLInputElement>) => {
-    updateField("contact", event.target.value);
+  const handleLastNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateField("lastName", event.target.value);
   };
 
-  const handleCourseChange = (event: ChangeEvent<HTMLInputElement>) => {
-    updateField("course", event.target.value);
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateField("email", event.target.value);
+  };
+
+  const handleSubjectChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateField("subject", event.target.value);
   };
 
   const handleMessageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -74,9 +82,10 @@ export function useContactForm(copy: PageCopy) {
     errors,
     showServiceNotice,
     handleSubmit,
-    handleNameChange,
-    handleContactChange,
-    handleCourseChange,
+    handleFirstNameChange,
+    handleLastNameChange,
+    handleEmailChange,
+    handleSubjectChange,
     handleMessageChange,
   };
 }

@@ -1,4 +1,4 @@
-import type { ContactDetails, Course, FaqItem, PublicEvent } from "@/types/PublicContent";
+import type { Course, FaqItem, PublicEvent } from "@/types/PublicContent";
 
 export const courses = [
   {
@@ -286,83 +286,89 @@ export const events: PublicEvent[] = [
   },
 ];
 
-export const faqItems = [
+export const contactFaqItems = [
   {
-    id: "course-choice",
-    category: "courses",
-    question: {
-      uz: "Qaysi kurs menga mosligini qanday bilaman?",
-      ru: "Как понять, какой курс мне подходит?",
-      en: "How do I choose the right course?",
-    },
-    answer: {
-      uz: "Maqsadingiz va hozirgi darajangizni aniqlashdan boshlang. Kurs tafsilotlari tasdiqlangach, mos yo‘nalishni tanlash uchun konsultatsiya jarayoni ham aniq ko‘rsatiladi.",
-      ru: "Начните с определения цели и текущего уровня. После подтверждения программ будет описан и процесс консультации по выбору направления.",
-      en: "Start by identifying your goal and current level. Once programmes are confirmed, the consultation path for choosing a direction will also be published.",
-    },
-  },
-  {
-    id: "lesson-format",
-    category: "format",
-    question: {
-      uz: "Darslar qaysi formatda o‘tadi?",
-      ru: "В каком формате проходят занятия?",
-      en: "What learning formats are available?",
-    },
-    answer: {
-      uz: "Katalogda oflayn, onlayn yoki gibrid format belgilanadi. Har bir yo‘nalishning yakuniy jadvali va formati BEST LC tomonidan tasdiqlangach yangilanadi.",
-      ru: "В каталоге указывается офлайн, онлайн или гибридный формат. Итоговое расписание и формат обновятся после подтверждения BEST LC.",
-      en: "The catalogue marks in-person, online, or hybrid delivery. Final schedules and formats will be updated after BEST LC confirmation.",
-    },
-  },
-  {
-    id: "exam-online",
-    category: "exams",
-    question: {
-      uz: "Saytda imtihon topshirish mumkinmi?",
-      ru: "Можно ли сдавать экзамен на сайте?",
-      en: "Can I take an exam on this website?",
-    },
-    answer: {
-      uz: "Yo‘q. Ushbu bosqichda sayt faqat imtihon yo‘nalishlari, qoidalar va tayyorgarlik qadamlari haqida ma’lumot beradi.",
-      ru: "Нет. На этом этапе сайт предоставляет только информацию о направлениях, правилах и подготовке к экзаменам.",
-      en: "No. At this stage, the website only explains exam directions, rules, and preparation steps.",
-    },
-  },
-  {
-    id: "event-registration",
-    category: "events",
-    question: {
-      uz: "Tadbirga qanday yozilaman?",
-      ru: "Как зарегистрироваться на событие?",
-      en: "How do I register for an event?",
-    },
-    answer: {
-      uz: "Tadbir sanasi va aloqa ma’lumotlari tasdiqlangach, ro‘yxatdan o‘tish bo‘yicha aniq ko‘rsatma shu sahifada beriladi.",
-      ru: "После подтверждения даты и контактов на странице появится точная инструкция по регистрации.",
-      en: "Once the date and contact details are confirmed, clear registration instructions will appear on the event page.",
-    },
-  },
-  {
-    id: "contact-service",
+    id: "offline-application",
     category: "registration",
     question: {
-      uz: "Aloqa formasi hozir ishlaydimi?",
-      ru: "Форма связи уже работает?",
-      en: "Is the contact form connected?",
+      uz: "Oflayn kursga qanday ariza topshiraman?",
+      ru: "Как подать заявку на офлайн-курс?",
+      en: "How can I apply for an offline course?",
     },
     answer: {
-      uz: "Forma hozircha faqat ma’lumotlarni tekshiradi; yuborish xizmati keyingi bosqichda ulanadi va shaxsiy ma’lumot saqlanmaydi.",
-      ru: "Сейчас форма только проверяет поля; отправка будет подключена на следующем этапе, а личные данные не сохраняются.",
-      en: "The form currently validates fields only; submission will be connected later, and personal data is not stored.",
+      uz: "Kontakt formasida kurs nomini mavzu sifatida yozing, xabarda esa oflayn format va sizga qulay vaqtni ko‘rsating. Jamoa mavjud guruhlar va keyingi qadamlar bo‘yicha yo‘l-yo‘riq beradi.",
+      ru: "Укажите название курса в теме формы, а в сообщении напишите, что вам нужен офлайн-формат, и добавьте удобное время. Команда подскажет доступные группы и следующие шаги.",
+      en: "Add the course name as the form title, then mention that you prefer in-person learning and include a convenient time. The team will guide you through available groups and next steps.",
+    },
+  },
+  {
+    id: "course-guidance",
+    category: "courses",
+    question: {
+      uz: "Qaysi kurs menga mosligini tanlashda yordam berasizmi?",
+      ru: "Вы поможете выбрать подходящий курс?",
+      en: "Can you help me choose the right course?",
+    },
+    answer: {
+      uz: "Maqsadingiz, hozirgi darajangiz va haftalik jadvalingizni yozib qoldiring. Shu ma’lumotlar asosida sizga mos yo‘nalish va o‘quv formatini tavsiya qilish mumkin.",
+      ru: "Расскажите о своей цели, текущем уровне и удобном недельном расписании. На основе этой информации можно подобрать подходящее направление и формат обучения.",
+      en: "Share your goal, current level, and preferred weekly schedule. This information helps identify a suitable course direction and learning format.",
+    },
+  },
+  {
+    id: "placement-check",
+    category: "courses",
+    question: {
+      uz: "Kursni boshlashdan oldin daraja testi kerakmi?",
+      ru: "Нужно ли проходить тест уровня перед началом курса?",
+      en: "Do I need a level check before starting?",
+    },
+    answer: {
+      uz: "Til kurslarida mos guruhni aniqlash uchun qisqa daraja tekshiruvi tavsiya qilinishi mumkin. Uning formati tanlangan yo‘nalish va boshlang‘ich darajaga qarab belgilanadi.",
+      ru: "Для языковых курсов может быть рекомендована короткая проверка уровня, чтобы подобрать подходящую группу. Формат зависит от выбранного направления и стартового уровня.",
+      en: "A short level check may be recommended for language courses to find the right group. Its format depends on the selected direction and starting level.",
+    },
+  },
+  {
+    id: "class-schedule",
+    category: "format",
+    question: {
+      uz: "Darslar qaysi kun va vaqtlarda o‘tkaziladi?",
+      ru: "В какие дни и время проходят занятия?",
+      en: "What days and times are classes available?",
+    },
+    answer: {
+      uz: "Jadval kurs va shakllanayotgan guruhga bog‘liq. Murojaatda sizga qulay kun va vaqtni ko‘rsatsangiz, mos variantlarni solishtirish osonroq bo‘ladi.",
+      ru: "Расписание зависит от курса и формирующейся группы. Укажите удобные дни и время в обращении, чтобы было проще сопоставить подходящие варианты.",
+      en: "Schedules depend on the course and the group being formed. Include your preferred days and times so suitable options can be compared more easily.",
+    },
+  },
+  {
+    id: "format-change",
+    category: "format",
+    question: {
+      uz: "Keyinchalik guruh yoki o‘qish formatini almashtirsam bo‘ladimi?",
+      ru: "Можно ли позже сменить группу или формат обучения?",
+      en: "Can I change my group or learning format later?",
+    },
+    answer: {
+      uz: "Almashtirish imkoniyati tanlangan kurs, bo‘sh joylar va mavjud guruhlarga bog‘liq. Yangi variantga o‘tishdan oldin jadval va daraja mosligi tekshiriladi.",
+      ru: "Возможность перехода зависит от курса, свободных мест и доступных групп. Перед сменой варианта проверяется соответствие расписания и уровня.",
+      en: "Changes depend on the selected course, available places, and active groups. Schedule and level compatibility are checked before moving to another option.",
+    },
+  },
+  {
+    id: "reply-time",
+    category: "registration",
+    question: {
+      uz: "Murojaatimga qachon javob olaman?",
+      ru: "Когда я получу ответ на своё обращение?",
+      en: "How soon will I receive a reply?",
+    },
+    answer: {
+      uz: "Jamoa murojaatlarni imkon qadar tez ko‘rib chiqadi. Savolda kurs nomi, maqsad va qulay aloqa ma’lumoti bo‘lsa, aniqroq javob tayyorlash osonlashadi.",
+      ru: "Команда старается рассматривать обращения как можно быстрее. Название курса, цель и удобный способ связи помогут подготовить более точный ответ.",
+      en: "The team reviews enquiries as soon as possible. Including the course name, your goal, and a convenient contact detail makes it easier to prepare a useful reply.",
     },
   },
 ] satisfies FaqItem[];
-
-export const contactDetails: ContactDetails = {
-  email: null,
-  phone: null,
-  address: null,
-  socials: [],
-  requiresConfirmation: true,
-};

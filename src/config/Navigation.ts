@@ -6,14 +6,18 @@ export const navigationItems = [
   { key: "exams", href: "/exams" },
   { key: "about", href: "/about" },
   { key: "contact", href: "/contact" },
-  { key: "faq", href: "/faq" },
+  { key: "faq", href: "/contact#faq" },
 ] as const;
 
 export const navbarNavigationItems = navigationItems.filter((item) => item.key !== "faq");
 
 export const footerPageNavigationItems = navigationItems.filter(
   (item) =>
-    item.key === "home" || item.key === "events" || item.key === "results" || item.key === "about",
+    item.key === "home" ||
+    item.key === "events" ||
+    item.key === "results" ||
+    item.key === "about" ||
+    item.key === "faq",
 );
 
 export const courseNavigationItems = [

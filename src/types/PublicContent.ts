@@ -44,11 +44,3 @@ export type FaqItem = {
   question: LocalizedText;
   answer: LocalizedText;
 };
-
-export type ContactDetails = {
-  email: null;
-  phone: null;
-  address: null;
-  socials: readonly [];
-  requiresConfirmation: true;
-};

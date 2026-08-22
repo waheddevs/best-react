@@ -1,22 +1,17 @@
 "use client";
 
 import Alert from "@mui/material/Alert";
-import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 
-import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/contact.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useContactForm } from "@/hooks/public/contact/useContactForm";
-import type { Course } from "@/types/PublicContent";
 
 type ContactFormProps = {
-  locale: Locale;
   copy: PageCopy;
-  courses: Course[];
 };
 
-export function ContactForm({ locale, copy, courses }: ContactFormProps) {
+export function ContactForm({ copy }: ContactFormProps) {
   /* HOOKS */
   const contactForm = useContactForm(copy);
   const { values, errors, showServiceNotice } = contactForm;
@@ -24,58 +19,78 @@ export function ContactForm({ locale, copy, courses }: ContactFormProps) {
   /* HANDLERS */
   const {
     handleSubmit,
-    handleNameChange,
-    handleContactChange,
-    handleCourseChange,
+    handleFirstNameChange,
+    handleLastNameChange,
+    handleEmailChange,
+    handleSubjectChange,
     handleMessageChange,
   } = contactForm;
 
   return (
     <form noValidate onSubmit={handleSubmit} className={styles.contact__form}>
+      <div className={styles.contact__formNameRow}>
+        <TextField
+          autoComplete="given-name"
+          error={Boolean(errors.firstName)}
+          helperText={errors.firstName}
+          label={copy.contact.firstName}
+          onChange={handleFirstNameChange}
+          slotProps={{
+            htmlInput: { "aria-required": true },
+            inputLabel: { className: styles.contact__formSingleLineLabel },
+          }}
+          value={values.firstName}
+        />
+        <TextField
+          autoComplete="family-name"
+          error={Boolean(errors.lastName)}
+          helperText={errors.lastName}
+          label={copy.contact.lastName}
+          onChange={handleLastNameChange}
+          slotProps={{
+            htmlInput: { "aria-required": true },
+            inputLabel: { className: styles.contact__formSingleLineLabel },
+          }}
+          value={values.lastName}
+        />
+      </div>
       <TextField
-        required
-        label={copy.contact.name}
-        value={values.name}
-        onChange={handleNameChange}
-        error={Boolean(errors.name)}
-        helperText={errors.name}
-        autoComplete="name"
-      />
-      <TextField
-        required
-        label={copy.contact.contact}
-        value={values.contact}
-        onChange={handleContactChange}
-        error={Boolean(errors.contact)}
-        helperText={errors.contact}
         autoComplete="email"
+        error={Boolean(errors.email)}
+        helperText={errors.email}
+        label={copy.contact.email}
+        onChange={handleEmailChange}
+        slotProps={{
+          htmlInput: { "aria-required": true },
+          inputLabel: { className: styles.contact__formSingleLineLabel },
+        }}
+        type="email"
+        value={values.email}
       />
       <TextField
-        select
-        label={copy.contact.interestedCourse}
-        value={values.course}
-        onChange={handleCourseChange}
-      >
-        <MenuItem value="">{copy.contact.selectCourse}</MenuItem>
-        {courses.map((course) => (
-          <MenuItem key={course.slug} value={course.slug}>
-            {course.title[locale]}
-          </MenuItem>
-        ))}
-      </TextField>
+        autoComplete="off"
+        error={Boolean(errors.subject)}
+        helperText={errors.subject}
+        label={copy.contact.subject}
+        onChange={handleSubjectChange}
+        slotProps={{
+          htmlInput: { "aria-required": true },
+          inputLabel: { className: styles.contact__formSingleLineLabel },
+        }}
+        value={values.subject}
+      />
       <TextField
-        required
         multiline
-        minRows={5}
-        label={copy.contact.message}
-        value={values.message}
-        onChange={handleMessageChange}
         error={Boolean(errors.message)}
         helperText={errors.message}
+        label={copy.contact.message}
+        minRows={5}
+        onChange={handleMessageChange}
+        slotProps={{ htmlInput: { "aria-required": true } }}
+        value={values.message}
       />
-      <p className={styles.contact__formPrivacy}>{copy.contact.privacyNotice}</p>
       <button type="submit" className={styles.contact__formSubmit}>
-        {copy.contact.submit}
+        {copy.contact.send}
       </button>
       {showServiceNotice ? <Alert severity="info">{copy.contact.serviceNotice}</Alert> : null}
     </form>
