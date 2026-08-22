@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   images: {
     formats: ["image/webp"],
+    qualities: [75, 95],
   },
 };
 

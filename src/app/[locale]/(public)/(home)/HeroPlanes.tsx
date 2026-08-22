@@ -29,7 +29,7 @@ export function HeroPlanes() {
             className={styles.home__heroPlaneImage}
             fill
             sizes="176px"
-            src="/images/generated/hero-plane-bank-up-right.png"
+            src="/images/home-page/hero-plane-bank-up-right.png"
           />
         </motion.span>
       </span>
@@ -49,7 +49,7 @@ export function HeroPlanes() {
             className={styles.home__heroPlaneImage}
             fill
             sizes="192px"
-            src="/images/generated/hero-plane-low-left-v2.png"
+            src="/images/home-page/hero-plane-low-left-v2.png"
           />
         </motion.span>
       </span>
@@ -69,7 +69,7 @@ export function HeroPlanes() {
             className={styles.home__heroPlaneImage}
             fill
             sizes="88px"
-            src="/images/generated/hero-plane-climb-front.png"
+            src="/images/home-page/hero-plane-climb-front.png"
           />
         </motion.span>
       </span>
@@ -89,21 +89,21 @@ export function HeroPlanes() {
             className={`${styles.home__heroPlaneImage} ${styles.home__heroPlaneMotionTrailFar}`}
             fill
             sizes="80px"
-            src="/images/generated/hero-plane-turn-down-right.png"
+            src="/images/home-page/hero-plane-turn-down-right.png"
           />
           <Image
             alt=""
             className={`${styles.home__heroPlaneImage} ${styles.home__heroPlaneMotionTrailNear}`}
             fill
             sizes="80px"
-            src="/images/generated/hero-plane-turn-down-right.png"
+            src="/images/home-page/hero-plane-turn-down-right.png"
           />
           <Image
             alt=""
             className={`${styles.home__heroPlaneImage} ${styles.home__heroPlaneMotionCore}`}
             fill
             sizes="80px"
-            src="/images/generated/hero-plane-turn-down-right.png"
+            src="/images/home-page/hero-plane-turn-down-right.png"
           />
         </motion.span>
       </span>

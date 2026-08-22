@@ -27,7 +27,7 @@ export function HeroVisual({ label }: HeroVisualProps) {
         priority
         quality={95}
         sizes="(max-width: 1023px) 100vw, (max-width: 1439px) 58vw, 736px"
-        src="/images/generated/best-graduate-paper-plane-hero-v4.png"
+        src="/images/home-page/best-graduate-paper-plane-hero-v4.png"
       />
     </motion.div>
   );

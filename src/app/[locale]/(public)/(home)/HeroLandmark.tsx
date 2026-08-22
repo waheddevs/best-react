@@ -29,7 +29,7 @@ export function HeroLandmark() {
           fill
           quality={95}
           sizes="(max-width: 767px) 1px, (max-width: 1279px) 304px, 464px"
-          src="/images/generated/hero-big-ben-upright-v2.png"
+          src="/images/home-page/hero-big-ben-upright-v2.png"
         />
       </motion.div>
     </div>
