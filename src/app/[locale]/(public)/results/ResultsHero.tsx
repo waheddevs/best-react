@@ -1,6 +1,8 @@
 import { PageHero } from "@/components/ui/PageHero";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
+import { ResultsHeroVisual } from "./ResultsHeroVisual";
+
 type ResultsHeroProps = {
   eyebrow: string;
   copy: PageCopy;
@@ -8,6 +10,12 @@ type ResultsHeroProps = {
 
 export function ResultsHero({ eyebrow, copy }: ResultsHeroProps) {
   return (
-    <PageHero eyebrow={eyebrow} title={copy.results.title} description={copy.results.description} />
+    <PageHero
+      animateCopy
+      eyebrow={eyebrow}
+      title={copy.results.title}
+      description={copy.results.description}
+      visual={<ResultsHeroVisual copy={copy.results} />}
+    />
   );
 }

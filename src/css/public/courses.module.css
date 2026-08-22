@@ -4,6 +4,78 @@
   @apply min-h-screen;
 }
 
+/* CoursesHero */
+
+.courses__heroVisual {
+  @apply relative size-full overflow-hidden rounded-[2.25rem] border border-white/80 bg-[linear-gradient(145deg,#ffffff_0%,#eafcfd_100%)] shadow-[0_24px_70px_rgb(16_42_67/10%)];
+  isolation: isolate;
+}
+
+.courses__heroOrbit {
+  @apply absolute top-[8%] left-[9%] size-[82%] rounded-full border-2 border-dashed border-brand/35;
+}
+
+.courses__heroLesson {
+  @apply absolute top-[13%] left-[18%] flex h-[72%] w-[64%] -rotate-2 flex-col rounded-[2rem] border border-border bg-surface p-[8%] shadow-[0_22px_55px_rgb(16_42_67/14%)];
+}
+
+.courses__heroLessonIcon {
+  @apply grid size-13 place-items-center rounded-2xl bg-brand/15 text-heading;
+}
+
+.courses__heroLessonTitle {
+  @apply mt-5 max-w-[18ch] text-[clamp(0.85rem,2.4vw,1.1rem)] leading-tight font-black text-heading;
+}
+
+.courses__heroLessonMeta {
+  @apply mt-2 text-[clamp(0.65rem,1.8vw,0.8rem)] leading-5 font-semibold text-muted;
+}
+
+.courses__heroProgress {
+  @apply relative mt-auto flex h-5 items-center justify-between;
+}
+
+.courses__heroProgressTrack,
+.courses__heroProgressFill {
+  @apply absolute top-1/2 right-2 left-2 h-1 -translate-y-1/2 rounded-full;
+}
+
+.courses__heroProgressTrack {
+  @apply bg-border;
+}
+
+.courses__heroProgressFill {
+  @apply z-10 origin-left bg-action shadow-[0_0_12px_rgb(37_99_235/26%)];
+}
+
+.courses__heroProgressNode {
+  @apply relative z-20 size-5 rounded-full border-4 border-surface bg-action shadow-[0_0_0_2px_var(--border),0_4px_10px_rgb(37_99_235/20%)];
+}
+
+.courses__heroSubject {
+  @apply absolute z-10 grid size-14 place-items-center rounded-2xl border-4 border-surface shadow-[0_14px_30px_rgb(16_42_67/16%)];
+}
+
+.courses__heroSubject svg {
+  font-size: 27px !important;
+}
+
+.courses__heroSubjectLanguage {
+  @apply top-[9%] right-[8%] bg-action text-white;
+}
+
+.courses__heroSubjectSpeaking {
+  @apply right-[7%] bottom-[11%] bg-sun text-heading;
+}
+
+.courses__heroSubjectAchievement {
+  @apply bottom-[9%] left-[8%] bg-brand text-heading;
+}
+
+.courses__heroAccent {
+  @apply absolute top-[13%] left-[8%] size-5 rotate-45 rounded-sm bg-coral;
+}
+
 /* CoursesCatalog */
 
 .courses__catalog {

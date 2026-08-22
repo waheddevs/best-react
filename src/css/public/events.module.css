@@ -4,6 +4,180 @@
   @apply min-h-screen;
 }
 
+/* EventsHero */
+
+.events__heroVisual {
+  @apply relative size-full overflow-hidden rounded-[2.25rem] border border-white/80 bg-[linear-gradient(145deg,#ffffff_0%,#edf7ff_100%)] shadow-[0_24px_70px_rgb(16_42_67/10%)];
+  isolation: isolate;
+}
+
+.events__heroOrbit {
+  @apply absolute top-[8%] left-[8%] size-[84%] rounded-full border-2 border-dashed border-action/20;
+}
+
+.events__heroCalendar {
+  @apply absolute top-[13%] left-[14%] flex h-[72%] w-[72%] flex-col rounded-[2rem] border border-border bg-surface p-[8%] shadow-[0_12px_30px_rgb(16_42_67/8%)];
+}
+
+.events__heroCalendarTop {
+  @apply absolute inset-x-0 top-0 h-[17%] rounded-t-[2rem] bg-(image:--gradient-cta);
+}
+
+.events__heroCalendarTop i {
+  @apply absolute -top-2 size-5 rounded-full border-4 border-surface bg-heading;
+}
+
+.events__heroCalendarTop i:first-child {
+  @apply left-[24%];
+}
+
+.events__heroCalendarTop i:last-child {
+  @apply right-[24%];
+}
+
+.events__heroCalendarContent {
+  @apply mt-[20%] flex min-h-0 flex-1 items-center justify-between gap-3;
+}
+
+.events__heroCalendarCopy {
+  @apply flex min-w-0 flex-1 flex-col items-start;
+}
+
+.events__heroCalendarTitle {
+  @apply max-w-[16ch] text-[clamp(0.85rem,2.4vw,1.1rem)] leading-tight font-black text-heading;
+}
+
+.events__heroCalendarMeta {
+  @apply mt-2 text-[clamp(0.65rem,1.8vw,0.8rem)] leading-5 font-semibold text-muted;
+}
+
+.events__heroCalendarVisual {
+  @apply relative grid size-[clamp(5.75rem,23vw,10.5rem)] shrink-0 place-items-center;
+}
+
+.events__heroCalendarShadow {
+  @apply absolute right-[10%] bottom-[2%] left-[10%] h-[12%] rounded-[50%] bg-heading/10 blur-sm;
+  transform: translateY(18%);
+}
+
+.events__heroCalendarStack {
+  @apply absolute inset-[3%_4%_7%_4%] translate-y-3 rounded-[1.4rem] border border-border bg-[color-mix(in_srgb,var(--brand-turquoise)_10%,var(--surface))] shadow-[0_7px_16px_rgb(16_42_67/7%)];
+}
+
+.events__heroCalendarBase,
+.events__heroCalendarPage {
+  @apply absolute inset-[3%_4%_7%_4%] overflow-hidden rounded-[1.4rem] border border-[color-mix(in_srgb,var(--brand-turquoise)_34%,var(--border))] bg-surface shadow-[0_9px_22px_rgb(16_42_67/9%)];
+}
+
+.events__heroCalendarBase {
+  @apply translate-y-1.5;
+}
+
+.events__heroCalendarBand {
+  @apply absolute inset-x-0 top-0 h-[25%] bg-(image:--gradient-cta);
+}
+
+.events__heroCalendarBindings {
+  @apply absolute inset-x-[16%] top-[7%] z-10 flex justify-between;
+}
+
+.events__heroCalendarBindings i {
+  @apply h-[clamp(1rem,3.3vw,1.55rem)] w-[clamp(0.38rem,1.15vw,0.55rem)] -translate-y-[46%] rounded-full border border-white/35 bg-heading shadow-[0_3px_6px_rgb(16_42_67/28%)];
+}
+
+.events__heroCalendarGrid {
+  @apply absolute inset-x-[14%] top-[37%] grid grid-cols-4 gap-[clamp(0.25rem,1vw,0.5rem)];
+}
+
+.events__heroCalendarGrid i {
+  @apply aspect-square rounded-[0.28rem] bg-[color-mix(in_srgb,var(--action-blue)_16%,var(--surface))];
+}
+
+.events__heroCalendarGrid i:nth-child(3n + 2),
+.events__heroCalendarGrid i:nth-child(4n) {
+  @apply bg-brand/45;
+}
+
+.events__heroCalendarGrid i:nth-child(7) {
+  @apply bg-sun shadow-[0_0_0_2px_rgb(255_200_87/20%)];
+}
+
+.events__heroCalendarCellJump {
+  animation: events-calendar-cell-jump 4.7s ease-in-out infinite;
+  will-change: transform;
+}
+
+.events__heroCalendarCellJump:nth-child(2) {
+  animation-delay: -1.2s;
+  animation-duration: 4.7s;
+}
+
+.events__heroCalendarCellJump:nth-child(4) {
+  animation-delay: -0.4s;
+  animation-duration: 5.3s;
+}
+
+.events__heroCalendarCellJump:nth-child(7) {
+  animation-delay: -2.8s;
+  animation-duration: 4.4s;
+}
+
+.events__heroCalendarCellJump:nth-child(9) {
+  animation-delay: -1.9s;
+  animation-duration: 5.8s;
+}
+
+.events__heroCalendarCellJump:nth-child(12) {
+  animation-delay: -3.5s;
+  animation-duration: 4.9s;
+}
+
+@keyframes events-calendar-cell-jump {
+  0%,
+  18%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  6% {
+    transform: translateY(-38%) scale(1.07);
+  }
+
+  11% {
+    transform: translateY(7%) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events__heroCalendarCellJump {
+    animation: none;
+  }
+}
+
+.events__heroDetail {
+  @apply absolute z-10 grid size-14 place-items-center rounded-2xl border-4 border-surface shadow-[0_14px_30px_rgb(16_42_67/16%)];
+}
+
+.events__heroDetail svg {
+  font-size: 27px !important;
+}
+
+.events__heroDetailTicket {
+  @apply top-[10%] right-[7%] bg-sun text-heading;
+}
+
+.events__heroDetailLocation {
+  @apply right-[8%] bottom-[11%] bg-coral text-white;
+}
+
+.events__heroCelebration {
+  @apply absolute bottom-[9%] left-[8%] grid size-14 place-items-center rounded-2xl border-4 border-surface bg-brand text-heading shadow-[0_14px_30px_rgb(16_42_67/16%)];
+}
+
+.events__heroAccent {
+  @apply absolute top-[14%] left-[8%] size-5 rotate-45 rounded-sm bg-action;
+}
+
 /* EventsCatalog */
 
 .events__catalogHeading {

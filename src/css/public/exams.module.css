@@ -4,6 +4,102 @@
   @apply min-h-screen;
 }
 
+/* ExamsHero */
+
+.exams__heroVisual {
+  @apply relative size-full overflow-hidden rounded-[2.25rem] border border-white/80 bg-[linear-gradient(145deg,#ffffff_0%,#edf8ff_100%)] shadow-[0_24px_70px_rgb(16_42_67/10%)];
+  isolation: isolate;
+}
+
+.exams__heroOrbit {
+  @apply absolute top-[8%] left-[13%] size-[78%] rounded-full border-2 border-dashed border-brand/35;
+}
+
+.exams__heroPaper {
+  @apply absolute top-[10%] left-[22%] flex h-[78%] w-[56%] -rotate-3 flex-col rounded-[1.75rem] border border-border bg-surface p-[7%] shadow-[0_22px_55px_rgb(16_42_67/14%)];
+}
+
+.exams__heroPaperIcon {
+  @apply grid size-12 place-items-center rounded-2xl bg-brand/15 text-heading;
+}
+
+.exams__heroPaperTitle {
+  @apply mt-4 max-w-[18ch] text-[clamp(0.72rem,2.1vw,0.95rem)] leading-tight font-black text-heading;
+}
+
+.exams__heroPaperMeta {
+  @apply mt-2 mb-1 line-clamp-2 text-[clamp(0.6rem,1.7vw,0.75rem)] leading-tight font-semibold text-muted;
+}
+
+.exams__heroChecklist {
+  @apply mt-4 grid gap-3;
+}
+
+.exams__heroChecklistRow {
+  @apply flex items-center gap-3;
+}
+
+.exams__heroChecklistCheck {
+  @apply relative grid size-6 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-white;
+}
+
+.exams__heroChecklistCheckFill {
+  @apply absolute inset-0 rounded-full bg-action;
+  opacity: 0;
+}
+
+.exams__heroChecklistCheck svg {
+  @apply relative z-10;
+  font-size: 17px !important;
+}
+
+.exams__heroChecklistTrack {
+  @apply relative h-2 flex-1 overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--border)_75%,transparent)];
+}
+
+.exams__heroChecklistFill {
+  @apply absolute inset-0 origin-left rounded-full bg-action;
+  transform: scaleX(0);
+}
+
+.exams__heroTimer {
+  @apply absolute top-[10%] right-[8%] grid size-16 place-items-center rounded-2xl bg-sun text-heading shadow-[0_14px_30px_rgb(16_42_67/16%)];
+}
+
+.exams__heroClock {
+  @apply relative block size-9 rounded-full border-[3px] border-heading;
+}
+
+.exams__heroClock::before {
+  @apply absolute top-[-8px] left-1/2 h-2 w-3 -translate-x-1/2 rounded-t-sm bg-heading;
+  content: "";
+}
+
+.exams__heroClockHour,
+.exams__heroClockMinute {
+  @apply absolute bottom-1/2 left-1/2 block origin-bottom rounded-full bg-heading;
+}
+
+.exams__heroClockHour {
+  @apply h-2.5 w-0.5;
+}
+
+.exams__heroClockMinute {
+  @apply h-3.5 w-0.5;
+}
+
+.exams__heroClockHub {
+  @apply absolute top-1/2 left-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-heading;
+}
+
+.exams__heroPencil {
+  @apply absolute right-[12%] bottom-[12%] grid size-14 rotate-6 place-items-center rounded-2xl bg-(image:--gradient-cta) text-white shadow-[0_14px_30px_rgb(37_99_235/20%)];
+}
+
+.exams__heroAccent {
+  @apply absolute bottom-[14%] left-[10%] size-5 rotate-45 rounded-sm bg-coral;
+}
+
 /* ExamDirections */
 
 .exams__notice {

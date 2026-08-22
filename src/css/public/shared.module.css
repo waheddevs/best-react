@@ -86,12 +86,28 @@
   @apply relative overflow-hidden border-b border-border bg-(image:--gradient-hero) py-16 sm:py-20 lg:py-24;
 }
 
+.publicShared__pageHeroWithVisual {
+  @apply py-10 sm:py-12 lg:py-12;
+}
+
 .publicShared__pageHeroGlow {
   @apply absolute -top-28 -right-20 size-80 rounded-full bg-brand/15 blur-3xl;
 }
 
 .publicShared__pageHeroContainer {
   @apply relative;
+}
+
+.publicShared__pageHeroContainerWithVisual {
+  @apply grid items-center gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(380px,1.08fr)] lg:gap-10;
+}
+
+.publicShared__pageHeroContent {
+  @apply relative z-10;
+}
+
+.publicShared__pageHeroVisual {
+  @apply relative z-10 h-[280px] min-w-0 sm:h-[360px] lg:h-[380px];
 }
 
 .publicShared__pageHeroEyebrow {
@@ -108,7 +124,7 @@
 }
 
 .publicShared__pageHeroDescription {
-  @apply mt-6 max-w-[70ch] text-base leading-7 text-muted sm:text-lg sm:leading-8;
+  @apply mt-6 max-w-[70ch] text-sm leading-6 text-muted sm:text-base sm:leading-7;
 }
 
 /* NotFound */
