@@ -11,6 +11,11 @@ export const navigationItems = [
 
 export const navbarNavigationItems = navigationItems.filter((item) => item.key !== "faq");
 
+export const footerPageNavigationItems = navigationItems.filter(
+  (item) =>
+    item.key === "home" || item.key === "events" || item.key === "results" || item.key === "about",
+);
+
 export const courseNavigationItems = [
   { key: "ielts", href: "/courses/ielts" },
   { key: "cefr", href: "/courses/cefr" },

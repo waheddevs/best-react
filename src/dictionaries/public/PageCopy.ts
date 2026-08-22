@@ -125,8 +125,14 @@ export type PageCopy = {
   footer: {
     summary: string;
     pages: string;
+    courses: string;
+    exams: string;
     contact: string;
-    contactPlaceholder: string;
+    address: string;
+    phone: string;
+    email: string;
+    hours: string;
+    social: string;
     legalPlaceholder: string;
     copyright: string;
   };
@@ -394,10 +400,16 @@ const uz: PageCopy = {
   },
   footer: {
     summary:
-      "Amaliy bilim, aniq o‘quv yo‘li va ishonchli rivojlanish uchun ochiq ta’lim platformasi.",
+      "Til o‘rganish, imtihonlarga tayyorgarlik va ishonchli natija sari zamonaviy ta’lim muhiti.",
     pages: "Sahifalar",
+    courses: "Kurslar",
+    exams: "Imtihonlar",
     contact: "Aloqa",
-    contactPlaceholder: "Aloqa ma’lumotlari tasdiqlanmoqda.",
+    address: "12 Ta’lim ko‘chasi, Toshkent 100000",
+    phone: "+998 71 000 00 00",
+    email: "hello@bestlc.example",
+    hours: "Du–Ju: 09:00–18:00",
+    social: "Ijtimoiy tarmoqlar",
     legalPlaceholder: "Maxfiylik va foydalanish shartlari keyingi bosqichda tasdiqlanadi.",
     copyright: "BEST LC. Barcha huquqlar himoyalangan.",
   },
@@ -658,10 +670,16 @@ const ru: PageCopy = {
   },
   footer: {
     summary:
-      "Открытая образовательная платформа для практических знаний, ясного маршрута и уверенного развития.",
+      "Современная образовательная среда для изучения языков, подготовки к экзаменам и уверенного результата.",
     pages: "Страницы",
+    courses: "Курсы",
+    exams: "Экзамены",
     contact: "Контакты",
-    contactPlaceholder: "Контактные данные уточняются.",
+    address: "ул. Образования, 12, Ташкент 100000",
+    phone: "+998 71 000 00 00",
+    email: "hello@bestlc.example",
+    hours: "Пн–Пт: 09:00–18:00",
+    social: "Социальные сети",
     legalPlaceholder: "Политика конфиденциальности и условия будут подтверждены позже.",
     copyright: "BEST LC. Все права защищены.",
   },
@@ -928,10 +946,16 @@ const en: PageCopy = {
   },
   footer: {
     summary:
-      "An open learning platform for practical knowledge, a clear path, and confident development.",
+      "A modern learning environment for language growth, exam preparation, and confident progress.",
     pages: "Pages",
+    courses: "Courses",
+    exams: "Exams",
     contact: "Contact",
-    contactPlaceholder: "Contact details are awaiting confirmation.",
+    address: "12 Education Street, Tashkent 100000",
+    phone: "+998 71 000 00 00",
+    email: "hello@bestlc.example",
+    hours: "Mon–Fri: 09:00–18:00",
+    social: "Social media",
     legalPlaceholder: "Privacy and terms will be confirmed in a later phase.",
     copyright: "BEST LC. All rights reserved.",
   },
