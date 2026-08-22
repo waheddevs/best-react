@@ -8,7 +8,6 @@ import styles from "@/css/public/contact.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 
 import { ContactContent } from "./ContactContent";
-import { ContactFaq } from "./ContactFaq";
 import { ContactHero } from "./ContactHero";
 
 type ContactPageProps = { params: Promise<{ locale: string }> };
@@ -31,7 +30,6 @@ export default async function ContactPage({ params }: ContactPageProps) {
     <main className={styles.contact}>
       <ContactHero eyebrow={dictionary.navigation.contact} copy={copy} />
       <ContactContent copy={copy} />
-      <ContactFaq copy={copy} locale={locale} />
     </main>
   );
 }

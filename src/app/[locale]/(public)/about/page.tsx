@@ -7,10 +7,12 @@ import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import styles from "@/css/public/about.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 
+import { AboutFaq } from "./AboutFaq";
 import { AboutHero } from "./AboutHero";
 import { Mission } from "./Mission";
-import { Story } from "./Story";
+import { Testimonials } from "./Testimonials";
 import { Values } from "./Values";
+import { WhyBest } from "./WhyBest";
 
 type AboutPageProps = { params: Promise<{ locale: string }> };
 
@@ -31,9 +33,11 @@ export default async function AboutPage({ params }: AboutPageProps) {
   return (
     <main className={styles.about}>
       <AboutHero eyebrow={dictionary.navigation.about} copy={copy} />
+      <WhyBest copy={copy} />
       <Mission locale={locale} copy={copy} />
       <Values copy={copy} />
-      <Story copy={copy} />
+      <Testimonials copy={copy} />
+      <AboutFaq copy={copy} locale={locale} />
     </main>
   );
 }

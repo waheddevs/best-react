@@ -286,7 +286,7 @@ export const events: PublicEvent[] = [
   },
 ];
 
-export const contactFaqItems = [
+export const aboutFaqItems = [
   {
     id: "offline-application",
     category: "registration",
