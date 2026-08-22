@@ -21,6 +21,6 @@ export type Dictionary = {
     visualLabel: string;
     visualTitle: string;
     visualProgress: string;
-    benefits: Array<{ title: string; description: string }>;
+    highlights: Array<{ value: string; label: string }>;
   };
 };

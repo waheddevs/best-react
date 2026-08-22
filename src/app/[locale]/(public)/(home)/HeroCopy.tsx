@@ -20,31 +20,26 @@ export function HeroCopy({ locale, content }: HeroCopyProps) {
   const reduceMotion = useReducedMotion();
 
   const containerVariants: Variants = {
-    hidden: {},
+    hidden: { opacity: 0, x: reduceMotion ? 0 : -48 },
     visible: {
+      opacity: 1,
+      x: 0,
       transition: {
+        duration: reduceMotion ? 0.18 : 0.58,
+        ease: motionEase,
         delayChildren: reduceMotion ? 0 : 0.08,
         staggerChildren: reduceMotion ? 0 : 0.075,
       },
     },
   };
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 18 },
+    hidden: { opacity: 0, x: reduceMotion ? 0 : -14 },
     visible: {
       opacity: 1,
-      y: 0,
+      x: 0,
       transition: { duration: reduceMotion ? 0.16 : 0.52, ease: motionEase },
     },
   };
-  const titleVariants: Variants = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : "105%" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: reduceMotion ? 0.16 : 0.68, ease: motionEase },
-    },
-  };
-
   return (
     <motion.div
       className={styles.home__heroCopy}
@@ -58,12 +53,12 @@ export function HeroCopy({ locale, content }: HeroCopyProps) {
       </motion.p>
       <h1 className={styles.home__heroTitle}>
         <span className={styles.home__heroTitleLine}>
-          <motion.span className={styles.home__heroTitleLineInner} variants={titleVariants}>
+          <motion.span className={styles.home__heroTitleLineInner} variants={itemVariants}>
             {content.titleLead}
           </motion.span>
         </span>
         <span className={`${styles.home__heroTitleLine} ${styles.home__heroTitleAccent}`}>
-          <motion.span className={styles.home__heroTitleLineInner} variants={titleVariants}>
+          <motion.span className={styles.home__heroTitleLineInner} variants={itemVariants}>
             {content.titleAccent}
           </motion.span>
         </span>

@@ -42,18 +42,22 @@ export const enDictionary = {
     visualLabel: "Your learning path",
     visualTitle: "From knowledge to practical outcomes",
     visualProgress: "A flexible learning process",
-    benefits: [
+    highlights: [
       {
-        title: "Practical learning",
-        description: "Turn theory into confidence through real exercises and projects.",
+        value: "11+",
+        label: "Years of experience",
       },
       {
-        title: "Experienced teachers",
-        description: "Learn with mentors who understand real industry practice.",
+        value: "100,000+",
+        label: "Students who have learned English",
       },
       {
-        title: "Outcome focused",
-        description: "Clear goals and a visible path forward at every stage.",
+        value: "16",
+        label: "Number of branches throughout Uzbekistan",
+      },
+      {
+        value: "500+",
+        label: "The number of employees in Cambridge",
       },
     ],
   },

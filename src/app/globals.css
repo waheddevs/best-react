@@ -15,6 +15,7 @@
   --sunny-yellow: #ffc857;
   --coral: #ff6b6b;
   --gradient-cta: linear-gradient(135deg, #0e7490 0%, #2563eb 100%);
+  --gradient-cta-corner: linear-gradient(45deg, #0e7490 0%, #2563eb 100%);
   --gradient-hero: linear-gradient(135deg, #eafbfd 0%, #eef4ff 58%, #ffffff 100%);
   --gradient-accent: linear-gradient(135deg, #ffc857 0%, #ff8a5b 100%);
   --shadow-soft: 0 20px 60px rgb(16 42 67 / 9%);

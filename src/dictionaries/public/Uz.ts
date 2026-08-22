@@ -42,18 +42,22 @@ export const uzDictionary = {
     visualLabel: "Sizning o‘quv yo‘lingiz",
     visualTitle: "Bilimdan amaliy natijagacha",
     visualProgress: "Moslashuvchan o‘quv jarayoni",
-    benefits: [
+    highlights: [
       {
-        title: "Amaliy yondashuv",
-        description: "Nazariyani real mashqlar va loyihalar bilan mustahkamlang.",
+        value: "11+",
+        label: "Yillik tajriba",
       },
       {
-        title: "Tajribali ustozlar",
-        description: "Yo‘nalishni soha amaliyotini biladigan mentorlar bilan o‘rganing.",
+        value: "100 000+",
+        label: "Ingliz tilini o‘rgangan o‘quvchilar",
       },
       {
-        title: "Natijaga yo‘naltirilgan",
-        description: "Har bir bosqichda aniq maqsad va tushunarli rivojlanish yo‘li.",
+        value: "16",
+        label: "O‘zbekiston bo‘ylab filiallar soni",
+      },
+      {
+        value: "500+",
+        label: "Cambridge’dagi xodimlar soni",
       },
     ],
   },
