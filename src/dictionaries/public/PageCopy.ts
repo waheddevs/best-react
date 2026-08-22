@@ -17,9 +17,6 @@ export type PageCopy = {
     coursesEyebrow: string;
     coursesTitle: string;
     coursesDescription: string;
-    whyEyebrow: string;
-    whyTitle: string;
-    whyItems: Array<{ title: string; description: string }>;
     processEyebrow: string;
     processTitle: string;
     processItems: Array<{ title: string; description: string }>;
@@ -28,8 +25,6 @@ export type PageCopy = {
     resultsDescription: string;
     eventsEyebrow: string;
     eventsTitle: string;
-    faqEyebrow: string;
-    faqTitle: string;
     finalTitle: string;
     finalDescription: string;
   };
@@ -89,21 +84,30 @@ export type PageCopy = {
   about: {
     title: string;
     description: string;
+    whyEyebrow: string;
+    whyTitle: string;
+    whyItems: Array<{ title: string; description: string }>;
     missionEyebrow: string;
     missionTitle: string;
     missionBody: string;
+    missionCta: string;
+    missionImageAlt: string;
     approachTitle: string;
     values: Array<{ title: string; description: string }>;
-    storyTitle: string;
-    storyBody: string;
-    environmentTitle: string;
-    environmentBody: string;
-  };
-  faq: {
-    title: string;
-    description: string;
-    categories: Record<"all" | "courses" | "format" | "exams" | "events" | "registration", string>;
-    ctaTitle: string;
+    testimonials: {
+      eyebrow: string;
+      title: string;
+      items: Array<{
+        name: string;
+        initials: string;
+        course: string;
+        quote: string;
+      }>;
+    };
+    faq: {
+      title: string;
+      description: string;
+    };
   };
   contact: {
     title: string;
@@ -153,22 +157,6 @@ const uz: PageCopy = {
     coursesEyebrow: "Yo‘nalishni tanlang",
     coursesTitle: "Maqsadingizga mos o‘quv yo‘li",
     coursesDescription: "Har bir kurs amaliy rivojlanish uchun tushunarli bosqichlarga ajratilgan.",
-    whyEyebrow: "Nima uchun BEST",
-    whyTitle: "Bilimni harakatga aylantiradigan muhit",
-    whyItems: [
-      {
-        title: "Aniq tuzilma",
-        description: "Har bir bosqichda nima va nima uchun o‘rganayotganingizni ko‘rasiz.",
-      },
-      {
-        title: "Faol ishtirok",
-        description: "Mashq, savol va tahlil dars jarayonining markazida turadi.",
-      },
-      {
-        title: "Insoniy qo‘llab-quvvatlash",
-        description: "O‘quv yo‘li savol berish va fikr olishga qulay tashkil etiladi.",
-      },
-    ],
     processEyebrow: "O‘quv jarayoni",
     processTitle: "Tushunarli to‘rt qadam",
     processItems: [
@@ -195,8 +183,6 @@ const uz: PageCopy = {
       "Tasdiqlangan o‘quvchi hikoyalari va natijalar taqdim etilgach, ular shu bo‘limda faktlar bilan e’lon qilinadi.",
     eventsEyebrow: "Tadbirlar",
     eventsTitle: "O‘rganish uchun yangi uchrashuvlar",
-    faqEyebrow: "Savollar",
-    faqTitle: "Boshlashdan oldin bilish foydali bo‘lgan javoblar",
     finalTitle: "Keyingi qadamingizni birga aniqlaymiz",
     finalDescription:
       "Kurslar bilan tanishing yoki savolingizni aloqa sahifasida qoldirishga tayyorlang.",
@@ -333,10 +319,32 @@ const uz: PageCopy = {
     title: "Biz haqimizda",
     description:
       "Aniq maqsad, amaliy mashq va insoniy qo‘llab-quvvatlashni birlashtiradigan zamonaviy ta’lim muhiti.",
-    missionEyebrow: "Missiya",
-    missionTitle: "O‘rganishni aniq yo‘lga aylantirish",
+    whyEyebrow: "Nima uchun BEST",
+    whyTitle: "Bilimni harakatga aylantiradigan muhit",
+    whyItems: [
+      {
+        title: "Aniq tuzilma",
+        description:
+          "Har bir bosqichda nimani, nima uchun va qaysi tartibda o‘rganayotganingizni aniq ko‘rasiz. Vazifalar maqsadga bog‘lanib, keyingi qadam tushunarli ko‘rsatiladi.",
+      },
+      {
+        title: "Faol ishtirok",
+        description:
+          "Mashq, savol, muhokama va qisqa tahlil har bir darsning markazida turadi. O‘quvchi yangi bilimni darhol amalda sinab ko‘rishga undaladi.",
+      },
+      {
+        title: "Insoniy qo‘llab-quvvatlash",
+        description:
+          "O‘quv yo‘li savol berish, fikr olish va o‘z tempida rivojlanishga qulay tashkil etiladi. Har bir bosqichda yo‘nalish va dalda beriladi.",
+      },
+    ],
+    missionEyebrow: "Biz haqimizda",
+    missionTitle: "BEST LC",
     missionBody:
-      "Bizning yo‘nalishimiz — o‘quvchiga maqsadini tushunish, amaliy bilim olish va keyingi qadamni ishonch bilan ko‘rishga yordam beradigan muhit yaratish.",
+      "BEST LC — tillarni o‘rganish, imtihonlarga tayyorgarlik va amaliy ko‘nikmalarni rivojlantirishga yo‘naltirilgan zamonaviy ta’lim markazi. Darslar aniq maqsad, izchil reja va o‘quvchiga tushunarli rivojlanish yo‘li asosida tashkil etiladi.",
+    missionCta: "Kurslarni kashf eting",
+    missionImageAlt:
+      "BEST LC logotipi o‘rnatilgan zamonaviy shisha fasadli ta’lim markazi konsepsiyasi",
     approachTitle: "Ta’lim yondashuvi",
     values: [
       {
@@ -355,27 +363,101 @@ const uz: PageCopy = {
         title: "Halollik",
         description: "Tasdiqlanmagan raqam, hamkorlik yoki yutuq fakt sifatida berilmaydi.",
       },
+      {
+        title: "Shaxsiy sur’at",
+        description:
+          "Mashqlar o‘quvchining hozirgi darajasi va maqsadiga mos tempda bosqichma-bosqich tashkil etiladi.",
+      },
+      {
+        title: "Muntazam fikr-mulohaza",
+        description:
+          "Qisqa izohlar va amaliy tavsiyalar kuchli tomonlarni ko‘rish hamda keyingi vazifani aniqlashga yordam beradi.",
+      },
+      {
+        title: "Amaliy ishonch",
+        description:
+          "Yangi bilim suhbat, topshiriq va hayotiy vaziyatlarga yaqin mashqlar orqali mustahkamlanadi.",
+      },
+      {
+        title: "Ko‘rinadigan rivojlanish",
+        description:
+          "Har bir bosqichdagi kichik yutuqlar qayd etilib, o‘quvchi keyingi maqsad sari qanday siljiyotganini ko‘radi.",
+      },
     ],
-    storyTitle: "BEST hikoyasi",
-    storyBody:
-      "Asos solingan yil, filiallar, jamoa va hamkorliklar haqida tasdiqlangan ma’lumot hali berilmagan. Bu bo‘lim real brend tarixi kelgach yangilanadi.",
-    environmentTitle: "O‘quv muhiti",
-    environmentBody:
-      "Yorug‘, tartibli va hamkorlikka mos o‘quv muhiti konsepsiyasi. Tasvir real BEST LC manzili sifatida emas, brend yo‘nalishi sifatida taqdim etiladi.",
-  },
-  faq: {
-    title: "Ko‘p so‘raladigan savollar",
-    description:
-      "Kurslar, dars formati, imtihonlar, tadbirlar va bog‘lanish jarayoni haqida qisqa javoblar.",
-    categories: {
-      all: "Barchasi",
-      courses: "Kurslar",
-      format: "Format",
-      exams: "Imtihonlar",
-      events: "Tadbirlar",
-      registration: "Bog‘lanish",
+    testimonials: {
+      eyebrow: "O‘quvchilar fikri",
+      title: "O‘rganish tajribasi ular nigohida",
+      items: [
+        {
+          name: "Madina A.",
+          initials: "MA",
+          course: "General English",
+          quote:
+            "Darslardagi qisqa vazifalar yangi mavzuni tushunib, uni darhol suhbatda sinab ko‘rishga yordam beradi.",
+        },
+        {
+          name: "Azizbek R.",
+          initials: "AR",
+          course: "IELTS tayyorgarligi",
+          quote:
+            "Har bir mashqning maqsadi tushunarli. Fikr-mulohazadan keyin qaysi ko‘nikma ustida ishlash kerakligini aniq bilaman.",
+        },
+        {
+          name: "Nilufar S.",
+          initials: "NS",
+          course: "CEFR tayyorgarligi",
+          quote:
+            "Bosqichma-bosqich reja o‘qishni tartibli qildi. Kichik yutuqlarni ko‘rish davom etishga motivatsiya beradi.",
+        },
+        {
+          name: "Kamron T.",
+          initials: "KT",
+          course: "Rus tili",
+          quote:
+            "Ko‘proq gapirishga undaydigan mashqlar sababli yangi so‘zlarni oddiy hayotiy vaziyatlarda ishlatish osonlashdi.",
+        },
+        {
+          name: "Shahnoza M.",
+          initials: "SM",
+          course: "Academic English",
+          quote:
+            "Murakkab mavzular kichik va tushunarli qismlarga ajratiladi. Savol berish va xatoni tahlil qilish juda qulay.",
+        },
+        {
+          name: "Behruz K.",
+          initials: "BK",
+          course: "Mock imtihon tayyorgarligi",
+          quote:
+            "Vaqt bilan ishlash va topshiriqlarni ketma-ket bajarish bo‘yicha amaliy mashqlar o‘zimni xotirjamroq his qilishimga yordam berdi.",
+        },
+        {
+          name: "Dilnoza E.",
+          initials: "DE",
+          course: "Nemis tili",
+          quote:
+            "Yangi grammatikani misollar va qisqa suhbatlar bilan mashq qilish mavzuni tabiiyroq tushunishga yordam beradi.",
+        },
+        {
+          name: "Sardor N.",
+          initials: "SN",
+          course: "Fransuz tili",
+          quote:
+            "Darsdagi aniq yo‘nalish va muntazam takrorlash talaffuz hamda kundalik iboralarga ishonchimni oshirdi.",
+        },
+        {
+          name: "Mohira L.",
+          initials: "ML",
+          course: "Xitoy tili",
+          quote:
+            "Belgilar, talaffuz va oddiy dialoglar alohida bosqichlarda o‘rganilgani sababli jarayon tushunarli ko‘rinadi.",
+        },
+      ],
     },
-    ctaTitle: "Javob topilmadimi?",
+    faq: {
+      title: "Ko‘p so‘raladigan savollar",
+      description:
+        "Kurslar, dars formati, imtihonlar, tadbirlar va bog‘lanish jarayoni haqida qisqa javoblar.",
+    },
   },
   contact: {
     title: "Aloqa",
@@ -429,23 +511,6 @@ const ru: PageCopy = {
     coursesEyebrow: "Выберите направление",
     coursesTitle: "Учебный путь под вашу цель",
     coursesDescription: "Каждый курс разделён на понятные этапы практического развития.",
-    whyEyebrow: "Почему BEST",
-    whyTitle: "Среда, которая превращает знания в действие",
-    whyItems: [
-      {
-        title: "Ясная структура",
-        description: "На каждом этапе вы понимаете, что изучаете и зачем.",
-      },
-      {
-        title: "Активное участие",
-        description: "Практика, вопросы и разбор находятся в центре занятия.",
-      },
-      {
-        title: "Человеческая поддержка",
-        description:
-          "Учебный путь организован так, чтобы было удобно спрашивать и получать обратную связь.",
-      },
-    ],
     processEyebrow: "Процесс обучения",
     processTitle: "Четыре понятных шага",
     processItems: [
@@ -472,8 +537,6 @@ const ru: PageCopy = {
       "Когда будут предоставлены подтверждённые истории и результаты учеников, они появятся здесь вместе с фактами.",
     eventsEyebrow: "События",
     eventsTitle: "Новые встречи для обучения",
-    faqEyebrow: "Вопросы",
-    faqTitle: "Полезные ответы перед началом",
     finalTitle: "Определим ваш следующий шаг вместе",
     finalDescription: "Познакомьтесь с курсами или подготовьте вопрос для страницы контактов.",
   },
@@ -606,10 +669,32 @@ const ru: PageCopy = {
     title: "О нас",
     description:
       "Современная учебная среда, объединяющая ясные цели, практику и человеческую поддержку.",
-    missionEyebrow: "Миссия",
-    missionTitle: "Превращать обучение в ясный маршрут",
+    whyEyebrow: "Почему BEST",
+    whyTitle: "Среда, которая превращает знания в действие",
+    whyItems: [
+      {
+        title: "Ясная структура",
+        description:
+          "На каждом этапе вы ясно видите, что, зачем и в какой последовательности изучаете. Задания связаны с целью, а следующий шаг остаётся понятным.",
+      },
+      {
+        title: "Активное участие",
+        description:
+          "Практика, вопросы, обсуждение и короткий разбор находятся в центре каждого занятия. Новые знания сразу проверяются в понятных практических ситуациях.",
+      },
+      {
+        title: "Человеческая поддержка",
+        description:
+          "Учебный путь организован так, чтобы было удобно задавать вопросы, получать обратную связь и развиваться в своём темпе. На каждом этапе сохраняются направление и поддержка.",
+      },
+    ],
+    missionEyebrow: "О нас",
+    missionTitle: "BEST LC",
     missionBody:
-      "Наше направление — создавать среду, где ученик понимает цель, получает практические знания и уверенно видит следующий шаг.",
+      "BEST LC — современный образовательный центр, ориентированный на изучение языков, подготовку к экзаменам и развитие практических навыков. Обучение строится вокруг ясной цели, последовательного плана и понятной траектории роста.",
+    missionCta: "Открыть курсы",
+    missionImageAlt:
+      "Концепция современного образовательного центра со стеклянным фасадом и логотипом BEST LC",
     approachTitle: "Подход к обучению",
     values: [
       {
@@ -625,26 +710,100 @@ const ru: PageCopy = {
         title: "Честность",
         description: "Неподтверждённые цифры, партнёрства или достижения не выдаются за факты.",
       },
+      {
+        title: "Индивидуальный темп",
+        description:
+          "Практика организована поэтапно с учётом текущего уровня ученика и выбранной учебной цели.",
+      },
+      {
+        title: "Регулярная обратная связь",
+        description:
+          "Короткие комментарии и практические рекомендации помогают увидеть сильные стороны и определить следующую задачу.",
+      },
+      {
+        title: "Уверенность на практике",
+        description:
+          "Новые знания закрепляются через разговор, задания и упражнения, приближённые к реальным ситуациям.",
+      },
+      {
+        title: "Видимый прогресс",
+        description:
+          "Небольшие достижения каждого этапа отмечаются, чтобы ученик видел движение к следующей цели.",
+      },
     ],
-    storyTitle: "История BEST",
-    storyBody:
-      "Подтверждённые сведения о годе основания, филиалах, команде и партнёрствах пока не предоставлены. Раздел будет обновлён после получения реальной истории бренда.",
-    environmentTitle: "Учебная среда",
-    environmentBody:
-      "Концепция светлой, организованной и совместной учебной среды. Изображение представляет направление бренда, а не реальный адрес BEST LC.",
-  },
-  faq: {
-    title: "Частые вопросы",
-    description: "Короткие ответы о курсах, формате, экзаменах, событиях и связи.",
-    categories: {
-      all: "Все",
-      courses: "Курсы",
-      format: "Формат",
-      exams: "Экзамены",
-      events: "События",
-      registration: "Связь",
+    testimonials: {
+      eyebrow: "Отзывы учащихся",
+      title: "Учебный опыт глазами учеников",
+      items: [
+        {
+          name: "Мадина А.",
+          initials: "МА",
+          course: "Общий английский",
+          quote:
+            "Короткие задания на уроках помогают понять новую тему и сразу попробовать использовать её в разговоре.",
+        },
+        {
+          name: "Азизбек Р.",
+          initials: "АР",
+          course: "Подготовка к IELTS",
+          quote:
+            "Цель каждого упражнения понятна. После обратной связи я точно знаю, над каким навыком стоит работать дальше.",
+        },
+        {
+          name: "Нилуфар С.",
+          initials: "НС",
+          course: "Подготовка к CEFR",
+          quote:
+            "Пошаговый план сделал обучение более организованным. Видимый небольшой прогресс мотивирует продолжать.",
+        },
+        {
+          name: "Камрон Т.",
+          initials: "КТ",
+          course: "Русский язык",
+          quote:
+            "Упражнения побуждают больше говорить, поэтому новые слова стало легче использовать в обычных жизненных ситуациях.",
+        },
+        {
+          name: "Шахноза М.",
+          initials: "ШМ",
+          course: "Академический английский",
+          quote:
+            "Сложные темы разделяются на небольшие понятные части. Здесь удобно задавать вопросы и спокойно разбирать ошибки.",
+        },
+        {
+          name: "Бехруз К.",
+          initials: "БК",
+          course: "Подготовка к пробному экзамену",
+          quote:
+            "Практика работы со временем и последовательностью заданий помогла мне чувствовать себя спокойнее во время подготовки.",
+        },
+        {
+          name: "Дилноза Э.",
+          initials: "ДЭ",
+          course: "Немецкий язык",
+          quote:
+            "Практика новой грамматики через примеры и короткие диалоги помогает понимать тему более естественно.",
+        },
+        {
+          name: "Сардор Н.",
+          initials: "СН",
+          course: "Французский язык",
+          quote:
+            "Ясное направление урока и регулярное повторение укрепили мою уверенность в произношении и повседневных фразах.",
+        },
+        {
+          name: "Мохира Л.",
+          initials: "МЛ",
+          course: "Китайский язык",
+          quote:
+            "Иероглифы, произношение и простые диалоги изучаются поэтапно, поэтому весь процесс остаётся понятным.",
+        },
+      ],
     },
-    ctaTitle: "Не нашли ответ?",
+    faq: {
+      title: "Частые вопросы",
+      description: "Короткие ответы о курсах, формате, экзаменах, событиях и связи.",
+    },
   },
   contact: {
     title: "Контакты",
@@ -699,23 +858,6 @@ const en: PageCopy = {
     coursesEyebrow: "Choose a direction",
     coursesTitle: "A learning path built around your goal",
     coursesDescription: "Each course is organised into clear stages for practical development.",
-    whyEyebrow: "Why BEST",
-    whyTitle: "An environment that turns knowledge into action",
-    whyItems: [
-      {
-        title: "Clear structure",
-        description: "At every stage, you understand what you are learning and why.",
-      },
-      {
-        title: "Active participation",
-        description: "Practice, questions, and reflection sit at the centre of each lesson.",
-      },
-      {
-        title: "Human support",
-        description:
-          "The learning path makes it comfortable to ask questions and receive feedback.",
-      },
-    ],
     processEyebrow: "Learning process",
     processTitle: "Four clear steps",
     processItems: [
@@ -742,8 +884,6 @@ const en: PageCopy = {
       "When verified learner stories and outcomes are supplied, they will be published here with supporting facts.",
     eventsEyebrow: "Events",
     eventsTitle: "New sessions that support learning",
-    faqEyebrow: "Questions",
-    faqTitle: "Useful answers before you begin",
     finalTitle: "Let’s clarify your next step together",
     finalDescription: "Explore the courses or prepare your question for the contact page.",
   },
@@ -878,10 +1018,31 @@ const en: PageCopy = {
     title: "About us",
     description:
       "A modern learning environment built around clear goals, practical work, and human support.",
-    missionEyebrow: "Mission",
-    missionTitle: "Turn learning into a clear path",
+    whyEyebrow: "Why BEST",
+    whyTitle: "An environment that turns knowledge into action",
+    whyItems: [
+      {
+        title: "Clear structure",
+        description:
+          "At every stage, you can see what you are learning, why it matters, and what comes next. Each task connects to a clear goal and a practical next step.",
+      },
+      {
+        title: "Active participation",
+        description:
+          "Practice, questions, discussion, and short reflection sit at the centre of every lesson. Learners are encouraged to test new knowledge in practical situations straight away.",
+      },
+      {
+        title: "Human support",
+        description:
+          "The learning path makes it comfortable to ask questions, receive feedback, and develop at an individual pace. Each stage offers a clear sense of direction and support.",
+      },
+    ],
+    missionEyebrow: "About",
+    missionTitle: "BEST LC",
     missionBody:
-      "Our direction is to create an environment where learners understand their goal, gain practical knowledge, and see the next step with confidence.",
+      "BEST LC is a modern education centre focused on language learning, exam preparation, and practical skill development. Learning is shaped around a clear goal, a structured plan, and an understandable path for progress.",
+    missionCta: "Discover courses",
+    missionImageAlt: "Concept of a modern glass-fronted education centre with the BEST LC logo",
     approachTitle: "Learning approach",
     values: [
       {
@@ -901,26 +1062,100 @@ const en: PageCopy = {
         description:
           "Unverified numbers, partnerships, or achievements are never presented as facts.",
       },
+      {
+        title: "Personal pace",
+        description:
+          "Practice is organised in clear stages that reflect the learner’s current level and chosen learning goal.",
+      },
+      {
+        title: "Regular feedback",
+        description:
+          "Short comments and practical guidance help learners recognise strengths and identify the next useful task.",
+      },
+      {
+        title: "Practical confidence",
+        description:
+          "New knowledge is reinforced through conversation, focused tasks, and exercises shaped around realistic situations.",
+      },
+      {
+        title: "Visible progress",
+        description:
+          "Small achievements are recognised at each stage so learners can see how they are moving towards the next goal.",
+      },
     ],
-    storyTitle: "The BEST story",
-    storyBody:
-      "Verified information about the founding year, branches, team, and partnerships has not been supplied. This section will be updated when the real brand story is available.",
-    environmentTitle: "Learning environment",
-    environmentBody:
-      "A concept for a bright, organised, collaborative learning environment. The image represents the brand direction, not a real BEST LC location.",
-  },
-  faq: {
-    title: "Frequently asked questions",
-    description: "Short answers about courses, formats, exams, events, and getting in touch.",
-    categories: {
-      all: "All",
-      courses: "Courses",
-      format: "Format",
-      exams: "Exams",
-      events: "Events",
-      registration: "Contact",
+    testimonials: {
+      eyebrow: "Learner feedback",
+      title: "Learning through their eyes",
+      items: [
+        {
+          name: "Madina A.",
+          initials: "MA",
+          course: "General English",
+          quote:
+            "Short classroom tasks help me understand a new topic and try it in conversation straight away.",
+        },
+        {
+          name: "Azizbek R.",
+          initials: "AR",
+          course: "IELTS preparation",
+          quote:
+            "The purpose of each exercise is clear. After feedback, I know exactly which skill deserves my attention next.",
+        },
+        {
+          name: "Nilufar S.",
+          initials: "NS",
+          course: "CEFR preparation",
+          quote:
+            "The step-by-step plan has made learning feel organised. Seeing small signs of progress keeps me motivated.",
+        },
+        {
+          name: "Kamron T.",
+          initials: "KT",
+          course: "Russian language",
+          quote:
+            "Exercises encourage me to speak more, making it easier to use new words in ordinary real-life situations.",
+        },
+        {
+          name: "Shahnoza M.",
+          initials: "SM",
+          course: "Academic English",
+          quote:
+            "Complex topics are divided into small, understandable parts. Asking questions and reviewing mistakes feels comfortable.",
+        },
+        {
+          name: "Behruz K.",
+          initials: "BK",
+          course: "Mock exam preparation",
+          quote:
+            "Practical work on timing and task order has helped me feel calmer and more organised during preparation.",
+        },
+        {
+          name: "Dilnoza E.",
+          initials: "DE",
+          course: "German language",
+          quote:
+            "Practising new grammar through examples and short conversations helps each topic feel more natural and understandable.",
+        },
+        {
+          name: "Sardor N.",
+          initials: "SN",
+          course: "French language",
+          quote:
+            "Clear lesson direction and regular revision have strengthened my confidence with pronunciation and everyday phrases.",
+        },
+        {
+          name: "Mohira L.",
+          initials: "ML",
+          course: "Chinese language",
+          quote:
+            "Characters, pronunciation, and simple dialogues are introduced in separate stages, keeping the process understandable.",
+        },
+      ],
     },
-    ctaTitle: "Still have a question?",
+    faq: {
+      title: "Frequently asked questions",
+      description: "Short answers about courses, formats, exams, events, and getting in touch.",
+    },
   },
   contact: {
     title: "Contact",

@@ -382,52 +382,6 @@
   @apply h-full;
 }
 
-/* WhyBest */
-
-.home__whyBest {
-  @apply bg-surface;
-}
-
-.home__whyGrid {
-  @apply mt-10 grid gap-5 lg:grid-cols-[1.15fr_0.85fr_0.85fr];
-}
-
-.home__whyCard {
-  @apply relative overflow-hidden rounded-[1.75rem] border border-border bg-background p-7 text-text;
-}
-
-.home__whyCardPrimary {
-  @apply bg-(image:--gradient-cta) text-white lg:min-h-80;
-}
-
-.home__whyIcon {
-  @apply grid size-12 place-items-center rounded-2xl bg-brand/15 text-heading;
-}
-
-.home__whyIconPrimary {
-  @apply bg-white/15 text-white;
-}
-
-.home__whyTitle {
-  @apply mt-12 text-2xl font-black tracking-[-0.04em] text-heading;
-}
-
-.home__whyTitlePrimary {
-  @apply text-white;
-}
-
-.home__whyDescription {
-  @apply mt-3 max-w-md text-sm leading-7 text-muted;
-}
-
-.home__whyDescriptionPrimary {
-  @apply text-white/80;
-}
-
-.home__whyDecoration {
-  @apply absolute -right-16 -bottom-20 size-56 rounded-full border-34 border-white/10;
-}
-
 /* LearningProcess */
 
 .home__processList {
@@ -509,28 +463,6 @@
 
 .home__eventsGrid {
   @apply mt-10 grid gap-5 md:grid-cols-2;
-}
-
-/* FaqPreview */
-
-.home__faqGrid {
-  @apply mt-10 grid gap-4 lg:grid-cols-3;
-}
-
-.home__faqCard {
-  @apply rounded-[1.75rem] border border-border bg-surface p-6;
-}
-
-.home__faqQuestion {
-  @apply leading-6 font-extrabold text-heading;
-}
-
-.home__faqAnswer {
-  @apply mt-3 text-sm leading-6 text-muted;
-}
-
-.home__faqLink {
-  @apply mt-7 inline-flex min-h-11 items-center gap-2 font-bold text-action hover:underline;
 }
 
 /* FinalCta */
