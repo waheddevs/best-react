@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Section } from "@/components/ui/Section";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/home.module.css";
@@ -15,25 +14,15 @@ export function FinalCta({ locale, copy }: FinalCtaProps) {
     <Section className={styles.home__finalCtaSection}>
       <div className={styles.home__finalCta}>
         <div className={styles.home__finalCtaDecoration} />
-        <h2 className={styles.home__finalCtaTitle}>
-          {copy.home.finalTitle}
-        </h2>
-        <p className={styles.home__finalCtaDescription}>
-          {copy.home.finalDescription}
-        </p>
+        <h2 className={styles.home__finalCtaTitle}>{copy.home.finalTitle}</h2>
+        <p className={styles.home__finalCtaDescription}>{copy.home.finalDescription}</p>
         <div className={styles.home__finalCtaActions}>
-          <Link
-            href={`/${locale}/courses`}
-            className={styles.home__finalCtaPrimary}
-          >
+          <ScrollToTopLink href={`/${locale}/courses`} className={styles.home__finalCtaPrimary}>
             {copy.common.coursesCta}
-          </Link>
-          <Link
-            href={`/${locale}/contact`}
-            className={styles.home__finalCtaSecondary}
-          >
+          </ScrollToTopLink>
+          <ScrollToTopLink href={`/${locale}/contact`} className={styles.home__finalCtaSecondary}>
             {copy.common.contactCta}
-          </Link>
+          </ScrollToTopLink>
         </div>
       </div>
     </Section>

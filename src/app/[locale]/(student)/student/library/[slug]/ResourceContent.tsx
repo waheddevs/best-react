@@ -1,6 +1,6 @@
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
-import Link from "next/link";
 
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Section } from "@/components/ui/Section";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/student/library.module.css";
@@ -16,10 +16,10 @@ type ResourceContentProps = {
 export function ResourceContent({ resource, locale, copy }: ResourceContentProps) {
   return (
     <Section containerClassName={styles.library__contentContainer}>
-      <Link href={`/${locale}/student/library`} className={styles.library__backLink}>
+      <ScrollToTopLink href={`/${locale}/student/library`} className={styles.library__backLink}>
         <ArrowBackRounded aria-hidden="true" />
         {copy.back}
-      </Link>
+      </ScrollToTopLink>
       <article className={styles.library__article}>
         {resource.sections[locale].map((section, index) => (
           <section key={section.heading} className={styles.library__articleSection}>

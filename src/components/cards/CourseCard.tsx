@@ -2,8 +2,8 @@ import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import AutoStoriesRounded from "@mui/icons-material/AutoStoriesRounded";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 import Image from "next/image";
-import Link from "next/link";
 
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
@@ -35,9 +35,7 @@ export function CourseCard({ course, locale, copy }: CourseCardProps) {
             <AutoStoriesRounded aria-hidden="true" />
           </span>
         </div>
-        <h2 className={styles.courses__cardTitle}>
-          {course.title[locale]}
-        </h2>
+        <h2 className={styles.courses__cardTitle}>{course.title[locale]}</h2>
         <p className={styles.courses__cardSummary}>{course.summary[locale]}</p>
         <dl className={styles.courses__cardMeta}>
           <div className={styles.courses__cardMetaRow}>
@@ -52,13 +50,13 @@ export function CourseCard({ course, locale, copy }: CourseCardProps) {
             <dd className={styles.courses__cardMetaValue}>{course.formatLabel[locale]}</dd>
           </div>
         </dl>
-        <Link
+        <ScrollToTopLink
           href={`/${locale}/courses/${course.slug}`}
           className={styles.courses__cardLink}
         >
           {copy.common.learnMore}
           <ArrowOutwardRounded aria-hidden="true" />
-        </Link>
+        </ScrollToTopLink>
       </div>
     </article>
   );

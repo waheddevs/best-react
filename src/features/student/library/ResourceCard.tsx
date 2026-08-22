@@ -1,7 +1,7 @@
 import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import ArticleRounded from "@mui/icons-material/ArticleRounded";
-import Link from "next/link";
 
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/student/library.module.css";
 import type { StudentLibraryCopy } from "@/dictionaries/student/Library";
@@ -25,13 +25,13 @@ export function ResourceCard({ resource, locale, copy }: ResourceCardProps) {
       <p className={styles.library__cardType}>{resource.typeLabel[locale]}</p>
       <h2 className={styles.library__cardTitle}>{resource.title[locale]}</h2>
       <p className={styles.library__cardSummary}>{resource.summary[locale]}</p>
-      <Link
+      <ScrollToTopLink
         href={`/${locale}/student/library/${resource.slug}`}
         className={styles.library__cardLink}
       >
         {copy.readResource}
         <ArrowOutwardRounded aria-hidden="true" />
-      </Link>
+      </ScrollToTopLink>
     </article>
   );
 }

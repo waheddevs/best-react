@@ -1,7 +1,7 @@
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import styles from "@/css/public/shared.module.css";
 
 type ButtonLinkProps = {
@@ -17,14 +17,11 @@ export function ButtonLink({ href, children, variant = "primary" }: ButtonLinkPr
       : styles.publicShared__buttonLinkSecondary;
 
   return (
-    <Link
-      href={href}
-      className={`${styles.publicShared__buttonLink} ${variantClass}`}
-    >
+    <ScrollToTopLink href={href} className={`${styles.publicShared__buttonLink} ${variantClass}`}>
       {children}
       {variant === "primary" ? (
         <ArrowForwardRounded aria-hidden="true" className={styles.publicShared__buttonLinkIcon} />
       ) : null}
-    </Link>
+    </ScrollToTopLink>
   );
 }

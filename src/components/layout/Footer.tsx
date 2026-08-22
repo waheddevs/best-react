@@ -7,8 +7,8 @@ import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 import Telegram from "@mui/icons-material/Telegram";
 import Twitter from "@mui/icons-material/Twitter";
 import Image from "next/image";
-import Link from "next/link";
 
+import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Container } from "@/components/ui/Container";
 import type { Locale } from "@/config/Locales";
 import {
@@ -47,7 +47,7 @@ export function Footer({ locale, navigation, copy }: FooterProps) {
       <FooterPattern />
       <Container className={styles.footer__container}>
         <div className={styles.footer__brandColumn}>
-          <Link href={`/${locale}`} className={styles.footer__brand}>
+          <ScrollToTopLink href={`/${locale}`} className={styles.footer__brand}>
             <span className={styles.footer__brandMark}>
               <Image
                 src="/icons/logo.svg"
@@ -58,7 +58,7 @@ export function Footer({ locale, navigation, copy }: FooterProps) {
               />
             </span>
             <span className={styles.footer__brandName}>BEST LC</span>
-          </Link>
+          </ScrollToTopLink>
           <p className={styles.footer__summary}>{copy.summary}</p>
           <div className={styles.footer__socials} aria-label={copy.social}>
             {socialItems.map(({ label, Icon }) => (
@@ -74,13 +74,13 @@ export function Footer({ locale, navigation, copy }: FooterProps) {
             <h2 className={styles.footer__heading}>{copy.pages}</h2>
             <nav className={styles.footer__linkList} aria-label={copy.pages}>
               {footerPageNavigationItems.map((item) => (
-                <Link
+                <ScrollToTopLink
                   key={item.key}
                   href={`/${locale}${item.href}`}
                   className={styles.footer__link}
                 >
                   {navigation[item.key]}
-                </Link>
+                </ScrollToTopLink>
               ))}
             </nav>
           </div>
@@ -89,13 +89,13 @@ export function Footer({ locale, navigation, copy }: FooterProps) {
             <h2 className={styles.footer__heading}>{copy.courses}</h2>
             <nav className={styles.footer__linkList} aria-label={copy.courses}>
               {courseNavigationItems.map((item) => (
-                <Link
+                <ScrollToTopLink
                   key={item.key}
                   href={`/${locale}${item.href}`}
                   className={styles.footer__link}
                 >
                   {navigation.courseMenu[item.key]}
-                </Link>
+                </ScrollToTopLink>
               ))}
             </nav>
           </div>
@@ -104,13 +104,13 @@ export function Footer({ locale, navigation, copy }: FooterProps) {
             <h2 className={styles.footer__heading}>{copy.exams}</h2>
             <nav className={styles.footer__linkList} aria-label={copy.exams}>
               {examNavigationItems.map((item) => (
-                <Link
+                <ScrollToTopLink
                   key={item.key}
                   href={`/${locale}${item.href}`}
                   className={styles.footer__link}
                 >
                   {navigation.examMenu[item.key]}
-                </Link>
+                </ScrollToTopLink>
               ))}
             </nav>
           </div>
