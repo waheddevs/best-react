@@ -11,14 +11,11 @@ type OutcomeCategoriesProps = {
 
 export function OutcomeCategories({ copy }: OutcomeCategoriesProps) {
   return (
-    <Section>
+    <Section tone="surface">
       <SectionHeading title={copy.results.categoriesTitle} />
       <div className={styles.results__categoriesGrid}>
         {copy.results.categories.map((item) => (
-          <article
-            key={item.title}
-            className={styles.results__category}
-          >
+          <article key={item.title} className={styles.results__category}>
             <CheckCircleRounded aria-hidden="true" className={styles.results__categoryIcon} />
             <h2 className={styles.results__categoryTitle}>{item.title}</h2>
             <p className={styles.results__categoryDescription}>{item.description}</p>

@@ -9,14 +9,12 @@ type LearningJourneyProps = {
 
 export function LearningJourney({ copy }: LearningJourneyProps) {
   return (
-    <Section className={styles.results__journey}>
+    <Section tone="background">
       <SectionHeading title={copy.results.journeyTitle} />
       <ol className={styles.results__journeyList}>
         {copy.results.journeySteps.map((step, index) => (
           <li key={step.title} className={styles.results__journeyItem}>
-            <span className={styles.results__journeyNumber}>
-              {index + 1}
-            </span>
+            <span className={styles.results__journeyNumber}>{index + 1}</span>
             <h2 className={styles.results__journeyTitle}>{step.title}</h2>
             <p className={styles.results__journeyDescription}>{step.description}</p>
           </li>

@@ -136,10 +136,6 @@
 
 /* ExamRules */
 
-.exams__rules {
-  @apply bg-surface;
-}
-
 .exams__rulesLayout {
   @apply grid gap-10 lg:grid-cols-2;
 }

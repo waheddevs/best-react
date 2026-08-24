@@ -11,7 +11,7 @@ type ExamDirectionsProps = {
 
 export function ExamDirections({ copy }: ExamDirectionsProps) {
   return (
-    <Section>
+    <Section tone="surface">
       <div className={styles.exams__notice}>
         <InfoRounded aria-hidden="true" className={styles.exams__noticeIcon} />
         <p className={styles.exams__noticeText}>{copy.exams.notice}</p>
@@ -21,10 +21,7 @@ export function ExamDirections({ copy }: ExamDirectionsProps) {
       </div>
       <div className={styles.exams__directionsGrid}>
         {copy.exams.directions.map((item) => (
-          <article
-            key={item.title}
-            className={styles.exams__directionCard}
-          >
+          <article key={item.title} className={styles.exams__directionCard}>
             <h2 className={styles.exams__directionTitle}>{item.title}</h2>
             <p className={styles.exams__directionDescription}>{item.description}</p>
           </article>

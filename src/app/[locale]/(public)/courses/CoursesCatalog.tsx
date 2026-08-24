@@ -13,7 +13,7 @@ type CoursesCatalogProps = {
 
 export function CoursesCatalog({ locale, copy }: CoursesCatalogProps) {
   return (
-    <Section>
+    <Section tone="surface">
       <DraftNotice badge={copy.common.draftBadge} note={copy.common.draftNote} />
       <div className={styles.courses__catalog}>
         <CourseCatalog courses={courses} locale={locale} copy={copy} />

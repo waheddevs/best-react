@@ -53,10 +53,6 @@
 
 /* WhyBest */
 
-.about__whyBest {
-  @apply bg-surface;
-}
-
 .about__whyGrid {
   @apply mt-10 grid gap-5 lg:grid-cols-3;
 }
@@ -70,13 +66,13 @@
 }
 
 .about__whyCard::before {
+  content: "";
   position: absolute;
   z-index: -1;
-  inset: 0;
   background: var(--gradient-cta);
-  content: "";
   opacity: 0;
   transition: opacity 220ms ease-out;
+  inset: 0;
 }
 
 .about__whyMotionItem:hover .about__whyCard {
@@ -163,7 +159,7 @@
 /* Values */
 
 .about__values {
-  @apply overflow-hidden bg-surface;
+  @apply overflow-hidden;
 }
 
 .about__valuesViewport {
@@ -174,8 +170,8 @@
 
 .about__valuesTrack {
   display: flex;
-  width: max-content;
   gap: 1.25rem;
+  width: max-content;
   animation: aboutValuesMarquee 48s linear infinite;
   will-change: transform;
 }
@@ -195,13 +191,13 @@
 }
 
 .about__valueCard::before {
+  content: "";
   position: absolute;
   z-index: -1;
-  inset: 0;
   background: var(--gradient-cta);
-  content: "";
   opacity: 0;
   transition: opacity 220ms ease-out;
+  inset: 0;
 }
 
 .about__valueCard:hover {
@@ -273,12 +269,16 @@
 /* Testimonials */
 
 .about__testimonials {
-  @apply relative bg-surface;
+  @apply relative bg-background;
   height: 300svh;
 }
 
 .about__testimonialsSticky {
   @apply sticky top-20 flex h-[calc(100svh-5rem)] flex-col justify-center overflow-hidden py-2 sm:py-4;
+}
+
+.about__testimonialHeading {
+  @apply relative -top-15;
 }
 
 .about__testimonialStage {
@@ -294,13 +294,13 @@
 }
 
 .about__testimonialCard::before {
+  content: "";
   position: absolute;
   z-index: -1;
-  inset: 0;
   background: var(--gradient-cta);
-  content: "";
   opacity: 0;
   transition: opacity 220ms ease-out;
+  inset: 0;
 }
 
 .about__testimonialCard:hover {
@@ -372,7 +372,7 @@
 /* AboutFaq */
 
 .about__faqSection {
-  @apply scroll-mt-20 border-y border-border bg-[linear-gradient(145deg,#f4fbfd_0%,#eef4ff_100%)];
+  @apply scroll-mt-20 border-y border-border;
 }
 
 .about__faqLayout {
@@ -400,10 +400,10 @@
 
 .about__faqItem {
   overflow: hidden;
-  color: var(--text);
-  background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px !important;
+  color: var(--text);
+  background-color: var(--surface);
   box-shadow: 0 10px 28px rgb(16 42 67 / 5%);
   transition:
     border-color 200ms ease,

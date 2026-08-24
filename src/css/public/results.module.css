@@ -114,10 +114,6 @@
 
 /* LearningJourney */
 
-.results__journey {
-  @apply bg-surface;
-}
-
 .results__journeyList {
   @apply mt-10 grid gap-5 lg:grid-cols-3;
 }

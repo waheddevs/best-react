@@ -191,7 +191,3 @@
 .contact__form :global(.MuiInputLabel-root:not(.Mui-error).Mui-focused) {
   color: var(--brand-turquoise);
 }
-
-.contact__formSubmit {
-  @apply min-h-12 rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white shadow-[0_12px_30px_rgb(37_99_235/20%)] transition-transform hover:-translate-y-0.5;
-}

@@ -14,7 +14,7 @@ type UpcomingEventsProps = {
 
 export function UpcomingEvents({ locale, copy }: UpcomingEventsProps) {
   return (
-    <Section>
+    <Section tone="surface">
       <div className={styles.home__eventsHeader}>
         <SectionHeading eyebrow={copy.home.eventsEyebrow} title={copy.home.eventsTitle} />
         <ButtonLink href={`/${locale}/events`} variant="secondary">

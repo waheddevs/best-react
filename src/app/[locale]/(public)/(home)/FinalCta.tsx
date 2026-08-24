@@ -11,7 +11,7 @@ type FinalCtaProps = {
 
 export function FinalCta({ locale, copy }: FinalCtaProps) {
   return (
-    <Section className={styles.home__finalCtaSection}>
+    <Section className={styles.home__finalCtaSection} tone="background">
       <div className={styles.home__finalCta}>
         <div className={styles.home__finalCtaDecoration} />
         <h2 className={styles.home__finalCtaTitle}>{copy.home.finalTitle}</h2>

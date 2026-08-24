@@ -8,11 +8,25 @@ type SectionProps = {
   className?: string;
   containerClassName?: string;
   id?: string;
+  tone?: "surface" | "background";
 };
 
-export function Section({ children, className = "", containerClassName = "", id }: SectionProps) {
+export function Section({
+  children,
+  className = "",
+  containerClassName = "",
+  id,
+  tone,
+}: SectionProps) {
+  const toneClassName =
+    tone === "surface"
+      ? styles.publicShared__sectionSurface
+      : tone === "background"
+        ? styles.publicShared__sectionBackground
+        : "";
+
   return (
-    <section id={id} className={`${styles.publicShared__section} ${className}`}>
+    <section id={id} className={`${styles.publicShared__section} ${toneClassName} ${className}`}>
       <Container className={containerClassName}>{children}</Container>
     </section>
   );

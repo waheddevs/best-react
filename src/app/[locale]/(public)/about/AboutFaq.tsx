@@ -19,6 +19,7 @@ export function AboutFaq({ copy, locale }: AboutFaqProps) {
       className={styles.about__faqSection}
       containerClassName={styles.about__faqLayout}
       id="faq"
+      tone="surface"
     >
       <Reveal className={styles.about__faqHeading}>
         <SectionHeading

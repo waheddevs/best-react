@@ -11,11 +11,9 @@ type ResultsCtaProps = {
 
 export function ResultsCta({ locale, copy }: ResultsCtaProps) {
   return (
-    <Section className={styles.results__ctaSection}>
+    <Section className={styles.results__ctaSection} tone="background">
       <div className={styles.results__cta}>
-        <h2 className={styles.results__ctaTitle}>
-          {copy.results.ctaTitle}
-        </h2>
+        <h2 className={styles.results__ctaTitle}>{copy.results.ctaTitle}</h2>
         <div className={styles.results__ctaAction}>
           <ButtonLink href={`/${locale}/courses`} variant="secondary">
             {copy.common.coursesCta}

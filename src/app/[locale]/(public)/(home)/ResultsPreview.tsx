@@ -16,7 +16,7 @@ export function ResultsPreview({ locale, copy }: ResultsPreviewProps) {
   const journeyPreview = copy.results.journeySteps.slice(0, 2);
 
   return (
-    <Section className={styles.home__results}>
+    <Section tone="background">
       <div className={styles.home__resultsLayout}>
         <div>
           <SectionHeading

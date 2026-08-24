@@ -20,7 +20,7 @@ export function ContactContent({ copy }: ContactContentProps) {
   ];
 
   return (
-    <Section>
+    <Section tone="surface">
       <div className={styles.contact__contentLayout}>
         <aside className={styles.contact__details}>
           <div className={styles.contact__detailsBrand}>

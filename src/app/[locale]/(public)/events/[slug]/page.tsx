@@ -44,7 +44,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   return (
     <main className={styles.events}>
       <EventHero event={event} locale={locale} copy={copy} />
-      <Section>
+      <Section tone="surface">
         <div className={styles.events__detailLayout}>
           <EventTopics event={event} locale={locale} copy={copy} />
           <EventDetails event={event} locale={locale} copy={copy} />

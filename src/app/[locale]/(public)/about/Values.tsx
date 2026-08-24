@@ -30,7 +30,7 @@ type ValuesProps = {
 
 export function Values({ copy }: ValuesProps) {
   return (
-    <Section className={styles.about__values}>
+    <Section className={styles.about__values} tone="surface">
       <Reveal>
         <SectionHeading title={copy.about.approachTitle} align="center" />
       </Reveal>

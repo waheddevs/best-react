@@ -17,7 +17,7 @@ type FeaturedCoursesProps = {
 
 export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
   return (
-    <Section>
+    <Section tone="background">
       <Reveal className={styles.home__featuredCoursesHeader}>
         <SectionHeading
           eyebrow={copy.home.coursesEyebrow}

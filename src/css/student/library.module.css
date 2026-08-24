@@ -14,14 +14,6 @@
   @apply mt-4 flex flex-wrap gap-2;
 }
 
-.library__catalogType {
-  @apply min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-bold text-heading transition-colors hover:border-brand;
-}
-
-.library__catalogTypeActive {
-  @apply border-transparent bg-(image:--gradient-cta) text-white;
-}
-
 .library__catalogGrid {
   @apply mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3;
 }

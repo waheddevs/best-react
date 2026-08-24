@@ -50,7 +50,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   return (
     <main className={styles.courses}>
       <CourseHero course={course} locale={locale} copy={copy} />
-      <Section>
+      <Section tone="surface">
         <div className={styles.courses__detailLayout}>
           <div className={styles.courses__detailContent}>
             <CourseOverview course={course} locale={locale} copy={copy} />

@@ -18,7 +18,7 @@ type WhyBestProps = {
 
 export function WhyBest({ copy }: WhyBestProps) {
   return (
-    <Section className={styles.about__whyBest}>
+    <Section tone="surface">
       <Reveal>
         <SectionHeading
           align="center"

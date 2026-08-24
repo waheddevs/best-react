@@ -14,17 +14,14 @@ type ExamRulesProps = {
 
 export function ExamRules({ locale, copy }: ExamRulesProps) {
   return (
-    <Section className={styles.exams__rules}>
+    <Section tone="background">
       <div className={styles.exams__rulesLayout}>
         <div>
           <SectionHeading title={copy.exams.rulesTitle} />
           <ul className={styles.exams__rulesList}>
             {copy.exams.rules.map((rule) => (
               <li key={rule} className={styles.exams__rule}>
-                <CheckCircleOutlineRounded
-                  aria-hidden="true"
-                  className={styles.exams__ruleIcon}
-                />
+                <CheckCircleOutlineRounded aria-hidden="true" className={styles.exams__ruleIcon} />
                 {rule}
               </li>
             ))}

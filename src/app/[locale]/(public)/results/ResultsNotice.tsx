@@ -10,15 +10,13 @@ type ResultsNoticeProps = {
 
 export function ResultsNotice({ copy }: ResultsNoticeProps) {
   return (
-    <Section>
+    <Section tone="surface">
       <div className={styles.results__notice}>
         <span className={styles.results__noticeIcon}>
           <FactCheckRounded aria-hidden="true" className={styles.results__noticeIconSvg} />
         </span>
         <div>
-          <h2 className={styles.results__noticeTitle}>
-            {copy.results.noticeTitle}
-          </h2>
+          <h2 className={styles.results__noticeTitle}>{copy.results.noticeTitle}</h2>
           <p className={styles.results__noticeBody}>{copy.results.noticeBody}</p>
         </div>
       </div>
