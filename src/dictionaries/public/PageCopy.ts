@@ -51,6 +51,8 @@ export type PageCopy = {
     past: string;
     date: string;
     time: string;
+    duration: string;
+    attend: string;
     format: string;
     location: string;
     topics: string;
@@ -121,6 +123,7 @@ export type PageCopy = {
     send: string;
     required: string;
     invalidEmail: string;
+    serviceNoticeTitle: string;
     serviceNotice: string;
     responseNotice: string;
   };
@@ -217,6 +220,8 @@ const uz: PageCopy = {
     past: "O‘tgan",
     date: "Sana",
     time: "Vaqt",
+    duration: "Davomiyligi",
+    attend: "Qatnashish",
     format: "Format",
     location: "Manzil",
     topics: "Asosiy mavzular",
@@ -472,6 +477,7 @@ const uz: PageCopy = {
     send: "Yuborish",
     required: "Bu maydonni to‘ldiring.",
     invalidEmail: "Email manzilini to‘g‘ri kiriting.",
+    serviceNoticeTitle: "Yuborish hali ulanmagan",
     serviceNotice: "Yuborish xizmati keyingi bosqichda ulanadi.",
     responseNotice:
       "Savolingiz bo‘lsa, biz bilan bog‘laning — jamoamiz sizga tez orada javob beradi.",
@@ -569,6 +575,8 @@ const ru: PageCopy = {
     past: "Прошедшие",
     date: "Дата",
     time: "Время",
+    duration: "Длительность",
+    attend: "Участвовать",
     format: "Формат",
     location: "Место",
     topics: "Основные темы",
@@ -818,6 +826,7 @@ const ru: PageCopy = {
     send: "Отправить",
     required: "Заполните это поле.",
     invalidEmail: "Введите корректный email.",
+    serviceNoticeTitle: "Отправка пока не подключена",
     serviceNotice: "Отправка будет подключена на следующем этапе.",
     responseNotice:
       "Свяжитесь с нами, если у вас есть вопрос — наша команда ответит вам в ближайшее время.",
@@ -917,6 +926,8 @@ const en: PageCopy = {
     past: "Past",
     date: "Date",
     time: "Time",
+    duration: "Duration",
+    attend: "Attend",
     format: "Format",
     location: "Location",
     topics: "Key topics",
@@ -1084,7 +1095,7 @@ const en: PageCopy = {
       },
     ],
     testimonials: {
-      eyebrow: "Learner feedback",
+      eyebrow: "Students feedback",
       title: "Learning through their eyes",
       items: [
         {
@@ -1170,6 +1181,7 @@ const en: PageCopy = {
     send: "Send",
     required: "Complete this field.",
     invalidEmail: "Enter a valid email address.",
+    serviceNoticeTitle: "Submission is not connected yet",
     serviceNotice: "Submission will be connected in the next phase.",
     responseNotice: "Have a question? Get in touch — our team will get back to you shortly.",
   },

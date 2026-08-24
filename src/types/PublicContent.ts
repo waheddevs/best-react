@@ -1,4 +1,5 @@
 import type { Locale } from "@/config/Locales";
+import type { StaticImageData } from "next/image";
 
 export type LocalizedText = Record<Locale, string>;
 
@@ -26,11 +27,15 @@ export type Course = {
 export type PublicEvent = {
   slug: string;
   status: "upcoming" | "past";
+  image: StaticImageData | string;
+  imageAlt: LocalizedText;
   title: LocalizedText;
   summary: LocalizedText;
   formatLabel: LocalizedText;
   dateLabel: LocalizedText;
   timeLabel: LocalizedText;
+  durationLabel: LocalizedText;
+  priceLabel: LocalizedText;
   locationLabel: LocalizedText;
   topics: Record<Locale, string[]>;
   requiresConfirmation: true;
