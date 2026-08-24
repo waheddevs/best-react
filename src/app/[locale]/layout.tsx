@@ -8,8 +8,12 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { isLocale, locales } from "@/config/Locales";
+import { getEventRegistrationCopy } from "@/dictionaries/public/EventRegistration";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
+import { getNotificationCopy } from "@/dictionaries/public/Notifications";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
+import { NotificationProvider } from "@/features/notifications/NotificationProvider";
+import { EventRegistrationProvider } from "@/features/events/EventRegistrationProvider";
 import { createPageMetadata } from "@/lib/Metadata";
 import { BestThemeProvider } from "@/theme/BestThemeProvider";
 
@@ -59,6 +63,8 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   }
 
   const dictionary = getDictionary(locale);
+  const eventRegistrationCopy = getEventRegistrationCopy(locale);
+  const notificationCopy = getNotificationCopy(locale);
   const pageCopy = getPageCopy(locale);
 
   return (
@@ -67,9 +73,17 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <BestThemeProvider>
             <MotionProvider>
-              <Navbar locale={locale} labels={dictionary.navigation} />
-              {children}
-              <Footer locale={locale} navigation={dictionary.navigation} copy={pageCopy.footer} />
+              <NotificationProvider copy={notificationCopy}>
+                <EventRegistrationProvider copy={eventRegistrationCopy} locale={locale}>
+                  <Navbar locale={locale} labels={dictionary.navigation} />
+                  {children}
+                  <Footer
+                    locale={locale}
+                    navigation={dictionary.navigation}
+                    copy={pageCopy.footer}
+                  />
+                </EventRegistrationProvider>
+              </NotificationProvider>
             </MotionProvider>
           </BestThemeProvider>
         </AppRouterCacheProvider>

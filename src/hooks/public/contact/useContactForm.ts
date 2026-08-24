@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import { useNotifications } from "@/hooks/notifications/useNotifications";
 
 type FormValues = {
   firstName: string;
@@ -22,14 +23,13 @@ const initialValues: FormValues = {
 
 export function useContactForm(copy: PageCopy) {
   /* HOOKS */
+  const notify = useNotifications();
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [showServiceNotice, setShowServiceNotice] = useState(false);
 
   const updateField = (field: keyof FormValues, value: string) => {
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
-    setShowServiceNotice(false);
   };
 
   const validate = () => {
@@ -54,7 +54,12 @@ export function useContactForm(copy: PageCopy) {
   /* HANDLERS */
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (validate()) setShowServiceNotice(true);
+    if (validate()) {
+      notify.info({
+        title: copy.contact.serviceNoticeTitle,
+        message: copy.contact.serviceNotice,
+      });
+    }
   };
 
   const handleFirstNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +85,6 @@ export function useContactForm(copy: PageCopy) {
   return {
     values,
     errors,
-    showServiceNotice,
     handleSubmit,
     handleFirstNameChange,
     handleLastNameChange,
