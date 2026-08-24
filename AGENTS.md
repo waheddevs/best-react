@@ -455,6 +455,30 @@ Apply clean-code and clean-source practices throughout the project:
 - Use the `@/*` import alias for application source.
 - Keep dependencies minimal and justify every new package.
 
+### Shared button system
+
+- Use `components/ui/Button.tsx` for semantic action buttons and
+  `components/ui/ButtonLink.tsx` for navigation CTAs. Both must use the shared
+  variant, size, shape, icon, disabled, and focus system from
+  `components/ui/ButtonStyles.ts` and `css/public/shared.module.css`.
+- Use the shared `components/ui/IconButton.tsx` wrapper for icon-only controls;
+  always provide its required accessible `label`. Keep MUI Menu, Dialog,
+  Drawer, Select, and similar accessibility-heavy primitives where appropriate.
+- Approved text-button variants are `primary`, `secondary`, `outline`, `ghost`,
+  `filter`, `inverseOutline`, `surface`, and `danger`; approved sizes are
+  `small`, `medium`, and `large`, with `rounded`, `soft`, and `pill` shapes.
+- Page and feature CSS may control layout, state-specific visibility, or a
+  genuinely domain-specific accent, but must not duplicate shared button
+  padding, typography, radius, focus, disabled, or common hover rules.
+- Use the shared `hoverEffect="grow"` option for the Navbar signup, event
+  registration submit, homepage Explore Courses CTA, centred-alert Close, and
+  event Attend action. Grow the actual control through padding and minimum-size
+  transitions with compensating negative margins so its occupied layout space
+  remains stable. Keep its text and icon untransformed and crisp; do not scale
+  the button node itself or add a press/active transform.
+- Do not create or return visual button components from hooks. Hooks own button
+  behaviour only when reusable state or interaction logic is required.
+
 ## 7A. Material UI usage boundary
 
 Use the current stable MUI packages and follow MUI's official App Router
@@ -525,6 +549,53 @@ Icon rules:
 - Avoid large amounts of one-off `sx` styling. Prefer the shared MUI theme,
   component `styleOverrides`, and small branded wrapper components.
 
+## 7B. Notification system
+
+Use the shared notification system for frontend feedback instead of adding
+page-local alert implementations:
+
+- Use `sonner` only as the non-blocking toast engine. Render BEST LC toast JSX
+  through the headless/custom path; do not adopt Sonner's default visual theme.
+- Use the existing MUI `Dialog` primitive for blocking confirmations and alert
+  dialogs. Do not add a separate confirmation package.
+- Keep notification components and context in `features/notifications/`, and
+  keep `useNotifications.tsx` and `useConfirmDialog.ts` in
+  `hooks/notifications/`.
+- Every toast and confirmation must render a distinct `title` followed by its
+  related `message`. The shared hooks may use localized defaults when either
+  value is omitted.
+- Keep notification types in `types/Notification.ts`, localized default copy in
+  `dictionaries/public/Notifications.ts`, and liquid-glass styles under the
+  `/* Notifications */` section of `css/public/shared.module.css`.
+- The locale layout owns the single global `NotificationProvider`. Do not mount
+  page-specific toaster instances.
+- Keep ordinary non-blocking toasts at the top-right. Use the shared
+  `showCenterAlert` liquid dialog only for deliberate centre-screen feedback
+  such as the event-registration preview; do not reposition Sonner with CSS.
+- Preserve keyboard access, Escape dismissal, dialog focus management,
+  reduced-motion behavior, readable contrast, and a solid background fallback
+  when `backdrop-filter` is unavailable.
+- Notifications may explain that a frontend-only service is unavailable, but
+  must never claim that an unimplemented submission, registration, payment, or
+  other backend action succeeded.
+- Do not connect Events `Details` or `Attend` controls to notifications or other
+  actions outside the approved registration flow.
+
+## 7C. Event registration preview
+
+- The frontend-only event registration visual is owned by
+  `features/events/EventRegistrationProvider.tsx` and opened through
+  `hooks/public/events/useEventRegistration.ts` so one shared dialog serves all
+  event cards.
+- `Attend` opens the shared MUI registration dialog with a blurred backdrop and
+  the selected event context. Do not mount a separate dialog per card.
+- During the visual-prototype stage, the form has no validation, submission,
+  persistence, or success claim. `Register` closes the form and opens a centred
+  custom preview alert explaining that backend submission is not connected.
+- Keep registration copy localized in Uzbek, Russian, and English under
+  `dictionaries/public/EventRegistration.ts`. Add validation and real success
+  feedback only when the corresponding backend contract is available.
+
 ## 8. Brand color system
 
 Use the following approved palette as the design source of truth.
@@ -562,9 +633,9 @@ Use the following approved palette as the design source of truth.
 - Yellow must use deep navy text, not white text.
 - Coral is an accent, not a primary color.
 - Gradients must be focused accents, not backgrounds for every section or card.
-- Reserve `--gradient-cta-corner` for the homepage Explore Courses CTA and the
-  Navbar signup button, with the dark end at bottom-left and the lighter end at
-  top-right.
+- Reserve `--gradient-cta-corner` for the homepage Explore Courses CTA, Navbar
+  signup button, and the matching centred-alert Close action, with the dark end
+  at bottom-left and the lighter end at top-right.
 - Avoid uncontrolled neon colors and rainbow gradients.
 - Define semantic CSS variables in `globals.css`, then expose them through the
   current Tailwind theme-variable approach.
@@ -634,6 +705,13 @@ Avoid:
 - Prevent horizontal overflow at all supported widths.
 - Header must remain usable with long translated labels.
 - Mobile navigation must trap focus while open and close with Escape.
+- After every public-page hero, full-width top-level content sections must
+  alternate in DOM order, beginning with Surface (`#FFFFFF`), followed by
+  Background (`#F4FBFD`), and then repeating that sequence. Use the shared
+  `Section` tone API or the owning page CSS for raw full-width sections. Nested
+  semantic sections inside one full-width layout do not start a new color band.
+  Do not substitute gradients or nearby shades in this sequence unless the
+  user explicitly approves an exception.
 
 ## 13. Animation direction
 
