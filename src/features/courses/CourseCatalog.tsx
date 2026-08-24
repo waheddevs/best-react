@@ -5,6 +5,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 
 import { CourseCard } from "@/components/cards/CourseCard";
+import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
@@ -49,15 +50,16 @@ export function CourseCatalog({ courses, locale, copy }: CourseCatalogProps) {
           {categories.map((item) => {
             const selected = category === item;
             return (
-              <button
+              <Button
                 key={item}
-                type="button"
                 aria-pressed={selected}
                 onClick={() => handleCategoryChange(item)}
-                className={`${styles.courses__catalogCategory} ${selected ? styles.courses__catalogCategoryActive : ""}`}
+                shape="pill"
+                size="small"
+                variant="filter"
               >
                 {copy.courses.categories[item]}
-              </button>
+              </Button>
             );
           })}
         </div>

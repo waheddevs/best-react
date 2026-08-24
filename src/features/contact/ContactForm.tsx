@@ -1,8 +1,8 @@
 "use client";
 
-import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 
+import { Button } from "@/components/ui/Button";
 import styles from "@/css/public/contact.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useContactForm } from "@/hooks/public/contact/useContactForm";
@@ -14,7 +14,7 @@ type ContactFormProps = {
 export function ContactForm({ copy }: ContactFormProps) {
   /* HOOKS */
   const contactForm = useContactForm(copy);
-  const { values, errors, showServiceNotice } = contactForm;
+  const { values, errors } = contactForm;
 
   /* HANDLERS */
   const {
@@ -89,10 +89,9 @@ export function ContactForm({ copy }: ContactFormProps) {
         slotProps={{ htmlInput: { "aria-required": true } }}
         value={values.message}
       />
-      <button type="submit" className={styles.contact__formSubmit}>
+      <Button fullWidth shape="soft" type="submit">
         {copy.contact.send}
-      </button>
-      {showServiceNotice ? <Alert severity="info">{copy.contact.serviceNotice}</Alert> : null}
+      </Button>
     </form>
   );
 }

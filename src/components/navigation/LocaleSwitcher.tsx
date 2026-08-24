@@ -2,10 +2,10 @@
 
 import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import LanguageRounded from "@mui/icons-material/LanguageRounded";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
+import { Button } from "@/components/ui/Button";
 import { locales, type Locale } from "@/config/Locales";
 import styles from "@/css/layout/navbar.module.css";
 import { useLocaleSwitcher } from "@/hooks/navigation/useLocaleSwitcher";
@@ -40,6 +40,8 @@ export function LocaleSwitcher({ locale, label }: LocaleSwitcherProps) {
         startIcon={<LanguageRounded />}
         endIcon={<ExpandMoreRounded />}
         className={styles.navbar__localeButton}
+        size="small"
+        variant="ghost"
       >
         {locale.toUpperCase()}
       </Button>

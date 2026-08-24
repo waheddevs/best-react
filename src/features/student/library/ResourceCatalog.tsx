@@ -4,6 +4,7 @@ import SearchRounded from "@mui/icons-material/SearchRounded";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 
+import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/student/library.module.css";
@@ -50,15 +51,16 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
           {resourceTypes.map((item) => {
             const selected = type === item;
             return (
-              <button
+              <Button
                 key={item}
-                type="button"
                 aria-pressed={selected}
                 onClick={() => handleTypeChange(item)}
-                className={`${styles.library__catalogType} ${selected ? styles.library__catalogTypeActive : ""}`}
+                shape="pill"
+                size="small"
+                variant="filter"
               >
                 {copy.types[item]}
-              </button>
+              </Button>
             );
           })}
         </div>

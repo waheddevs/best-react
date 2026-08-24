@@ -70,11 +70,12 @@
 }
 
 .home__heroActions > a {
-  min-height: 2.79rem;
+  --button-min-height: 2.79rem;
+  --button-padding-block: 0.6975rem;
+  --button-padding-inline: 1.1625rem;
+  --button-font-size: 0.81375rem;
   gap: 0.465rem;
-  padding: 0.6975rem 1.1625rem;
   border-radius: 0.93rem;
-  font-size: 0.81375rem;
 }
 
 .home__heroActions > a:last-child {
@@ -105,8 +106,8 @@
   }
 
   .home__heroActions > a {
-    padding-inline: 1.395rem;
-    font-size: 0.93rem;
+    --button-padding-inline: 1.395rem;
+    --button-font-size: 0.93rem;
   }
 }
 
@@ -405,10 +406,6 @@
 }
 
 /* ResultsPreview */
-
-.home__results {
-  @apply bg-surface;
-}
 
 .home__resultsLayout {
   @apply grid items-center gap-10 lg:grid-cols-2;

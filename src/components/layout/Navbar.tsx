@@ -5,6 +5,7 @@ import { LocaleSwitcher } from "@/components/navigation/LocaleSwitcher";
 import { MobileNavigation } from "@/components/navigation/MobileNavigation";
 import { NavbarLink } from "@/components/navigation/NavbarLink";
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import {
   courseNavigationItems,
@@ -85,12 +86,12 @@ export function Navbar({ locale, labels }: NavbarProps) {
             <LocaleSwitcher locale={locale} label={labels.language} />
           </div>
           <div className={styles.navbar__auth}>
-            <button type="button" className={styles.navbar__login}>
+            <Button size="small" variant="outline">
               {labels.login}
-            </button>
-            <button type="button" className={styles.navbar__signup}>
+            </Button>
+            <Button className={styles.navbar__signup} hoverEffect="grow" size="small">
               {labels.signup}
-            </button>
+            </Button>
           </div>
           <MobileNavigation locale={locale} labels={labels} />
         </div>
