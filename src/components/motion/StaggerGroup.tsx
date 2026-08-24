@@ -3,7 +3,13 @@
 import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
-export function StaggerGroup({ children, className }: { children: ReactNode; className?: string }) {
+type StaggerGroupProps = {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+};
+
+export function StaggerGroup({ children, className, delay = 0 }: StaggerGroupProps) {
   /* HOOKS */
   const reduceMotion = useReducedMotion();
   return (
@@ -14,7 +20,12 @@ export function StaggerGroup({ children, className }: { children: ReactNode; cla
       viewport={{ once: true, amount: 0.12 }}
       variants={{
         hidden: {},
-        visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.065 } },
+        visible: {
+          transition: {
+            delayChildren: reduceMotion ? 0 : delay,
+            staggerChildren: reduceMotion ? 0 : 0.065,
+          },
+        },
       }}
     >
       {children}

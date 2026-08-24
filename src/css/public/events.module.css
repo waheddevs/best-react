@@ -180,16 +180,8 @@
 
 /* EventsCatalog */
 
-.events__catalogHeading {
-  @apply mt-10;
-}
-
-.events__catalogHeadingPast {
-  @apply mt-16;
-}
-
 .events__catalogGrid {
-  @apply mt-8 grid gap-5 md:grid-cols-2;
+  @apply mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3;
 }
 
 .events__catalogEmpty {
@@ -197,6 +189,429 @@
 }
 
 /* EventCard */
+
+.events__catalogCard {
+  @apply relative isolate h-[31rem] cursor-pointer overflow-hidden rounded-[1.75rem] bg-heading shadow-[0_18px_45px_rgb(16_42_67/14%)] sm:h-[34rem];
+  clip-path: inset(0 round 1.75rem);
+}
+
+.events__catalogCardMedia {
+  @apply absolute -inset-0.5;
+}
+
+.events__catalogCardImage {
+  @apply object-cover transition-transform duration-500 ease-out;
+  backface-visibility: hidden;
+}
+
+.events__catalogCardScrim {
+  @apply pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-[linear-gradient(180deg,transparent_0%,rgb(7_22_35/68%)_38%,rgb(7_22_35/96%)_100%)];
+}
+
+.events__catalogCardPanel {
+  @apply absolute inset-x-0 bottom-0 p-5 text-white transition-transform duration-300 ease-out sm:p-6;
+  transform: translateY(3.875rem);
+}
+
+.events__catalogCardHeading {
+  @apply flex items-start justify-between gap-4;
+}
+
+.events__catalogCardHeading > div {
+  @apply min-w-0;
+}
+
+.events__catalogCardTitle {
+  @apply text-[clamp(1.35rem,2.2vw,1.75rem)] leading-tight font-black tracking-[-0.04em] text-white;
+}
+
+.events__catalogCardLocation {
+  @apply mt-2 flex items-center gap-1.5 text-sm font-medium text-white/72;
+}
+
+.events__catalogCardLocation svg {
+  @apply shrink-0 text-brand;
+  font-size: 18px !important;
+}
+
+.events__catalogCardPrice {
+  @apply shrink-0 text-lg leading-tight font-black text-white;
+}
+
+.events__catalogCardMeta {
+  @apply mt-5 grid grid-cols-3 border-t border-white/24 pt-4;
+}
+
+.events__catalogCardMetaItem {
+  @apply flex min-w-0 items-center justify-center gap-1 px-2 text-white/74 first:justify-start first:pl-0 last:justify-end last:pr-0;
+}
+
+.events__catalogCardMetaItem + .events__catalogCardMetaItem {
+  @apply border-l border-white/24;
+}
+
+.events__catalogCardMetaItem dt,
+.events__catalogCardMetaItem dd {
+  @apply inline text-[0.66rem] leading-4 sm:text-xs;
+}
+
+.events__catalogCardMetaItem dt {
+  @apply flex min-w-0 items-center gap-1 text-white/58;
+}
+
+.events__catalogCardMetaItem dt svg {
+  @apply shrink-0 text-white/66;
+  font-size: 18px !important;
+}
+
+.events__catalogCardMetaItem dd {
+  @apply shrink-0 font-extrabold text-white;
+}
+
+.events__catalogCardActions {
+  @apply mt-5 grid grid-cols-2 gap-5 px-2;
+}
+
+.events__catalogCardDetails,
+.events__catalogCardAttend {
+  opacity: 0;
+  transform: translateY(0.5rem);
+}
+
+.events__catalogCardDetails {
+  @apply grid min-h-10 place-items-center rounded-xl border border-white bg-transparent px-2.5 text-[0.82rem] font-extrabold text-white transition-[color,background-color,opacity,transform] duration-200 ease-out;
+}
+
+.events__catalogCardDetails:hover {
+  @apply bg-white text-heading;
+}
+
+.events__catalogCardAttend {
+  transition-duration: 200ms;
+  transition-property: color, background-color, opacity, transform, box-shadow;
+  transition-timing-function: ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .events__catalogCard:hover .events__catalogCardImage {
+    scale: 1.03;
+  }
+
+  .events__catalogCard:hover .events__catalogCardPanel {
+    transform: translateY(0);
+  }
+
+  .events__catalogCard:hover .events__catalogCardDetails,
+  .events__catalogCard:hover .events__catalogCardAttend {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .events__catalogCard:hover .events__catalogCardDetails {
+    transition-delay: 80ms;
+  }
+
+  .events__catalogCard:hover .events__catalogCardAttend {
+    transition-delay: 130ms;
+  }
+
+  .events__catalogCard:hover .events__catalogCardAttend:hover {
+    @apply shadow-[0_12px_24px_rgb(0_0_0/18%)];
+    transition-delay: 0ms;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .events__catalogCardPanel {
+    transform: translateY(0);
+  }
+
+  .events__catalogCardDetails,
+  .events__catalogCardAttend {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events__catalogCardImage,
+  .events__catalogCardPanel,
+  .events__catalogCardDetails,
+  .events__catalogCardAttend {
+    transition-duration: 0.01ms;
+    transition-delay: 0ms;
+  }
+}
+
+/* EventRegistrationDialog */
+
+.events__registrationBackdrop {
+  background: rgb(16 42 67 / 32%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(118%);
+  backdrop-filter: blur(12px) saturate(118%);
+}
+
+.events__registrationDialog {
+  width: min(58rem, calc(100% - 2rem));
+  max-width: 58rem !important;
+  margin: 1rem !important;
+  overflow: hidden;
+  border: 0;
+  border-radius: 2rem !important;
+  background: var(--surface) !important;
+  background-image: none !important;
+  box-shadow:
+    0 0 0 1px rgb(16 42 67 / 14%),
+    0 34px 100px rgb(16 42 67 / 30%) !important;
+  transform-origin: center;
+  transition-property: transform;
+  will-change: transform;
+}
+
+.events__registrationDialogOpen {
+  transform: translateY(0) scale(1);
+  transition-duration: 360ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.events__registrationDialogClosed {
+  transform: translateY(0.875rem) scale(0.985);
+  transition-duration: 260ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.events__registrationLayout {
+  @apply grid min-h-[36rem] md:grid-cols-[0.82fr_1.18fr];
+}
+
+.events__registrationPreview {
+  @apply relative isolate min-h-56 overflow-hidden bg-heading md:min-h-full;
+}
+
+@media (min-width: 768px) {
+  .events__registrationPreview {
+    z-index: 1;
+    width: calc(100% + 1px);
+  }
+}
+
+.events__registrationImage {
+  @apply object-cover;
+}
+
+.events__registrationScrim {
+  @apply pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgb(7_22_35/8%)_0%,rgb(7_22_35/28%)_42%,rgb(7_22_35/92%)_100%)];
+}
+
+.events__registrationEvent {
+  @apply absolute inset-x-0 bottom-0 z-10 p-6 text-white sm:p-8;
+}
+
+.events__registrationEventLabel {
+  @apply text-[0.68rem] font-black tracking-[0.18em] text-brand uppercase;
+}
+
+.events__registrationEvent h3 {
+  @apply mt-2 text-2xl leading-[1.05] font-black tracking-[-0.045em] text-white sm:text-3xl;
+}
+
+.events__registrationEventMeta {
+  @apply mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-white/76;
+}
+
+.events__registrationEventMeta span {
+  @apply flex items-center gap-1.5;
+}
+
+.events__registrationEventMeta svg {
+  @apply text-brand;
+  font-size: 18px !important;
+}
+
+.events__registrationForm {
+  @apply relative flex flex-col justify-center p-6 sm:p-9 lg:p-11;
+}
+
+.events__registrationClose {
+  @apply absolute top-4 right-4 z-10 text-muted sm:top-5 sm:right-5;
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+  border: 1px solid var(--border) !important;
+  background: var(--background) !important;
+}
+
+.events__registrationClose:hover {
+  color: var(--heading) !important;
+  background: color-mix(in srgb, var(--brand-turquoise) 10%, var(--surface)) !important;
+}
+
+.events__registrationEyebrow {
+  @apply pr-12 text-[0.68rem] font-black tracking-[0.2em] text-action;
+}
+
+.events__registrationTitle {
+  @apply mt-3 pr-10 text-[clamp(1.8rem,4vw,2.65rem)] leading-[1.02] font-black tracking-[-0.055em] text-heading;
+}
+
+.events__registrationDescription {
+  @apply mt-3 max-w-[48ch] text-sm leading-6 text-muted;
+}
+
+.events__registrationFields {
+  @apply mt-7 grid gap-4 sm:grid-cols-2;
+}
+
+.events__registrationField {
+  @apply flex min-w-0 flex-col gap-2;
+}
+
+.events__registrationField > span:first-child {
+  @apply text-xs font-extrabold text-heading;
+}
+
+.events__registrationField input {
+  @apply min-h-12 w-full rounded-xl border border-border bg-background px-4 text-sm font-medium text-text transition-[border-color,box-shadow,background-color] duration-200 outline-none;
+}
+
+.events__registrationField input::placeholder {
+  @apply text-muted/70;
+}
+
+.events__registrationField input:focus {
+  @apply border-action bg-surface shadow-[0_0_0_3px_rgb(37_99_235/12%)];
+}
+
+.events__registrationSelectWrap {
+  @apply relative block;
+}
+
+.events__registrationSelectWrap > svg {
+  @apply pointer-events-none absolute top-1/2 left-3.5 z-10 -translate-y-1/2 text-brand;
+  font-size: 19px !important;
+}
+
+.events__registrationSelect {
+  @apply min-h-12 w-full cursor-pointer rounded-xl bg-background text-sm font-medium text-text transition-[border-color,box-shadow,background-color] duration-200;
+  font-family: inherit !important;
+}
+
+.events__registrationSelect :global(.MuiSelect-select) {
+  @apply flex min-h-12 cursor-pointer items-center py-0 pr-10 pl-10;
+}
+
+.events__registrationSelect :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: var(--border) !important;
+  border-width: 1px !important;
+}
+
+.events__registrationSelect:hover :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: var(--brand-turquoise) !important;
+}
+
+.events__registrationSelect:global(.Mui-focused) {
+  @apply bg-background shadow-none;
+}
+
+.events__registrationSelect:global(.Mui-focused) :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: var(--border) !important;
+  border-width: 1px !important;
+}
+
+.events__registrationSelect > :global(.MuiSelect-icon) {
+  right: 0.875rem;
+  left: auto;
+  color: var(--heading);
+  font-size: 1.25rem !important;
+}
+
+.events__registrationSelectMenu :global(.MuiPaper-root) {
+  margin-top: 0.5rem;
+  padding: 0.375rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem !important;
+  background: rgb(255 255 255 / 96%) !important;
+  box-shadow: 0 18px 46px rgb(16 42 67 / 18%) !important;
+}
+
+.events__registrationSelectMenu :global(.MuiList-root) {
+  padding: 0 !important;
+}
+
+.events__registrationSelectOption {
+  min-height: 2.75rem !important;
+  cursor: pointer !important;
+  border-radius: 0.75rem !important;
+  color: var(--text) !important;
+  font-family: inherit !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.events__registrationSelectOption:hover {
+  color: var(--heading) !important;
+  background: color-mix(in srgb, var(--brand-turquoise) 12%, var(--surface)) !important;
+}
+
+.events__registrationSelectOption:global(.Mui-selected) {
+  color: var(--action-blue) !important;
+  background: color-mix(in srgb, var(--action-blue) 10%, var(--surface)) !important;
+}
+
+.events__registrationSelectOption:global(.Mui-selected):hover {
+  background: color-mix(in srgb, var(--action-blue) 15%, var(--surface)) !important;
+}
+
+.events__registrationConsent {
+  @apply mt-5 flex cursor-pointer items-start gap-3 text-xs leading-5 text-muted;
+}
+
+.events__registrationConsent input {
+  @apply mt-0.5 size-4.5 shrink-0 cursor-pointer;
+  accent-color: var(--action-blue);
+}
+
+.events__registrationActions {
+  @apply mt-7 grid grid-cols-2 gap-3;
+}
+
+@media (max-width: 767px) {
+  .events__registrationDialog {
+    max-height: calc(100% - 1rem) !important;
+    margin: 0.5rem !important;
+  }
+
+  .events__registrationLayout {
+    min-height: 0;
+  }
+
+  .events__registrationPreview {
+    min-height: 12rem;
+  }
+
+  .events__registrationEvent {
+    @apply p-5;
+  }
+
+  .events__registrationEvent h3 {
+    @apply text-2xl;
+  }
+
+  .events__registrationForm {
+    @apply p-5 pt-7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events__registrationField input,
+  .events__registrationSelect,
+  .events__registrationDialogOpen,
+  .events__registrationDialogClosed {
+    transition-duration: 0.01ms;
+  }
+}
 
 .events__card {
   @apply flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[0_12px_34px_rgb(16_42_67/6%)] transition duration-200 hover:-translate-y-1 hover:border-brand;

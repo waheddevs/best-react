@@ -1,5 +1,7 @@
 import { EventCard } from "@/components/cards/EventCard";
-import { DraftNotice } from "@/components/ui/DraftNotice";
+import { Reveal } from "@/components/motion/Reveal";
+import { StaggerGroup } from "@/components/motion/StaggerGroup";
+import { StaggerItem } from "@/components/motion/StaggerItem";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
@@ -17,30 +19,35 @@ export function EventsCatalog({ locale, copy }: EventsCatalogProps) {
   const past = events.filter((event) => event.status === "past");
 
   return (
-    <Section>
-      <DraftNotice badge={copy.common.draftBadge} note={copy.common.draftNote} />
-      <div className={styles.events__catalogHeading}>
-        <SectionHeading title={copy.events.upcoming} />
-      </div>
-      <div className={styles.events__catalogGrid}>
-        {upcoming.map((event) => (
-          <EventCard key={event.slug} event={event} locale={locale} copy={copy} />
-        ))}
-      </div>
-      <div className={styles.events__catalogHeadingPast}>
-        <SectionHeading title={copy.events.past} />
-      </div>
-      {past.length > 0 ? (
-        <div className={styles.events__catalogGrid}>
-          {past.map((event) => (
-            <EventCard key={event.slug} event={event} locale={locale} copy={copy} />
+    <>
+      <Section tone="surface">
+        <Reveal>
+          <SectionHeading align="center" title={copy.events.upcoming} />
+        </Reveal>
+        <StaggerGroup className={styles.events__catalogGrid} delay={0.08}>
+          {upcoming.map((event) => (
+            <StaggerItem key={event.slug} initialScale={0.99}>
+              <EventCard event={event} locale={locale} copy={copy} variant="catalog" />
+            </StaggerItem>
           ))}
-        </div>
-      ) : (
-        <div className={styles.events__catalogEmpty}>
-          {copy.events.noPast}
-        </div>
-      )}
-    </Section>
+        </StaggerGroup>
+      </Section>
+      <Section tone="background">
+        <Reveal>
+          <SectionHeading align="center" title={copy.events.past} />
+        </Reveal>
+        {past.length > 0 ? (
+          <StaggerGroup className={styles.events__catalogGrid} delay={0.08}>
+            {past.map((event) => (
+              <StaggerItem key={event.slug} initialScale={0.99}>
+                <EventCard event={event} locale={locale} copy={copy} variant="catalog" />
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+        ) : (
+          <div className={styles.events__catalogEmpty}>{copy.events.noPast}</div>
+        )}
+      </Section>
+    </>
   );
 }
