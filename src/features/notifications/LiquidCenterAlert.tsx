@@ -1,6 +1,7 @@
 "use client";
 
 import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
+import CancelRounded from "@mui/icons-material/CancelRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -19,6 +20,7 @@ type LiquidCenterAlertProps = {
 
 const toneClassNames: Record<CenterAlertTone, string> = {
   success: styles.publicShared__centerAlertSuccess,
+  error: styles.publicShared__centerAlertError,
   info: styles.publicShared__centerAlertInfo,
 };
 
@@ -62,6 +64,8 @@ export function LiquidCenterAlert({ options, open, onClose, onExited }: LiquidCe
         <span className={styles.publicShared__centerAlertIcon}>
           {options.tone === "success" ? (
             <CheckCircleRounded aria-hidden="true" />
+          ) : options.tone === "error" ? (
+            <CancelRounded aria-hidden="true" />
           ) : (
             <InfoOutlined aria-hidden="true" />
           )}
@@ -75,7 +79,7 @@ export function LiquidCenterAlert({ options, open, onClose, onExited }: LiquidCe
         <div className={styles.publicShared__centerAlertCloseSlot}>
           <Button
             className={styles.publicShared__centerAlertClose}
-            hoverEffect="grow"
+            hoverEffect="jump"
             onClick={handleClose}
             shape="soft"
           >

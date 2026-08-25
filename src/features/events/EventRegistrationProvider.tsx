@@ -28,20 +28,37 @@ export function EventRegistrationProvider({
   const [selectedEvent, setSelectedEvent] = useState<PublicEvent | null>(null);
   const { showCenterAlert } = useNotifications();
 
-  const openRegistration = useCallback((event: PublicEvent) => {
-    if (openFrameRef.current !== null) {
-      window.cancelAnimationFrame(openFrameRef.current);
-    }
+  const openRegistration = useCallback(
+    (event: PublicEvent) => {
+      if (openFrameRef.current !== null) {
+        window.cancelAnimationFrame(openFrameRef.current);
+      }
 
-    pendingAlertRef.current = null;
-    setIsDialogOpen(false);
-    setSelectedEvent(event);
+      pendingAlertRef.current = null;
+      setIsDialogOpen(false);
 
-    openFrameRef.current = window.requestAnimationFrame(() => {
-      openFrameRef.current = null;
-      setIsDialogOpen(true);
-    });
-  }, []);
+      if (event.status === "past") {
+        setSelectedEvent(null);
+        showCenterAlert({
+          closeLabel: copy.close,
+          message: copy.pastEventMessage
+            .replace("{event}", event.title[locale])
+            .replace("{date}", event.dateLabel[locale]),
+          title: copy.pastEventTitle,
+          tone: "error",
+        });
+        return;
+      }
+
+      setSelectedEvent(event);
+
+      openFrameRef.current = window.requestAnimationFrame(() => {
+        openFrameRef.current = null;
+        setIsDialogOpen(true);
+      });
+    },
+    [copy.close, copy.pastEventMessage, copy.pastEventTitle, locale, showCenterAlert],
+  );
 
   const contextValue = useMemo(() => ({ openRegistration }), [openRegistration]);
 
@@ -65,12 +82,12 @@ export function EventRegistrationProvider({
     const eventTitle = selectedEvent.title[locale];
     pendingAlertRef.current = {
       closeLabel: copy.close,
-      message: copy.previewMessage.replace("{event}", eventTitle),
-      title: copy.previewTitle,
-      tone: "info",
+      message: copy.successMessage.replace("{event}", eventTitle),
+      title: copy.successTitle,
+      tone: "success",
     };
     setIsDialogOpen(false);
-  }, [copy.close, copy.previewMessage, copy.previewTitle, locale, selectedEvent]);
+  }, [copy.close, copy.successMessage, copy.successTitle, locale, selectedEvent]);
 
   const handleExited = useCallback(() => {
     setSelectedEvent(null);

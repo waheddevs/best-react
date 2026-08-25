@@ -257,7 +257,6 @@ export const events: PublicEvent[] = [
     dateLabel: { uz: "7-iyun", ru: "7 июня", en: "June 7" },
     timeLabel: { uz: "18:30", ru: "18:30", en: "18:30" },
     durationLabel: { uz: "1,5 soat", ru: "1,5 ч", en: "1.5h" },
-    priceLabel: { uz: "$15", ru: "$15", en: "$15" },
     locationLabel: {
       uz: "BEST onlayn studiyasi",
       ru: "Онлайн-студия BEST",
@@ -293,7 +292,6 @@ export const events: PublicEvent[] = [
     dateLabel: { uz: "19-may", ru: "19 мая", en: "May 19" },
     timeLabel: { uz: "19:00", ru: "19:00", en: "19:00" },
     durationLabel: { uz: "2 soat", ru: "2 ч", en: "2h" },
-    priceLabel: { uz: "Bepul", ru: "Бесплатно", en: "Free" },
     locationLabel: {
       uz: "BEST Arena, Toshkent",
       ru: "BEST Arena, Ташкент",
@@ -321,24 +319,23 @@ export const events: PublicEvent[] = [
       en: "Movie day",
     },
     summary: {
-      uz: "O‘quvchilar uchun film namoyishi, popkorn va qisqa inglizcha muhokama bilan ijodiy kino kuni.",
-      ru: "Творческий кинодень для учащихся с просмотром фильма, попкорном и коротким обсуждением на английском.",
-      en: "A creative movie day for learners with a film screening, popcorn, and a short English discussion.",
+      uz: "“Paddington” filmini inglizcha subtitrlar bilan tomosha qilish, popkorn va kichik guruh muhokamasidan iborat kino kuni.",
+      ru: "Кинодень с показом «Приключений Паддингтона» с английскими субтитрами, попкорном и обсуждением в малых группах.",
+      en: "A screening of “Paddington” with English subtitles, popcorn, and a guided small-group discussion.",
     },
     formatLabel: { uz: "Oflayn", ru: "Офлайн", en: "In person" },
     dateLabel: { uz: "24-may", ru: "24 мая", en: "May 24" },
     timeLabel: { uz: "16:00", ru: "16:00", en: "16:00" },
     durationLabel: { uz: "2 soat", ru: "2 ч", en: "2h" },
-    priceLabel: { uz: "$5", ru: "$5", en: "$5" },
     locationLabel: {
       uz: "BEST Cinema Hall, Toshkent",
       ru: "BEST Cinema Hall, Ташкент",
       en: "BEST Cinema Hall, Tashkent",
     },
     topics: {
-      uz: ["Film namoyishi", "Inglizcha muhokama", "Popkorn tanaffusi"],
-      ru: ["Показ фильма", "Обсуждение на английском", "Перерыв с попкорном"],
-      en: ["Film screening", "English discussion", "Popcorn break"],
+      uz: ["“Paddington” namoyishi", "Britancha ingliz tili", "Mehribonlik mavzusi"],
+      ru: ["Показ «Паддингтона»", "Британский английский", "Тема доброты"],
+      en: ["“Paddington” screening", "British English", "Kindness and belonging"],
     },
     requiresConfirmation: true,
   },
@@ -365,7 +362,6 @@ export const events: PublicEvent[] = [
     dateLabel: { uz: "27-may", ru: "27 мая", en: "May 27" },
     timeLabel: { uz: "15:00", ru: "15:00", en: "15:00" },
     durationLabel: { uz: "1,5 soat", ru: "1,5 ч", en: "1.5h" },
-    priceLabel: { uz: "$8", ru: "$8", en: "$8" },
     locationLabel: {
       uz: "BEST Academic Hall, Toshkent",
       ru: "BEST Academic Hall, Ташкент",
@@ -401,7 +397,6 @@ export const events: PublicEvent[] = [
     dateLabel: { uz: "10-may", ru: "10 мая", en: "May 10" },
     timeLabel: { uz: "16:00", ru: "16:00", en: "16:00" },
     durationLabel: { uz: "2 soat", ru: "2 ч", en: "2h" },
-    priceLabel: { uz: "Bepul", ru: "Бесплатно", en: "Free" },
     locationLabel: {
       uz: "BEST Celebration Hall, Toshkent",
       ru: "BEST Celebration Hall, Ташкент",

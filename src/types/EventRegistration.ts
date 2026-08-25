@@ -14,6 +14,8 @@ export type EventRegistrationCopy = {
   cancel: string;
   register: string;
   close: string;
-  previewTitle: string;
-  previewMessage: string;
+  successTitle: string;
+  successMessage: string;
+  pastEventTitle: string;
+  pastEventMessage: string;
 };

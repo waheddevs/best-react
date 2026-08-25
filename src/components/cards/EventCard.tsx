@@ -56,7 +56,6 @@ export function EventCard({ event, locale, copy, variant = "summary" }: EventCar
                 {event.locationLabel[locale]}
               </p>
             </div>
-            <strong className={styles.events__catalogCardPrice}>{event.priceLabel[locale]}</strong>
           </div>
 
           <dl className={styles.events__catalogCardMeta}>
@@ -84,11 +83,18 @@ export function EventCard({ event, locale, copy, variant = "summary" }: EventCar
           </dl>
 
           <div className={styles.events__catalogCardActions}>
-            <span className={styles.events__catalogCardDetails}>{copy.common.details}</span>
+            <ScrollToTopLink
+              aria-label={`${copy.common.details}: ${event.title[locale]}`}
+              className={styles.events__catalogCardDetails}
+              href={`/${locale}/events/${event.slug}`}
+            >
+              <span>{copy.common.details}</span>
+              <ArrowOutwardRounded aria-hidden="true" />
+            </ScrollToTopLink>
             <Button
               aria-label={`${copy.events.attend}: ${event.title[locale]}`}
               className={styles.events__catalogCardAttend}
-              hoverEffect="grow"
+              hoverEffect="jump"
               onClick={handleAttendClick}
               size="small"
               variant="surface"

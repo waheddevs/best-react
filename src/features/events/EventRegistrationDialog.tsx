@@ -193,7 +193,7 @@ export function EventRegistrationDialog({
             <Button onClick={handleClose} variant="outline">
               {copy.cancel}
             </Button>
-            <Button hoverEffect="grow" type="submit">
+            <Button hoverEffect="jump" type="submit">
               {copy.register}
             </Button>
           </div>

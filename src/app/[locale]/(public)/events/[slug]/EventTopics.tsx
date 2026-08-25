@@ -1,4 +1,5 @@
-import { DraftNotice } from "@/components/ui/DraftNotice";
+import { StaggerGroup } from "@/components/motion/StaggerGroup";
+import { StaggerItem } from "@/components/motion/StaggerItem";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/events.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
@@ -12,24 +13,22 @@ type EventTopicsProps = {
 
 export function EventTopics({ event, locale, copy }: EventTopicsProps) {
   return (
-    <section>
-      <DraftNotice badge={copy.common.draftBadge} note={copy.common.draftNote} />
-      <h2 className={styles.events__topicsTitle}>
+    <section aria-labelledby="event-topics-title" className={styles.events__topics}>
+      <h2 className={styles.events__topicsTitle} id="event-topics-title">
         {copy.events.topics}
       </h2>
-      <ol className={styles.events__topicsList}>
+      <StaggerGroup className={styles.events__topicsList} delay={0.08}>
         {event.topics[locale].map((topic, index) => (
-          <li
-            key={topic}
-            className={styles.events__topic}
-          >
-            <span className={styles.events__topicNumber}>
-              {index + 1}
-            </span>
-            <span className={styles.events__topicText}>{topic}</span>
-          </li>
+          <StaggerItem key={topic} initialScale={0.985}>
+            <div className={styles.events__topic}>
+              <span className={styles.events__topicNumber}>
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className={styles.events__topicText}>{topic}</span>
+            </div>
+          </StaggerItem>
         ))}
-      </ol>
+      </StaggerGroup>
     </section>
   );
 }

@@ -25,7 +25,7 @@ export type PromiseNotificationInput<Data> = {
 
 export type ConfirmDialogTone = "default" | "warning" | "danger";
 
-export type CenterAlertTone = "success" | "info";
+export type CenterAlertTone = "success" | "error" | "info";
 
 export type CenterAlertInput = NotificationMessage & {
   closeLabel: string;

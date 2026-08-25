@@ -8,28 +8,28 @@ const notificationCopy = {
     defaults: {
       success: {
         title: "Tayyor",
-        message: "Amal muvaffaqiyatli bajarildi.",
+        message: "Amal bajarildi. Hammasi siz uchun tayyor.",
       },
       error: {
-        title: "Xatolik yuz berdi",
-        message: "Amalni bajarib bo‘lmadi. Qayta urinib ko‘ring.",
+        title: "Xatolik",
+        message: "Amal bajarilmadi. Sizga yordam berishga tayyormiz.",
       },
       warning: {
-        title: "E’tibor bering",
-        message: "Davom etishdan oldin ma’lumotlarni qayta tekshiring.",
+        title: "E’tibor",
+        message: "Ma’lumotlarni tekshiring. Kichik tekshiruvning o‘zi kifoya.",
       },
       info: {
         title: "Ma’lumot",
-        message: "Siz uchun yangi ma’lumot mavjud.",
+        message: "Yangi ma’lumot mavjud. U sizga foydali bo‘lishiga umid qilamiz.",
       },
       loading: {
-        title: "Jarayon davom etmoqda",
-        message: "Iltimos, amal yakunlanishini kuting.",
+        title: "Kutilmoqda",
+        message: "Jarayon davom etmoqda. Bu uzoq vaqt olmaydi.",
       },
     },
     confirm: {
-      title: "Amalni tasdiqlang",
-      message: "Bu amalni davom ettirmoqchimisiz?",
+      title: "Tasdiqlash",
+      message: "Tanlovingizni tasdiqlang. Qarorni xotirjam tekshirishingiz mumkin.",
       confirmLabel: "Tasdiqlash",
       cancelLabel: "Bekor qilish",
     },
@@ -40,28 +40,28 @@ const notificationCopy = {
     defaults: {
       success: {
         title: "Готово",
-        message: "Действие успешно выполнено.",
+        message: "Действие выполнено. Всё готово для вас.",
       },
       error: {
-        title: "Произошла ошибка",
-        message: "Не удалось выполнить действие. Попробуйте ещё раз.",
+        title: "Ошибка",
+        message: "Действие не выполнено. Мы готовы помочь вам.",
       },
       warning: {
-        title: "Обратите внимание",
-        message: "Перед продолжением ещё раз проверьте информацию.",
+        title: "Внимание",
+        message: "Проверьте информацию. Достаточно одного быстрого взгляда.",
       },
       info: {
         title: "Информация",
-        message: "Для вас доступна новая информация.",
+        message: "Доступно новое обновление. Надеемся, оно будет полезным.",
       },
       loading: {
-        title: "Идёт обработка",
-        message: "Пожалуйста, дождитесь завершения действия.",
+        title: "Загрузка",
+        message: "Действие выполняется. Это не займёт много времени.",
       },
     },
     confirm: {
-      title: "Подтвердите действие",
-      message: "Вы уверены, что хотите продолжить?",
+      title: "Подтверждение",
+      message: "Подтвердите свой выбор. При необходимости спокойно проверьте решение.",
       confirmLabel: "Подтвердить",
       cancelLabel: "Отмена",
     },
@@ -72,28 +72,28 @@ const notificationCopy = {
     defaults: {
       success: {
         title: "Done",
-        message: "The action was completed successfully.",
+        message: "Action completed. Everything is ready for you.",
       },
       error: {
-        title: "Something went wrong",
-        message: "The action could not be completed. Please try again.",
+        title: "Error",
+        message: "The action could not be completed. We’re here if you need help.",
       },
       warning: {
-        title: "Please check",
-        message: "Review the information before you continue.",
+        title: "Check",
+        message: "Please review the information. A quick check should sort it out.",
       },
       info: {
-        title: "Information",
-        message: "There is a new update for you.",
+        title: "Update",
+        message: "New information is available. We hope it helps.",
       },
       loading: {
-        title: "Working on it",
-        message: "Please wait while the action is completed.",
+        title: "Loading",
+        message: "The action is in progress. This won’t take long.",
       },
     },
     confirm: {
-      title: "Confirm action",
-      message: "Are you sure you want to continue?",
+      title: "Confirmation",
+      message: "Please confirm your choice. Take a moment if you need it.",
       confirmLabel: "Confirm",
       cancelLabel: "Cancel",
     },

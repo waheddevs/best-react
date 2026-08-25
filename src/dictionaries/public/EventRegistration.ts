@@ -18,10 +18,11 @@ const eventRegistrationCopy = {
     consent: "Tadbir yangiliklari va tashkiliy ma’lumotlarni olishga roziman.",
     cancel: "Bekor qilish",
     register: "Register",
-    close: "Yopish",
-    previewTitle: "Registration preview",
-    previewMessage:
-      "{event} uchun forma vizuali tayyor. Ma’lumot yuborish backend ulangandan keyin ishlaydi.",
+    close: "Tushunarli",
+    successTitle: "Ishtirokingiz tasdiqlandi",
+    successMessage: "{event} uchun joyingiz band qilindi. Sizni tadbirda kutamiz.",
+    pastEventTitle: "Ro‘yxatdan o‘tish yopilgan",
+    pastEventMessage: "{event} tadbiri {date} kuni yakunlangan. Keyingi tadbirda sizni kutamiz.",
   },
   ru: {
     eyebrow: "РЕГИСТРАЦИЯ НА СОБЫТИЕ",
@@ -39,10 +40,12 @@ const eventRegistrationCopy = {
     consent: "Я согласен получать новости события и организационную информацию.",
     cancel: "Отмена",
     register: "Register",
-    close: "Закрыть",
-    previewTitle: "Предпросмотр регистрации",
-    previewMessage:
-      "Визуальная форма для события «{event}» готова. Отправка данных заработает после подключения backend.",
+    close: "Готово",
+    successTitle: "Участие подтверждено",
+    successMessage: "Ваше место на событии «{event}» забронировано. Будем рады видеть вас там.",
+    pastEventTitle: "Регистрация закрыта",
+    pastEventMessage:
+      "Событие «{event}» завершилось {date}. Будем рады видеть вас на следующем событии.",
   },
   en: {
     eyebrow: "EVENT REGISTRATION",
@@ -60,10 +63,11 @@ const eventRegistrationCopy = {
     consent: "I agree to receive event updates and organisational information.",
     cancel: "Cancel",
     register: "Register",
-    close: "Close",
-    previewTitle: "Registration preview",
-    previewMessage:
-      "The visual form for {event} is ready. Data submission will work after the backend is connected.",
+    close: "Done",
+    successTitle: "Attendance confirmed",
+    successMessage: "Your place for {event} is reserved. We’re happy to have you with us.",
+    pastEventTitle: "Registration closed",
+    pastEventMessage: "{event} ended on {date}. We’d love to see you at the next event.",
   },
 } satisfies Record<Locale, EventRegistrationCopy>;
 
