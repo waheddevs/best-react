@@ -46,50 +46,8 @@
   @apply text-action;
 }
 
-.navbar__link:hover,
-.navbar__dropdownItem:hover {
+.navbar__link:hover {
   @apply bg-[color-mix(in_srgb,var(--brand-turquoise)_10%,transparent)];
-}
-
-.navbar__dropdown {
-  @apply relative;
-}
-
-.navbar__dropdownTrigger {
-  @apply inline-flex items-center gap-1;
-}
-
-.navbar__dropdownArrow {
-  @apply transition-transform duration-200;
-  font-size: 18px !important;
-}
-
-.navbar__dropdownOpen .navbar__dropdownArrow {
-  @apply rotate-180;
-}
-
-.navbar__dropdownPanel {
-  @apply invisible absolute top-full left-0 z-50 w-60 translate-y-1 pt-2 opacity-0 transition-[visibility,opacity,transform] duration-200;
-}
-
-.navbar__dropdownOpen .navbar__dropdownPanel {
-  @apply visible translate-y-0 opacity-100;
-}
-
-.navbar__dropdownMenu {
-  @apply rounded-2xl border border-border bg-surface p-3 shadow-(--shadow-soft);
-}
-
-.navbar__dropdownList {
-  @apply space-y-0.5;
-}
-
-.navbar__dropdownItem {
-  @apply flex min-h-10 items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-heading transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action;
-}
-
-.navbar__dropdownBullet {
-  @apply size-1.5 rounded-full bg-brand;
 }
 
 .navbar__actions {
