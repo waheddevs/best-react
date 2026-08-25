@@ -67,7 +67,7 @@ export function HeroCopy({ locale, content }: HeroCopyProps) {
         {content.description}
       </motion.p>
       <motion.div className={styles.home__heroActions} variants={itemVariants}>
-        <ButtonLink href={`/${locale}/courses`} hoverEffect="grow">
+        <ButtonLink href={`/${locale}/courses`} hoverEffect="jump">
           {content.primaryCta}
         </ButtonLink>
         <ButtonLink href={`/${locale}/contact`} variant="secondary">

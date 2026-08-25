@@ -277,10 +277,6 @@
   @apply sticky top-20 flex h-[calc(100svh-5rem)] flex-col justify-center overflow-hidden py-2 sm:py-4;
 }
 
-.about__testimonialHeading {
-  @apply relative -top-15;
-}
-
 .about__testimonialStage {
   @apply relative mt-4 h-[29rem] sm:h-[27rem] md:mt-7 md:h-[21rem];
 }

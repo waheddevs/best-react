@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 
 import { Button } from "@/components/ui/Button";
 import styles from "@/css/public/contact.module.css";
+import sharedStyles from "@/css/public/shared.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useContactForm } from "@/hooks/public/contact/useContactForm";
 
@@ -89,7 +90,12 @@ export function ContactForm({ copy }: ContactFormProps) {
         slotProps={{ htmlInput: { "aria-required": true } }}
         value={values.message}
       />
-      <Button fullWidth shape="soft" type="submit">
+      <Button
+        className={`${sharedStyles.publicShared__formAction} ${styles.contact__formAction}`}
+        hoverEffect="jump"
+        shape="soft"
+        type="submit"
+      >
         {copy.contact.send}
       </Button>
     </form>

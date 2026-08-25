@@ -36,7 +36,7 @@ export function Testimonials({ copy }: TestimonialsProps) {
   return (
     <section ref={sectionRef} className={styles.about__testimonials}>
       <Container className={styles.about__testimonialsSticky}>
-        <Reveal className={styles.about__testimonialHeading}>
+        <Reveal>
           <SectionHeading
             align="center"
             eyebrow={copy.about.testimonials.eyebrow}

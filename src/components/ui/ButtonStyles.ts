@@ -33,6 +33,7 @@ const shapeClassNames: Record<ButtonShape, string> = {
 const hoverEffectClassNames: Record<ButtonHoverEffect, string> = {
   none: "",
   grow: styles.publicShared__buttonGrow,
+  jump: styles.publicShared__buttonJump,
 };
 
 type GetButtonClassNameOptions = ButtonStyleProps & {

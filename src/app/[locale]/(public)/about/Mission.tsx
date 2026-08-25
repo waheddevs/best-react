@@ -6,6 +6,8 @@ import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/about.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
+import { MissionCopyMotion } from "./MissionCopyMotion";
+
 type MissionProps = {
   locale: Locale;
   copy: PageCopy;
@@ -15,7 +17,7 @@ export function Mission({ locale, copy }: MissionProps) {
   return (
     <section className={styles.about__mission}>
       <div className={styles.about__missionLayout}>
-        <div className={styles.about__missionCopy}>
+        <MissionCopyMotion className={styles.about__missionCopy}>
           <SectionHeading
             eyebrow={copy.about.missionEyebrow}
             title={copy.about.missionTitle}
@@ -26,7 +28,7 @@ export function Mission({ locale, copy }: MissionProps) {
           <div className={styles.about__missionAction}>
             <ButtonLink href={`/${locale}/courses`}>{copy.about.missionCta}</ButtonLink>
           </div>
-        </div>
+        </MissionCopyMotion>
         <div className={styles.about__missionVisual}>
           <Image
             src="/images/about-page/best-lc-learning-centre.png"

@@ -12,7 +12,7 @@ export type ButtonSize = "small" | "medium" | "large";
 
 export type ButtonShape = "rounded" | "soft" | "pill";
 
-export type ButtonHoverEffect = "none" | "grow";
+export type ButtonHoverEffect = "none" | "grow" | "jump";
 
 export type ButtonStyleProps = {
   fullWidth?: boolean;

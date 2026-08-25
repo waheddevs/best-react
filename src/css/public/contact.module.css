@@ -157,7 +157,7 @@
 }
 
 .contact__formTitle {
-  @apply mb-7 text-2xl font-black tracking-[-0.04em] text-heading;
+  @apply mb-7 text-center text-2xl font-black tracking-[-0.04em] text-heading;
 }
 
 /* ContactForm */
@@ -171,7 +171,19 @@
 }
 
 .contact__form .contact__formSingleLineLabel:not(:global(.MuiInputLabel-shrink)) {
-  transform: translate(14px, 8px) scale(1);
+  transform: translate(14px, 12px) scale(1);
+}
+
+.contact__form :global(.MuiOutlinedInput-root:not(.MuiInputBase-multiline)) {
+  min-height: 3rem;
+}
+
+.contact__form :global(.MuiOutlinedInput-root:not(.MuiInputBase-multiline) .MuiInputBase-input) {
+  padding-block: 0.75rem;
+}
+
+.contact__form .contact__formAction {
+  @apply justify-self-center;
 }
 
 .contact__form :global(.MuiInputBase-input:focus-visible) {
