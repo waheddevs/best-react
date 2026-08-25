@@ -1,11 +1,11 @@
 import { PageHero } from "@/components/ui/PageHero";
-import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { ExamPreviewCopy } from "@/types/ExamPreview";
 
 import { ExamsHeroVisual } from "./ExamsHeroVisual";
 
 type ExamsHeroProps = {
   eyebrow: string;
-  copy: PageCopy;
+  copy: ExamPreviewCopy;
 };
 
 export function ExamsHero({ eyebrow, copy }: ExamsHeroProps) {
@@ -13,9 +13,9 @@ export function ExamsHero({ eyebrow, copy }: ExamsHeroProps) {
     <PageHero
       animateCopy
       eyebrow={eyebrow}
-      title={copy.exams.title}
-      description={copy.exams.description}
-      visual={<ExamsHeroVisual copy={copy.exams} />}
+      title={copy.title}
+      description={copy.description}
+      visual={<ExamsHeroVisual copy={copy} />}
     />
   );
 }

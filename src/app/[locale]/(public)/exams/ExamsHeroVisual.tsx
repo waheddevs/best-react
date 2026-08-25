@@ -4,13 +4,13 @@ import EditRounded from "@mui/icons-material/EditRounded";
 import { HeroVisualFrame } from "@/components/motion/HeroVisualFrame";
 import { LiveIllustration } from "@/components/motion/LiveIllustration";
 import styles from "@/css/public/exams.module.css";
-import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { ExamPreviewCopy } from "@/types/ExamPreview";
 
 import { ExamChecklistMotion } from "./ExamChecklistMotion";
 import { ExamClockMotion } from "./ExamClockMotion";
 
 type ExamsHeroVisualProps = {
-  copy: PageCopy["exams"];
+  copy: ExamPreviewCopy;
 };
 
 export function ExamsHeroVisual({ copy }: ExamsHeroVisualProps) {
@@ -21,8 +21,8 @@ export function ExamsHeroVisual({ copy }: ExamsHeroVisualProps) {
         <span className={styles.exams__heroPaperIcon}>
           <DescriptionRounded />
         </span>
-        <strong className={styles.exams__heroPaperTitle}>{copy.preparationTitle}</strong>
-        <span className={styles.exams__heroPaperMeta}>{copy.directions[0].title}</span>
+        <strong className={styles.exams__heroPaperTitle}>{copy.heroVisualTitle}</strong>
+        <span className={styles.exams__heroPaperMeta}>{copy.heroVisualMeta}</span>
         <ExamChecklistMotion />
       </LiveIllustration>
       <LiveIllustration className={styles.exams__heroTimer} delay={0.4} variant="pulse">

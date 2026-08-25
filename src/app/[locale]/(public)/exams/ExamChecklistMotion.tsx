@@ -18,30 +18,49 @@ export function ExamChecklistMotion() {
     const checklist = scope.current;
     let cancelled = false;
     let holdTimer: number | undefined;
+    let resolveHold: (() => void) | undefined;
 
     if (!checklist) {
       return;
     }
 
+    const checks = Array.from(checklist.querySelectorAll<HTMLElement>("[data-exam-check]"));
+    const checkFills = Array.from(
+      checklist.querySelectorAll<HTMLElement>("[data-exam-check-fill]"),
+    );
+    const bars = Array.from(checklist.querySelectorAll<HTMLElement>("[data-exam-bar]"));
+
+    if (
+      checks.length !== checklistRows.length ||
+      checkFills.length !== checklistRows.length ||
+      bars.length !== checklistRows.length
+    ) {
+      return;
+    }
+
     const hold = async (duration: number) => {
       await new Promise<void>((resolve) => {
-        holdTimer = window.setTimeout(resolve, duration * 1000);
+        resolveHold = resolve;
+        holdTimer = window.setTimeout(() => {
+          resolveHold = undefined;
+          resolve();
+        }, duration * 1000);
       });
     };
 
     const resetChecklist = async () => {
       await Promise.all([
-        animate("[data-exam-check]", { scale: 1 }, { duration: 0 }),
-        animate("[data-exam-check-fill]", { opacity: 0 }, { duration: 0 }),
-        animate("[data-exam-bar]", { scaleX: 0 }, { duration: 0 }),
+        animate(checks, { scale: 1 }, { duration: 0 }),
+        animate(checkFills, { opacity: 0 }, { duration: 0 }),
+        animate(bars, { scaleX: 0 }, { duration: 0 }),
       ]);
     };
 
     const showCompletedChecklist = async () => {
       await Promise.all([
-        animate("[data-exam-check]", { scale: 1 }, { duration: 0 }),
-        animate("[data-exam-check-fill]", { opacity: 1 }, { duration: 0 }),
-        animate("[data-exam-bar]", { scaleX: 1 }, { duration: 0 }),
+        animate(checks, { scale: 1 }, { duration: 0 }),
+        animate(checkFills, { opacity: 1 }, { duration: 0 }),
+        animate(bars, { scaleX: 1 }, { duration: 0 }),
       ]);
     };
 
@@ -59,20 +78,16 @@ export function ExamChecklistMotion() {
             return;
           }
 
-          await animate(
-            `[data-exam-bar="${row}"]`,
-            { scaleX: 1 },
-            { duration: 1.1, ease: checklistEase },
-          );
+          await animate(bars[row], { scaleX: 1 }, { duration: 1.1, ease: checklistEase });
 
           if (cancelled) {
             return;
           }
 
           await Promise.all([
-            animate(`[data-exam-check-fill="${row}"]`, { opacity: 1 }, { duration: 0 }),
+            animate(checkFills[row], { opacity: 1 }, { duration: 0 }),
             animate(
-              `[data-exam-check="${row}"]`,
+              checks[row],
               { scale: [1, 1.3, 0.94, 1] },
               { duration: 0.34, ease: checklistEase, times: [0, 0.35, 0.68, 1] },
             ),
@@ -87,12 +102,8 @@ export function ExamChecklistMotion() {
           }
 
           await Promise.all([
-            animate(
-              `[data-exam-bar="${row}"]`,
-              { scaleX: 0 },
-              { duration: 0.28, ease: "easeInOut" },
-            ),
-            animate(`[data-exam-check-fill="${row}"]`, { opacity: 0 }, { duration: 0.28 }),
+            animate(bars[row], { scaleX: 0 }, { duration: 0.28, ease: "easeInOut" }),
+            animate(checkFills[row], { opacity: 0 }, { duration: 0.28 }),
           ]);
         }
 
@@ -107,6 +118,7 @@ export function ExamChecklistMotion() {
       if (holdTimer) {
         window.clearTimeout(holdTimer);
       }
+      resolveHold?.();
     };
   }, [animate, reduceMotion, scope]);
 
