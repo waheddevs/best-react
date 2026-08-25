@@ -70,9 +70,11 @@ conversion journeys can be reviewed realistically.
   must remain clearly synthetic preview material.
 - Replace preview content with client-supplied real data before production
   launch, while preserving the established types and presentation structure.
-- This convention authorizes fictional content, not fake functionality. Never
-  imply that registration, forms, payments, authentication, or persistence work
-  when no corresponding backend exists.
+- This convention authorizes fictional content, not fake functionality by
+  default. The event-registration success state in section 7C and exam-request
+  preview in section 7D are explicitly approved UI-only simulations; they do
+  not add submission or persistence. Never simulate payments, authentication,
+  or other backend flows without fresh explicit approval.
 
 ## 3. Required technical stack
 
@@ -204,16 +206,17 @@ src/
             page.tsx
         results/
           ResultsHero.tsx
-          ResultsNotice.tsx
+          ResultStories.tsx
           LearningJourney.tsx
           OutcomeCategories.tsx
           ResultsCta.tsx
           page.tsx
         exams/
           ExamsHero.tsx
-          ExamDirections.tsx
-          ExamRules.tsx
-          ExamPreparation.tsx
+          ExamsHeroVisual.tsx
+          ExamInstructions.tsx
+          ExamOptions.tsx
+          ExamResults.tsx
           page.tsx
         about/
           AboutHero.tsx
@@ -277,7 +280,6 @@ src/
   hooks/
     useCurrentLocale.ts
     navigation/
-      useNavbarDropdown.ts
       useMobileNavigation.ts
       useLocaleSwitcher.ts
       useActivePath.ts
@@ -287,11 +289,15 @@ src/
         useCourseCatalog.ts
       contact/
         useContactForm.ts
+      exams/
+        useExamRegistration.ts
+        useExamResultsPreview.ts
     student/
       library/
         useResourceCatalog.ts
   config/
   data/
+    PublicExams.ts
     student/
       LibraryResources.ts
   dictionaries/
@@ -301,6 +307,7 @@ src/
       Uz.ts
       Types.ts
       PageCopy.ts
+      ExamPreview.ts
       GetDictionary.ts
     student/
       Library.ts
@@ -325,6 +332,7 @@ src/
     admin/.gitkeep
   lib/
   types/
+    ExamPreview.ts
     student/
       Library.ts
 public/
@@ -467,15 +475,22 @@ Apply clean-code and clean-source practices throughout the project:
 - Approved text-button variants are `primary`, `secondary`, `outline`, `ghost`,
   `filter`, `inverseOutline`, `surface`, and `danger`; approved sizes are
   `small`, `medium`, and `large`, with `rounded`, `soft`, and `pill` shapes.
+- Keep the shared `medium` button at a compact 44 px minimum height with 14 px
+  text so default card and form actions maintain one visual rhythm. Reserve the
+  explicit `small` and `large` sizes for intentionally quieter or stronger
+  controls.
+- Use the shared fixed-width form-action class for the Exams result lookup and
+  Contact submit controls so neither stretches across its form panel and both
+  retain the same compact width.
 - Page and feature CSS may control layout, state-specific visibility, or a
   genuinely domain-specific accent, but must not duplicate shared button
   padding, typography, radius, focus, disabled, or common hover rules.
-- Use the shared `hoverEffect="grow"` option for the Navbar signup, event
+- Use the shared `hoverEffect="jump"` option for the Navbar signup, event
   registration submit, homepage Explore Courses CTA, centred-alert Close, and
-  event Attend action. Grow the actual control through padding and minimum-size
-  transitions with compensating negative margins so its occupied layout space
-  remains stable. Keep its text and icon untransformed and crisp; do not scale
-  the button node itself or add a press/active transform.
+  event Attend action. On fine-pointer hover, move the control upward by `2px`
+  without changing its occupied layout size. Keep button text and icons
+  untransformed and crisp; do not scale the button node itself or add a
+  press/active transform.
 - Do not create or return visual button components from hooks. Hooks own button
   behaviour only when reusable state or interaction logic is required.
 
@@ -564,6 +579,13 @@ page-local alert implementations:
 - Every toast and confirmation must render a distinct `title` followed by its
   related `message`. The shared hooks may use localized defaults when either
   value is omitted.
+- Blocking confirmations and centred alerts use the same vertically centred
+  hierarchy: icon, title, message, then centred actions. Keep multiple actions
+  grouped together below the copy.
+- Keep notification titles compact and messages to exactly two short
+  sentences: the first states the notification outcome, and the second adds a
+  warm user-facing note. Put extended explanations in the owning page or dialog
+  instead of the alert.
 - Keep notification types in `types/Notification.ts`, localized default copy in
   `dictionaries/public/Notifications.ts`, and liquid-glass styles under the
   `/* Notifications */` section of `css/public/shared.module.css`.
@@ -575,9 +597,10 @@ page-local alert implementations:
 - Preserve keyboard access, Escape dismissal, dialog focus management,
   reduced-motion behavior, readable contrast, and a solid background fallback
   when `backdrop-filter` is unavailable.
-- Notifications may explain that a frontend-only service is unavailable, but
-  must never claim that an unimplemented submission, registration, payment, or
-  other backend action succeeded.
+- Notifications must not claim that an unimplemented payment, authentication,
+  or other backend action succeeded. Event registration and the exam-request
+  flow are approved exceptions: during client preview they may show centralized
+  fictional success copy as explicitly authorized UI-only simulations.
 - Do not connect Events `Details` or `Attend` controls to notifications or other
   actions outside the approved registration flow.
 
@@ -588,13 +611,45 @@ page-local alert implementations:
   `hooks/public/events/useEventRegistration.ts` so one shared dialog serves all
   event cards.
 - `Attend` opens the shared MUI registration dialog with a blurred backdrop and
-  the selected event context. Do not mount a separate dialog per card.
-- During the visual-prototype stage, the form has no validation, submission,
-  persistence, or success claim. `Register` closes the form and opens a centred
-  custom preview alert explaining that backend submission is not connected.
+  the selected upcoming-event context. For a past event, `Attend` must skip the
+  form and open the shared centred alert with an error tone, a red cancel icon,
+  and localized archive/registration-closed copy. Do not mount a separate
+  dialog or alert per card.
+- During the visual-prototype stage, the form has no validation, submission, or
+  persistence. `Register` closes the form and opens a centred simulated-success
+  alert with the selected event context. This is presentation-only preview
+  behaviour and must remain replaceable before backend integration.
 - Keep registration copy localized in Uzbek, Russian, and English under
-  `dictionaries/public/EventRegistration.ts`. Add validation and real success
-  feedback only when the corresponding backend contract is available.
+  `dictionaries/public/EventRegistration.ts`. Replace the simulated success
+  flow with validation and real submission handling when the backend contract
+  becomes available.
+
+## 7D. Exam request preview
+
+- Keep every top-level Exams section heading block centred, including its
+  eyebrow, title, and supporting description. Dialog and card headings retain
+  their own content-driven alignment.
+- The Exams page may simulate IELTS, CEFR, and MOCK registration requests using
+  client-only forms and shared centred success alerts. No request is submitted,
+  stored, transmitted to Telegram, or added to an administrator system.
+- IELTS and CEFR use the shared exam form; MOCK adds a required selection from
+  centralized fictional date slots. Keep the typed content in
+  `data/PublicExams.ts`, localized UI copy in
+  `dictionaries/public/ExamPreview.ts`, state in focused hooks under
+  `hooks/public/exams/`, and rendering in `features/exams/`.
+- The Results preview collects a fictional Candidate ID and birth date only in
+  client state, then opens the shared login-required confirmation. It must not
+  create authentication, a Student Results route, a dashboard, or persistence.
+- Use the branded MUI Select menu for exam-level selection and the shared Exams
+  calendar popover for date selection. Do not fall back to browser-native
+  dropdown or date-picker popups whose appearance cannot follow brand tokens.
+- Match each exam-registration summary gradient to its card accent using only
+  darker and lighter shades of that one hue: blue for IELTS, turquoise for
+  CEFR, and yellow for MOCK. Do not blend different exam accent colors within
+  one summary gradient.
+- Replace the simulated admin queue, Telegram follow-up, login prompt, and MOCK
+  dates when the corresponding backend, authentication, admin, and student-area
+  contracts are approved.
 
 ## 8. Brand color system
 
@@ -829,17 +884,10 @@ The shared layout component filenames and named exports must be exactly
 `Navbar.tsx` / `Navbar` and `Footer.tsx` / `Footer`. Do not restore the older
 `site-header.tsx` or `site-footer.tsx` naming.
 
-On desktop, both Courses and Exams own matching hover and keyboard-focus
-dropdown menus. Courses uses this order: IELTS, CEFR, English (general),
-Russian, French, German, and Chinese. Exams uses this order: IELTS, CEFR, and
-MOCK. Every dropdown item must be a locale-prefixed `next/link` pointing to its
-reserved future detail path. Keep item keys and hrefs in shared navigation
-config and their labels in typed locale dictionaries. Dropdown links must use
-the exact same hover background and focus-ring treatment as the top-level
-Navbar links. Keep dropdown interaction in the focused `NavbarDropdown` Client
-Component: close immediately after any dropdown navigation, close on pointer
-leave or focus leaving the menu, and support Escape without allowing persistent
-Navbar focus to reopen the menu after an App Router navigation.
+On desktop, both Courses and Exams are plain top-level Navbar links. Neither may
+render an arrow, selection panel, or dropdown. Footer course and exam groups may
+continue using the centralized course and exam navigation items with their
+typed localized labels.
 
 Until the user supplies the future course and exam page ideas, do not implement
 their page logic merely because the Navbar links exist. The matching PascalCase
@@ -959,9 +1007,11 @@ Use static local slugs and `generateStaticParams` where appropriate.
 - Date, time, format, and location placeholder
 - Agenda or key topics
 - Supplied speaker information or a centralized fictional preview profile
-- CTA to Contact or a non-submitting frontend registration modal
+- CTA to Contact or a non-submitting frontend registration modal with the
+  approved simulated-success preview state
 
-Do not imply that registration was stored or sent when no backend exists.
+The simulated event-registration state may confirm attendance in the preview
+UI, but must not store, transmit, or log registration data.
 
 ## 19. Results
 
@@ -969,10 +1019,16 @@ This page represents public student success and BEST LC outcomes, not private
 exam results.
 
 - Introductory story and real or marked preview aggregate metrics
-- Real or explicitly fictional preview student case studies and testimonials
+- Eight real or explicitly fictional five-second, 9:16 Reels-format video case
+  studies in a responsive 4-by-2 desktop gallery, with synthetic media kept
+  under `public/videos/`. Video cards show only the poster and centred play icon;
+  keep all descriptive card copy visually hidden from the gallery.
 - Real or fictional preview before/after learning journeys
 - Outcome categories or visual timeline
 - CTA to explore courses
+- Give every post-hero Results heading and content block a subtle, one-time
+  bottom-to-top entrance using the shared reveal system. Preserve full
+  reduced-motion support.
 
 Never reuse a real person's identity or private information as placeholder
 content. Keep fictional names, synthetic visuals, quotes, scores,
@@ -1002,17 +1058,20 @@ downloads, authentication, or CMS integration is authorized in this milestone.
 
 ## 21. Exams
 
-The public Exams page is informational only.
+The public Exams page is a frontend-only client preview with this sequence:
 
-- Available exam directions/types
-- Exam format and rules
-- Schedule placeholders
-- Preparation steps
-- Frequently asked questions
-- CTA to Contact
+- A three-step registration instruction
+- IELTS, CEFR, and MOCK cards
+- A shared IELTS/CEFR form and a MOCK variant with fictional date selection
+- Simulated admin-queue and Telegram-follow-up success feedback
+- A result lookup form that opens a login-required confirmation
+- Give every post-hero Exams heading and content block, including the three
+  cards below “Three simple steps”, a subtle, one-time bottom-to-top entrance
+  using the shared reveal system. Preserve full reduced-motion support.
 
-Do not implement questions, timers, answer submission, scoring, result storage,
-or certificates.
+Do not implement real registration submission, Telegram delivery, admin pages,
+authentication, Student Results routes, questions, timers, scoring, result
+storage, or certificates.
 
 ## 22. About us
 
@@ -1044,6 +1103,9 @@ FAQ content must live in typed data/dictionary files.
 - Fictional preview contact information from centralized typed data
 - Accessible contact form UI
 - Form fields: first name, last name, email, title, message
+- Centre the Contact form title and its compact submit action. Keep single-line
+  controls at a 48 px minimum height while leaving the message textarea content
+  driven.
 - Client-side validation only
 - Clear disclosure that backend submission is not connected during this
   milestone
