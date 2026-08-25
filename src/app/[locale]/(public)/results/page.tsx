@@ -9,9 +9,9 @@ import { createPageMetadata } from "@/lib/Metadata";
 
 import { LearningJourney } from "./LearningJourney";
 import { OutcomeCategories } from "./OutcomeCategories";
+import { ResultStories } from "./ResultStories";
 import { ResultsCta } from "./ResultsCta";
 import { ResultsHero } from "./ResultsHero";
-import { ResultsNotice } from "./ResultsNotice";
 
 type ResultsPageProps = { params: Promise<{ locale: string }> };
 
@@ -32,7 +32,7 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
   return (
     <main className={styles.results}>
       <ResultsHero eyebrow={dictionary.navigation.results} copy={copy} />
-      <ResultsNotice copy={copy} />
+      <ResultStories copy={copy} locale={locale} />
       <LearningJourney copy={copy} />
       <OutcomeCategories copy={copy} />
       <ResultsCta locale={locale} copy={copy} />

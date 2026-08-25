@@ -55,33 +55,46 @@ export type PageCopy = {
     attend: string;
     format: string;
     location: string;
+    overview: string;
     topics: string;
+    programme: string;
+    programmeDescription: string;
+    audienceTitle: string;
+    audienceDescription: string;
+    takeawaysTitle: string;
+    takeawaysDescription: string;
+    practicalInfoTitle: string;
+    practicalInfoDescription: string;
+    faqTitle: string;
+    faqDescription: string;
+    backToEvents: string;
+    eventDetails: string;
+    eventCompleted: string;
+    otherEventsTitle: string;
+    otherEventsDescription: string;
     registrationNote: string;
     noPast: string;
   };
   results: {
     title: string;
     description: string;
-    noticeTitle: string;
-    noticeBody: string;
+    storiesEyebrow: string;
+    storiesTitle: string;
+    storiesDescription: string;
+    previewLabel: string;
+    playLabel: string;
+    closeLabel: string;
+    journeyEyebrow: string;
     journeyTitle: string;
-    journeySteps: Array<{ title: string; description: string }>;
+    journeyDescription: string;
+    journeySteps: Array<{ title: string; description: string; meta: string }>;
+    categoriesEyebrow: string;
     categoriesTitle: string;
-    categories: Array<{ title: string; description: string }>;
+    categoriesDescription: string;
+    categories: Array<{ title: string; description: string; highlights: string[] }>;
     ctaTitle: string;
-  };
-  exams: {
-    title: string;
-    description: string;
-    notice: string;
-    directionsTitle: string;
-    directions: Array<{ title: string; description: string }>;
-    rulesTitle: string;
-    rules: string[];
-    preparationTitle: string;
-    preparation: Array<{ title: string; description: string }>;
-    scheduleTitle: string;
-    scheduleBody: string;
+    ctaDescription: string;
+    ctaSecondary: string;
   };
   about: {
     title: string;
@@ -224,7 +237,24 @@ const uz: PageCopy = {
     attend: "Qatnashish",
     format: "Format",
     location: "Manzil",
+    overview: "Tadbir haqida",
     topics: "Asosiy mavzular",
+    programme: "Tadbir dasturi",
+    programmeDescription: "Boshlanishidan yakunigacha rejalashtirilgan asosiy bosqichlar.",
+    audienceTitle: "Kimlar uchun",
+    audienceDescription: "Ushbu tajribadan eng ko‘p foyda olishi mumkin bo‘lgan ishtirokchilar.",
+    takeawaysTitle: "Nimalar bilan qaytasiz",
+    takeawaysDescription: "Tadbirdan keyin siz bilan qoladigan tajriba va amaliy xulosalar.",
+    practicalInfoTitle: "Eslatmalar",
+    practicalInfoDescription: "Tadbirga qulay tayyorlanish uchun muhim eslatmalar.",
+    faqTitle: "Tadbir bo‘yicha savollar",
+    faqDescription: "Ishtirok etishdan oldin ko‘p so‘raladigan savollarga qisqa javoblar.",
+    backToEvents: "Tadbirlarga qaytish",
+    eventDetails: "Tadbir tafsilotlari",
+    eventCompleted: "Tadbir yakunlangan",
+    otherEventsTitle: "Boshqa tadbirlarni ko‘ring",
+    otherEventsDescription:
+      "BEST LC’dagi boshqa ochiq uchrashuvlar va amaliy tadbirlar bilan tanishing.",
     registrationNote:
       "Ro‘yxatdan o‘tish xizmati ulanmagan. Tasdiqlangan aloqa yo‘li keyin qo‘shiladi.",
     noPast: "Tasdiqlangan o‘tgan tadbirlar hozircha kiritilmagan.",
@@ -233,92 +263,75 @@ const uz: PageCopy = {
     title: "Natijalar",
     description:
       "Maqsadni belgilang, muntazam mashq qiling va har bir bosqichdagi o‘sishni aniq mezonlar bilan kuzating.",
-    noticeTitle: "Soxta raqamlar o‘rniga ochiq mezonlar",
-    noticeBody:
-      "Real statistika, ism, surat, iqtibos va ballar berilmagani sababli biz ularni uydirmaymiz. Tasdiqlangan materiallar kelgach, ular markazlashtirilgan kontent orqali qo‘shiladi.",
-    journeyTitle: "Rivojlanish yo‘li qanday ko‘rsatiladi",
+    storiesEyebrow: "O‘QUVCHILAR NATIJALARI",
+    storiesTitle: "Katta natijalar ortidagi hikoyalar",
+    storiesDescription:
+      "BEST LC dasturlarida sezilarli o‘sishga erishgan o‘quvchilar haqidagi sakkizta badiiy preview video. Kelajakda bu yerda ularning roziligi bilan tasdiqlangan real natijalar va shaxsiy hikoyalar joylanadi.",
+    previewLabel: "BADIIY PREVIEW",
+    playLabel: "{title} videosini ko‘rish",
+    closeLabel: "Videoni yopish",
+    journeyEyebrow: "O‘QUV JARAYONI",
+    journeyTitle: "Natija aniq bosqichlarda quriladi",
+    journeyDescription:
+      "Har bir preview yo‘li boshlang‘ich holatni tushunishdan boshlanadi, amaliy mashq bilan davom etadi va keyingi maqsadni belgilaydigan tahlil bilan yakunlanadi.",
     journeySteps: [
       {
-        title: "Boshlang‘ich nuqta",
+        title: "Maqsad va boshlang‘ich holat",
         description:
-          "O‘quvchining maqsadi va boshlang‘ich holati faqat rozilik bilan qayd etiladi.",
+          "Asosiy ehtiyoj, kuchli tomonlar va rivojlantiriladigan ko‘nikmalar aniqlanadi.",
+        meta: "1-hafta",
       },
       {
-        title: "Amaliy jarayon",
+        title: "Yo‘naltirilgan mashq",
         description:
-          "Bajarilgan vazifalar va rivojlangan ko‘nikmalar aniq dalillar bilan ko‘rsatiladi.",
+          "Darsdagi vazifalar real muloqot, imtihon formati yoki akademik maqsadga ulanadi.",
+        meta: "2–8 hafta",
       },
       {
-        title: "Tasdiqlangan natija",
-        description: "Faqat tekshirilgan yakun va o‘quvchining ruxsati bilan e’lon qilinadi.",
+        title: "Fikr va tuzatish",
+        description:
+          "Qisqa tahlil o‘quvchiga nima ishlayotganini va keyingi ustuvor vazifani ko‘rsatadi.",
+        meta: "Har 2 haftada",
+      },
+      {
+        title: "Yakuniy tahlil",
+        description: "Rivojlanish dalillari jamlanadi va yangi, o‘lchanadigan maqsad belgilanadi.",
+        meta: "Yakun",
       },
     ],
-    categoriesTitle: "Natija yo‘nalishlari",
+    categoriesEyebrow: "NATIJA YO‘NALISHLARI",
+    categoriesTitle: "Har bir maqsad uchun alohida yo‘l",
+    categoriesDescription:
+      "Preview hikoyalar turli dasturlarda natija qanday ko‘rinishini mazmunli misollar bilan ko‘rsatadi.",
     categories: [
       {
-        title: "Til ko‘nikmalari",
-        description: "Muloqot, tinglash, yozish va tushunishdagi tasdiqlangan rivojlanish.",
+        title: "IELTS",
+        description:
+          "Vaqt boshqaruvi, topshiriq strategiyasi va baholash mezonlariga yo‘naltirilgan tayyorgarlik.",
+        highlights: ["Speaking", "Writing", "MOCK"],
       },
       {
-        title: "Amaliy loyihalar",
-        description: "O‘quv jarayonida yaratilgan ishlar va qo‘llangan ko‘nikmalar.",
+        title: "CEFR",
+        description:
+          "Til darajasini bosqichma-bosqich mustahkamlash va faol lug‘atni kengaytirish.",
+        highlights: ["Grammar", "Vocabulary", "Communication"],
       },
       {
-        title: "O‘quv odatlari",
-        description: "Rejalash, mustaqil o‘rganish va muntazamlikdagi ijobiy o‘zgarishlar.",
+        title: "General English",
+        description:
+          "Kundalik vaziyatlarda erkinroq tinglash, tushunish va fikr bildirish amaliyoti.",
+        highlights: ["Conversation", "Listening", "Reading"],
+      },
+      {
+        title: "Academic skills",
+        description:
+          "O‘qish, yozish va taqdimotda fikrni aniq tuzish hamda dalillar bilan ishlash.",
+        highlights: ["Writing", "Presentation", "Study habits"],
       },
     ],
     ctaTitle: "O‘z o‘quv yo‘lingizni boshlashga tayyormisiz?",
-  },
-  exams: {
-    title: "Imtihonlar",
-    description:
-      "IELTS, CEFR va MOCK formatlarini tushuning, shaxsiy reja tuzing va tartibli tayyorgarlikni boshlang.",
-    notice:
-      "Bu sahifada imtihon topshirib bo‘lmaydi: savol, taymer, javob yuborish, ball va sertifikat funksiyasi mavjud emas.",
-    directionsTitle: "Yo‘nalishlar",
-    directions: [
-      {
-        title: "Til darajasini aniqlash",
-        description: "Format va sanalar BEST LC tomonidan tasdiqlangach e’lon qilinadi.",
-      },
-      {
-        title: "Akademik diagnostika",
-        description: "Tayyorgarlik ehtiyojini tushunishga yordam beruvchi axborot yo‘nalishi.",
-      },
-      {
-        title: "Sinov formati bilan tanishish",
-        description: "Tasdiqlangan namunalar va qoidalar mavjud bo‘lganda shu yerga qo‘shiladi.",
-      },
-    ],
-    rulesTitle: "Umumiy qoidalar",
-    rules: [
-      "Tasdiqlangan hujjat va ro‘yxatdan o‘tish talablarini oldindan tekshiring.",
-      "Belgilangan vaqtdan oldin kelish uchun zaxira reja tuzing.",
-      "Faqat ruxsat etilgan anjomlardan foydalaning.",
-      "Yakuniy qoidalar e’lon qilingan imtihon yo‘riqnomasiga bog‘liq.",
-    ],
-    preparationTitle: "Tayyorgarlik qadamlari",
-    preparation: [
-      {
-        title: "Talabni aniqlang",
-        description: "Imtihon turi, maqsad va kerakli darajani tushunib oling.",
-      },
-      {
-        title: "Boshlang‘ich holatni tekshiring",
-        description: "Kuchli tomon va rivojlantirish kerak bo‘lgan mavzularni belgilang.",
-      },
-      {
-        title: "Reja bilan mashq qiling",
-        description: "Muntazam qisqa mashq va tahlil orqali tayyorlaning.",
-      },
-      {
-        title: "Rasmiy ma’lumotni tekshiring",
-        description: "Sana, joy va qoidalarni tasdiqlangan manbadan qayta ko‘ring.",
-      },
-    ],
-    scheduleTitle: "Imtihon jadvali",
-    scheduleBody: "Tasdiqlangan sana va joy ma’lumoti hozircha taqdim etilmagan.",
+    ctaDescription: "Maqsadingizga mos kursni tanlang yoki jamoamizga savol qoldiring.",
+    ctaSecondary: "Savol berish",
   },
   about: {
     title: "Biz haqimizda",
@@ -477,8 +490,8 @@ const uz: PageCopy = {
     send: "Yuborish",
     required: "Bu maydonni to‘ldiring.",
     invalidEmail: "Email manzilini to‘g‘ri kiriting.",
-    serviceNoticeTitle: "Yuborish hali ulanmagan",
-    serviceNotice: "Yuborish xizmati keyingi bosqichda ulanadi.",
+    serviceNoticeTitle: "Yuborish ulanmagan",
+    serviceNotice: "Xizmat keyingi bosqichda ulanadi. Murojaatingiz uchun rahmat.",
     responseNotice:
       "Savolingiz bo‘lsa, biz bilan bog‘laning — jamoamiz sizga tez orada javob beradi.",
   },
@@ -579,7 +592,24 @@ const ru: PageCopy = {
     attend: "Участвовать",
     format: "Формат",
     location: "Место",
+    overview: "О событии",
     topics: "Основные темы",
+    programme: "Программа события",
+    programmeDescription: "Основные этапы от начала встречи до её завершения.",
+    audienceTitle: "Для кого",
+    audienceDescription: "Участники, которым этот формат может принести наибольшую пользу.",
+    takeawaysTitle: "Что вы получите",
+    takeawaysDescription: "Опыт и практические выводы, которые останутся после события.",
+    practicalInfoTitle: "Памятка",
+    practicalInfoDescription: "Важные ориентиры для комфортной подготовки к событию.",
+    faqTitle: "Вопросы о событии",
+    faqDescription: "Короткие ответы на частые вопросы перед участием.",
+    backToEvents: "Назад к событиям",
+    eventDetails: "Детали события",
+    eventCompleted: "Событие завершено",
+    otherEventsTitle: "Посмотрите другие события",
+    otherEventsDescription:
+      "Познакомьтесь с другими открытыми встречами и практическими событиями BEST LC.",
     registrationNote:
       "Регистрация пока не подключена. Подтверждённый способ связи будет добавлен позже.",
     noPast: "Подтверждённых прошедших событий пока нет.",
@@ -588,90 +618,73 @@ const ru: PageCopy = {
     title: "Результаты",
     description:
       "Поставьте цель, практикуйтесь регулярно и отслеживайте каждый этап развития по понятным критериям.",
-    noticeTitle: "Открытые критерии вместо вымышленных цифр",
-    noticeBody:
-      "Пока реальные показатели, имена, фотографии, цитаты и баллы не предоставлены, мы их не придумываем. Подтверждённые материалы будут добавлены централизованно.",
-    journeyTitle: "Как будет показан прогресс",
+    storiesEyebrow: "РЕЗУЛЬТАТЫ УЧЕНИКОВ",
+    storiesTitle: "Истории, стоящие за большими результатами",
+    storiesDescription:
+      "Восемь художественных preview-видео об учениках, добившихся заметного прогресса в программах BEST LC. В будущем здесь появятся подтверждённые результаты и личные истории, опубликованные с их согласия.",
+    previewLabel: "ХУДОЖЕСТВЕННЫЙ PREVIEW",
+    playLabel: "Смотреть видео «{title}»",
+    closeLabel: "Закрыть видео",
+    journeyEyebrow: "ПРОЦЕСС ОБУЧЕНИЯ",
+    journeyTitle: "Результат складывается по понятным этапам",
+    journeyDescription:
+      "Каждый preview-путь начинается с понимания исходной точки, продолжается практикой и завершается разбором, который помогает определить следующую цель.",
     journeySteps: [
       {
-        title: "Начальная точка",
-        description: "Цель и исходный уровень фиксируются только с согласия ученика.",
+        title: "Цель и исходная точка",
+        description: "Определяются основная потребность, сильные стороны и навыки для развития.",
+        meta: "1-я неделя",
       },
       {
-        title: "Практический процесс",
+        title: "Направленная практика",
         description:
-          "Выполненные задачи и развитые навыки показываются с конкретными подтверждениями.",
+          "Задания связываются с реальным общением, форматом экзамена или академической целью.",
+        meta: "2–8-я недели",
       },
       {
-        title: "Подтверждённый результат",
-        description: "Итог публикуется только после проверки и с разрешения ученика.",
+        title: "Обратная связь",
+        description:
+          "Короткий разбор показывает, что уже работает и какой навык станет следующим приоритетом.",
+        meta: "Каждые 2 недели",
+      },
+      {
+        title: "Итоговый обзор",
+        description:
+          "Наблюдения о прогрессе собираются вместе и превращаются в новую измеримую цель.",
+        meta: "Финал",
       },
     ],
-    categoriesTitle: "Направления результата",
+    categoriesEyebrow: "НАПРАВЛЕНИЯ РЕЗУЛЬТАТА",
+    categoriesTitle: "Отдельный путь для каждой цели",
+    categoriesDescription:
+      "Preview-истории на содержательных примерах показывают, как может выглядеть результат в разных программах.",
     categories: [
       {
-        title: "Языковые навыки",
-        description: "Подтверждённый прогресс в общении, аудировании, письме и понимании.",
+        title: "IELTS",
+        description: "Подготовка с акцентом на время, стратегию заданий и критерии оценивания.",
+        highlights: ["Speaking", "Writing", "MOCK"],
       },
       {
-        title: "Практические проекты",
-        description: "Работы и навыки, применённые во время обучения.",
+        title: "CEFR",
+        description: "Последовательное укрепление уровня и расширение активного словарного запаса.",
+        highlights: ["Grammar", "Vocabulary", "Communication"],
       },
       {
-        title: "Учебные привычки",
-        description: "Положительные изменения в планировании, самостоятельности и регулярности.",
+        title: "General English",
+        description:
+          "Практика свободного аудирования, понимания и общения в повседневных ситуациях.",
+        highlights: ["Conversation", "Listening", "Reading"],
+      },
+      {
+        title: "Academic skills",
+        description:
+          "Чёткая структура мысли и работа с аргументами в чтении, письме и презентациях.",
+        highlights: ["Writing", "Presentation", "Study habits"],
       },
     ],
     ctaTitle: "Готовы начать свой учебный путь?",
-  },
-  exams: {
-    title: "Экзамены",
-    description: "Разберитесь в форматах IELTS, CEFR и MOCK, составьте план и готовьтесь системно.",
-    notice:
-      "Сдать экзамен на этой странице нельзя: здесь нет вопросов, таймера, отправки ответов, баллов или сертификатов.",
-    directionsTitle: "Направления",
-    directions: [
-      {
-        title: "Определение языкового уровня",
-        description: "Формат и даты будут опубликованы после подтверждения BEST LC.",
-      },
-      {
-        title: "Академическая диагностика",
-        description: "Информационное направление для понимания потребностей в подготовке.",
-      },
-      {
-        title: "Знакомство с форматом теста",
-        description: "Подтверждённые примеры и правила будут добавлены при наличии.",
-      },
-    ],
-    rulesTitle: "Общие правила",
-    rules: [
-      "Заранее проверьте подтверждённые документы и требования регистрации.",
-      "Запланируйте запас времени, чтобы прийти раньше.",
-      "Используйте только разрешённые материалы.",
-      "Окончательные правила зависят от опубликованной инструкции экзамена.",
-    ],
-    preparationTitle: "Шаги подготовки",
-    preparation: [
-      {
-        title: "Уточните требования",
-        description: "Определите тип экзамена, цель и нужный уровень.",
-      },
-      {
-        title: "Проверьте стартовый уровень",
-        description: "Отметьте сильные стороны и темы для развития.",
-      },
-      {
-        title: "Тренируйтесь по плану",
-        description: "Готовьтесь через регулярную короткую практику и анализ.",
-      },
-      {
-        title: "Проверьте официальные данные",
-        description: "Повторно уточните дату, место и правила в подтверждённом источнике.",
-      },
-    ],
-    scheduleTitle: "Расписание экзаменов",
-    scheduleBody: "Подтверждённые даты и место пока не предоставлены.",
+    ctaDescription: "Выберите курс под свою цель или задайте вопрос нашей команде.",
+    ctaSecondary: "Задать вопрос",
   },
   about: {
     title: "О нас",
@@ -826,8 +839,8 @@ const ru: PageCopy = {
     send: "Отправить",
     required: "Заполните это поле.",
     invalidEmail: "Введите корректный email.",
-    serviceNoticeTitle: "Отправка пока не подключена",
-    serviceNotice: "Отправка будет подключена на следующем этапе.",
+    serviceNoticeTitle: "Отправка не подключена",
+    serviceNotice: "Сервис подключат на следующем этапе. Спасибо за обращение.",
     responseNotice:
       "Свяжитесь с нами, если у вас есть вопрос — наша команда ответит вам в ближайшее время.",
   },
@@ -930,7 +943,23 @@ const en: PageCopy = {
     attend: "Attend",
     format: "Format",
     location: "Location",
+    overview: "About the event",
     topics: "Key topics",
+    programme: "Event programme",
+    programmeDescription: "The main stages planned from arrival through to the close.",
+    audienceTitle: "Who it is for",
+    audienceDescription: "The participants most likely to benefit from this experience.",
+    takeawaysTitle: "What you will take away",
+    takeawaysDescription: "Experience and practical ideas that remain useful after the event.",
+    practicalInfoTitle: "Guidelines",
+    practicalInfoDescription: "Important guidance for preparing comfortably for the event.",
+    faqTitle: "Event questions",
+    faqDescription: "Short answers to common questions before taking part.",
+    backToEvents: "Back to events",
+    eventDetails: "Event details",
+    eventCompleted: "Event completed",
+    otherEventsTitle: "Explore other events",
+    otherEventsDescription: "Discover more open sessions and practical learning events at BEST LC.",
     registrationNote:
       "Registration is not connected. A confirmed contact route will be added later.",
     noPast: "No confirmed past events have been added yet.",
@@ -939,91 +968,75 @@ const en: PageCopy = {
     title: "Results",
     description:
       "Set a goal, practise consistently, and follow each stage of development through clear criteria.",
-    noticeTitle: "Open criteria instead of invented numbers",
-    noticeBody:
-      "Because real metrics, names, photos, quotes, and scores have not been provided, we do not fabricate them. Confirmed materials will be added through centralised content.",
-    journeyTitle: "How progress will be presented",
+    storiesEyebrow: "STUDENT RESULTS",
+    storiesTitle: "The stories behind remarkable results",
+    storiesDescription:
+      "Eight fictional preview videos about learners who achieved meaningful progress across BEST LC programmes. In future, this space will feature verified results and personal stories published with their consent.",
+    previewLabel: "FICTIONAL PREVIEW",
+    playLabel: "Play {title} video",
+    closeLabel: "Close video",
+    journeyEyebrow: "LEARNING PROCESS",
+    journeyTitle: "Progress is built in clear stages",
+    journeyDescription:
+      "Every preview journey begins by understanding the starting point, continues through practical work, and ends with a review that defines the next goal.",
     journeySteps: [
       {
-        title: "Starting point",
-        description: "A learner’s goal and initial position are recorded only with consent.",
+        title: "Goal and baseline",
+        description: "The main need, existing strengths, and skills to develop are mapped clearly.",
+        meta: "Week 1",
       },
       {
-        title: "Practical process",
-        description: "Completed work and developed skills are shown with clear evidence.",
-      },
-      {
-        title: "Verified outcome",
+        title: "Guided practice",
         description:
-          "The final outcome is published only after verification and learner permission.",
+          "Class tasks connect to real communication, an exam format, or an academic objective.",
+        meta: "Weeks 2–8",
+      },
+      {
+        title: "Feedback and adjustment",
+        description:
+          "Short reviews show what is working and which skill should become the next priority.",
+        meta: "Every 2 weeks",
+      },
+      {
+        title: "Final review",
+        description:
+          "Progress evidence is gathered and translated into a new, measurable objective.",
+        meta: "Completion",
       },
     ],
-    categoriesTitle: "Outcome directions",
+    categoriesEyebrow: "OUTCOME DIRECTIONS",
+    categoriesTitle: "A distinct path for every goal",
+    categoriesDescription:
+      "The preview stories use meaningful examples to show how outcomes can take shape across different programmes.",
     categories: [
       {
-        title: "Language skills",
-        description: "Verified progress in communication, listening, writing, and understanding.",
+        title: "IELTS",
+        description:
+          "Preparation focused on time management, task strategy, and assessment criteria.",
+        highlights: ["Speaking", "Writing", "MOCK"],
       },
       {
-        title: "Practical projects",
-        description: "Work created and skills applied during the learning process.",
+        title: "CEFR",
+        description:
+          "Step-by-step level development and a broader active vocabulary for communication.",
+        highlights: ["Grammar", "Vocabulary", "Communication"],
       },
       {
-        title: "Learning habits",
-        description: "Positive change in planning, independent study, and consistency.",
+        title: "General English",
+        description:
+          "Practice for more confident listening, understanding, and everyday expression.",
+        highlights: ["Conversation", "Listening", "Reading"],
+      },
+      {
+        title: "Academic skills",
+        description:
+          "Clear idea structure and evidence use across reading, writing, and presentation work.",
+        highlights: ["Writing", "Presentation", "Study habits"],
       },
     ],
     ctaTitle: "Ready to start your learning path?",
-  },
-  exams: {
-    title: "Exams",
-    description:
-      "Understand IELTS, CEFR, and MOCK formats, build a plan, and prepare with a clear structure.",
-    notice:
-      "You cannot take an exam on this page: there are no questions, timer, answer submission, scoring, or certificates.",
-    directionsTitle: "Directions",
-    directions: [
-      {
-        title: "Language level diagnostics",
-        description: "Format and dates will be published after BEST LC confirmation.",
-      },
-      {
-        title: "Academic diagnostics",
-        description: "An information direction for understanding preparation needs.",
-      },
-      {
-        title: "Test-format orientation",
-        description: "Verified samples and rules will be added when available.",
-      },
-    ],
-    rulesTitle: "General rules",
-    rules: [
-      "Check confirmed document and registration requirements in advance.",
-      "Plan enough time to arrive before the stated start.",
-      "Use only permitted materials.",
-      "Final rules depend on the published exam instructions.",
-    ],
-    preparationTitle: "Preparation steps",
-    preparation: [
-      {
-        title: "Clarify the requirement",
-        description: "Understand the exam type, goal, and required level.",
-      },
-      {
-        title: "Check your starting point",
-        description: "Identify strengths and topics that need development.",
-      },
-      {
-        title: "Practise with a plan",
-        description: "Prepare through regular short practice and review.",
-      },
-      {
-        title: "Verify official details",
-        description: "Recheck the date, location, and rules in a confirmed source.",
-      },
-    ],
-    scheduleTitle: "Exam schedule",
-    scheduleBody: "Confirmed dates and location details have not been provided yet.",
+    ctaDescription: "Choose a course that fits your goal or ask our team a question.",
+    ctaSecondary: "Ask a question",
   },
   about: {
     title: "About us",
@@ -1181,8 +1194,8 @@ const en: PageCopy = {
     send: "Send",
     required: "Complete this field.",
     invalidEmail: "Enter a valid email address.",
-    serviceNoticeTitle: "Submission is not connected yet",
-    serviceNotice: "Submission will be connected in the next phase.",
+    serviceNoticeTitle: "Submission unavailable",
+    serviceNotice: "The service will be connected later. Thanks for reaching out.",
     responseNotice: "Have a question? Get in touch — our team will get back to you shortly.",
   },
   footer: {
