@@ -2,14 +2,18 @@ import type { Locale } from "@/config/Locales";
 
 export type LocalizedResultText = Record<Locale, string>;
 
+export type PublicResultVideoSource = {
+  creator: string;
+  licenseUrl: string;
+  provider: "Pexels";
+  url: string;
+};
+
 export type PublicResultVideo = {
-  category: LocalizedResultText;
-  duration: string;
+  duration: "00:05";
   key: string;
-  learner: LocalizedResultText;
-  outcome: LocalizedResultText;
   posterSrc: string;
-  summary: LocalizedResultText;
+  source: PublicResultVideoSource;
   title: LocalizedResultText;
   videoSrc: string;
 };
