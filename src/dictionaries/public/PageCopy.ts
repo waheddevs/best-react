@@ -31,18 +31,38 @@ export type PageCopy = {
   courses: {
     title: string;
     description: string;
-    searchPlaceholder: string;
-    categoryLabel: string;
-    categories: Record<"all" | "language" | "technology" | "academic", string>;
+    categories: Record<"english" | "exam" | "language", string>;
+    featuredEyebrow: string;
+    featuredTitle: string;
+    featuredDescription: string;
+    languagesEyebrow: string;
+    languagesTitle: string;
+    languagesDescription: string;
+    comparisonEyebrow: string;
+    comparisonTitle: string;
+    comparisonDescription: string;
+    comparisonCourse: string;
+    comparisonFocus: string;
+    processEyebrow: string;
+    processTitle: string;
+    processDescription: string;
+    processItems: Array<{ title: string; description: string }>;
+    ctaTitle: string;
+    ctaDescription: string;
     level: string;
     format: string;
     duration: string;
+    schedule: string;
     overview: string;
     audience: string;
     outcomes: string;
     curriculum: string;
+    tracks: string;
+    tracksDescription: string;
     prerequisites: string;
     detailCtaTitle: string;
+    viewDetails: string;
+    backToCourses: string;
   };
   events: {
     title: string;
@@ -206,24 +226,61 @@ const uz: PageCopy = {
   courses: {
     title: "Kurslar",
     description:
-      "Tillar, imtihon tayyorgarligi va amaliy ko‘nikmalar uchun maqsadingizga mos o‘quv yo‘lini tanlang.",
-    searchPlaceholder: "Kurs nomi yoki yo‘nalishini qidiring",
-    categoryLabel: "Kurs toifasi",
+      "Ingliz tili, imtihon tayyorgarligi va xalqaro tillar uchun maqsadingizga mos aniq o‘quv yo‘lini tanlang.",
     categories: {
-      all: "Barchasi",
-      language: "Tillar",
-      technology: "Texnologiya",
-      academic: "Akademik",
+      english: "Ingliz tili",
+      exam: "Imtihon tayyorgarligi",
+      language: "Xalqaro tillar",
     },
+    featuredEyebrow: "ASOSIY YO‘NALISHLAR",
+    featuredTitle: "Maqsadga mos uchta kuchli yo‘l",
+    featuredDescription:
+      "General English’dan IELTS va CEFR tayyorgarligigacha har bir dastur tushunarli bosqichlar, amaliy darslar va muntazam feedback bilan tuzilgan.",
+    languagesEyebrow: "YANGI TILNI BOSHLANG",
+    languagesTitle: "Yana to‘rtta til, yana to‘rtta imkoniyat",
+    languagesDescription:
+      "Rus, fransuz, nemis va xitoy tillari uchun boshlang‘ichdan izchil rivojlanadigan amaliy dasturlar.",
+    comparisonEyebrow: "TEZKOR TAQQOSLASH",
+    comparisonTitle: "Qaysi kurs sizning maqsadingizga yaqin?",
+    comparisonDescription:
+      "Yo‘nalishlarning asosiy farqlarini bir joyda ko‘rib, detail sahifada to‘liq dastur bilan tanishing.",
+    comparisonCourse: "Kurs",
+    comparisonFocus: "Asosiy maqsad",
+    processEyebrow: "O‘QISH JARAYONI",
+    processTitle: "Boshlashdan progressgacha aniq yo‘l",
+    processDescription: "Har bir dastur bir xil tushunarli learning journey asosida ko‘rsatiladi.",
+    processItems: [
+      { title: "Level check", description: "Boshlang‘ich nuqta va o‘quv maqsadi aniqlanadi." },
+      {
+        title: "Mos guruh",
+        description: "Daraja, jadval va yo‘nalishga mos guruh tavsiya qilinadi.",
+      },
+      {
+        title: "Amaliy darslar",
+        description: "Har bir mavzu speaking, task yoki real vaziyat bilan mustahkamlanadi.",
+      },
+      {
+        title: "Progress review",
+        description: "Feedback orqali kuchli tomonlar va keyingi qadam belgilanadi.",
+      },
+    ],
+    ctaTitle: "Qaysi yo‘nalishni tanlashga ikkilanyapsizmi?",
+    ctaDescription:
+      "Maqsadingiz va hozirgi darajangizni ayting — jamoa sizga mos kurs haqida yo‘l-yo‘riq beradi.",
     level: "Daraja",
     format: "Format",
     duration: "Davomiylik",
+    schedule: "Jadval",
     overview: "Kurs haqida",
     audience: "Kimlar uchun",
     outcomes: "Nimalarni o‘rganasiz",
     curriculum: "Dastur ko‘rinishi",
+    tracks: "O‘quv treklari",
+    tracksDescription: "Maqsad va boshlang‘ich darajaga mos trek diagnostika asosida tanlanadi.",
     prerequisites: "Boshlash uchun",
     detailCtaTitle: "Bu yo‘nalish sizga mosmi?",
+    viewDetails: "Batafsil ko‘rish",
+    backToCourses: "Kurslarga qaytish",
   },
   events: {
     title: "Tadbirlar",
@@ -562,24 +619,61 @@ const ru: PageCopy = {
   courses: {
     title: "Курсы",
     description:
-      "Выберите понятный учебный маршрут: языки, подготовка к экзаменам и практические навыки в удобном формате.",
-    searchPlaceholder: "Поиск по названию или направлению",
-    categoryLabel: "Категория курса",
+      "Выберите понятный учебный маршрут для английского языка, подготовки к экзаменам или нового международного языка.",
     categories: {
-      all: "Все",
-      language: "Языки",
-      technology: "Технологии",
-      academic: "Академические",
+      english: "Английский язык",
+      exam: "Подготовка к экзаменам",
+      language: "Международные языки",
     },
+    featuredEyebrow: "ОСНОВНЫЕ НАПРАВЛЕНИЯ",
+    featuredTitle: "Три сильных маршрута под разные цели",
+    featuredDescription:
+      "От General English до IELTS и CEFR: каждая программа построена на понятных этапах, практических занятиях и регулярной обратной связи.",
+    languagesEyebrow: "НАЧНИТЕ НОВЫЙ ЯЗЫК",
+    languagesTitle: "Ещё четыре языка — ещё четыре возможности",
+    languagesDescription:
+      "Практические программы русского, французского, немецкого и китайского с последовательным развитием от начального уровня.",
+    comparisonEyebrow: "БЫСТРОЕ СРАВНЕНИЕ",
+    comparisonTitle: "Какой курс ближе к вашей цели?",
+    comparisonDescription:
+      "Сравните основные различия и откройте страницу курса, чтобы изучить полную программу.",
+    comparisonCourse: "Курс",
+    comparisonFocus: "Основная цель",
+    processEyebrow: "ПРОЦЕСС ОБУЧЕНИЯ",
+    processTitle: "Понятный путь от старта до прогресса",
+    processDescription: "Каждая программа показана через единый и понятный learning journey.",
+    processItems: [
+      { title: "Level check", description: "Определяются стартовый уровень и учебная цель." },
+      {
+        title: "Подходящая группа",
+        description: "Рекомендуется группа по уровню, расписанию и направлению.",
+      },
+      {
+        title: "Практические занятия",
+        description: "Каждая тема закрепляется через речь, задания или реальные ситуации.",
+      },
+      {
+        title: "Progress review",
+        description: "Обратная связь показывает сильные стороны и следующий шаг.",
+      },
+    ],
+    ctaTitle: "Не уверены, какое направление выбрать?",
+    ctaDescription:
+      "Расскажите о цели и текущем уровне — команда подскажет, какой курс стоит рассмотреть.",
     level: "Уровень",
     format: "Формат",
     duration: "Продолжительность",
+    schedule: "Расписание",
     overview: "О курсе",
     audience: "Для кого",
     outcomes: "Чему вы научитесь",
     curriculum: "Структура программы",
+    tracks: "Учебные треки",
+    tracksDescription: "Трек подбирается после диагностики с учётом цели и стартового уровня.",
     prerequisites: "Перед началом",
     detailCtaTitle: "Подходит ли вам это направление?",
+    viewDetails: "Подробнее",
+    backToCourses: "Назад к курсам",
   },
   events: {
     title: "События",
@@ -912,24 +1006,65 @@ const en: PageCopy = {
   courses: {
     title: "Courses",
     description:
-      "Choose a clear learning path for languages, exam preparation, and practical skills in a format that suits you.",
-    searchPlaceholder: "Search by course name or direction",
-    categoryLabel: "Course category",
+      "Choose a clear learning path for English, exam preparation, or a new international language.",
     categories: {
-      all: "All",
-      language: "Languages",
-      technology: "Technology",
-      academic: "Academic",
+      english: "English",
+      exam: "Exam preparation",
+      language: "International languages",
     },
+    featuredEyebrow: "CORE PROGRAMMES",
+    featuredTitle: "Three strong paths for three different goals",
+    featuredDescription:
+      "From General English to IELTS and CEFR, each programme combines clear stages, practical lessons, and regular feedback.",
+    languagesEyebrow: "START A NEW LANGUAGE",
+    languagesTitle: "Four more languages, four more possibilities",
+    languagesDescription:
+      "Practical Russian, French, German, and Chinese programmes with steady development from the beginner stage.",
+    comparisonEyebrow: "QUICK COMPARISON",
+    comparisonTitle: "Which course is closest to your goal?",
+    comparisonDescription:
+      "Compare the main differences, then open a course page to explore its complete programme.",
+    comparisonCourse: "Course",
+    comparisonFocus: "Primary focus",
+    processEyebrow: "LEARNING PROCESS",
+    processTitle: "A clear route from starting point to progress",
+    processDescription: "Every programme follows the same easy-to-understand learning journey.",
+    processItems: [
+      {
+        title: "Level check",
+        description: "Your starting point and learning goal are identified.",
+      },
+      {
+        title: "Suitable group",
+        description: "A group is recommended around your level, schedule, and direction.",
+      },
+      {
+        title: "Practical lessons",
+        description: "Every topic is reinforced through speaking, tasks, or realistic situations.",
+      },
+      {
+        title: "Progress review",
+        description: "Feedback identifies strengths and defines the next step.",
+      },
+    ],
+    ctaTitle: "Not sure which direction to choose?",
+    ctaDescription:
+      "Share your goal and current level, and the team will guide you towards a suitable course option.",
     level: "Level",
     format: "Format",
     duration: "Duration",
+    schedule: "Schedule",
     overview: "Course overview",
     audience: "Who it is for",
     outcomes: "What you will learn",
     curriculum: "Programme preview",
+    tracks: "Learning tracks",
+    tracksDescription:
+      "The track is selected after a diagnostic based on your goal and starting level.",
     prerequisites: "Before you start",
     detailCtaTitle: "Is this direction right for you?",
+    viewDetails: "View details",
+    backToCourses: "Back to courses",
   },
   events: {
     title: "Events",
