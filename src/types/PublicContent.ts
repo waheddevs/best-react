@@ -1,29 +1,9 @@
-import type { Locale } from "@/config/Locales";
-import type { EventSlug } from "@/types/EventDetail";
 import type { StaticImageData } from "next/image";
 
+import type { Locale } from "@/config/Locales";
+import type { EventSlug } from "@/types/EventDetail";
+
 export type LocalizedText = Record<Locale, string>;
-
-export type CourseCategory = "language" | "technology" | "academic";
-export type DeliveryFormat = "offline" | "hybrid" | "online";
-
-export type Course = {
-  slug: string;
-  category: CourseCategory;
-  image: string;
-  imageAlt: LocalizedText;
-  title: LocalizedText;
-  summary: LocalizedText;
-  level: LocalizedText;
-  format: DeliveryFormat;
-  formatLabel: LocalizedText;
-  duration: LocalizedText;
-  audience: LocalizedText;
-  outcomes: Record<Locale, string[]>;
-  curriculum: Record<Locale, string[]>;
-  prerequisites: LocalizedText;
-  requiresConfirmation: true;
-};
 
 export type PublicEvent = {
   slug: EventSlug;

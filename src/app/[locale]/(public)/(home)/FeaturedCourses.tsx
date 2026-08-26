@@ -7,7 +7,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/home.module.css";
-import { courses } from "@/data/PublicContent";
+import { featuredCourses } from "@/data/PublicCourses";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type FeaturedCoursesProps = {
@@ -29,7 +29,7 @@ export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
         </ButtonLink>
       </Reveal>
       <StaggerGroup className={styles.home__featuredCoursesGrid}>
-        {courses.map((course) => (
+        {featuredCourses.map((course) => (
           <StaggerItem key={course.slug} className={styles.home__featuredCoursesItem}>
             <CourseCard course={course} locale={locale} copy={copy} />
           </StaggerItem>

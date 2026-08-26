@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 
 import { locales } from "@/config/Locales";
 import { siteConfig } from "@/config/Site";
-import { courses, events } from "@/data/PublicContent";
+import { events } from "@/data/PublicContent";
+import { courses } from "@/data/PublicCourses";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = ["", "/courses", "/events", "/results", "/exams", "/about", "/contact"];
