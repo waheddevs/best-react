@@ -7,8 +7,12 @@ import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import styles from "@/css/public/courses.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 
+import { CourseComparison } from "./CourseComparison";
 import { CoursesCatalog } from "./CoursesCatalog";
+import { CoursesCta } from "./CoursesCta";
 import { CoursesHero } from "./CoursesHero";
+import { LanguageCourses } from "./LanguageCourses";
+import { LearningProcess } from "./LearningProcess";
 
 type CoursesPageProps = { params: Promise<{ locale: string }> };
 
@@ -30,6 +34,10 @@ export default async function CoursesPage({ params }: CoursesPageProps) {
     <main className={styles.courses}>
       <CoursesHero eyebrow={dictionary.navigation.courses} copy={copy} />
       <CoursesCatalog locale={locale} copy={copy} />
+      <LanguageCourses locale={locale} copy={copy} />
+      <CourseComparison locale={locale} copy={copy} />
+      <LearningProcess copy={copy} />
+      <CoursesCta locale={locale} copy={copy} />
     </main>
   );
 }
