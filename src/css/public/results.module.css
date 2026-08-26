@@ -138,10 +138,14 @@
 
 .results__videoDialog {
   @apply m-4 overflow-hidden rounded-[1.75rem] border border-white/70 bg-heading shadow-[0_30px_90px_rgb(16_42_67/35%)];
+  aspect-ratio: 9 / 16;
+  max-height: calc(100dvh - 2rem);
+  max-width: none;
+  width: min(calc((100dvh - 2rem) * 9 / 16), calc(100vw - 2rem));
 }
 
 .results__videoDialogContent {
-  @apply relative p-2;
+  @apply relative h-full w-full;
 }
 
 .results__videoClose {
@@ -149,7 +153,7 @@
 }
 
 .results__videoPlayer {
-  @apply mx-auto block aspect-[9/16] max-h-[calc(100vh-4rem)] w-auto max-w-full rounded-2xl bg-heading object-cover;
+  @apply block h-full w-full bg-heading object-cover;
 }
 
 /* LearningJourney */

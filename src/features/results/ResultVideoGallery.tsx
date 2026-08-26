@@ -57,8 +57,7 @@ export function ResultVideoGallery({ copy, locale }: ResultVideoGalleryProps) {
 
       <Dialog
         aria-label={activeTitle}
-        fullWidth
-        maxWidth="xs"
+        maxWidth={false}
         onClose={handleClose}
         open={activeStory !== null}
         slotProps={{
