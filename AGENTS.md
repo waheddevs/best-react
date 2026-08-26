@@ -65,9 +65,13 @@ conversion journeys can be reviewed realistically.
   concise ownership comment so it cannot be mistaken for production truth.
 - Use obviously reserved values for technical contact identifiers where
   practical, such as `.example` email domains and zero-filled phone numbers.
-- Do not use a real person's identity, photograph, quote, score, or private
-  information as fictional content. Fictional people and AI/editorial visuals
-  must remain clearly synthetic preview material.
+- Do not use a real person's identity, quote, score, or private information as
+  fictional content. Licensed stock footage with recognizable people may be
+  used only as clearly marked generic client-preview material; never identify
+  its subjects as BEST LC learners or imply their endorsement. Keep creator,
+  source-page, and license metadata centralized with the media data. Fictional
+  people and AI/editorial visuals must remain clearly synthetic preview
+  material.
 - Replace preview content with client-supplied real data before production
   launch, while preserving the established types and presentation structure.
 - This convention authorizes fictional content, not fake functionality by
@@ -176,20 +180,19 @@ src/
           HeroVisual.tsx
           page.tsx
         courses/
-          IELTS.tsx
-          CEFR.tsx
-          EnglishGeneral.tsx
-          Russian.tsx
-          French.tsx
-          German.tsx
-          Chinese.tsx
           CoursesHero.tsx
           CoursesCatalog.tsx
+          LanguageCourses.tsx
+          CourseComparison.tsx
+          LearningProcess.tsx
+          CoursesCta.tsx
           page.tsx
           [slug]/
             CourseHero.tsx
+            CourseHeroVisual.tsx
             CourseOverview.tsx
             CourseAudience.tsx
+            CourseTracks.tsx
             CourseOutcomes.tsx
             CourseCurriculum.tsx
             CoursePrerequisites.tsx
@@ -285,8 +288,6 @@ src/
       useActivePath.ts
       useScrollToTop.ts
     public/
-      courses/
-        useCourseCatalog.ts
       contact/
         useContactForm.ts
       exams/
@@ -369,8 +370,8 @@ React components. Next.js framework-reserved route files remain lowercase.
 
 Custom hooks are an explicit exception to the PascalCase file rule. Every hook
 filename and its named export must use the same React-standard camelCase name
-beginning with `use`, for example `useCourseCatalog.ts` exports
-`useCourseCatalog`. Keep a small number of genuinely shared hooks directly in
+beginning with `use`, for example `useContactForm.ts` exports
+`useContactForm`. Keep a small number of genuinely shared hooks directly in
 `src/hooks/`. When page- or area-owned hooks grow, group them by ownership, such
 as `hooks/public/courses/`, `hooks/public/contact/`, or `hooks/navigation/`;
 do not reorganize hooks based only on an arbitrary numeric threshold.
@@ -974,9 +975,16 @@ Maintain hierarchy and breathing room.
 ### Courses list
 
 - Page hero and concise explanation
-- Search and useful client-side filters based on local typed data
-- Course cards with title, category, level, delivery format, and duration
-- Empty-state UI for filters
+- A server-rendered, two-level catalogue: three featured programmes followed by
+  compact Russian, French, German, and Chinese course cards
+- No search or client-side filter UI while the catalogue remains limited to the
+  approved seven directions
+- Featured course cards with title, category, level, duration, and three concise
+  programme highlights
+- A responsive course-comparison section, four-step learning process, and final
+  CTA to Contact
+- Reference material may inform fictional listing content only; never reproduce
+  an external card's visual design, colour treatment, layout, or CTA styling
 - No fake enrollment persistence
 
 ### Course detail
@@ -985,6 +993,8 @@ Maintain hierarchy and breathing room.
 - Who the course is for
 - Learning outcomes
 - Curriculum preview
+- Optional data-driven learning tracks, such as Pre-IELTS, IELTS Standard, and
+  IELTS Advanced
 - Duration and format
 - Teacher placeholder only when verified content is supplied
 - FAQ or prerequisites
@@ -1019,10 +1029,12 @@ This page represents public student success and BEST LC outcomes, not private
 exam results.
 
 - Introductory story and real or marked preview aggregate metrics
-- Eight real or explicitly fictional five-second, 9:16 Reels-format video case
-  studies in a responsive 4-by-2 desktop gallery, with synthetic media kept
-  under `public/videos/`. Video cards show only the poster and centred play icon;
-  keep all descriptive card copy visually hidden from the gallery.
+- Eight explicitly marked preview five-second, 9:16 Reels-format video scenes
+  in a responsive 4-by-2 desktop gallery, with local media kept under
+  `public/videos/`. Licensed stock footage may show recognizable characters,
+  but must remain generic and may not be paired with invented identities,
+  quotes, scores, or claims. Video cards show only the poster and centred play
+  icon; keep all descriptive card copy visually hidden from the gallery.
 - Real or fictional preview before/after learning journeys
 - Outcome categories or visual timeline
 - CTA to explore courses
@@ -1033,7 +1045,9 @@ exam results.
 Never reuse a real person's identity or private information as placeholder
 content. Keep fictional names, synthetic visuals, quotes, scores,
 certifications, and employment outcomes centralized, marked as preview data,
-and easy to replace before production.
+and easy to replace before production. For licensed stock footage, centralize
+the creator, source page, and license reference, and replace the footage with
+client-approved learner media before production.
 
 ## 20. Student Library
 
