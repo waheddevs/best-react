@@ -3,10 +3,10 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
-import type { Course } from "@/types/PublicContent";
+import type { PublicCourse } from "@/types/PublicCourse";
 
 type CourseOverviewProps = {
-  course: Course;
+  course: PublicCourse;
   locale: Locale;
   copy: PageCopy;
 };
