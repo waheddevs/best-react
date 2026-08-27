@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { defaultLocale, locales } from "@/config/Locales";
+import { defaultLocale, isLocale, locales } from "@/config/Locales";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const localePreference = request.cookies.get("best-locale")?.value;
   const hasLocale = locales.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
   );
@@ -14,11 +15,12 @@ export function proxy(request: NextRequest) {
   }
 
   const redirectUrl = request.nextUrl.clone();
-  redirectUrl.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
+  const locale = localePreference && isLocale(localePreference) ? localePreference : defaultLocale;
+  redirectUrl.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
 
   return NextResponse.redirect(redirectUrl);
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };

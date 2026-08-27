@@ -66,6 +66,26 @@
   background-image: var(--gradient-cta-corner);
 }
 
+.navbar__authSkeleton {
+  @apply block h-10 w-32 animate-pulse rounded-xl bg-border/70;
+}
+
+.navbar__session {
+  @apply hidden min-w-0 items-center gap-2 rounded-xl bg-surface px-2 py-1.5 text-sm font-semibold text-heading shadow-sm sm:flex;
+}
+
+.navbar__sessionInitial {
+  @apply grid size-7 shrink-0 place-items-center rounded-full bg-[color-mix(in_srgb,var(--brand-turquoise)_22%,white)] text-xs font-black text-heading;
+}
+
+.navbar__sessionName {
+  @apply max-w-28 truncate;
+}
+
+.navbar__logoutLabel {
+  @apply hidden sm:inline;
+}
+
 /* MobileNavigation */
 
 .navbar__mobile {
