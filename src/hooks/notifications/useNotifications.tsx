@@ -1,18 +1,13 @@
 "use client";
 
 import { useCallback, useContext, useMemo } from "react";
-import { toast } from "sonner";
 
-import { LiquidToast } from "@/features/notifications/LiquidToast";
 import { NotificationContext } from "@/features/notifications/NotificationContext";
 import type {
   NotificationId,
   NotificationInput,
-  NotificationTone,
   PromiseNotificationInput,
 } from "@/types/Notification";
-
-const defaultDuration = 4200;
 
 export function useNotifications() {
   /* HOOKS */
@@ -22,32 +17,7 @@ export function useNotifications() {
     throw new Error("useNotifications must be used within NotificationProvider.");
   }
 
-  const { copy, showCenterAlert } = context;
-
-  const showNotification = useCallback(
-    (tone: NotificationTone, input: NotificationInput = {}, id?: NotificationId) => {
-      const fallback = copy.defaults[tone];
-
-      return toast.custom(
-        (toastId) => (
-          <LiquidToast
-            action={input.action}
-            closeAriaLabel={copy.closeAriaLabel}
-            message={input.message ?? fallback.message}
-            onDismiss={() => toast.dismiss(toastId)}
-            title={input.title ?? fallback.title}
-            tone={tone}
-          />
-        ),
-        {
-          duration: input.duration ?? (tone === "loading" ? Infinity : defaultDuration),
-          id,
-          unstyled: true,
-        },
-      );
-    },
-    [copy.closeAriaLabel, copy.defaults],
-  );
+  const { dismissNotification, showCenterAlert, showNotification } = context;
 
   const success = useCallback(
     (input?: NotificationInput) => showNotification("success", input),
@@ -69,7 +39,10 @@ export function useNotifications() {
     (input?: NotificationInput) => showNotification("loading", input),
     [showNotification],
   );
-  const dismiss = useCallback((id?: NotificationId) => toast.dismiss(id), []);
+  const dismiss = useCallback(
+    (id?: NotificationId) => dismissNotification(id),
+    [dismissNotification],
+  );
 
   const promise = useCallback(
     async <Data,>(operation: Promise<Data>, messages: PromiseNotificationInput<Data> = {}) => {

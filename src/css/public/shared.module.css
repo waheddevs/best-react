@@ -205,20 +205,6 @@
   @apply border border-border bg-background text-muted hover:border-brand hover:bg-[color-mix(in_srgb,var(--brand-turquoise)_10%,var(--surface))] hover:text-heading;
 }
 
-/* DraftNotice */
-
-.publicShared__draftNotice {
-  @apply flex gap-3 rounded-2xl border border-[color-mix(in_srgb,var(--sunny-yellow)_55%,var(--border))] bg-[color-mix(in_srgb,var(--sunny-yellow)_12%,var(--surface))] p-4 text-sm leading-6 text-text;
-}
-
-.publicShared__draftNoticeIcon {
-  @apply mt-0.5 shrink-0 text-heading;
-}
-
-.publicShared__draftNoticeBadge {
-  @apply text-heading;
-}
-
 /* EmptyState */
 
 .publicShared__emptyState {
@@ -310,14 +296,98 @@
   @apply mt-7 inline-flex min-h-12 items-center rounded-2xl bg-(image:--gradient-cta) px-6 font-bold text-white;
 }
 
+/* CoursePosterCard */
+
+.publicShared__coursePosterCard {
+  @apply relative isolate aspect-[4/5] h-full cursor-pointer overflow-hidden rounded-[2rem] border border-white/70 bg-heading shadow-[0_20px_55px_rgb(16_42_67/14%)] transition-[border-color,box-shadow] duration-200;
+}
+
+.publicShared__coursePosterLink {
+  @apply relative block size-full cursor-pointer;
+}
+
+.publicShared__coursePosterCard:hover,
+.publicShared__coursePosterCard:focus-within {
+  @apply border-brand/80 shadow-[0_26px_64px_rgb(16_42_67/20%)];
+}
+
+.publicShared__coursePosterImage {
+  @apply object-cover transition-[filter,transform] duration-300 ease-out;
+}
+
+.publicShared__coursePosterImage[data-course="ielts"] {
+  object-position: center 48%;
+}
+
+.publicShared__coursePosterScrim {
+  @apply pointer-events-none absolute inset-0 z-10 bg-heading/20 opacity-0 transition-opacity duration-300;
+  background-image: linear-gradient(
+    180deg,
+    rgb(16 42 67 / 18%) 0%,
+    rgb(16 42 67 / 58%) 52%,
+    rgb(16 42 67 / 72%) 100%
+  );
+}
+
+.publicShared__coursePosterContent {
+  @apply pointer-events-none absolute inset-0 z-20 flex translate-y-3 flex-col items-center justify-center gap-5 px-6 text-center opacity-0 transition-[opacity,transform] duration-300 ease-out;
+}
+
+.publicShared__coursePosterTitle {
+  @apply max-w-[13ch] text-[clamp(1.75rem,3vw,2.75rem)] leading-[0.96] font-black tracking-[-0.055em] text-white drop-shadow-[0_4px_18px_rgb(0_0_0/35%)];
+}
+
+.publicShared__coursePosterAction {
+  @apply pointer-events-auto;
+}
+
+.publicShared__coursePosterActionIcon {
+  @apply inline-flex shrink-0;
+}
+
+.publicShared__coursePosterActionIcon svg {
+  font-size: 18px !important;
+}
+
+.publicShared__coursePosterCard:hover .publicShared__coursePosterImage,
+.publicShared__coursePosterCard:focus-within .publicShared__coursePosterImage {
+  filter: blur(2.4px) brightness(0.72) saturate(0.88);
+  transform: scale(1.035);
+}
+
+.publicShared__coursePosterCard:hover .publicShared__coursePosterScrim,
+.publicShared__coursePosterCard:focus-within .publicShared__coursePosterScrim,
+.publicShared__coursePosterCard:hover .publicShared__coursePosterContent,
+.publicShared__coursePosterCard:focus-within .publicShared__coursePosterContent {
+  @apply translate-y-0 opacity-100;
+}
+
+@media (hover: none) {
+  .publicShared__coursePosterImage {
+    filter: brightness(0.72) saturate(0.9);
+  }
+
+  .publicShared__coursePosterScrim,
+  .publicShared__coursePosterContent {
+    @apply translate-y-0 opacity-100;
+  }
+}
+
 /* Notifications */
+
+.publicShared__notificationSnackbar {
+  top: 1.5rem !important;
+  right: 1.5rem !important;
+  width: min(25rem, calc(100vw - 3rem));
+  font-family: var(--font-geist-sans), sans-serif;
+}
 
 .publicShared__notificationToast {
   --notification-accent: var(--action-blue);
   --notification-accent-soft: rgb(37 99 235 / 14%);
   position: relative;
   display: grid;
-  width: min(25rem, calc(100vw - 2rem));
+  width: 100%;
   min-height: 5.5rem;
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 0.875rem;
@@ -330,6 +400,21 @@
   box-shadow:
     0 22px 60px rgb(16 42 67 / 20%),
     inset 0 1px 0 rgb(255 255 255 / 78%);
+  animation: publicSharedNotificationEnter 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes publicSharedNotificationEnter {
+  0% {
+    transform: translateY(-1.75rem);
+  }
+
+  72% {
+    transform: translateY(0.125rem);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .publicShared__notificationToast::before {
@@ -338,7 +423,7 @@
   width: 0.25rem;
   content: "";
   background: var(--notification-accent);
-  box-shadow: 0 0 24px var(--notification-accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--notification-accent) 24%, transparent);
 }
 
 .publicShared__notificationToastSuccess {
@@ -464,10 +549,13 @@
   border: 1px solid rgb(255 255 255 / 86%);
   border-radius: 2rem !important;
   background: linear-gradient(145deg, rgb(255 255 255 / 96%), rgb(234 251 253 / 91%)) !important;
-  background-image: none !important;
   box-shadow:
     0 32px 90px rgb(16 42 67 / 30%),
     inset 0 1px 0 rgb(255 255 255 / 82%) !important;
+  isolation: isolate;
+  contain: paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .publicShared__notificationDialogDefault {
@@ -565,23 +653,25 @@
   border: 1px solid rgb(255 255 255 / 88%);
   border-radius: 2rem !important;
   background: linear-gradient(145deg, rgb(255 255 255 / 97%), rgb(234 251 253 / 94%)) !important;
-  background-image: none !important;
   box-shadow:
     0 32px 90px rgb(16 42 67 / 28%),
     inset 0 1px 0 rgb(255 255 255 / 86%) !important;
   transform-origin: center;
   transition-property: transform;
   will-change: transform;
+  isolation: isolate;
+  contain: paint;
+  backface-visibility: hidden;
 }
 
 .publicShared__centerAlertOpen {
-  transform: translateY(0) scale(1);
+  transform: scale(1);
   transition-duration: 320ms;
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .publicShared__centerAlertClosed {
-  transform: translateY(0.625rem) scale(0.975);
+  transform: scale(0.94);
   transition-duration: 240ms;
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
@@ -599,6 +689,11 @@
 .publicShared__centerAlertInfo {
   --center-alert-accent: var(--action-blue);
   --center-alert-soft: rgb(37 99 235 / 14%);
+}
+
+.publicShared__centerAlertComingSoon {
+  --center-alert-accent: #0e7490;
+  --center-alert-soft: rgb(73 191 209 / 18%);
 }
 
 .publicShared__centerAlertContent {
@@ -653,27 +748,46 @@
 
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .publicShared__notificationToast {
-    background: linear-gradient(135deg, rgb(255 255 255 / 76%), rgb(234 251 253 / 66%));
-    -webkit-backdrop-filter: blur(22px) saturate(175%);
-    backdrop-filter: blur(22px) saturate(175%);
+    background:
+      radial-gradient(circle at 88% 8%, rgb(73 191 209 / 18%), transparent 42%),
+      linear-gradient(135deg, rgb(255 255 255 / 76%), rgb(234 251 253 / 64%));
+    -webkit-backdrop-filter: blur(22px) saturate(165%);
+    backdrop-filter: blur(22px) saturate(165%);
   }
 
   .publicShared__notificationDialog {
-    background: linear-gradient(145deg, rgb(255 255 255 / 78%), rgb(234 251 253 / 68%)) !important;
-    -webkit-backdrop-filter: blur(26px) saturate(180%);
-    backdrop-filter: blur(26px) saturate(180%);
+    background:
+      radial-gradient(circle at 86% 5%, rgb(73 191 209 / 18%), transparent 44%),
+      linear-gradient(145deg, rgb(255 255 255 / 78%), rgb(234 251 253 / 66%)) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(170%);
+    backdrop-filter: blur(26px) saturate(170%);
   }
 
   .publicShared__centerAlert {
-    background: linear-gradient(145deg, rgb(255 255 255 / 82%), rgb(234 251 253 / 72%)) !important;
-    -webkit-backdrop-filter: blur(26px) saturate(180%);
-    backdrop-filter: blur(26px) saturate(180%);
+    background:
+      radial-gradient(circle at 86% 5%, rgb(73 191 209 / 18%), transparent 44%),
+      linear-gradient(145deg, rgb(255 255 255 / 80%), rgb(234 251 253 / 68%)) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(170%);
+    backdrop-filter: blur(26px) saturate(170%);
+  }
+
+  .publicShared__notificationDialogBackdrop,
+  .publicShared__centerAlertBackdrop {
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    backdrop-filter: blur(8px) saturate(120%);
   }
 }
 
 @media (max-width: 480px) {
+  .publicShared__notificationSnackbar {
+    top: 1rem !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    width: auto;
+  }
+
   .publicShared__notificationToast {
-    width: calc(100vw - 2rem);
+    width: 100%;
   }
 
   .publicShared__notificationDialogContent {
@@ -688,6 +802,22 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .publicShared__notificationToast {
+    animation: none;
+  }
+
+  .publicShared__coursePosterCard,
+  .publicShared__coursePosterImage,
+  .publicShared__coursePosterScrim,
+  .publicShared__coursePosterContent {
+    transition: none;
+  }
+
+  .publicShared__coursePosterCard:hover .publicShared__coursePosterImage,
+  .publicShared__coursePosterCard:focus-within .publicShared__coursePosterImage {
+    transform: none;
+  }
+
   .publicShared__button,
   .publicShared__buttonGrow,
   .publicShared__buttonJump,

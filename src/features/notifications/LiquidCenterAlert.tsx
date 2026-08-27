@@ -2,6 +2,7 @@
 
 import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
 import CancelRounded from "@mui/icons-material/CancelRounded";
+import CampaignRounded from "@mui/icons-material/CampaignRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -22,7 +23,15 @@ const toneClassNames: Record<CenterAlertTone, string> = {
   success: styles.publicShared__centerAlertSuccess,
   error: styles.publicShared__centerAlertError,
   info: styles.publicShared__centerAlertInfo,
+  comingSoon: styles.publicShared__centerAlertComingSoon,
 };
+
+function renderCenterAlertIcon(tone: CenterAlertTone) {
+  if (tone === "success") return <CheckCircleRounded aria-hidden="true" />;
+  if (tone === "error") return <CancelRounded aria-hidden="true" />;
+  if (tone === "comingSoon") return <CampaignRounded aria-hidden="true" />;
+  return <InfoOutlined aria-hidden="true" />;
+}
 
 export function LiquidCenterAlert({ options, open, onClose, onExited }: LiquidCenterAlertProps) {
   /* HOOKS */
@@ -62,13 +71,7 @@ export function LiquidCenterAlert({ options, open, onClose, onExited }: LiquidCe
     >
       <DialogContent className={styles.publicShared__centerAlertContent}>
         <span className={styles.publicShared__centerAlertIcon}>
-          {options.tone === "success" ? (
-            <CheckCircleRounded aria-hidden="true" />
-          ) : options.tone === "error" ? (
-            <CancelRounded aria-hidden="true" />
-          ) : (
-            <InfoOutlined aria-hidden="true" />
-          )}
+          {renderCenterAlertIcon(options.tone)}
         </span>
         <h2 className={styles.publicShared__centerAlertTitle} id={titleId}>
           {options.title}

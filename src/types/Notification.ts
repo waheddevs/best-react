@@ -25,7 +25,7 @@ export type PromiseNotificationInput<Data> = {
 
 export type ConfirmDialogTone = "default" | "warning" | "danger";
 
-export type CenterAlertTone = "success" | "error" | "info";
+export type CenterAlertTone = "success" | "error" | "info" | "comingSoon";
 
 export type CenterAlertInput = NotificationMessage & {
   closeLabel: string;
@@ -62,5 +62,11 @@ export type NotificationCopy = {
 export type NotificationContextValue = {
   copy: NotificationCopy;
   confirm: (input?: ConfirmDialogInput) => Promise<boolean>;
+  dismissNotification: (id?: NotificationId) => void;
+  showNotification: (
+    tone: NotificationTone,
+    input?: NotificationInput,
+    id?: NotificationId,
+  ) => NotificationId;
   showCenterAlert: (input: CenterAlertInput) => void;
 };

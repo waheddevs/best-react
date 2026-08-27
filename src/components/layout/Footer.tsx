@@ -1,11 +1,7 @@
 import EmailRounded from "@mui/icons-material/EmailRounded";
-import Facebook from "@mui/icons-material/Facebook";
-import Instagram from "@mui/icons-material/Instagram";
 import LocationOnRounded from "@mui/icons-material/LocationOnRounded";
 import PhoneRounded from "@mui/icons-material/PhoneRounded";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
-import Telegram from "@mui/icons-material/Telegram";
-import Twitter from "@mui/icons-material/Twitter";
 import Image from "next/image";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
@@ -21,6 +17,7 @@ import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { Dictionary } from "@/dictionaries/public/Types";
 
 import { FooterPattern } from "./FooterPattern";
+import { FooterSocialLinks } from "./FooterSocialLinks";
 
 type FooterProps = {
   locale: Locale;
@@ -35,13 +32,6 @@ export function Footer({ locale, navigation, copy }: FooterProps) {
     { label: copy.email, Icon: EmailRounded },
     { label: copy.hours, Icon: ScheduleRounded },
   ];
-  const socialItems = [
-    { label: "Instagram", Icon: Instagram },
-    { label: "Facebook", Icon: Facebook },
-    { label: "Twitter", Icon: Twitter },
-    { label: "Telegram", Icon: Telegram },
-  ];
-
   return (
     <footer className={styles.footer}>
       <FooterPattern />
@@ -60,13 +50,12 @@ export function Footer({ locale, navigation, copy }: FooterProps) {
             <span className={styles.footer__brandName}>BEST LC</span>
           </ScrollToTopLink>
           <p className={styles.footer__summary}>{copy.summary}</p>
-          <div className={styles.footer__socials} aria-label={copy.social}>
-            {socialItems.map(({ label, Icon }) => (
-              <span key={label} className={styles.footer__socialIcon} role="img" aria-label={label}>
-                <Icon aria-hidden="true" />
-              </span>
-            ))}
-          </div>
+          <FooterSocialLinks
+            ariaLabel={copy.social}
+            closeLabel={copy.socialNoticeClose}
+            message={copy.socialNoticeMessage}
+            title={copy.socialNoticeTitle}
+          />
         </div>
 
         <div className={styles.footer__sections}>

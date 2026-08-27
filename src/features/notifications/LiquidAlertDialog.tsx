@@ -81,6 +81,7 @@ export function LiquidAlertDialog({ options, onCancel, onConfirm }: LiquidAlertD
         </Button>
         <Button
           className={styles.publicShared__notificationDialogConfirm}
+          hoverEffect="jump"
           onClick={onConfirm}
           shape="soft"
           size="small"

@@ -31,9 +31,9 @@ export const courseNavigationItems = [
 ] as const;
 
 export const examNavigationItems = [
-  { key: "ielts", href: "/exams/ielts" },
-  { key: "cefr", href: "/exams/cefr" },
-  { key: "mock", href: "/exams/mock" },
+  { key: "ielts", href: "/exams#exam-options" },
+  { key: "cefr", href: "/exams#exam-options" },
+  { key: "mock", href: "/exams#exam-options" },
 ] as const;
 
 export type NavigationKey = (typeof navigationItems)[number]["key"];

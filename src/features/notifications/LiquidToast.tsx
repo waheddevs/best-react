@@ -6,6 +6,7 @@ import ErrorOutlineRounded from "@mui/icons-material/ErrorOutlineRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import WarningAmberRounded from "@mui/icons-material/WarningAmberRounded";
 import CircularProgress from "@mui/material/CircularProgress";
+import { forwardRef, type CSSProperties } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
@@ -19,6 +20,7 @@ type LiquidToastProps = {
   closeAriaLabel: string;
   action?: NotificationAction;
   onDismiss: () => void;
+  style?: CSSProperties;
 };
 
 const toneClassNames: Record<NotificationTone, string> = {
@@ -41,14 +43,10 @@ function renderIcon(tone: NotificationTone) {
   return <InfoOutlined aria-hidden="true" />;
 }
 
-export function LiquidToast({
-  tone,
-  title,
-  message,
-  closeAriaLabel,
-  action,
-  onDismiss,
-}: LiquidToastProps) {
+export const LiquidToast = forwardRef<HTMLDivElement, LiquidToastProps>(function LiquidToast(
+  { tone, title, message, closeAriaLabel, action, onDismiss, style },
+  ref,
+) {
   /* HANDLERS */
   const handleActionClick = () => {
     action?.onClick();
@@ -60,7 +58,9 @@ export function LiquidToast({
       aria-atomic="true"
       aria-live={tone === "error" ? "assertive" : "polite"}
       className={`${styles.publicShared__notificationToast} ${toneClassNames[tone]}`}
+      ref={ref}
       role={tone === "error" ? "alert" : "status"}
+      style={style}
     >
       <span className={styles.publicShared__notificationIcon}>{renderIcon(tone)}</span>
       <div className={styles.publicShared__notificationContent}>
@@ -87,4 +87,4 @@ export function LiquidToast({
       </IconButton>
     </div>
   );
-}
+});
