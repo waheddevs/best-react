@@ -119,21 +119,15 @@
 /* Mission */
 
 .about__mission {
-  @apply overflow-hidden bg-background;
+  @apply overflow-hidden bg-background py-16 sm:py-20 lg:py-24;
 }
 
 .about__missionLayout {
-  @apply grid lg:min-h-[34rem] lg:grid-cols-2;
+  @apply grid items-center gap-10 lg:grid-cols-[minmax(0,45fr)_minmax(0,55fr)] lg:gap-14;
 }
 
 .about__missionCopy {
-  @apply flex flex-col items-start justify-center px-5 py-16 sm:px-7 sm:py-20 lg:py-24 lg:pr-14;
-}
-
-@media (min-width: 64rem) {
-  .about__missionCopy {
-    padding-left: max(2.5rem, calc((100vw - 80rem) / 2 + 2.5rem));
-  }
+  @apply flex flex-col items-start justify-center lg:pr-4;
 }
 
 .about__missionTitle {
@@ -149,11 +143,32 @@
 }
 
 .about__missionVisual {
-  @apply relative min-h-96 overflow-hidden bg-surface lg:min-h-full;
+  @apply relative min-h-[24rem] overflow-hidden rounded-[1.875rem] border border-white/80 bg-surface shadow-[0_28px_70px_rgb(16_42_67/16%)] sm:min-h-[28rem];
+  isolation: isolate;
+}
+
+.about__missionVisual::after {
+  position: absolute;
+  z-index: 1;
+  bottom: -3.5rem;
+  left: -3.5rem;
+  width: 10rem;
+  aspect-ratio: 1;
+  border: 1.25rem solid rgb(73 191 209 / 34%);
+  border-radius: 999px;
+  content: "";
+  pointer-events: none;
 }
 
 .about__missionImage {
   @apply absolute inset-0 size-full object-cover;
+  object-position: center 46%;
+}
+
+@media (min-width: 64rem) {
+  .about__missionVisual {
+    min-height: clamp(28rem, 34vw, 31rem);
+  }
 }
 
 /* Values */
@@ -274,11 +289,31 @@
 }
 
 .about__testimonialsSticky {
-  @apply sticky top-20 flex h-[calc(100svh-5rem)] flex-col justify-center overflow-hidden py-2 sm:py-4;
+  --about-testimonials-height: min(48rem, calc(100svh - 5rem));
+  @apply sticky flex flex-col justify-between overflow-hidden py-16 sm:py-20 lg:py-24;
+  top: max(5rem, calc(50svh - 21.5rem));
+  height: var(--about-testimonials-height);
 }
 
 .about__testimonialStage {
-  @apply relative mt-4 h-[29rem] sm:h-[27rem] md:mt-7 md:h-[21rem];
+  @apply relative mt-8 h-[29rem] sm:mt-10 sm:h-[27rem] md:mt-12 md:h-[21rem];
+}
+
+@media (max-height: 44rem) {
+  .about__testimonialsSticky {
+    @apply py-8;
+  }
+
+  .about__testimonialStage {
+    @apply mt-6 h-[26rem] md:h-[18rem];
+  }
+}
+
+@media (min-width: 48rem) {
+  .about__testimonialsSticky {
+    --about-testimonials-height: min(42rem, calc(100svh - 5rem));
+    top: max(5rem, calc(50svh - 18.5rem));
+  }
 }
 
 .about__testimonialGroup {

@@ -190,6 +190,10 @@
   outline: none;
 }
 
+.contact__form :global(.MuiFormHelperText-root) {
+  min-height: 1.25rem;
+}
+
 .contact__form
   :global(.MuiOutlinedInput-root:not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline) {
   border-color: var(--brand-turquoise);

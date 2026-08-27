@@ -137,6 +137,10 @@
 
 /* ExamOptions */
 
+.exams__options {
+  @apply scroll-mt-20;
+}
+
 .exams__catalogGrid {
   @apply mt-10 grid items-stretch gap-5 lg:grid-cols-3;
 }

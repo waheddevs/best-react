@@ -33,7 +33,7 @@ export function ContactForm({ copy }: ContactFormProps) {
         <TextField
           autoComplete="given-name"
           error={Boolean(errors.firstName)}
-          helperText={errors.firstName}
+          helperText={errors.firstName ?? " "}
           label={copy.contact.firstName}
           onChange={handleFirstNameChange}
           slotProps={{
@@ -45,7 +45,7 @@ export function ContactForm({ copy }: ContactFormProps) {
         <TextField
           autoComplete="family-name"
           error={Boolean(errors.lastName)}
-          helperText={errors.lastName}
+          helperText={errors.lastName ?? " "}
           label={copy.contact.lastName}
           onChange={handleLastNameChange}
           slotProps={{
@@ -58,7 +58,7 @@ export function ContactForm({ copy }: ContactFormProps) {
       <TextField
         autoComplete="email"
         error={Boolean(errors.email)}
-        helperText={errors.email}
+        helperText={errors.email ?? " "}
         label={copy.contact.email}
         onChange={handleEmailChange}
         slotProps={{
@@ -71,7 +71,7 @@ export function ContactForm({ copy }: ContactFormProps) {
       <TextField
         autoComplete="off"
         error={Boolean(errors.subject)}
-        helperText={errors.subject}
+        helperText={errors.subject ?? " "}
         label={copy.contact.subject}
         onChange={handleSubjectChange}
         slotProps={{
@@ -83,7 +83,7 @@ export function ContactForm({ copy }: ContactFormProps) {
       <TextField
         multiline
         error={Boolean(errors.message)}
-        helperText={errors.message}
+        helperText={errors.message ?? " "}
         label={copy.contact.message}
         minRows={5}
         onChange={handleMessageChange}
