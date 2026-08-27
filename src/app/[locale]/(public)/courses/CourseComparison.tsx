@@ -34,7 +34,7 @@ export function CourseComparison({ locale, copy }: CourseComparisonProps) {
             <article className={styles.courses__comparisonRow} key={course.slug}>
               <div className={styles.courses__comparisonCourse}>
                 <span>{course.symbol}</span>
-                <strong>{course.title[locale]}</strong>
+                <strong>{course.comparisonTitle?.[locale] ?? course.title[locale]}</strong>
               </div>
               <p data-label={copy.courses.comparisonFocus}>{course.focus[locale]}</p>
               <p data-label={copy.courses.level}>{course.level[locale]}</p>

@@ -21,7 +21,7 @@ export function CoursesCta({ locale, copy }: CoursesCtaProps) {
         </span>
         <h2>{copy.courses.ctaTitle}</h2>
         <p>{copy.courses.ctaDescription}</p>
-        <ButtonLink href={`/${locale}/contact`} size="medium">
+        <ButtonLink href={`/${locale}/contact`} hoverEffect="jump" size="medium">
           {copy.common.contactCta}
         </ButtonLink>
       </Reveal>

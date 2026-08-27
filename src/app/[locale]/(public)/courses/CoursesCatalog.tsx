@@ -1,15 +1,13 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup } from "@/components/motion/StaggerGroup";
 import { StaggerItem } from "@/components/motion/StaggerItem";
-import { DraftNotice } from "@/components/ui/DraftNotice";
+import { CoursePosterCard } from "@/components/cards/CoursePosterCard";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
 import { featuredCourses } from "@/data/PublicCourses";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
-
-import { CoursePosterCard } from "./CoursePosterCard";
 
 type CoursesCatalogProps = {
   locale: Locale;
@@ -19,9 +17,6 @@ type CoursesCatalogProps = {
 export function CoursesCatalog({ locale, copy }: CoursesCatalogProps) {
   return (
     <Section id="course-catalog" tone="surface">
-      <Reveal>
-        <DraftNotice badge={copy.common.draftBadge} note={copy.common.draftNote} />
-      </Reveal>
       <Reveal className={styles.courses__sectionHeading} delay={0.05}>
         <SectionHeading
           align="center"

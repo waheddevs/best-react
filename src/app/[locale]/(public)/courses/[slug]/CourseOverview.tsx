@@ -1,4 +1,3 @@
-import { DraftNotice } from "@/components/ui/DraftNotice";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
@@ -14,10 +13,11 @@ type CourseOverviewProps = {
 export function CourseOverview({ course, locale, copy }: CourseOverviewProps) {
   return (
     <section>
-      <DraftNotice badge={copy.common.draftBadge} note={copy.common.draftNote} />
-      <div className={styles.courses__overviewContent}>
-        <SectionHeading title={copy.courses.overview} />
-        <p className={styles.courses__overviewText}>{course.summary[locale]}</p>
+      <SectionHeading title={copy.courses.overview} />
+      <div className={styles.courses__overviewCopy}>
+        {course.overview[locale].map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </div>
     </section>
   );

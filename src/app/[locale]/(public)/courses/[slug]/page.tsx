@@ -10,6 +10,7 @@ import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
 
 import { CourseAudience } from "./CourseAudience";
+import { CourseBackAction } from "./CourseBackAction";
 import { CourseCurriculum } from "./CourseCurriculum";
 import { CourseHero } from "./CourseHero";
 import { CourseOutcomes } from "./CourseOutcomes";
@@ -74,6 +75,9 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
             </Reveal>
             <Reveal>
               <CoursePrerequisites course={course} locale={locale} copy={copy} />
+            </Reveal>
+            <Reveal>
+              <CourseBackAction locale={locale} copy={copy} />
             </Reveal>
           </div>
           <Reveal className={styles.courses__sidebarReveal}>
