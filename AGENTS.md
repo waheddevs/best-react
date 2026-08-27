@@ -29,8 +29,10 @@ Do not implement or scaffold any of the following in this milestone:
   localized Student Library catalogue described below
 - Teacher dashboard or teacher account pages
 - Administrator dashboard or admin tools
-- Login, registration, password reset, role selection, or authentication logic
-- Backend APIs, route handlers, server actions, databases, CMS, or persistence
+- Password reset, custom credentials authentication, or account dashboards
+  beyond the explicitly approved auth-shell exception below
+- Backend APIs, route handlers, server actions, databases, CMS, or persistence,
+  except the narrowly approved Auth.js callback handler and provider actions
 - Payments or checkout
 - Protected course lessons, progress tracking, certificates, or assignments
 - A working online exam engine
@@ -46,11 +48,61 @@ The user has approved one narrow student-area exception: move the existing
 localized Library catalogue and its detail routes from public ownership to
 `/[locale]/student/library`. Its route components, feature logic, hook, CSS,
 typed data, types, and dictionary must remain under student-owned directories.
-The route is currently frontend-only and unprotected because authentication is
-out of scope. Other student, teacher, and administrator placeholders remain
-`.gitkeep`-only; obtain fresh explicit approval before implementing them.
+The route remains unprotected; the social-auth approval below does not authorize
+protecting Student Library or adding another student route. Other student,
+teacher, and administrator placeholders remain `.gitkeep`-only; obtain fresh
+explicit approval before implementing them.
 
-## 2A. Client-preview content convention
+## 2A. Approved auth-shell and social-auth exception
+
+The user explicitly approved localized login and signup screens, a frontend role
+selection step, and real Google, Facebook, and Apple verification. This
+exception is deliberately narrow:
+
+- Own the UI at `/[locale]/login` and `/[locale]/signup` inside an `(auth)` route
+  group with a dedicated full-screen shell and no public Navbar or Footer.
+- Keep the mirrored full-screen background in the shared `(auth)/layout.tsx` so
+  it remains stable while the login and signup panels transition independently.
+- Use Auth.js with the App Router callback handler at
+  `/api/auth/[...nextauth]`, JWT sessions, secure HttpOnly cookies, and logout.
+- Keep provider credentials in ignored environment files. Commit only an
+  `.env.example` template; never commit secrets, private keys, or provider
+  tokens.
+- Keep Google, Facebook, and Apple actions disabled when their required
+  credentials are absent. Do not pretend verification succeeded.
+- Before either auth form, show the localized liquid-glass role selector for
+  Teacher, Student, and operational Admin. Preserve the selected role through
+  the localized Login/Signup switch with a validated query parameter; missing
+  or unknown values must return to the selector.
+- Teacher forms add a Teacher ID field and Admin forms add an Admin ID field.
+  Student forms retain the existing fields. Login uses role ID where applicable,
+  email, and password; Signup additionally uses name and confirmation.
+- Show Google, Facebook, and Apple verification only for the Student role.
+  Teacher and Admin auth forms must not render the social divider or provider
+  controls.
+- The Admin option represents operational staff who will later manage learners,
+  attendance, and payment status. It is not Super Admin. Do not add Super Admin
+  to this selector or scaffold its future separate URL without fresh approval.
+- A client-selected role, role ID, or query parameter is presentation state,
+  never trusted authorization. The approval does not include email/password
+  registration, server-side role verification, password reset, a user database,
+  email delivery, profile management, dashboards, or route protection. Obtain
+  fresh explicit approval before adding any of these.
+- The approved auth card may show email, password, confirmation, and forgot-
+  password controls to match the supplied visual reference. Until credentials
+  auth is separately approved, these values must never leave the browser or be
+  stored; submission clears the form and shows a localized unavailable notice.
+- Keep auth copy localized in Uzbek, Russian, and English under
+  `dictionaries/public/Auth.ts`, server-only provider availability in
+  `config/AuthProviders.ts`, and auth presentation/actions in `features/auth/`.
+- Do not render a separate locale switcher inside the auth shell. Every Login,
+  Signup, enrolment-to-auth, mode-switch, provider-error, and auth-home link must
+  preserve the active localized route so users enter auth in their current
+  Uzbek, Russian, or English context.
+- Public and Student Library routes use the shared `SiteChrome`; auth routes
+  intentionally bypass it while remaining under the locale root providers.
+
+## 2B. Client-preview content convention
 
 This milestone is a client-preview prototype. Until the client supplies real
 business content, use complete, thematic fictional placeholder data throughout
@@ -77,8 +129,9 @@ conversion journeys can be reviewed realistically.
 - This convention authorizes fictional content, not fake functionality by
   default. The event-registration success state in section 7C and exam-request
   preview in section 7D are explicitly approved UI-only simulations; they do
-  not add submission or persistence. Never simulate payments, authentication,
-  or other backend flows without fresh explicit approval.
+  not add submission or persistence. Never simulate payments or other backend
+  flows without fresh explicit approval; authentication must use only the real,
+  narrowly approved provider flow above.
 
 ## 3. Required technical stack
 
@@ -487,9 +540,10 @@ Apply clean-code and clean-source practices throughout the project:
   genuinely domain-specific accent, but must not duplicate shared button
   padding, typography, radius, focus, disabled, or common hover rules.
 - Use the shared `hoverEffect="jump"` option for the Navbar signup, event
-  registration submit, homepage Explore Courses CTA, centred-alert Close, and
-  event Attend action. On fine-pointer hover, move the control upward by `2px`
-  without changing its occupied layout size. Keep button text and icons
+  registration submit, homepage Explore Courses CTA, About Mission course CTA,
+  Courses contact CTA, notification confirmation action, centred-alert Close,
+  and event Attend action. On fine-pointer hover, move the control upward by
+  `2px` without changing its occupied layout size. Keep button text and icons
   untransformed and crisp; do not scale the button node itself or add a
   press/active transform.
 - Do not create or return visual button components from hooks. Hooks own button
@@ -570,8 +624,10 @@ Icon rules:
 Use the shared notification system for frontend feedback instead of adding
 page-local alert implementations:
 
-- Use `sonner` only as the non-blocking toast engine. Render BEST LC toast JSX
-  through the headless/custom path; do not adopt Sonner's default visual theme.
+- Use the existing MUI `Snackbar` as the non-blocking toast engine with the
+  custom BEST LC `LiquidToast` as its only content surface. Keep the queue and
+  timer state inside the global `NotificationProvider`; do not add another
+  toast package.
 - Use the existing MUI `Dialog` primitive for blocking confirmations and alert
   dialogs. Do not add a separate confirmation package.
 - Keep notification components and context in `features/notifications/`, and
@@ -582,7 +638,8 @@ page-local alert implementations:
   value is omitted.
 - Blocking confirmations and centred alerts use the same vertically centred
   hierarchy: icon, title, message, then centred actions. Keep multiple actions
-  grouped together below the copy.
+  grouped together below the copy. Centred alerts must open in place with a
+  centre-origin scale and fade; do not translate them vertically from an edge.
 - Keep notification titles compact and messages to exactly two short
   sentences: the first states the notification outcome, and the second adds a
   warm user-facing note. Put extended explanations in the owning page or dialog
@@ -592,9 +649,20 @@ page-local alert implementations:
   `/* Notifications */` section of `css/public/shared.module.css`.
 - The locale layout owns the single global `NotificationProvider`. Do not mount
   page-specific toaster instances.
+- Ordinary non-loading toasts auto-dismiss after 1000 ms by default. Loading
+  toasts remain visible until they are replaced or dismissed; their resulting
+  success or error toast uses the same 1000 ms default.
 - Keep ordinary non-blocking toasts at the top-right. Use the shared
   `showCenterAlert` liquid dialog only for deliberate centre-screen feedback
-  such as the event-registration preview; do not reposition Sonner with CSS.
+  such as the event-registration preview and Footer social-media coming-soon
+  notice. The coming-soon notice uses its dedicated campaign icon tone.
+- Use MUI `Fade` for ordinary toast entry and exit, plus a root-level vertical
+  entrance from 28 px above with a 2 px downward overshoot before settling. Do
+  not apply horizontal movement, scale, or a viewport-edge slide, and do not add
+  another translating wrapper around the liquid-glass surface. Its background,
+  icon, title, and message must paint and move as one contained surface. Use one
+  translucent gradient and one `backdrop-filter` on the unified surface; do not
+  place competing glass backgrounds or filters on wrapper or content layers.
 - Preserve keyboard access, Escape dismissal, dialog focus management,
   reduced-motion behavior, readable contrast, and a solid background fallback
   when `backdrop-filter` is unavailable.
@@ -639,8 +707,9 @@ page-local alert implementations:
   `dictionaries/public/ExamPreview.ts`, state in focused hooks under
   `hooks/public/exams/`, and rendering in `features/exams/`.
 - The Results preview collects a fictional Candidate ID and birth date only in
-  client state, then opens the shared login-required confirmation. It must not
-  create authentication, a Student Results route, a dashboard, or persistence.
+  client state, then opens the shared login-required confirmation. It may link
+  to the approved localized login screen but must not create a Student Results
+  route, dashboard, authorization rule, or persistence.
 - Use the branded MUI Select menu for exam-level selection and the shared Exams
   calendar popover for date selection. Do not fall back to browser-native
   dropdown or date-picker popups whose appearance cannot follow brand tokens.
@@ -648,8 +717,8 @@ page-local alert implementations:
   darker and lighter shades of that one hue: blue for IELTS, turquoise for
   CEFR, and yellow for MOCK. Do not blend different exam accent colors within
   one summary gradient.
-- Replace the simulated admin queue, Telegram follow-up, login prompt, and MOCK
-  dates when the corresponding backend, authentication, admin, and student-area
+- Replace the simulated admin queue, Telegram follow-up, Student Results prompt,
+  and MOCK dates when the corresponding backend, admin, and student-area
   contracts are approved.
 
 ## 8. Brand color system
@@ -757,6 +826,14 @@ Avoid:
 - Use a centered content container around 1200–1280 px.
 - Maintain comfortable mobile gutters and progressively larger desktop gutters.
 - Use a consistent spacing scale.
+- Standard top-level content sections must use equal top and bottom spacing via
+  the shared `Section` rhythm: 64 px on mobile, 80 px on small screens, and
+  96 px on desktop (`py-16 sm:py-20 lg:py-24`). Raw custom content sections
+  must match that symmetric rhythm. Heroes, compact trust strips, and pinned
+  scroll experiences may use purpose-built values, but their visible top and
+  bottom boundaries must remain equal; low-height viewport overrides must also
+  stay symmetric. Control heading-to-content distance separately instead of
+  distorting the section boundary padding.
 - Keep interactive targets at least 44×44 px where practical.
 - Prevent horizontal overflow at all supported widths.
 - Header must remain usable with long translated labels.
@@ -1053,9 +1130,9 @@ client-approved learner media before production.
 
 The Library belongs only to the localized student route at
 `/[locale]/student/library`; public navigation, home, public dictionaries,
-public data, and the public sitemap must not reference it. Until authentication
-is approved, this is an unprotected frontend route rather than a claim of
-private access.
+public data, and the public sitemap must not reference it. It remains an
+unprotected frontend route; the approved social-auth shell does not make it a
+private area or authorize access control.
 
 - Resource search
 - Category filters
@@ -1068,7 +1145,8 @@ private access.
 Keep its route components, catalogue/card features, filter hook, page CSS,
 typed content, type declarations, and translations under their corresponding
 student-owned directories. No upload system, user bookmarks, protected
-downloads, authentication, or CMS integration is authorized in this milestone.
+downloads, Library authorization, or CMS integration is authorized in this
+milestone.
 
 ## 21. Exams
 
@@ -1083,9 +1161,9 @@ The public Exams page is a frontend-only client preview with this sequence:
   cards below “Three simple steps”, a subtle, one-time bottom-to-top entrance
   using the shared reveal system. Preserve full reduced-motion support.
 
-Do not implement real registration submission, Telegram delivery, admin pages,
-authentication, Student Results routes, questions, timers, scoring, result
-storage, or certificates.
+Do not implement real exam registration submission, Telegram delivery, admin
+pages, Student Results routes, questions, timers, scoring, result storage, or
+certificates. The approved site-wide social-auth flow does not expand Exams.
 
 ## 22. About us
 
@@ -1177,7 +1255,7 @@ Create a coherent reusable component system. Likely primitives include:
 - Button and link-button variants
 - Badge
 - Card foundations
-- CourseCard
+- CoursePosterCard
 - EventCard
 - ResourceCard
 - ResultCard
@@ -1399,7 +1477,10 @@ Also verify manually:
 - There is no horizontal overflow at supported breakpoints.
 - There are no console errors, React warnings, or broken internal links.
 - The fixed light theme has sufficient contrast.
-- No dashboard, authentication, or backend code entered the scope.
+- Google, Facebook, and Apple auth success, cancellation, configuration-error,
+  session, and logout states work when provider credentials are available.
+- No dashboard or backend code outside the approved Auth.js boundary entered
+  the scope.
 
 Do not hide failures with `eslint-disable`, `@ts-ignore`, unsafe casts, or skipped
 build steps. Fix the underlying problem.
@@ -1417,7 +1498,9 @@ The milestone is complete only when:
 - Public content is typed and centralized.
 - Preview business claims are centralized, marked for replacement, and not
   treated as production-verified facts.
-- No student, teacher, admin, authentication, or backend features exist.
+- No student, teacher, or admin feature exists beyond the approved unprotected
+  Student Library, and no backend feature exists beyond the approved Auth.js
+  social-auth boundary.
 - Lint, type checking, and production build pass.
 - The final handoff lists implemented routes, verification results, remaining
   placeholder business content, and any required official assets.
