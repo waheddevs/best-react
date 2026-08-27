@@ -1,4 +1,4 @@
-import { CourseCard } from "@/components/cards/CourseCard";
+import { CoursePosterCard } from "@/components/cards/CoursePosterCard";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup } from "@/components/motion/StaggerGroup";
 import { StaggerItem } from "@/components/motion/StaggerItem";
@@ -20,6 +20,7 @@ export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
     <Section tone="background">
       <Reveal className={styles.home__featuredCoursesHeader}>
         <SectionHeading
+          align="center"
           eyebrow={copy.home.coursesEyebrow}
           title={copy.home.coursesTitle}
           description={copy.home.coursesDescription}
@@ -31,7 +32,7 @@ export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
       <StaggerGroup className={styles.home__featuredCoursesGrid}>
         {featuredCourses.map((course) => (
           <StaggerItem key={course.slug} className={styles.home__featuredCoursesItem}>
-            <CourseCard course={course} locale={locale} copy={copy} />
+            <CoursePosterCard course={course} locale={locale} copy={copy} />
           </StaggerItem>
         ))}
       </StaggerGroup>

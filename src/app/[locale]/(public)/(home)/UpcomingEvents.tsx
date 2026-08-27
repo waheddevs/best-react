@@ -1,4 +1,7 @@
 import { EventCard } from "@/components/cards/EventCard";
+import { Reveal } from "@/components/motion/Reveal";
+import { StaggerGroup } from "@/components/motion/StaggerGroup";
+import { StaggerItem } from "@/components/motion/StaggerItem";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -13,19 +16,27 @@ type UpcomingEventsProps = {
 };
 
 export function UpcomingEvents({ locale, copy }: UpcomingEventsProps) {
+  const upcomingEvents = events.filter((event) => event.status === "upcoming");
+
   return (
     <Section tone="surface">
-      <div className={styles.home__eventsHeader}>
-        <SectionHeading eyebrow={copy.home.eventsEyebrow} title={copy.home.eventsTitle} />
+      <Reveal className={styles.home__eventsHeader}>
+        <SectionHeading
+          align="center"
+          eyebrow={copy.home.eventsEyebrow}
+          title={copy.home.eventsTitle}
+        />
         <ButtonLink href={`/${locale}/events`} variant="secondary">
           {copy.common.learnMore}
         </ButtonLink>
-      </div>
-      <div className={styles.home__eventsGrid}>
-        {events.map((event) => (
-          <EventCard key={event.slug} event={event} locale={locale} copy={copy} />
+      </Reveal>
+      <StaggerGroup className={styles.home__eventsGrid} delay={0.08}>
+        {upcomingEvents.map((event) => (
+          <StaggerItem className={styles.home__eventsItem} initialScale={0.99} key={event.slug}>
+            <EventCard event={event} locale={locale} copy={copy} variant="catalog" />
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerGroup>
     </Section>
   );
 }

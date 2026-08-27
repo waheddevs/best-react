@@ -4,6 +4,8 @@ import { Container } from "@/components/ui/Container";
 import styles from "@/css/public/home.module.css";
 import type { Dictionary } from "@/dictionaries/public/Types";
 
+import { AnimatedTrustValue } from "./AnimatedTrustValue";
+
 type TrustStripProps = {
   content: Dictionary["home"];
 };
@@ -22,7 +24,9 @@ export function TrustStrip({ content }: TrustStripProps) {
                     className={styles.home__trustMarker}
                     data-accent={index + 1}
                   />
-                  <p className={styles.home__trustValue}>{highlight.value}</p>
+                  <p className={styles.home__trustValue}>
+                    <AnimatedTrustValue delay={index * 0.08} value={highlight.value} />
+                  </p>
                   <h2 className={styles.home__trustLabel}>{highlight.label}</h2>
                 </article>
               </StaggerItem>

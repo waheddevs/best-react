@@ -1,4 +1,7 @@
-import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
+import { Reveal } from "@/components/motion/Reveal";
+import { StaggerGroup } from "@/components/motion/StaggerGroup";
+import { StaggerItem } from "@/components/motion/StaggerItem";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Section } from "@/components/ui/Section";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/home.module.css";
@@ -11,20 +14,37 @@ type FinalCtaProps = {
 
 export function FinalCta({ locale, copy }: FinalCtaProps) {
   return (
-    <Section className={styles.home__finalCtaSection} tone="background">
-      <div className={styles.home__finalCta}>
-        <div className={styles.home__finalCtaDecoration} />
-        <h2 className={styles.home__finalCtaTitle}>{copy.home.finalTitle}</h2>
-        <p className={styles.home__finalCtaDescription}>{copy.home.finalDescription}</p>
-        <div className={styles.home__finalCtaActions}>
-          <ScrollToTopLink href={`/${locale}/courses`} className={styles.home__finalCtaPrimary}>
-            {copy.common.coursesCta}
-          </ScrollToTopLink>
-          <ScrollToTopLink href={`/${locale}/contact`} className={styles.home__finalCtaSecondary}>
-            {copy.common.contactCta}
-          </ScrollToTopLink>
-        </div>
-      </div>
+    <Section tone="background">
+      <Reveal direction="scale">
+        <StaggerGroup className={styles.home__finalCta} delay={0.08}>
+          <div aria-hidden="true" className={styles.home__finalCtaDecoration} />
+          <StaggerItem initialScale={0.99}>
+            <h2 className={styles.home__finalCtaTitle}>{copy.home.finalTitle}</h2>
+          </StaggerItem>
+          <StaggerItem initialScale={0.99}>
+            <p className={styles.home__finalCtaDescription}>{copy.home.finalDescription}</p>
+          </StaggerItem>
+          <StaggerItem className={styles.home__finalCtaActions} initialScale={0.99}>
+            <ButtonLink
+              hoverEffect="jump"
+              href={`/${locale}/courses`}
+              shape="soft"
+              size="large"
+              variant="surface"
+            >
+              {copy.common.coursesCta}
+            </ButtonLink>
+            <ButtonLink
+              href={`/${locale}/contact`}
+              shape="soft"
+              size="large"
+              variant="inverseOutline"
+            >
+              {copy.common.contactCta}
+            </ButtonLink>
+          </StaggerItem>
+        </StaggerGroup>
+      </Reveal>
     </Section>
   );
 }
