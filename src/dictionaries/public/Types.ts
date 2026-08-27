@@ -8,6 +8,8 @@ export type Dictionary = {
     coursesCta: string;
     login: string;
     signup: string;
+    logout: string;
+    signedInAs: string;
     courseMenu: Record<CourseNavigationKey, string>;
     examMenu: Record<ExamNavigationKey, string>;
   };

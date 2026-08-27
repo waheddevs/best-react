@@ -16,6 +16,8 @@ export const ruDictionary = {
     coursesCta: "Посмотреть курсы",
     login: "Войти",
     signup: "Регистрация",
+    logout: "Выйти",
+    signedInAs: "Вы вошли как",
     courseMenu: {
       ielts: "IELTS",
       cefr: "CEFR",
@@ -48,16 +50,16 @@ export const ruDictionary = {
         label: "Лет опыта",
       },
       {
-        value: "100 000+",
-        label: "Студентов, изучивших английский язык",
+        value: "7 850",
+        label: "Количество учащихся",
       },
       {
-        value: "16",
-        label: "Филиалов по всему Узбекистану",
+        value: "4",
+        label: "Количество филиалов",
       },
       {
-        value: "500+",
-        label: "Сотрудников в Cambridge",
+        value: "75+",
+        label: "Количество сотрудников BEST LC",
       },
     ],
   },

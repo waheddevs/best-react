@@ -267,7 +267,7 @@ const examPreviewCopy = {
       yearLabel: "Year",
     },
     loginTitle: "Login required",
-    loginMessage: "Sign in to continue. Your result will be waiting in Student Dashboard.",
+    loginMessage: "Log in to continue. Your result will be waiting in Student Dashboard.",
     loginConfirm: "Login",
     loginCancel: "Not now",
   },

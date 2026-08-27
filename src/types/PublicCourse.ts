@@ -17,15 +17,18 @@ export type PublicCourse = {
   accent: CourseAccent;
   audience: LocalizedCourseText;
   category: CourseCategory;
+  comparisonTitle?: LocalizedCourseText;
   curriculum: LocalizedCourseList;
   duration: LocalizedCourseText;
   focus: LocalizedCourseText;
   formatLabel: LocalizedCourseText;
   highlights: LocalizedCourseList;
+  heroVariant?: "immersive";
   image?: string;
   imageAlt?: LocalizedCourseText;
   level: LocalizedCourseText;
   outcomes: LocalizedCourseList;
+  overview: LocalizedCourseList;
   posterAlt?: LocalizedCourseText;
   posterImage?: string;
   posterTitle?: LocalizedCourseText;

@@ -16,6 +16,8 @@ export const uzDictionary = {
     coursesCta: "Kurslarni ko‘rish",
     login: "Kirish",
     signup: "Ro‘yxatdan o‘tish",
+    logout: "Chiqish",
+    signedInAs: "Tizimga kirgan foydalanuvchi",
     courseMenu: {
       ielts: "IELTS",
       cefr: "CEFR",
@@ -48,16 +50,16 @@ export const uzDictionary = {
         label: "Yillik tajriba",
       },
       {
-        value: "100 000+",
-        label: "Ingliz tilini o‘rgangan o‘quvchilar",
+        value: "7 850",
+        label: "O‘quvchilar soni",
       },
       {
-        value: "16",
-        label: "O‘zbekiston bo‘ylab filiallar soni",
+        value: "4",
+        label: "Filiallar soni",
       },
       {
-        value: "500+",
-        label: "Cambridge’dagi xodimlar soni",
+        value: "75+",
+        label: "BEST LC xodimlari soni",
       },
     ],
   },

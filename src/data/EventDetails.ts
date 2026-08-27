@@ -18,7 +18,7 @@ export const eventDetailsBySlug: EventDetailsBySlug = {
         },
         {
           time: "18:45",
-          title: "Til fikrni qanday shakllantiradi",
+          title: "Til fikrni qanday shakllantiradi?",
           description:
             "So‘z tanlovi, gap tuzilishi va mantiqiy ketma-ketlikning fikr aniqligiga ta’siri.",
         },
@@ -83,7 +83,7 @@ export const eventDetailsBySlug: EventDetailsBySlug = {
         },
         {
           time: "18:45",
-          title: "Как язык формирует мысль",
+          title: "Как язык формирует мысль?",
           description:
             "Влияние выбора слов, структуры предложения и логической последовательности на ясность.",
         },
@@ -149,7 +149,7 @@ export const eventDetailsBySlug: EventDetailsBySlug = {
         },
         {
           time: "18:45",
-          title: "How language shapes thought",
+          title: "How language shapes thought?",
           description: "How word choice, sentence structure, and logical sequence affect clarity.",
         },
         {

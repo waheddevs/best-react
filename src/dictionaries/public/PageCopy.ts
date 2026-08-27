@@ -2,8 +2,6 @@ import type { Locale } from "@/config/Locales";
 
 export type PageCopy = {
   common: {
-    draftBadge: string;
-    draftNote: string;
     learnMore: string;
     contactCta: string;
     coursesCta: string;
@@ -53,6 +51,8 @@ export type PageCopy = {
     format: string;
     duration: string;
     schedule: string;
+    scheduleDays: string[];
+    snapshot: string;
     overview: string;
     audience: string;
     outcomes: string;
@@ -60,6 +60,7 @@ export type PageCopy = {
     tracks: string;
     tracksDescription: string;
     prerequisites: string;
+    preparationSteps: Array<{ title: string; description: string }>;
     detailCtaTitle: string;
     viewDetails: string;
     backToCourses: string;
@@ -171,6 +172,9 @@ export type PageCopy = {
     email: string;
     hours: string;
     social: string;
+    socialNoticeTitle: string;
+    socialNoticeMessage: string;
+    socialNoticeClose: string;
     legalPlaceholder: string;
     copyright: string;
   };
@@ -178,8 +182,6 @@ export type PageCopy = {
 
 const uz: PageCopy = {
   common: {
-    draftBadge: "Tasdiqlanishi kutilmoqda",
-    draftNote: "Dastur, jadval va biznes tafsilotlari BEST LC tomonidan tasdiqlangach yangilanadi.",
     learnMore: "Batafsil",
     contactCta: "Bog‘lanish",
     coursesCta: "Kurslarni ko‘rish",
@@ -229,7 +231,7 @@ const uz: PageCopy = {
       "Ingliz tili, imtihon tayyorgarligi va xalqaro tillar uchun maqsadingizga mos aniq o‘quv yo‘lini tanlang.",
     categories: {
       english: "Ingliz tili",
-      exam: "Imtihon tayyorgarligi",
+      exam: "Imtihon",
       language: "Xalqaro tillar",
     },
     featuredEyebrow: "ASOSIY YO‘NALISHLAR",
@@ -271,13 +273,37 @@ const uz: PageCopy = {
     format: "Format",
     duration: "Davomiylik",
     schedule: "Jadval",
+    scheduleDays: ["DUSH", "CHOR", "JUM"],
+    snapshot: "Kurs haqida qisqacha",
     overview: "Kurs haqida",
-    audience: "Kimlar uchun",
-    outcomes: "Nimalarni o‘rganasiz",
+    audience: "Bu kurs kim uchun?",
+    outcomes: "Nimalarni o‘rganasiz?",
     curriculum: "Dastur ko‘rinishi",
     tracks: "O‘quv treklari",
     tracksDescription: "Maqsad va boshlang‘ich darajaga mos trek diagnostika asosida tanlanadi.",
     prerequisites: "Boshlash uchun",
+    preparationSteps: [
+      {
+        title: "Maqsadingizni belgilang",
+        description:
+          "Kursdan kutayotgan natijangiz va uni qachongacha olishni istashingizni aniqlang.",
+      },
+      {
+        title: "Level check’dan o‘ting",
+        description:
+          "Qisqa diagnostika hozirgi darajangiz va rivojlantirish kerak bo‘lgan skilllarni ko‘rsatadi.",
+      },
+      {
+        title: "O‘quv yo‘lini tasdiqlang",
+        description:
+          "Tavsiya qilingan guruh, jadval va trek maqsadingizga mosligini ko‘rib chiqing.",
+      },
+      {
+        title: "Birinchi darsga tayyorlaning",
+        description:
+          "Kerakli materiallarni tayyorlab, dars jadvali va boshlanish vaqtini qayta tekshiring.",
+      },
+    ],
     detailCtaTitle: "Bu yo‘nalish sizga mosmi?",
     viewDetails: "Batafsil ko‘rish",
     backToCourses: "Kurslarga qaytish",
@@ -298,9 +324,9 @@ const uz: PageCopy = {
     topics: "Asosiy mavzular",
     programme: "Tadbir dasturi",
     programmeDescription: "Boshlanishidan yakunigacha rejalashtirilgan asosiy bosqichlar.",
-    audienceTitle: "Kimlar uchun",
+    audienceTitle: "Kimlar uchun?",
     audienceDescription: "Ushbu tajribadan eng ko‘p foyda olishi mumkin bo‘lgan ishtirokchilar.",
-    takeawaysTitle: "Nimalar bilan qaytasiz",
+    takeawaysTitle: "Nimalar bilan qaytasiz?",
     takeawaysDescription: "Tadbirdan keyin siz bilan qoladigan tajriba va amaliy xulosalar.",
     practicalInfoTitle: "Eslatmalar",
     practicalInfoDescription: "Tadbirga qulay tayyorlanish uchun muhim eslatmalar.",
@@ -564,6 +590,9 @@ const uz: PageCopy = {
     email: "hello@bestlc.example",
     hours: "Du–Ju: 09:00–18:00",
     social: "Ijtimoiy tarmoqlar",
+    socialNoticeTitle: "Tez orada",
+    socialNoticeMessage: "Yangiliklar tayyorlanmoqda. Biz bilan qoling.",
+    socialNoticeClose: "Tushunarli",
     legalPlaceholder: "Maxfiylik va foydalanish shartlari keyingi bosqichda tasdiqlanadi.",
     copyright: "BEST LC. Barcha huquqlar himoyalangan.",
   },
@@ -572,8 +601,6 @@ const uz: PageCopy = {
 const ru: PageCopy = {
   ...uz,
   common: {
-    draftBadge: "Ожидает подтверждения",
-    draftNote: "Программа, расписание и бизнес-данные обновятся после подтверждения BEST LC.",
     learnMore: "Подробнее",
     contactCta: "Связаться",
     coursesCta: "Посмотреть курсы",
@@ -622,7 +649,7 @@ const ru: PageCopy = {
       "Выберите понятный учебный маршрут для английского языка, подготовки к экзаменам или нового международного языка.",
     categories: {
       english: "Английский язык",
-      exam: "Подготовка к экзаменам",
+      exam: "Экзамен",
       language: "Международные языки",
     },
     featuredEyebrow: "ОСНОВНЫЕ НАПРАВЛЕНИЯ",
@@ -664,13 +691,35 @@ const ru: PageCopy = {
     format: "Формат",
     duration: "Продолжительность",
     schedule: "Расписание",
+    scheduleDays: ["ПН", "СР", "ПТ"],
+    snapshot: "Кратко о курсе",
     overview: "О курсе",
-    audience: "Для кого",
-    outcomes: "Чему вы научитесь",
+    audience: "Для кого этот курс?",
+    outcomes: "Чему вы научитесь?",
     curriculum: "Структура программы",
     tracks: "Учебные треки",
     tracksDescription: "Трек подбирается после диагностики с учётом цели и стартового уровня.",
     prerequisites: "Перед началом",
+    preparationSteps: [
+      {
+        title: "Определите цель",
+        description:
+          "Сформулируйте ожидаемый результат курса и срок, к которому хотите его получить.",
+      },
+      {
+        title: "Пройдите level check",
+        description:
+          "Короткая диагностика покажет текущий уровень и навыки, которым нужно уделить внимание.",
+      },
+      {
+        title: "Подтвердите учебный маршрут",
+        description: "Проверьте, подходят ли рекомендованная группа, расписание и трек вашей цели.",
+      },
+      {
+        title: "Подготовьтесь к первому занятию",
+        description: "Соберите нужные материалы и ещё раз проверьте расписание и время начала.",
+      },
+    ],
     detailCtaTitle: "Подходит ли вам это направление?",
     viewDetails: "Подробнее",
     backToCourses: "Назад к курсам",
@@ -690,9 +739,9 @@ const ru: PageCopy = {
     topics: "Основные темы",
     programme: "Программа события",
     programmeDescription: "Основные этапы от начала встречи до её завершения.",
-    audienceTitle: "Для кого",
+    audienceTitle: "Для кого?",
     audienceDescription: "Участники, которым этот формат может принести наибольшую пользу.",
-    takeawaysTitle: "Что вы получите",
+    takeawaysTitle: "Что вы получите?",
     takeawaysDescription: "Опыт и практические выводы, которые останутся после события.",
     practicalInfoTitle: "Памятка",
     practicalInfoDescription: "Важные ориентиры для комфортной подготовки к событию.",
@@ -950,6 +999,9 @@ const ru: PageCopy = {
     email: "hello@bestlc.example",
     hours: "Пн–Пт: 09:00–18:00",
     social: "Социальные сети",
+    socialNoticeTitle: "Скоро",
+    socialNoticeMessage: "Новости уже готовятся. Оставайтесь с нами.",
+    socialNoticeClose: "Понятно",
     legalPlaceholder: "Политика конфиденциальности и условия будут подтверждены позже.",
     copyright: "BEST LC. Все права защищены.",
   },
@@ -958,9 +1010,6 @@ const ru: PageCopy = {
 const en: PageCopy = {
   ...uz,
   common: {
-    draftBadge: "Awaiting confirmation",
-    draftNote:
-      "Programme, schedule, and business details will be updated after BEST LC confirmation.",
     learnMore: "Learn more",
     contactCta: "Contact us",
     coursesCta: "Explore courses",
@@ -1009,7 +1058,7 @@ const en: PageCopy = {
       "Choose a clear learning path for English, exam preparation, or a new international language.",
     categories: {
       english: "English",
-      exam: "Exam preparation",
+      exam: "Exam",
       language: "International languages",
     },
     featuredEyebrow: "CORE PROGRAMMES",
@@ -1054,14 +1103,37 @@ const en: PageCopy = {
     format: "Format",
     duration: "Duration",
     schedule: "Schedule",
+    scheduleDays: ["MON", "WED", "FRI"],
+    snapshot: "Course snapshot",
     overview: "Course overview",
-    audience: "Who it is for",
-    outcomes: "What you will learn",
+    audience: "Who is it for?",
+    outcomes: "What will you learn?",
     curriculum: "Programme preview",
     tracks: "Learning tracks",
     tracksDescription:
       "The track is selected after a diagnostic based on your goal and starting level.",
     prerequisites: "Before you start",
+    preparationSteps: [
+      {
+        title: "Define your goal",
+        description:
+          "Clarify the outcome you want from the course and when you would like to achieve it.",
+      },
+      {
+        title: "Complete the level check",
+        description:
+          "A short diagnostic reveals your current level and the skills that need attention.",
+      },
+      {
+        title: "Confirm your learning route",
+        description: "Review whether the recommended group, schedule, and track match your goal.",
+      },
+      {
+        title: "Prepare for lesson one",
+        description:
+          "Gather the required materials and check the timetable and starting time once more.",
+      },
+    ],
     detailCtaTitle: "Is this direction right for you?",
     viewDetails: "View details",
     backToCourses: "Back to courses",
@@ -1082,9 +1154,9 @@ const en: PageCopy = {
     topics: "Key topics",
     programme: "Event programme",
     programmeDescription: "The main stages planned from arrival through to the close.",
-    audienceTitle: "Who it is for",
+    audienceTitle: "Who it is for?",
     audienceDescription: "The participants most likely to benefit from this experience.",
-    takeawaysTitle: "What you will take away",
+    takeawaysTitle: "What you will take away?",
     takeawaysDescription: "Experience and practical ideas that remain useful after the event.",
     practicalInfoTitle: "Guidelines",
     practicalInfoDescription: "Important guidance for preparing comfortably for the event.",
@@ -1345,6 +1417,9 @@ const en: PageCopy = {
     email: "hello@bestlc.example",
     hours: "Mon–Fri: 09:00–18:00",
     social: "Social media",
+    socialNoticeTitle: "Coming soon",
+    socialNoticeMessage: "Good things are on the way. Stay close.",
+    socialNoticeClose: "Done",
     legalPlaceholder: "Privacy and terms will be confirmed in a later phase.",
     copyright: "BEST LC. All rights reserved.",
   },

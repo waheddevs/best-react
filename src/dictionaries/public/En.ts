@@ -16,6 +16,8 @@ export const enDictionary = {
     coursesCta: "Explore courses",
     login: "Login",
     signup: "Signup",
+    logout: "Log out",
+    signedInAs: "Signed in as",
     courseMenu: {
       ielts: "IELTS",
       cefr: "CEFR",
@@ -48,16 +50,16 @@ export const enDictionary = {
         label: "Years of experience",
       },
       {
-        value: "100,000+",
-        label: "Students who have learned English",
+        value: "7,850",
+        label: "Number of students",
       },
       {
-        value: "16",
-        label: "Number of branches throughout Uzbekistan",
+        value: "4",
+        label: "Number of branches",
       },
       {
-        value: "500+",
-        label: "The number of employees in Cambridge",
+        value: "75+",
+        label: "Number of employees at BEST LC",
       },
     ],
   },
