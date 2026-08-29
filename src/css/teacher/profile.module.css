@@ -1,0 +1,259 @@
+@reference "../../app/globals.css";
+
+/* TeacherProfile */
+.teacherProfile__identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--teacher-brand) 11%, var(--teacher-surface)),
+    var(--teacher-surface)
+  );
+  box-shadow: var(--teacher-shadow);
+}
+.teacherProfile__avatar {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 5px solid color-mix(in srgb, var(--teacher-brand) 18%, var(--teacher-surface));
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teacher-primary), #0e7490);
+  color: white;
+  font-size: 21px;
+  font-weight: 850;
+}
+.teacherProfile__identity div {
+  flex: 1;
+  min-width: 0;
+}
+.teacherProfile__identity h2 {
+  color: var(--teacher-heading);
+  font-size: 20px;
+  font-weight: 820;
+}
+.teacherProfile__identity p {
+  margin-top: 3px;
+  color: var(--teacher-muted);
+  font-size: 13px;
+}
+.teacherProfile__identity small {
+  display: block;
+  margin-top: 5px;
+  color: var(--teacher-primary);
+  font-size: 11px;
+  font-weight: 750;
+}
+.teacherProfile__file {
+  max-width: 220px;
+  overflow: hidden;
+  padding: 6px 10px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 999px;
+  background: var(--teacher-surface);
+  color: var(--teacher-muted);
+  cursor: pointer;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacherProfile__settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.teacherProfile__setting {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 16px;
+  background: var(--teacher-surface);
+  color: var(--teacher-text);
+  text-align: left;
+  box-shadow: var(--teacher-shadow);
+}
+button.teacherProfile__setting {
+  cursor: pointer;
+}
+button.teacherProfile__setting:hover {
+  border-color: color-mix(in srgb, var(--teacher-primary) 35%, var(--teacher-border));
+  transform: translateY(-1px);
+}
+.teacherProfile__setting > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+  color: var(--teacher-primary);
+}
+.teacherProfile__setting div {
+  display: grid;
+  min-width: 0;
+}
+.teacherProfile__setting strong {
+  color: var(--teacher-heading);
+  font-size: 13px;
+  font-weight: 780;
+}
+.teacherProfile__setting small {
+  margin-top: 3px;
+  color: var(--teacher-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.teacherProfile__setting > svg {
+  color: var(--teacher-muted);
+}
+.teacherProfile__setting[data-danger="true"] > span {
+  background: color-mix(in srgb, var(--teacher-danger) 10%, transparent);
+  color: var(--teacher-danger);
+}
+.teacherProfile__setting[data-danger="true"] strong {
+  color: var(--teacher-danger);
+}
+.teacherProfile__fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.teacherProfile__form {
+  display: grid;
+  gap: 14px;
+  padding-top: 8px !important;
+}
+.teacherProfile__form label {
+  display: grid;
+  gap: 6px;
+  color: var(--teacher-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.teacherProfile__form input {
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 12px;
+  outline: 0;
+  background: var(--teacher-surface);
+  color: var(--teacher-text);
+  font: inherit;
+}
+.teacherProfile__form input:focus {
+  border-color: var(--teacher-primary);
+}
+.teacherProfile__dialogCenter {
+  display: grid;
+  justify-items: center;
+  gap: 15px;
+  max-width: 360px;
+  text-align: center;
+}
+.teacherProfile__qr {
+  display: grid;
+  width: 170px;
+  height: 170px;
+  place-items: center;
+  border: 10px solid white;
+  border-radius: 18px;
+  background: repeating-conic-gradient(#102a43 0 25%, white 0 50%) 0 / 24px 24px;
+  color: white;
+  box-shadow: 0 12px 40px rgb(16 42 67 / 18%);
+}
+.teacherProfile__qr svg {
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--teacher-primary);
+  font-size: 52px;
+}
+.teacherProfile__dialogCenter p,
+.teacherProfile__dialogCopy {
+  color: var(--teacher-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.teacherProfile__session {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border-radius: 13px;
+  background: var(--teacher-surface-subtle);
+}
+.teacherProfile__session svg {
+  color: var(--teacher-primary);
+}
+.teacherProfile__session div {
+  display: grid;
+}
+.teacherProfile__session strong {
+  color: var(--teacher-heading);
+  font-size: 13px;
+}
+.teacherProfile__session small {
+  color: var(--teacher-muted);
+  font-size: 11px;
+}
+.teacherProfile__dialogCopy {
+  margin-top: 12px;
+}
+.teacherProfile__languages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  padding-top: 8px !important;
+}
+.teacherProfile__languages button {
+  min-height: 48px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 12px;
+  background: var(--teacher-surface);
+  color: var(--teacher-text);
+  cursor: pointer;
+  font-weight: 780;
+}
+.teacherProfile__languages button[data-active="true"] {
+  border-color: var(--teacher-primary);
+  background: var(--teacher-primary);
+  color: white;
+}
+
+@media (width <= 700px) {
+  .teacherProfile__settings {
+    grid-template-columns: 1fr;
+  }
+  .teacherProfile__identity {
+    align-items: flex-start;
+    padding: 17px;
+  }
+  .teacherProfile__avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .teacherProfile__file {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  button.teacherProfile__setting {
+    transition: none;
+  }
+  button.teacherProfile__setting:hover {
+    transform: none;
+  }
+}
