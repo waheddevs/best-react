@@ -1,0 +1,329 @@
+@reference "../../app/globals.css";
+
+/* DashboardOverview */
+
+.teacherDashboard__srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.teacherDashboard__quickSection {
+  min-width: 0;
+  margin-bottom: 1.25rem;
+}
+
+.teacherDashboard__quickScroller {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.15rem 0.1rem 0.75rem;
+  scrollbar-width: thin;
+}
+
+.teacherDashboard__quickStatus {
+  display: grid;
+  min-width: 5.75rem;
+  flex: 0 0 5.75rem;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  color: var(--teacher-muted);
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.teacherDashboard__progressRing {
+  --progress: 180deg;
+  position: relative;
+  display: grid;
+  width: 4.15rem;
+  height: 4.15rem;
+  place-items: center;
+  color: var(--teacher-primary);
+  border-radius: 50%;
+  background: conic-gradient(var(--teacher-primary) var(--progress), var(--teacher-border) 0);
+}
+
+.teacherDashboard__progressRing::after {
+  position: absolute;
+  inset: 0.22rem;
+  border-radius: inherit;
+  content: "";
+  background: var(--teacher-surface);
+}
+
+.teacherDashboard__progressRing svg {
+  position: relative;
+  z-index: 1;
+  font-size: 1.35rem;
+}
+
+.teacherDashboard__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.teacherDashboard__metricCard {
+  position: relative;
+  display: flex;
+  min-height: 9.5rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 1.25rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 8px 22px rgb(16 42 67 / 4%);
+}
+
+.teacherDashboard__metricCard[data-featured="true"] {
+  grid-column: span 2;
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--teacher-primary), #1647c9 70%, #0e7490);
+  box-shadow: 0 18px 40px rgb(37 99 235 / 20%);
+}
+
+.teacherDashboard__metricCard[data-tone="yellow"] .teacherDashboard__metricIcon {
+  color: var(--teacher-warning);
+  background: color-mix(in srgb, var(--teacher-yellow) 25%, transparent);
+}
+
+.teacherDashboard__metricIcon {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  color: var(--teacher-primary);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+}
+
+.teacherDashboard__metricCard[data-featured="true"] .teacherDashboard__metricIcon {
+  color: #ffffff;
+  background: rgb(255 255 255 / 14%);
+}
+
+.teacherDashboard__metricCard p {
+  max-width: 22ch;
+  margin: 0;
+  color: var(--teacher-muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.teacherDashboard__metricCard[data-featured="true"] p {
+  color: rgb(255 255 255 / 76%);
+}
+
+.teacherDashboard__metricCard strong {
+  margin-top: 0.5rem;
+  color: var(--teacher-heading);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  line-height: 1;
+  font-weight: 880;
+  letter-spacing: -0.05em;
+}
+
+.teacherDashboard__metricCard[data-featured="true"] strong {
+  color: #ffffff;
+}
+
+.teacherDashboard__section {
+  margin-top: 1.75rem;
+}
+
+.teacherDashboard__groupGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.teacherDashboard__groupCard {
+  position: relative;
+  display: grid;
+  min-height: 8.8rem;
+  align-content: start;
+  padding: 1.1rem;
+  color: var(--teacher-text);
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 7px 20px rgb(16 42 67 / 4%);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.teacherDashboard__groupTopline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.teacherDashboard__groupTopline strong {
+  color: var(--teacher-heading);
+  font-size: 0.9rem;
+}
+
+.teacherDashboard__groupTopline > span {
+  min-width: 1.8rem;
+  padding: 0.25rem 0.4rem;
+  color: var(--teacher-primary);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.teacherDashboard__groupMeta {
+  margin-top: 0.65rem;
+  color: var(--teacher-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.teacherDashboard__progressTrack {
+  display: block;
+  height: 0.35rem;
+  margin-top: auto;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--teacher-border);
+}
+
+.teacherDashboard__progressTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--teacher-brand), var(--teacher-primary));
+}
+
+.teacherDashboard__attendance {
+  margin-top: 0.4rem;
+  color: var(--teacher-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-align: right;
+}
+
+.teacherDashboard__resourceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.teacherDashboard__resourceCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.15rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 7px 20px rgb(16 42 67 / 4%);
+}
+
+.teacherDashboard__resourceIcon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  color: var(--teacher-primary);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--teacher-brand) 15%, transparent);
+}
+
+.teacherDashboard__resourceCard h3,
+.teacherDashboard__resourceCard p {
+  margin: 0;
+}
+
+.teacherDashboard__resourceCard h3 {
+  color: var(--teacher-heading);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.teacherDashboard__resourceCard p {
+  margin-top: 0.3rem;
+  color: var(--teacher-muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherDashboard__groupCard:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--teacher-primary) 45%, var(--teacher-border));
+    box-shadow: 0 16px 36px rgb(16 42 67 / 8%);
+  }
+}
+
+@media (max-width: 1199px) {
+  .teacherDashboard__metrics,
+  .teacherDashboard__groupGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .teacherDashboard__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .teacherDashboard__metricCard {
+    min-height: 8.5rem;
+    padding: 1rem;
+  }
+
+  .teacherDashboard__metricCard[data-featured="true"] {
+    grid-column: 1 / -1;
+    min-height: 10rem;
+  }
+
+  .teacherDashboard__groupGrid {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x proximity;
+  }
+
+  .teacherDashboard__groupCard {
+    min-width: min(17rem, 82vw);
+    flex: 0 0 min(17rem, 82vw);
+    scroll-snap-align: start;
+  }
+
+  .teacherDashboard__resourceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherDashboard__resourceCard {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .teacherDashboard__resourceCard button {
+    display: none;
+  }
+}
