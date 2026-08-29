@@ -1,0 +1,57 @@
+@reference "../../app/globals.css";
+
+/* TransferRequestList */
+.teacherTransfers__filters {
+  display: flex;
+  width: fit-content;
+  gap: 5px;
+  margin-bottom: 18px;
+  padding: 5px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 14px;
+  background: var(--teacher-surface);
+}
+.teacherTransfers__filters button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--teacher-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 740;
+}
+.teacherTransfers__filters button[data-active="true"] {
+  background: var(--teacher-primary);
+  color: white;
+}
+.teacherTransfers__list {
+  display: grid;
+  gap: 10px;
+}
+.teacherTransfers__list article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 16px;
+  background: var(--teacher-surface);
+}
+.teacherTransfers__list strong {
+  color: var(--teacher-heading);
+}
+.teacherTransfers__list span {
+  color: var(--teacher-muted);
+  font-size: 12px;
+}
+@media (width <= 560px) {
+  .teacherTransfers__filters {
+    width: 100%;
+  }
+  .teacherTransfers__filters button {
+    flex: 1;
+    padding-inline: 6px;
+  }
+}
