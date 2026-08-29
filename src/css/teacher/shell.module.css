@@ -116,10 +116,12 @@
 }
 
 .teacherShell__content {
-  width: min(100%, 90rem);
-  min-height: calc(100dvh - 4.5rem);
-  margin-inline: auto;
-  padding: 1.65rem clamp(1.5rem, 3vw, 3rem) 3rem;
+  width: 100%;
+  max-width: 100rem;
+  min-height: calc(100dvh - 4rem);
+  margin-right: auto;
+  margin-left: 0;
+  padding: 1.65rem clamp(1.75rem, 2.5vw, 2.5rem) 3rem;
 }
 
 /* TeacherSidebar */
@@ -364,11 +366,11 @@
   z-index: 20;
   top: 0;
   display: flex;
-  min-height: 4.5rem;
+  min-height: 4rem;
   align-items: center;
   justify-content: flex-end;
   gap: 1rem;
-  padding-inline: clamp(1.5rem, 3vw, 3rem);
+  padding-inline: clamp(1.75rem, 2.5vw, 2.5rem);
   border-bottom: 1px solid var(--teacher-border);
   background: color-mix(in srgb, var(--teacher-surface) 96%, transparent);
   backdrop-filter: blur(20px) saturate(145%);
@@ -398,27 +400,6 @@
 
 .teacherShell__mobileMenuButton {
   display: none !important;
-}
-
-.teacherShell__topbarLink {
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  place-items: center;
-  color: var(--teacher-muted);
-  border: 0;
-  border-radius: 50%;
-  background: var(--teacher-surface-subtle);
-  transition:
-    color 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease;
-}
-
-.teacherShell__topbarLink:hover {
-  color: var(--teacher-primary);
-  border-color: var(--teacher-primary);
-  transform: translateY(-2px);
 }
 
 .teacherShell__topbarIconButton {

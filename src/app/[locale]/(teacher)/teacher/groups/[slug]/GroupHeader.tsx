@@ -27,7 +27,7 @@ export function GroupHeader({ copy, group, locale }: GroupHeaderProps) {
         <GroupsRounded aria-hidden="true" />
       </span>
       <div className={styles.teacherGroups__detailCopy}>
-        <p>{copy.common.previewLabel}</p>
+        <p>{copy.groups.detailEyebrow}</p>
         <h1>{group.name}</h1>
         <span>
           {group.room} · {group.lessonDays[locale]} · {group.time}

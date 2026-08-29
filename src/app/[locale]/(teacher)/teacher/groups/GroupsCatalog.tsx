@@ -21,7 +21,7 @@ export function GroupsCatalog({ copy, groups, locale }: GroupsCatalogProps) {
     <main>
       <TeacherPageHeader
         description={copy.groups.description}
-        eyebrow={copy.common.previewLabel}
+        eyebrow={copy.groups.eyebrow}
         title={copy.groups.pageTitle}
       />
       <section aria-label={copy.groups.pageTitle} className={styles.teacherGroups__catalog}>

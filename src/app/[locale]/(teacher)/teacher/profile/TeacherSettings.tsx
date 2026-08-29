@@ -154,7 +154,7 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
     <main>
       <TeacherPageHeader
         description={copy.profile.description}
-        eyebrow={copy.common.previewLabel}
+        eyebrow={copy.profile.eyebrow}
         title={copy.profile.pageTitle}
       />
       <section className={styles.teacherProfile__identity}>

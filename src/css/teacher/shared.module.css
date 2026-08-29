@@ -73,11 +73,25 @@
 
 .teacherShared__sectionLink {
   color: var(--teacher-primary);
+  background-image: linear-gradient(currentcolor, currentcolor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 0.08em;
   font-size: 0.8rem;
   font-weight: 750;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--teacher-primary) 35%, transparent);
-  text-underline-offset: 0.25rem;
+  text-decoration: none;
+  transition: background-size 180ms ease;
+}
+
+.teacherShared__sectionLink:hover,
+.teacherShared__sectionLink:focus-visible {
+  background-size: 100% 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherShared__sectionLink {
+    transition: none;
+  }
 }
 
 .teacherShared__badge {

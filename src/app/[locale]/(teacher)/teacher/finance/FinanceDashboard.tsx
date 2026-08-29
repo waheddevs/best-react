@@ -55,7 +55,7 @@ export function FinanceDashboard({ copy, locale, snapshots }: FinanceDashboardPr
     <main>
       <TeacherPageHeader
         description={copy.finance.description}
-        eyebrow={copy.common.previewLabel}
+        eyebrow={copy.finance.eyebrow}
         title={copy.finance.pageTitle}
       />
 

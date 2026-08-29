@@ -49,7 +49,7 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
           </ButtonLink>
         }
         description={copy.tasks.description}
-        eyebrow={copy.common.previewLabel}
+        eyebrow={copy.tasks.eyebrow}
         title={copy.tasks.pageTitle}
       />
 
@@ -113,7 +113,7 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
                       <dd>{task.phone}</dd>
                     </div>
                     <div>
-                      <dt>{copy.common.previewLabel}</dt>
+                      <dt>{copy.common.createdAt}</dt>
                       <dd>
                         <time dateTime={task.createdAt}>
                           {new Intl.DateTimeFormat(locale, {

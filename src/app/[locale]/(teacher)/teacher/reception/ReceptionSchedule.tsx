@@ -37,7 +37,7 @@ export function ReceptionSchedule({ copy, schedule }: ReceptionScheduleProps) {
           </Button>
         }
         description={copy.reception.description}
-        eyebrow={copy.common.previewLabel}
+        eyebrow={copy.reception.eyebrow}
         title={copy.reception.pageTitle}
       />
       {schedule.length ? (
@@ -53,9 +53,11 @@ export function ReceptionSchedule({ copy, schedule }: ReceptionScheduleProps) {
             </thead>
             <tbody>
               {schedule.map((entry) => (
-                <tr data-active={entry.status === "active"} key={`${entry.time}-${entry.room}`}>
+                <tr data-active={entry.status === "active"} key={entry.id}>
                   <th scope="row">
-                    <time>{entry.time}</time>
+                    <time>
+                      {entry.startsAt}–{entry.endsAt}
+                    </time>
                   </th>
                   <td>
                     <strong>{entry.groupName}</strong>
@@ -65,7 +67,7 @@ export function ReceptionSchedule({ copy, schedule }: ReceptionScheduleProps) {
                   </td>
                   <td>
                     <span className={sharedStyles.teacherShared__badge}>
-                      {entry.status === "active" ? copy.groups.active : copy.common.pending}
+                      {copy.dashboard.scheduleStatuses[entry.status]}
                     </span>
                   </td>
                   <td>
