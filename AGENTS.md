@@ -368,11 +368,32 @@ src/
             page.tsx
             [slug]/
               GroupHeader.tsx
+              GroupOverview.tsx
               GroupStudentList.tsx
+              GroupWorkspaceCreateAction.tsx
+              GroupWorkspaceNavigation.tsx
+              GroupWorkspaceRoute.ts
+              GroupWorkspaceSectionHeader.tsx
+              layout.tsx
               page.tsx
-          general-group/
-            GeneralGroupChat.tsx
-            page.tsx
+              students/
+                page.tsx
+              lessons/
+                GroupLessonEditorAction.tsx
+                GroupLessons.tsx
+                page.tsx
+                [lessonId]/
+                  LessonDetail.tsx
+                  page.tsx
+              materials/
+                GroupMaterials.tsx
+                page.tsx
+              assignments/
+                GroupAssignments.tsx
+                page.tsx
+              tests/
+                GroupTests.tsx
+                page.tsx
           tasks/
             TeacherTaskList.tsx
             page.tsx
@@ -489,7 +510,6 @@ src/
       shell.module.css
       dashboard.module.css
       groups.module.css
-      chat.module.css
       tasks.module.css
       finance.module.css
       reception.module.css
@@ -686,6 +706,12 @@ Integration rules:
   so style precedence is predictable.
 - Create a typed, light-only BEST LC MUI theme that mirrors the approved brand
   tokens, typography, radius, spacing, and component states.
+- Keep shared MUI outlined-form treatment in `theme/FormStyles.ts` and compose
+  it into both the public BEST theme and the Teacher theme. The native input
+  inside an outlined field must not receive the global square focus outline;
+  the rounded MUI root border remains the visible focus indicator. Give every
+  shrunk outlined label a surface backing and inline breathing room so its text
+  never collides with the notch border in light or dark mode.
 - Use the same Geist font variable in both Tailwind and the MUI theme.
 - Do not load Roboto or Material Icon fonts from a CDN.
 - Do not let default MUI blue, default typography, ripple behavior, shadows, or
@@ -1061,7 +1087,12 @@ The approved Teacher Workspace route map is:
 /uz/teacher
 /uz/teacher/groups
 /uz/teacher/groups/[slug]
-/uz/teacher/general-group
+/uz/teacher/groups/[slug]/students
+/uz/teacher/groups/[slug]/lessons
+/uz/teacher/groups/[slug]/lessons/[lessonId]
+/uz/teacher/groups/[slug]/materials
+/uz/teacher/groups/[slug]/assignments
+/uz/teacher/groups/[slug]/tests
 /uz/teacher/tasks
 /uz/teacher/finance
 /uz/teacher/reception
@@ -1344,7 +1375,18 @@ admin template.
   titles `20px-24px`, card titles `16px-18px`, body copy `14px-16px`, metadata
   `12px-13px`, and primary statistics `28px-40px`. Preserve the type hierarchy
   when labels grow in Russian or English.
-- Desktop uses a `256px` persistent blue side rail, an approximately `72px`
+- Give each major Teacher page a concise, route-specific localized eyebrow
+  above its title, such as `Bugungi faoliyat`, `Guruhlarni boshqarish`, or
+  `Moliyaviy ko‘rinish`. Do not expose the technical `Frontend preview` label
+  in page headers. Keep preview terminology only where it honestly identifies
+  session-local, unsaved, fictional, or unavailable behavior.
+- Keep compact section-action links such as `To‘liq jadval` and `Barchasini
+  ko‘rish` free of a permanent underline. Reveal the underline from left to
+  right with a short CSS transition on hover and keyboard focus, disable that
+  transition for reduced-motion users, and apply the shared behavior
+  consistently to equivalent Teacher section links instead of styling
+  individual routes separately.
+- Desktop uses a `256px` persistent blue side rail, an approximately `64px`
   clean white top bar, and a fullscreen workspace. Only the inner content
   column remains bounded for readability; the application shell itself always
   fills the viewport without outer corner radii or shell shadows. Use a
@@ -1380,38 +1422,59 @@ admin template.
   same navigation model, not duplicated route trees or independent state
   implementations.
 - The top bar includes the BEST identity, contextual page title where useful,
-  an accessible menu control, and the visible notification control. Dashboard
-  also exposes the teacher identity and a shortcut to the general-group chat.
+  an accessible menu control, the teacher identity, and the visible notification
+  control.
 - The mobile bottom navigation contains exactly the primary destinations shown
   in the video: Dashboard, Groups, Finance, and Profile. It must expose the
   current route, respect safe areas, remain keyboard accessible, and never hide
   focused content.
 - The full navigation drawer contains the teacher preview identity card plus:
-  Dashboard, Groups, General Group, Tasks, Finance, Reception, Transfer
-  Requests, and Log out. It also contains the Uzbek, Russian, and English
-  locale control shown in the recording.
+  Dashboard, Groups, Tasks, Finance, Reception, Transfer Requests, and Log out.
+  It also contains the Uzbek, Russian, and English locale control shown in the
+  recording.
 - Drawer and bottom-navigation items must preserve the active locale. The drawer
   closes on selection and Escape, traps focus while open, restores focus to its
   trigger, and indicates the active route without relying on color alone.
-- Notification and chat shortcuts must have accessible labels. The chat shortcut
-  opens General Group. Because the reference does not show a notification list,
-  the bell may open a localized fictional preview panel; it must not fabricate
-  remote delivery or read state.
+- The notification shortcut must have an accessible label. Because the reference
+  does not show a notification list, the bell may open a localized fictional
+  preview panel; it must not fabricate remote delivery or read state.
 
 ### Dashboard
 
 - Teacher header with fictional avatar, display name, role/handle, notification
   control, chat shortcut, and menu access.
-- Horizontally scrollable circular quick-status/progress items matching the
-  reference composition, with labels localized in all three languages. Their
-  details use fictional preview content and accessible buttons rather than
-  unlabeled decorative circles.
-- Bento summary area containing the small `Together with BEST School` card, the
-  departed-student count card, and the large current-month new-student statistics
-  card shown in the video. Values are centralized fictional preview metrics.
-- `My groups` horizontal preview cards with group name, room, lesson days and
-  time, learner count, and progress/attendance percentage. Selecting a group
-  opens its localized detail route.
+- Lead with a localized `Today’s classes` timeline instead of abstract circular
+  progress indicators. Wide screens show four schedule cards; tablet uses a
+  two-column grid and mobile uses a bounded horizontal scroller. Each card shows
+  stable lesson id, start/end time, group and slug, room, learner count, and an
+  explicit `active`, `next`, `planned`, or `completed` state. The active lesson
+  receives the strongest emphasis, each lesson opens its group, and the section
+  links to the complete Reception schedule. Keep this typed contract ready for
+  a future backend response rather than deriving core lesson identity from card
+  position or presentation labels.
+- Use a wide-desktop `8 + 4` command-centre grid: `My groups` occupies the main
+  two-thirds as a `2 x 2` card grid, while the summary metrics form a stacked
+  right rail. Keep four equal metric cards in a balanced `2 x 2` grid: current-
+  month new learners, total active learners, departed learners, and `Together
+  with BEST School`. Use the brand-blue-to-teal gradient only for the new-
+  learner metric. In all four cards, keep the secondary label aligned to the
+  top-left, the icon in the top-right, and anchor the primary value to the
+  bottom-left. Primary metric values are typed numbers and render as numbers
+  only; move units or duration context into the localized secondary label and
+  format the numeric value for the active locale. Keep cards compact at
+  approximately 136 px high. Values remain centralized fictional preview
+  metrics.
+- Group preview cards include group name, room, lesson days and time, learner
+  count, and progress/attendance percentage. Selecting a group opens its
+  localized detail route. Preserve the `2 x 2` arrangement through laptop and
+  tablet widths, then use the reference-inspired horizontal card scroller on
+  mobile. Keep each preview card compact at approximately 136 px high and place
+  its progress bar and attendance percentage together in one bottom-aligned
+  footer row so unused card height becomes intentional spacing rather than an
+  empty lower area.
+- Keep the teacher content container left-aligned after the side rail with a
+  1600 px maximum width and approximately 40 px wide-desktop inner gutters; do
+  not reintroduce the large centred whitespace between the rail and content.
 - `Library` preview with the Podcasts and Videos entries shown in the recording.
   These are teacher dashboard resources, not the Student Library route. Until
   resource content is approved, they open an honest localized preview/unavailable
@@ -1434,6 +1497,38 @@ admin template.
 
 - Header with back navigation, group name, room/schedule summary, member action,
   and the green group-state control visible in the recording.
+- Treat the group detail as one nested workspace with `Overview`, `Students`,
+  `Lessons`, `Materials`, `Assignments`, and `Tests` routes. The shared group
+  header and horizontal tab navigation belong to the `[slug]/layout.tsx`; mobile
+  keeps every destination in a bounded horizontal tab scroller. The base group
+  URL opens Overview, while the former roster becomes the Students route.
+- Make `TeacherLessonSession` the central learning entity. Link materials,
+  assignments, and tests to a stable lesson id and group slug through typed
+  preview contracts; never infer those relationships from array position,
+  localized labels, or presentation order. Each local lesson participates in
+  static params and unknown group or lesson ids use `notFound()`.
+- Overview summarizes the next and most recent lesson plus active assignments,
+  scheduled tests, material count, and learner count. Lesson detail shows its
+  date, time, room, attendance, objective, and only the materials, assignments,
+  and tests linked to that lesson.
+- Lessons render a chronological schedule/timeline. Materials contain
+  written articles, books, and worksheets with honest format metadata;
+  Assignments show due dates and submission progress; Tests show kind, date,
+  duration, and question count. Do not render fake downloads, submissions,
+  scoring, or an interactive online-test engine while backend/media contracts
+  are unavailable.
+- Lessons, Materials, Assignments, and Tests each expose a localized create
+  action in the section header. The lesson editor must cover topic, objective,
+  status, date, start/end time, room, present/total attendance, and linked
+  materials, assignments, and tests; reuse it for both Add and lesson-detail
+  Edit. Lesson detail also exposes Delete through the shared danger confirmation
+  dialog. Keep the visible action labels compact as localized `Edit` and
+  `Delete` without repeating `lesson`; Delete uses a transparent red outline
+  at rest and fills solid red with white content on fine-pointer hover. Edit may
+  update the mounted detail preview in memory and Delete may return to the
+  lesson list, but both must explicitly disclose that no backend record was
+  persisted or deleted. Other create forms close with the central unsaved-
+  preview notification and must not append fake persistent records.
 - Summary counters for total, active, paused/stopped, departed, and other status
   categories represented in the reference. Do not collapse the colored status
   cards into one aggregate number.
@@ -1454,26 +1549,6 @@ admin template.
   data.
 - Contact actions never initiate a real call or external message in this
   milestone. Use reserved phone numbers and a preview detail/confirmation.
-
-### General Group chat
-
-- Recreate the full-screen group conversation with back navigation, group
-  avatar/name, member count, `View members` action, search action, and overflow
-  menu visible in the video.
-- Render a scrollable fictional message history with avatars/initials, sender
-  names, teacher/learner role badges, timestamps, incoming/outgoing treatment,
-  and date separators.
-- `View members` opens an accessible member list; search filters or locates the
-  fictional message history; the overflow menu exposes only honest preview
-  options.
-- The composer includes the attachment control, localized message input, and
-  send action shown in the reference. Sending appends a clearly session-local
-  fictional message in memory and never transmits or persists it.
-- Attachment selection is a visual preview only: show the selected local file
-  name if implemented, revoke object URLs, do not upload, parse, log, or retain
-  the file, and clearly disclose that attachments are not sent.
-- Include initial loading, populated, no-results, empty-conversation, and
-  send-disabled states. Keep the composer reachable above the mobile safe area.
 
 ### Tasks
 
@@ -1563,7 +1638,7 @@ admin template.
 
 ### Teacher data, interaction, and ownership rules
 
-- Centralize replaceable teacher, group, learner, message, task, finance,
+- Centralize replaceable teacher, group, learner, task, finance,
   schedule, transfer-request, profile, notification, and resource preview data
   under `data/teacher/`, with explicit types under `types/teacher/`.
 - Centralize all Uzbek, Russian, and English Teacher Workspace copy under
@@ -1574,9 +1649,9 @@ admin template.
 - Use the shared notification system for preview disclosures, completion
   feedback, confirmations, and unavailable actions. Teacher notifications must
   never claim a backend mutation succeeded.
-- Never use real identities or any personal/financial/chat content from the
+- Never use real identities or any personal or financial content from the
   reference video. Preview phone numbers use zero-filled reserved patterns, and
-  all people/messages remain clearly fictional data marked for replacement.
+  all people remain clearly fictional data marked for replacement.
 - Do not store Teacher Workspace business state in cookies, localStorage,
   sessionStorage, IndexedDB, URL query strings, analytics, or logs. The isolated
   teacher night-mode preference is the only approved persistence exception.
@@ -1685,7 +1760,10 @@ Create explicit TypeScript types for public entities, for example:
 - `TeacherDashboardMetric`
 - `TeacherGroup`
 - `TeacherLearner`
-- `TeacherMessage`
+- `TeacherLessonSession`
+- `TeacherLessonMaterial`
+- `TeacherLessonAssignment`
+- `TeacherLessonTest`
 - `TeacherTask`
 - `TeacherFinanceSnapshot`
 - `TeacherScheduleEntry`
@@ -1912,9 +1990,9 @@ Follow this sequence unless the existing repository requires a safer order:
     desktop side rail/top bar and mobile drawer/bottom navigation together.
 14. Build Teacher Dashboard and Groups catalogue/detail route by route, finishing
     desktop and mobile compositions for each before moving to dependent flows.
-15. Build General Group chat, Tasks, Finance, Reception, Transfer Requests, and
-    Profile/settings with desktop and mobile feature parity, required preview
-    states, and actions in the same iteration.
+15. Build Tasks, Finance, Reception, Transfer Requests, and Profile/settings
+    with desktop and mobile feature parity, required preview states, and actions
+    in the same iteration.
 16. Verify every Teacher route and reference-video function at mobile, tablet,
     laptop, and wide-desktop widths, then run the complete repository checks
     again.
