@@ -1,6 +1,5 @@
 "use client";
 
-import ChatBubbleOutlineRounded from "@mui/icons-material/ChatBubbleOutlineRounded";
 import MenuRounded from "@mui/icons-material/MenuRounded";
 import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
 import WarningAmberRounded from "@mui/icons-material/WarningAmberRounded";
@@ -9,7 +8,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState, type MouseEvent } from "react";
 
-import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/teacher/shell.module.css";
@@ -65,13 +63,6 @@ export function TeacherTopbar({
       </div>
 
       <div className={styles.teacherShell__topbarActions}>
-        <ScrollToTopLink
-          aria-label={copy.navigation.generalGroup}
-          className={styles.teacherShell__topbarLink}
-          href={`/${locale}/teacher/general-group`}
-        >
-          <ChatBubbleOutlineRounded aria-hidden="true" />
-        </ScrollToTopLink>
         <IconButton
           className={styles.teacherShell__topbarIconButton}
           label={copy.common.notifications}

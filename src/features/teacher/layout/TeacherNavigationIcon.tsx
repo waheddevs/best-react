@@ -5,7 +5,6 @@ import ManageAccountsRounded from "@mui/icons-material/ManageAccountsRounded";
 import MoveUpRounded from "@mui/icons-material/MoveUpRounded";
 import ReceptionDeskRounded from "@mui/icons-material/RoomPreferencesRounded";
 import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
-import ForumRounded from "@mui/icons-material/ForumRounded";
 
 import type { TeacherNavigationKey } from "@/types/teacher/Teacher";
 
@@ -17,7 +16,6 @@ export function TeacherNavigationIcon({ navigationKey }: TeacherNavigationIconPr
   const icons = {
     dashboard: DashboardRounded,
     finance: AccountBalanceWalletRounded,
-    generalGroup: ForumRounded,
     groups: GroupsRounded,
     profile: ManageAccountsRounded,
     reception: ReceptionDeskRounded,
