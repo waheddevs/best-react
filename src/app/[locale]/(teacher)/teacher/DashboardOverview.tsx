@@ -1,8 +1,10 @@
 "use client";
 
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
+import AccessTimeRounded from "@mui/icons-material/AccessTimeRounded";
 import GroupsRounded from "@mui/icons-material/GroupsRounded";
 import HeadphonesRounded from "@mui/icons-material/HeadphonesRounded";
+import MeetingRoomRounded from "@mui/icons-material/MeetingRoomRounded";
 import PlayCircleRounded from "@mui/icons-material/PlayCircleRounded";
 import SchoolRounded from "@mui/icons-material/SchoolRounded";
 
@@ -21,18 +23,28 @@ type DashboardOverviewProps = {
   locale: Locale;
 };
 
+function formatScheduleDate(date: string, locale: Locale, months: string[]) {
+  const [, monthValue, dayValue] = date.split("-");
+  const monthIndex = Number.parseInt(monthValue ?? "", 10) - 1;
+  const day = Number.parseInt(dayValue ?? "", 10);
+  const month = months[monthIndex];
+
+  if (!month || !Number.isInteger(day)) return date;
+  if (locale === "uz") return `${day}-${month}`;
+  if (locale === "ru") return `${day} ${month}`;
+  return `${month} ${day}`;
+}
+
 export function DashboardOverview({ copy, data, locale }: DashboardOverviewProps) {
   /* HOOKS */
   const notifications = useNotifications();
+  const scheduleDateLabel = formatScheduleDate(
+    data.scheduleDate,
+    locale,
+    copy.dashboard.scheduleMonths,
+  );
 
   /* HANDLERS */
-  const handleQuickStatusOpen = (label: string, progress: number) => {
-    notifications.info({
-      title: `${label} · ${progress}%`,
-      message: copy.dashboard.quickStatusMessage,
-    });
-  };
-
   const handleResourceOpen = () => {
     notifications.info({
       title: copy.dashboard.resourceUnavailableTitle,
@@ -41,90 +53,126 @@ export function DashboardOverview({ copy, data, locale }: DashboardOverviewProps
   };
 
   return (
-    <main>
+    <main className={styles.teacherDashboard}>
       <TeacherPageHeader
         description={copy.dashboard.description}
-        eyebrow={copy.common.previewLabel}
+        eyebrow={copy.dashboard.eyebrow}
         title={copy.dashboard.pageTitle}
       />
 
-      <section
-        aria-labelledby="quick-status-title"
-        className={styles.teacherDashboard__quickSection}
-      >
-        <h2 className={styles.teacherDashboard__srOnly} id="quick-status-title">
-          {copy.dashboard.quickStatusTitle}
-        </h2>
-        <div className={styles.teacherDashboard__quickScroller}>
-          {data.quickStatuses.map((status) => (
-            <button
-              aria-label={`${status.label[locale]}: ${status.progress}%`}
-              className={styles.teacherDashboard__quickStatus}
-              key={status.id}
-              onClick={() => handleQuickStatusOpen(status.label[locale], status.progress)}
-              type="button"
-            >
-              <span
-                className={styles.teacherDashboard__progressRing}
-                style={{ "--progress": `${status.progress * 3.6}deg` } as React.CSSProperties}
-              >
-                <SchoolRounded aria-hidden="true" />
-              </span>
-              <span>{status.label[locale]}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section aria-label={copy.dashboard.pageTitle} className={styles.teacherDashboard__metrics}>
-        {data.dashboardMetrics.map((metric, index) => (
-          <article
-            className={styles.teacherDashboard__metricCard}
-            data-featured={index === data.dashboardMetrics.length - 1}
-            data-tone={metric.tone}
-            key={metric.id}
-          >
-            <span className={styles.teacherDashboard__metricIcon}>
-              <GroupsRounded aria-hidden="true" />
-            </span>
-            <p>{metric.label[locale]}</p>
-            <strong>{metric.value[locale]}</strong>
-          </article>
-        ))}
-      </section>
-
-      <section className={styles.teacherDashboard__section}>
-        <div className={sharedStyles.teacherShared__sectionHeader}>
-          <h2 className={sharedStyles.teacherShared__sectionTitle}>{copy.dashboard.groupsTitle}</h2>
+      <section aria-labelledby="today-classes-title" className={styles.teacherDashboard__today}>
+        <div className={styles.teacherDashboard__todayHeader}>
+          <div>
+            <h2 id="today-classes-title">{copy.dashboard.scheduleTitle}</h2>
+            <time dateTime={data.scheduleDate}>{scheduleDateLabel}</time>
+          </div>
           <ScrollToTopLink
             className={sharedStyles.teacherShared__sectionLink}
-            href={`/${locale}/teacher/groups`}
+            href={`/${locale}/teacher/reception`}
           >
-            {copy.dashboard.viewAll}
+            {copy.dashboard.scheduleViewAll}
           </ScrollToTopLink>
         </div>
-        <div className={styles.teacherDashboard__groupGrid}>
-          {data.groups.slice(0, 4).map((group) => (
+        <div className={styles.teacherDashboard__scheduleScroller}>
+          {data.schedule.slice(0, 4).map((entry) => (
             <ScrollToTopLink
-              className={styles.teacherDashboard__groupCard}
-              href={`/${locale}/teacher/groups/${group.slug}`}
-              key={group.id}
+              className={styles.teacherDashboard__scheduleCard}
+              data-status={entry.status}
+              href={`/${locale}/teacher/groups/${entry.groupSlug}`}
+              key={entry.id}
             >
-              <span className={styles.teacherDashboard__groupTopline}>
-                <strong>{group.name}</strong>
-                <span>{group.learnerCount}</span>
+              <span className={styles.teacherDashboard__scheduleTopline}>
+                <span className={styles.teacherDashboard__scheduleTime}>
+                  <AccessTimeRounded aria-hidden="true" />
+                  <time>
+                    {entry.startsAt}–{entry.endsAt}
+                  </time>
+                </span>
+                <span className={styles.teacherDashboard__scheduleStatus}>
+                  {copy.dashboard.scheduleStatuses[entry.status]}
+                </span>
               </span>
-              <span className={styles.teacherDashboard__groupMeta}>
-                {group.room} · {group.lessonDays[locale]} · {group.time}
+              <span className={styles.teacherDashboard__scheduleIdentity}>
+                <span>
+                  <SchoolRounded aria-hidden="true" />
+                </span>
+                <strong>{entry.groupName}</strong>
               </span>
-              <span className={styles.teacherDashboard__progressTrack}>
-                <span style={{ width: `${group.attendance}%` }} />
+              <span className={styles.teacherDashboard__scheduleMeta}>
+                <span>
+                  <MeetingRoomRounded aria-hidden="true" />
+                  {copy.reception.room} {entry.room}
+                </span>
+                <span>
+                  <GroupsRounded aria-hidden="true" />
+                  {entry.learnerCount} {copy.reception.learnerCount}
+                </span>
               </span>
-              <span className={styles.teacherDashboard__attendance}>{group.attendance}%</span>
             </ScrollToTopLink>
           ))}
         </div>
       </section>
+
+      <div className={styles.teacherDashboard__mainGrid}>
+        <section className={styles.teacherDashboard__groupSection}>
+          <div className={sharedStyles.teacherShared__sectionHeader}>
+            <h2 className={sharedStyles.teacherShared__sectionTitle}>
+              {copy.dashboard.groupsTitle}
+            </h2>
+            <ScrollToTopLink
+              className={sharedStyles.teacherShared__sectionLink}
+              href={`/${locale}/teacher/groups`}
+            >
+              {copy.dashboard.viewAll}
+            </ScrollToTopLink>
+          </div>
+          <div className={styles.teacherDashboard__groupGrid}>
+            {data.groups.slice(0, 4).map((group) => (
+              <ScrollToTopLink
+                className={styles.teacherDashboard__groupCard}
+                href={`/${locale}/teacher/groups/${group.slug}`}
+                key={group.id}
+              >
+                <span className={styles.teacherDashboard__groupTopline}>
+                  <strong>{group.name}</strong>
+                  <span>{group.learnerCount}</span>
+                </span>
+                <span className={styles.teacherDashboard__groupMeta}>
+                  {group.room} · {group.lessonDays[locale]} · {group.time}
+                </span>
+                <span className={styles.teacherDashboard__progressRow}>
+                  <span className={styles.teacherDashboard__progressTrack}>
+                    <span style={{ width: `${group.attendance}%` }} />
+                  </span>
+                  <span className={styles.teacherDashboard__attendance}>{group.attendance}%</span>
+                </span>
+              </ScrollToTopLink>
+            ))}
+          </div>
+        </section>
+
+        <section
+          aria-label={copy.dashboard.pageTitle}
+          className={styles.teacherDashboard__metricRail}
+        >
+          {data.dashboardMetrics.map((metric) => (
+            <article
+              className={styles.teacherDashboard__metricCard}
+              data-featured={metric.featured}
+              data-tone={metric.tone}
+              key={metric.id}
+            >
+              <div className={styles.teacherDashboard__metricCopy}>
+                <p>{metric.label[locale]}</p>
+                <strong>{new Intl.NumberFormat(locale).format(metric.value)}</strong>
+              </div>
+              <span className={styles.teacherDashboard__metricIcon}>
+                <GroupsRounded aria-hidden="true" />
+              </span>
+            </article>
+          ))}
+        </section>
+      </div>
 
       <section className={styles.teacherDashboard__section}>
         <div className={sharedStyles.teacherShared__sectionHeader}>
