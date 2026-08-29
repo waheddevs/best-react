@@ -2,6 +2,15 @@
 
 import { createTheme } from "@mui/material/styles";
 
+import { createFormComponentOverrides } from "@/theme/FormStyles";
+
+const formComponents = createFormComponentOverrides({
+  borderColor: "#D9EDF1",
+  focusColor: "#49BFD1",
+  labelColor: "#64748B",
+  surfaceColor: "#FFFFFF",
+});
+
 export const bestTheme = createTheme({
   palette: {
     primary: { main: "#2563EB", contrastText: "#FFFFFF" },
@@ -16,6 +25,7 @@ export const bestTheme = createTheme({
   },
   shape: { borderRadius: 14 },
   components: {
+    ...formComponents,
     MuiButtonBase: { defaultProps: { disableRipple: true } },
     MuiIconButton: {
       styleOverrides: {

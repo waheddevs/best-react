@@ -2,10 +2,17 @@
 
 import { createTheme } from "@mui/material/styles";
 
+import { createFormComponentOverrides } from "@/theme/FormStyles";
 import type { TeacherThemeMode } from "@/types/teacher/Teacher";
 
 export function createTeacherTheme(mode: TeacherThemeMode) {
   const isDark = mode === "dark";
+  const formComponents = createFormComponentOverrides({
+    borderColor: isDark ? "#263750" : "#D9EDF1",
+    focusColor: isDark ? "#60A5FA" : "#2563EB",
+    labelColor: isDark ? "#A7B4C7" : "#64748B",
+    surfaceColor: isDark ? "#111C2E" : "#FFFFFF",
+  });
 
   return createTheme({
     palette: {
@@ -31,6 +38,7 @@ export function createTeacherTheme(mode: TeacherThemeMode) {
     },
     shape: { borderRadius: 14 },
     components: {
+      ...formComponents,
       MuiButtonBase: { defaultProps: { disableRipple: true } },
       MuiDialog: {
         styleOverrides: {
@@ -57,9 +65,6 @@ export function createTeacherTheme(mode: TeacherThemeMode) {
             borderRadius: 16,
           },
         },
-      },
-      MuiTextField: {
-        defaultProps: { variant: "outlined" },
       },
     },
   });
