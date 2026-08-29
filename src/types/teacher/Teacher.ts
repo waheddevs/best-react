@@ -5,14 +5,7 @@ export type LocalizedText = Record<Locale, string>;
 export type TeacherThemeMode = "light" | "dark";
 
 export type TeacherNavigationKey =
-  | "dashboard"
-  | "groups"
-  | "generalGroup"
-  | "tasks"
-  | "finance"
-  | "reception"
-  | "transferRequests"
-  | "profile";
+  "dashboard" | "groups" | "tasks" | "finance" | "reception" | "transferRequests" | "profile";
 
 export type TeacherProfileData = {
   branch: LocalizedText;
@@ -24,17 +17,12 @@ export type TeacherProfileData = {
   subject: LocalizedText;
 };
 
-export type TeacherQuickStatus = {
-  id: string;
-  label: LocalizedText;
-  progress: number;
-};
-
 export type TeacherDashboardMetric = {
+  featured: boolean;
   id: string;
   label: LocalizedText;
   tone: "blue" | "navy" | "turquoise" | "yellow";
-  value: LocalizedText;
+  value: number;
 };
 
 export type TeacherGroup = {
@@ -59,19 +47,6 @@ export type TeacherLearner = {
   phone: string;
   status: TeacherLearnerStatus;
   taskProgress: number;
-};
-
-export type TeacherMessageRole = "teacher" | "learner";
-
-export type TeacherMessage = {
-  dateLabel: LocalizedText;
-  id: string;
-  initials: string;
-  isOwn: boolean;
-  role: TeacherMessageRole;
-  sender: string;
-  text: LocalizedText;
-  time: string;
 };
 
 export type TeacherTaskKind = "attendance" | "pauseCall";
@@ -105,11 +80,93 @@ export type TeacherFinanceSnapshot = {
 };
 
 export type TeacherScheduleEntry = {
+  endsAt: string;
   groupName: string;
+  groupSlug: string;
+  id: string;
   learnerCount: number;
   room: string;
-  status: "active" | "planned";
-  time: string;
+  startsAt: string;
+  status: "active" | "completed" | "next" | "planned";
+};
+
+export type TeacherGroupWorkspaceTab =
+  "overview" | "students" | "lessons" | "materials" | "assignments" | "tests";
+
+export type TeacherGroupCreateKind = "assignment" | "lesson" | "material" | "test";
+
+export type TeacherLessonStatus = "completed" | "planned" | "cancelled";
+
+export type TeacherLessonSession = {
+  assignmentIds: string[];
+  attendancePresent: number;
+  attendanceTotal: number;
+  date: string;
+  endsAt: string;
+  groupSlug: string;
+  id: string;
+  materialIds: string[];
+  objective: LocalizedText;
+  room: string;
+  startsAt: string;
+  status: TeacherLessonStatus;
+  testIds: string[];
+  topic: LocalizedText;
+};
+
+export type TeacherLessonFormValue = {
+  assignmentIds: string[];
+  attendancePresent: number;
+  attendanceTotal: number;
+  date: string;
+  endsAt: string;
+  materialIds: string[];
+  objective: string;
+  room: string;
+  startsAt: string;
+  status: TeacherLessonStatus;
+  testIds: string[];
+  topic: string;
+};
+
+export type TeacherMaterialType = "article" | "book" | "worksheet";
+
+export type TeacherLessonMaterial = {
+  description: LocalizedText;
+  format: "DOCX" | "PDF" | "WEB";
+  groupSlug: string;
+  id: string;
+  lessonId: string;
+  title: LocalizedText;
+  type: TeacherMaterialType;
+};
+
+export type TeacherAssignmentStatus = "active" | "closed" | "draft";
+
+export type TeacherLessonAssignment = {
+  dueAt: string;
+  groupSlug: string;
+  id: string;
+  lessonId: string;
+  status: TeacherAssignmentStatus;
+  submissionCount: number;
+  title: LocalizedText;
+  totalLearners: number;
+};
+
+export type TeacherTestKind = "mock" | "progress" | "quiz";
+export type TeacherTestStatus = "completed" | "draft" | "scheduled";
+
+export type TeacherLessonTest = {
+  durationMinutes: number;
+  groupSlug: string;
+  id: string;
+  kind: TeacherTestKind;
+  lessonId: string;
+  questionCount: number;
+  scheduledAt: string;
+  status: TeacherTestStatus;
+  title: LocalizedText;
 };
 
 export type TeacherTransferRequestStatus = "pending" | "approved" | "declined";
@@ -142,13 +199,16 @@ export type TeacherPreviewData = {
   dashboardMetrics: TeacherDashboardMetric[];
   financeSnapshots: TeacherFinanceSnapshot[];
   groups: TeacherGroup[];
+  groupAssignments: TeacherLessonAssignment[];
+  groupLessons: TeacherLessonSession[];
+  groupMaterials: TeacherLessonMaterial[];
+  groupTests: TeacherLessonTest[];
   learners: TeacherLearner[];
-  messages: TeacherMessage[];
   notifications: TeacherNotificationPreview[];
   profile: TeacherProfileData;
-  quickStatuses: TeacherQuickStatus[];
   resources: TeacherResource[];
   schedule: TeacherScheduleEntry[];
+  scheduleDate: string;
   tasks: TeacherTask[];
   transferRequests: TeacherTransferRequest[];
 };
@@ -162,12 +222,12 @@ export type TeacherCopy = {
     close: string;
     completed: string;
     countSuffix: string;
+    createdAt: string;
     done: string;
     empty: string;
     menu: string;
     notifications: string;
     pending: string;
-    previewLabel: string;
     refresh: string;
     reset: string;
     savePreview: string;
@@ -176,38 +236,94 @@ export type TeacherCopy = {
   };
   dashboard: {
     description: string;
+    eyebrow: string;
     groupsTitle: string;
     libraryTitle: string;
     pageTitle: string;
-    quickStatusMessage: string;
-    quickStatusTitle: string;
     resourceUnavailableMessage: string;
     resourceUnavailableTitle: string;
+    scheduleMonths: string[];
+    scheduleStatuses: Record<TeacherScheduleEntry["status"], string>;
+    scheduleTitle: string;
+    scheduleViewAll: string;
     viewAll: string;
   };
   finance: {
     attendanceRate: string;
     description: string;
+    eyebrow: string;
     expectedAmount: string;
     income: string;
     labels: Record<TeacherFinanceMetric["id"], string>;
     pageTitle: string;
   };
-  generalGroup: {
-    attachmentLabel: string;
-    attachmentMessage: string;
-    attachmentTitle: string;
-    description: string;
-    memberCount: string;
-    membersTitle: string;
-    messagePlaceholder: string;
-    noResults: string;
-    pageTitle: string;
-    searchPlaceholder: string;
-    sendLabel: string;
-    sessionMessage: string;
-    sessionTitle: string;
-    viewMembers: string;
+  groupWorkspace: {
+    activeAssignments: string;
+    assignmentsDescription: string;
+    assignmentsTitle: string;
+    attendance: string;
+    attendancePresent: string;
+    attendanceTotal: string;
+    cancelled: string;
+    closed: string;
+    completed: string;
+    createActions: Record<TeacherGroupCreateKind, string>;
+    createDescriptions: Record<TeacherGroupCreateKind, string>;
+    createPreviewMessage: string;
+    createPreviewTitle: string;
+    date: string;
+    deleteLesson: string;
+    draft: string;
+    dueDate: string;
+    duration: string;
+    editLesson: string;
+    editLessonDescription: string;
+    endTime: string;
+    format: string;
+    lessonDeleteConfirm: string;
+    lessonDeleteMessage: string;
+    lessonDeleteTitle: string;
+    lessonDeletedMessage: string;
+    lessonDeletedTitle: string;
+    lessonDetailEyebrow: string;
+    lessonEditPreviewMessage: string;
+    lessonEditPreviewTitle: string;
+    lessonsDescription: string;
+    lessonsTitle: string;
+    linkedAssignments: string;
+    linkedMaterials: string;
+    linkedTests: string;
+    materialTypes: Record<TeacherMaterialType, string>;
+    materialsDescription: string;
+    materialsTitle: string;
+    materialType: string;
+    minutes: string;
+    nextLesson: string;
+    noAssignments: string;
+    noLessons: string;
+    noMaterials: string;
+    noTests: string;
+    objective: string;
+    openLesson: string;
+    overviewDescription: string;
+    overviewTitle: string;
+    planned: string;
+    questions: string;
+    recentLesson: string;
+    room: string;
+    scheduled: string;
+    scheduledTests: string;
+    startTime: string;
+    status: string;
+    submissions: string;
+    tabs: Record<TeacherGroupWorkspaceTab, string>;
+    testKinds: Record<TeacherTestKind, string>;
+    testsDescription: string;
+    testsTitle: string;
+    time: string;
+    titleLabel: string;
+    topic: string;
+    totalMaterials: string;
   };
   groups: {
     active: string;
@@ -221,7 +337,9 @@ export type TeacherCopy = {
     departed: string;
     description: string;
     detail: string;
+    detailEyebrow: string;
     empty: string;
+    eyebrow: string;
     groupState: string;
     learnerName: string;
     learners: string;
@@ -261,6 +379,7 @@ export type TeacherCopy = {
     deleteAccountTitle: string;
     description: string;
     displayName: string;
+    eyebrow: string;
     language: string;
     languageDescription: string;
     logout: string;
@@ -288,6 +407,7 @@ export type TeacherCopy = {
   reception: {
     description: string;
     empty: string;
+    eyebrow: string;
     learnerCount: string;
     pageTitle: string;
     refreshMessage: string;
@@ -302,6 +422,7 @@ export type TeacherCopy = {
     completedTitle: string;
     description: string;
     empty: string;
+    eyebrow: string;
     filterLabel: string;
     pageTitle: string;
     pauseDescription: string;
@@ -311,6 +432,7 @@ export type TeacherCopy = {
     approved: string;
     declined: string;
     description: string;
+    eyebrow: string;
     emptyDescription: string;
     emptyTitle: string;
     pageTitle: string;

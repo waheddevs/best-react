@@ -1,9 +1,12 @@
 import type {
   LocalizedText,
+  TeacherLessonAssignment,
+  TeacherLessonMaterial,
+  TeacherLessonSession,
+  TeacherLessonTest,
   TeacherFinanceSnapshot,
   TeacherGroup,
   TeacherLearner,
-  TeacherMessage,
   TeacherPreviewData,
   TeacherScheduleEntry,
   TeacherTask,
@@ -115,65 +118,6 @@ const learners: TeacherLearner[] = groups.flatMap((group, groupIndex) =>
   }),
 );
 
-const messages: TeacherMessage[] = [
-  {
-    dateLabel: localized("Bugun", "Сегодня", "Today"),
-    id: "message-01",
-    initials: "SN",
-    isOwn: false,
-    role: "learner",
-    sender: "Samira Navoiy",
-    text: localized(
-      "Assalomu alaykum, bugungi speaking mavzusini yuborasizmi?",
-      "Здравствуйте, отправите тему сегодняшнего speaking?",
-      "Hello, could you share today’s speaking topic?",
-    ),
-    time: "09:12",
-  },
-  {
-    dateLabel: localized("Bugun", "Сегодня", "Today"),
-    id: "message-02",
-    initials: "TN",
-    isOwn: true,
-    role: "teacher",
-    sender: "Nodira Karimova",
-    text: localized(
-      "Albatta. Mavzu va tayyorlanish savollarini guruhga joyladim.",
-      "Конечно. Тема и вопросы для подготовки уже в группе.",
-      "Of course. I have added the topic and preparation questions to the group.",
-    ),
-    time: "09:18",
-  },
-  {
-    dateLabel: localized("Bugun", "Сегодня", "Today"),
-    id: "message-03",
-    initials: "DK",
-    isOwn: false,
-    role: "learner",
-    sender: "Dilnoza Atlas",
-    text: localized(
-      "Rahmat ustoz, topshiriqni darsgacha tayyorlaymiz.",
-      "Спасибо, подготовим задание до урока.",
-      "Thank you, we will prepare the task before class.",
-    ),
-    time: "09:21",
-  },
-  {
-    dateLabel: localized("Kecha", "Вчера", "Yesterday"),
-    id: "message-04",
-    initials: "JH",
-    isOwn: false,
-    role: "learner",
-    sender: "Jasur Hilol",
-    text: localized(
-      "Mock natijalari qachon chiqadi?",
-      "Когда будут результаты пробного теста?",
-      "When will the mock results be available?",
-    ),
-    time: "18:44",
-  },
-];
-
 const tasks: TeacherTask[] = [
   {
     createdAt: "2026-08-28T09:20:00+09:00",
@@ -280,54 +224,250 @@ const financeSnapshots: TeacherFinanceSnapshot[] = [
 ];
 
 const schedule: TeacherScheduleEntry[] = [
-  { groupName: "Beginner Nova", learnerCount: 24, room: "501", status: "active", time: "08:00" },
   {
+    endsAt: "10:00",
+    groupName: "Beginner Nova",
+    groupSlug: "beginner-nova",
+    id: "lesson-beginner-nova",
+    learnerCount: 24,
+    room: "501",
+    startsAt: "08:00",
+    status: "active",
+  },
+  {
+    endsAt: "12:00",
     groupName: "Pre-Intermediate Orbit",
+    groupSlug: "pre-intermediate-orbit",
+    id: "lesson-pre-intermediate-orbit",
     learnerCount: 18,
     room: "402",
-    status: "planned",
-    time: "10:00",
+    startsAt: "10:00",
+    status: "next",
   },
   {
+    endsAt: "16:00",
     groupName: "Intermediate Pulse",
+    groupSlug: "intermediate-pulse",
+    id: "lesson-intermediate-pulse",
     learnerCount: 21,
     room: "304",
+    startsAt: "14:00",
     status: "planned",
-    time: "14:00",
   },
-  { groupName: "IELTS Momentum", learnerCount: 16, room: "403", status: "planned", time: "16:00" },
   {
+    endsAt: "18:00",
+    groupName: "IELTS Momentum",
+    groupSlug: "ielts-momentum",
+    id: "lesson-ielts-momentum",
+    learnerCount: 16,
+    room: "403",
+    startsAt: "16:00",
+    status: "planned",
+  },
+  {
+    endsAt: "20:00",
     groupName: "Beginner Horizon",
+    groupSlug: "beginner-horizon",
+    id: "lesson-beginner-horizon",
     learnerCount: 20,
     room: "301",
+    startsAt: "18:00",
     status: "planned",
-    time: "18:00",
   },
   {
+    endsAt: "20:00",
     groupName: "Pre-IELTS Summit",
+    groupSlug: "pre-ielts-summit",
+    id: "lesson-pre-ielts-summit",
     learnerCount: 19,
     room: "502",
+    startsAt: "18:00",
     status: "planned",
-    time: "18:00",
   },
 ];
+
+const lessonBlueprints = [
+  {
+    objective: localized(
+      "Mavzuni nutqda to‘g‘ri qo‘llash va asosiy xatolarni aniqlash.",
+      "Использовать тему в речи и распознавать основные ошибки.",
+      "Use the target language in speech and identify common errors.",
+    ),
+    topic: localized(
+      "Present Perfect amaliyoti",
+      "Практика Present Perfect",
+      "Present Perfect practice",
+    ),
+  },
+  {
+    objective: localized(
+      "Fikrni dalil va misollar bilan izchil ifodalash.",
+      "Последовательно выражать мнение с аргументами и примерами.",
+      "Express an opinion clearly with reasons and examples.",
+    ),
+    topic: localized(
+      "Fikr bildirish va dalillash",
+      "Мнение и аргументация",
+      "Opinions and supporting reasons",
+    ),
+  },
+  {
+    objective: localized(
+      "Matndan asosiy g‘oya va muhim detallarni tez topish.",
+      "Быстро находить главную мысль и важные детали текста.",
+      "Locate the main idea and key details efficiently.",
+    ),
+    topic: localized("Reading strategiyalari", "Стратегии чтения", "Reading strategies"),
+  },
+] as const;
+
+const groupLessons: TeacherLessonSession[] = groups.flatMap((group) => {
+  const [startsAt = "10:00", endsAt = "12:00"] = group.time.split("–");
+  const dates = ["2026-08-25", "2026-08-29", "2026-09-02"] as const;
+
+  return lessonBlueprints.map((blueprint, index) => {
+    const sequence = String(index + 1).padStart(2, "0");
+    const lessonId = `${group.slug}-lesson-${sequence}`;
+
+    return {
+      assignmentIds: index < 2 ? [`${group.slug}-assignment-${sequence}`] : [],
+      attendancePresent: index === 0 ? Math.max(group.learnerCount - 2, 0) : 0,
+      attendanceTotal: group.learnerCount,
+      date: dates[index] ?? "2026-09-02",
+      endsAt,
+      groupSlug: group.slug,
+      id: lessonId,
+      materialIds:
+        index === 0
+          ? [`${group.slug}-material-article`, `${group.slug}-material-worksheet`]
+          : index === 1
+            ? [`${group.slug}-material-book`]
+            : [],
+      objective: blueprint.objective,
+      room: group.room,
+      startsAt,
+      status: index === 0 ? "completed" : "planned",
+      testIds: index < 2 ? [`${group.slug}-test-${sequence}`] : [],
+      topic: blueprint.topic,
+    } satisfies TeacherLessonSession;
+  });
+});
+
+const groupMaterials: TeacherLessonMaterial[] = groups.flatMap((group) => [
+  {
+    description: localized(
+      "Dars mavzusini misollar bilan tushuntiruvchi qisqa metodik maqola.",
+      "Краткая методическая статья с примерами по теме урока.",
+      "A concise teaching article with examples for the lesson topic.",
+    ),
+    format: "WEB",
+    groupSlug: group.slug,
+    id: `${group.slug}-material-article`,
+    lessonId: `${group.slug}-lesson-01`,
+    title: localized(
+      "Present Perfect: asosiy holatlar",
+      "Present Perfect: основные случаи",
+      "Present Perfect: core uses",
+    ),
+    type: "article",
+  },
+  {
+    description: localized(
+      "Juftlikda ishlash uchun chop etiladigan mashqlar to‘plami.",
+      "Печатный комплект упражнений для работы в парах.",
+      "A printable exercise set for pair work.",
+    ),
+    format: "PDF",
+    groupSlug: group.slug,
+    id: `${group.slug}-material-worksheet`,
+    lessonId: `${group.slug}-lesson-01`,
+    title: localized(
+      "Speaking practice worksheet",
+      "Рабочий лист для speaking",
+      "Speaking practice worksheet",
+    ),
+    type: "worksheet",
+  },
+  {
+    description: localized(
+      "Fikr bildirish uchun foydali iboralar jamlangan o‘quv qo‘llanma bo‘limi.",
+      "Раздел пособия с полезными фразами для выражения мнения.",
+      "A course-book section with useful language for expressing opinions.",
+    ),
+    format: "PDF",
+    groupSlug: group.slug,
+    id: `${group.slug}-material-book`,
+    lessonId: `${group.slug}-lesson-02`,
+    title: localized(
+      "Opinion language qo‘llanmasi",
+      "Пособие по выражению мнения",
+      "Opinion language guide",
+    ),
+    type: "book",
+  },
+]);
+
+const groupAssignments: TeacherLessonAssignment[] = groups.flatMap((group) => [
+  {
+    dueAt: "2026-08-31",
+    groupSlug: group.slug,
+    id: `${group.slug}-assignment-01`,
+    lessonId: `${group.slug}-lesson-01`,
+    status: "active",
+    submissionCount: Math.max(group.learnerCount - 5, 0),
+    title: localized(
+      "Present Perfect yozma mashqi",
+      "Письменное задание Present Perfect",
+      "Present Perfect writing task",
+    ),
+    totalLearners: group.learnerCount,
+  },
+  {
+    dueAt: "2026-09-05",
+    groupSlug: group.slug,
+    id: `${group.slug}-assignment-02`,
+    lessonId: `${group.slug}-lesson-02`,
+    status: "draft",
+    submissionCount: 0,
+    title: localized("Opinion essay rejasi", "План эссе-мнения", "Opinion essay outline"),
+    totalLearners: group.learnerCount,
+  },
+]);
+
+const groupTests: TeacherLessonTest[] = groups.flatMap((group) => [
+  {
+    durationMinutes: 15,
+    groupSlug: group.slug,
+    id: `${group.slug}-test-01`,
+    kind: "quiz",
+    lessonId: `${group.slug}-lesson-01`,
+    questionCount: 12,
+    scheduledAt: "2026-08-25",
+    status: "completed",
+    title: localized(
+      "Present Perfect qisqa testi",
+      "Короткий тест Present Perfect",
+      "Present Perfect quick check",
+    ),
+  },
+  {
+    durationMinutes: 30,
+    groupSlug: group.slug,
+    id: `${group.slug}-test-02`,
+    kind: "progress",
+    lessonId: `${group.slug}-lesson-02`,
+    questionCount: 24,
+    scheduledAt: "2026-09-02",
+    status: "scheduled",
+    title: localized("Unit progress testi", "Проверочный тест по разделу", "Unit progress test"),
+  },
+]);
 
 // Client-preview-only fictional business data. Replace before production.
 export const teacherPreviewData: TeacherPreviewData = {
   dashboardMetrics: [
     {
-      id: "together",
-      label: localized("BEST bilan birga", "Вместе с BEST", "Together with BEST"),
-      tone: "navy",
-      value: localized("2 yil 4 oy", "2 года 4 месяца", "2 years 4 months"),
-    },
-    {
-      id: "departed",
-      label: localized("Bu oy ketganlar", "Ушли в этом месяце", "Departed this month"),
-      tone: "yellow",
-      value: localized("4 o‘quvchi", "4 ученика", "4 learners"),
-    },
-    {
+      featured: true,
       id: "new",
       label: localized(
         "Bu oy qo‘shilgan yangi o‘quvchilar",
@@ -335,13 +475,37 @@ export const teacherPreviewData: TeacherPreviewData = {
         "New learners this month",
       ),
       tone: "blue",
-      value: localized("19 ta", "19", "19"),
+      value: 19,
+    },
+    {
+      featured: false,
+      id: "active",
+      label: localized("Jami faol o‘quvchilar", "Всего активных учеников", "Total active learners"),
+      tone: "turquoise",
+      value: 79,
+    },
+    {
+      featured: false,
+      id: "departed",
+      label: localized("Bu oy ketganlar", "Ушли в этом месяце", "Departed this month"),
+      tone: "yellow",
+      value: 4,
+    },
+    {
+      featured: false,
+      id: "together",
+      label: localized("BEST bilan birga — oy", "Месяцев вместе с BEST", "Months with BEST"),
+      tone: "navy",
+      value: 28,
     },
   ],
   financeSnapshots,
+  groupAssignments,
+  groupLessons,
+  groupMaterials,
+  groupTests,
   groups,
   learners,
-  messages,
   notifications: [
     {
       id: "notification-01",
@@ -375,16 +539,6 @@ export const teacherPreviewData: TeacherPreviewData = {
     role: "teacher",
     subject: localized("Ingliz tili", "Английский язык", "English"),
   },
-  quickStatuses: [
-    { id: "ielts", label: localized("IELTS maqsad", "Цель IELTS", "IELTS target"), progress: 72 },
-    { id: "attendance", label: localized("Davomat", "Посещаемость", "Attendance"), progress: 89 },
-    { id: "new", label: localized("Yangi guruh", "Новая группа", "New group"), progress: 64 },
-    {
-      id: "monthly",
-      label: localized("Oylik natija", "Итог месяца", "Monthly result"),
-      progress: 81,
-    },
-  ],
   resources: [
     {
       description: localized(
@@ -408,6 +562,7 @@ export const teacherPreviewData: TeacherPreviewData = {
     },
   ],
   schedule,
+  scheduleDate: "2026-08-29",
   tasks,
   transferRequests: [],
 };
@@ -418,4 +573,24 @@ export function getTeacherGroup(slug: string) {
 
 export function getTeacherGroupLearners(slug: string) {
   return learners.filter((learner) => learner.groupSlug === slug);
+}
+
+export function getTeacherGroupLessons(slug: string) {
+  return groupLessons.filter((lesson) => lesson.groupSlug === slug);
+}
+
+export function getTeacherLesson(slug: string, lessonId: string) {
+  return groupLessons.find((lesson) => lesson.groupSlug === slug && lesson.id === lessonId);
+}
+
+export function getTeacherGroupMaterials(slug: string) {
+  return groupMaterials.filter((material) => material.groupSlug === slug);
+}
+
+export function getTeacherGroupAssignments(slug: string) {
+  return groupAssignments.filter((assignment) => assignment.groupSlug === slug);
+}
+
+export function getTeacherGroupTests(slug: string) {
+  return groupTests.filter((test) => test.groupSlug === slug);
 }
