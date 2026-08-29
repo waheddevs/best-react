@@ -1,0 +1,596 @@
+@reference "../../app/globals.css";
+
+/* GroupsCatalog */
+
+.teacherGroups__catalog {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.teacherGroups__catalogCard {
+  display: flex;
+  min-height: 18.5rem;
+  flex-direction: column;
+  padding: 1.25rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 8px 24px rgb(16 42 67 / 4%);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.teacherGroups__catalogCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.teacherGroups__catalogIcon,
+.teacherGroups__detailIcon {
+  display: grid;
+  place-items: center;
+  color: var(--teacher-primary);
+  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+}
+
+.teacherGroups__catalogIcon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.9rem;
+}
+
+.teacherGroups__learnerCount {
+  padding: 0.35rem 0.65rem;
+  color: var(--teacher-primary);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.teacherGroups__catalogCard h2 {
+  margin: 1.2rem 0 0;
+  color: var(--teacher-heading);
+  font-size: 1.08rem;
+  line-height: 1.2;
+  font-weight: 850;
+  letter-spacing: -0.025em;
+}
+
+.teacherGroups__catalogMeta {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.1rem 0 0;
+}
+
+.teacherGroups__catalogMeta div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.teacherGroups__catalogMeta dt,
+.teacherGroups__catalogMeta dd {
+  margin: 0;
+  font-size: 0.76rem;
+}
+
+.teacherGroups__catalogMeta dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--teacher-muted);
+}
+
+.teacherGroups__catalogMeta dt svg {
+  font-size: 1rem;
+}
+
+.teacherGroups__catalogMeta dd {
+  color: var(--teacher-heading);
+  font-weight: 750;
+  text-align: right;
+}
+
+.teacherGroups__catalogProgress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.teacherGroups__catalogProgress > span {
+  height: 0.4rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--teacher-border);
+}
+
+.teacherGroups__catalogProgress > span span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--teacher-brand), var(--teacher-primary));
+}
+
+.teacherGroups__catalogProgress strong {
+  color: var(--teacher-primary);
+  font-size: 0.72rem;
+}
+
+.teacherGroups__catalogLink {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-inline: 0.9rem;
+  color: var(--teacher-primary);
+  border: 0;
+  border-radius: 0.85rem;
+  background: var(--teacher-surface-subtle);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.teacherGroups__catalogLink svg {
+  font-size: 1.1rem;
+}
+
+/* GroupHeader */
+
+.teacherGroups__detailHeader {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 1.2rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 8px 24px rgb(16 42 67 / 4%);
+}
+
+.teacherGroups__backLink {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  color: var(--teacher-muted);
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.85rem;
+  background: var(--teacher-canvas);
+}
+
+.teacherGroups__detailIcon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+}
+
+.teacherGroups__detailCopy {
+  min-width: 0;
+}
+
+.teacherGroups__detailCopy p,
+.teacherGroups__detailCopy h1,
+.teacherGroups__detailCopy span {
+  margin: 0;
+}
+
+.teacherGroups__detailCopy p {
+  color: var(--teacher-primary);
+  font-size: 0.65rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.teacherGroups__detailCopy h1 {
+  margin-top: 0.25rem;
+  color: var(--teacher-heading);
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-weight: 850;
+  letter-spacing: -0.035em;
+}
+
+.teacherGroups__detailCopy span {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--teacher-muted);
+  font-size: 0.75rem;
+}
+
+.teacherGroups__groupState {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: 0.4rem;
+  padding-inline: 0.85rem;
+  color: var(--teacher-success);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teacher-success) 10%, transparent);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.teacherGroups__groupState svg {
+  font-size: 1rem;
+}
+
+/* TeacherGroupRoster */
+
+.teacherGroups__rosterSection {
+  min-width: 0;
+}
+
+.teacherGroups__summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.teacherGroups__summaryCard {
+  display: grid;
+  min-height: 5.5rem;
+  place-items: center;
+  align-content: center;
+  gap: 0.3rem;
+  padding: 0.9rem;
+  color: var(--teacher-primary);
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface);
+}
+
+.teacherGroups__summaryCard[data-tone="active"] {
+  color: var(--teacher-success);
+}
+
+.teacherGroups__summaryCard[data-tone="paused"] {
+  color: var(--teacher-warning);
+}
+
+.teacherGroups__summaryCard[data-tone="debtor"],
+.teacherGroups__summaryCard[data-tone="departed"] {
+  color: var(--teacher-danger);
+}
+
+.teacherGroups__summaryCard strong {
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 880;
+}
+
+.teacherGroups__summaryCard span {
+  color: var(--teacher-muted);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.teacherGroups__rosterHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.teacherGroups__rosterHeader > div:first-child {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.teacherGroups__resultCount {
+  color: var(--teacher-muted);
+  font-size: 0.72rem;
+}
+
+.teacherGroups__filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.teacherGroups__searchField {
+  display: flex;
+  min-height: 2.75rem;
+  min-width: min(24rem, 100%);
+  align-items: center;
+  gap: 0.6rem;
+  padding-inline: 0.85rem;
+  color: var(--teacher-muted);
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.85rem;
+  background: var(--teacher-surface);
+}
+
+.teacherGroups__searchField svg {
+  font-size: 1.1rem;
+}
+
+.teacherGroups__searchField input {
+  width: 100%;
+  color: var(--teacher-text);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.teacherGroups__srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.teacherGroups__learnerList {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.teacherGroups__learnerCard {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto auto minmax(10rem, 1fr) minmax(8rem, auto) minmax(5rem, auto) auto;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface);
+}
+
+.teacherGroups__learnerCard[data-alert="true"] {
+  border-color: color-mix(in srgb, var(--teacher-danger) 38%, var(--teacher-border));
+  background: color-mix(in srgb, var(--teacher-danger) 4%, var(--teacher-surface));
+}
+
+.teacherGroups__learnerIndex {
+  color: var(--teacher-muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.teacherGroups__learnerAvatar {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  place-items: center;
+  color: var(--teacher-primary);
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.teacherGroups__learnerIdentity,
+.teacherGroups__learnerFinance,
+.teacherGroups__learnerProgress {
+  display: grid;
+  min-width: 0;
+  gap: 0.25rem;
+}
+
+.teacherGroups__learnerIdentity strong,
+.teacherGroups__learnerFinance strong,
+.teacherGroups__learnerProgress strong {
+  overflow: hidden;
+  color: var(--teacher-heading);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacherGroups__learnerFinance small,
+.teacherGroups__learnerProgress small {
+  color: var(--teacher-muted);
+  font-size: 0.65rem;
+}
+
+.teacherGroups__statusBadge {
+  width: fit-content;
+  padding: 0.2rem 0.45rem;
+  color: var(--teacher-success);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teacher-success) 10%, transparent);
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+
+.teacherGroups__statusBadge[data-status="paused"] {
+  color: var(--teacher-warning);
+  background: color-mix(in srgb, var(--teacher-yellow) 18%, transparent);
+}
+
+.teacherGroups__statusBadge[data-status="debtor"],
+.teacherGroups__statusBadge[data-status="departed"] {
+  color: var(--teacher-danger);
+  background: color-mix(in srgb, var(--teacher-danger) 9%, transparent);
+}
+
+.teacherGroups__learnerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.teacherGroups__learnerActions button {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  color: var(--teacher-primary);
+  border: 0;
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+}
+
+.teacherGroups__learnerActions button:nth-child(2) {
+  color: var(--teacher-warning);
+  background: color-mix(in srgb, var(--teacher-yellow) 18%, transparent);
+}
+
+.teacherGroups__learnerActions button:nth-child(3) {
+  color: var(--teacher-success);
+  background: color-mix(in srgb, var(--teacher-success) 9%, transparent);
+}
+
+.teacherGroups__learnerActions button:nth-child(4) {
+  color: var(--teacher-brand);
+  background: color-mix(in srgb, var(--teacher-brand) 11%, transparent);
+}
+
+.teacherGroups__learnerActions button:nth-child(5) {
+  color: var(--teacher-muted);
+  background: color-mix(in srgb, var(--teacher-muted) 9%, transparent);
+}
+
+.teacherGroups__learnerActions svg {
+  font-size: 1rem;
+}
+
+.teacherGroups__dialogContent {
+  display: grid;
+  gap: 1rem;
+  padding-top: 0.5rem !important;
+}
+
+.teacherGroups__dialogContent p {
+  margin: 0 0 0.5rem;
+  color: var(--teacher-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.teacherGroups__dialogActions {
+  padding: 0.5rem 1.5rem 1.5rem !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherGroups__catalogCard:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--teacher-primary) 35%, var(--teacher-border));
+    box-shadow: 0 18px 42px rgb(16 42 67 / 8%);
+  }
+}
+
+@media (max-width: 1199px) {
+  .teacherGroups__catalog {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .teacherGroups__learnerCard {
+    grid-template-columns: auto auto minmax(10rem, 1fr) minmax(7rem, auto) auto;
+  }
+
+  .teacherGroups__learnerProgress {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .teacherGroups__catalog {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherGroups__catalogCard {
+    min-height: 18rem;
+  }
+
+  .teacherGroups__detailHeader {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.7rem;
+    padding: 0.9rem;
+  }
+
+  .teacherGroups__detailIcon {
+    display: none;
+  }
+
+  .teacherGroups__groupState {
+    width: 2.5rem;
+    padding: 0;
+    justify-content: center;
+    font-size: 0;
+  }
+
+  .teacherGroups__summaryGrid {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    padding-bottom: 0.45rem;
+  }
+
+  .teacherGroups__summaryCard {
+    min-width: 5.5rem;
+    flex: 0 0 5.5rem;
+  }
+
+  .teacherGroups__rosterHeader {
+    align-items: flex-end;
+  }
+
+  .teacherGroups__rosterHeader > div:first-child {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .teacherGroups__rosterHeader button {
+    min-width: 2.75rem;
+    padding-inline: 0.7rem;
+  }
+
+  .teacherGroups__filters {
+    align-items: stretch;
+  }
+
+  .teacherGroups__searchField {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .teacherGroups__learnerCard {
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    gap: 0.65rem;
+    padding: 0.75rem;
+  }
+
+  .teacherGroups__learnerFinance {
+    grid-column: 3 / -1;
+  }
+
+  .teacherGroups__learnerActions {
+    grid-column: 2 / -1;
+    justify-content: flex-end;
+    border-top: 1px solid var(--teacher-border);
+    padding-top: 0.6rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .teacherGroups__filters {
+    display: grid;
+  }
+
+  .teacherGroups__filters button {
+    justify-self: start;
+  }
+}
