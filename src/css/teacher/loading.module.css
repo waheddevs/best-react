@@ -1,0 +1,26 @@
+@reference "../../app/globals.css";
+
+/* TeacherLoading */
+.teacherLoading {
+  display: grid;
+  gap: 24px;
+}
+.teacherLoading > div {
+  display: grid;
+  gap: 3px;
+}
+.teacherLoading > section {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (width <= 900px) {
+  .teacherLoading > section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (width <= 560px) {
+  .teacherLoading > section {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,154 @@
+@reference "../../app/globals.css";
+
+/* TeacherPageHeader */
+
+.teacherShared__pageHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1.4rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--teacher-border);
+}
+
+.teacherShared__eyebrow {
+  margin: 0;
+  color: var(--teacher-primary);
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.teacherShared__pageTitle {
+  margin: 0.55rem 0 0;
+  color: var(--teacher-heading);
+  font-size: clamp(1.65rem, 4vw, 1.9rem);
+  line-height: 1.05;
+  font-weight: 880;
+  letter-spacing: -0.045em;
+}
+
+.teacherShared__pageDescription {
+  max-width: 62ch;
+  margin: 0.65rem 0 0;
+  color: var(--teacher-muted);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.teacherShared__pageActions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Shared teacher surfaces */
+
+.teacherShared__card {
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 8px 24px rgb(16 42 67 / 4%);
+}
+
+.teacherShared__sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.teacherShared__sectionTitle {
+  margin: 0;
+  color: var(--teacher-heading);
+  font-size: 1.05rem;
+  font-weight: 820;
+  letter-spacing: -0.025em;
+}
+
+.teacherShared__sectionLink {
+  color: var(--teacher-primary);
+  font-size: 0.8rem;
+  font-weight: 750;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--teacher-primary) 35%, transparent);
+  text-underline-offset: 0.25rem;
+}
+
+.teacherShared__badge {
+  display: inline-flex;
+  min-height: 1.65rem;
+  align-items: center;
+  gap: 0.3rem;
+  padding-inline: 0.6rem;
+  color: var(--teacher-primary);
+  border: 1px solid color-mix(in srgb, var(--teacher-primary) 20%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.teacherShared__emptyState {
+  display: grid;
+  min-height: 18rem;
+  place-items: center;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background: var(--teacher-surface);
+}
+
+.teacherShared__emptyIcon {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  margin-inline: auto;
+  place-items: center;
+  color: var(--teacher-primary);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+}
+
+.teacherShared__emptyIcon svg {
+  font-size: 2rem;
+}
+
+.teacherShared__emptyTitle {
+  margin: 1rem 0 0;
+  color: var(--teacher-heading);
+  font-size: 1rem;
+  font-weight: 820;
+}
+
+.teacherShared__emptyDescription {
+  max-width: 42ch;
+  margin: 0.5rem auto 0;
+  color: var(--teacher-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .teacherShared__pageHeader {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+  }
+
+  .teacherShared__pageActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .teacherShared__pageDescription {
+    font-size: 0.84rem;
+  }
+}
