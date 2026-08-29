@@ -1,0 +1,192 @@
+@reference "../../app/globals.css";
+
+/* TeacherTaskList */
+.teacherTasks__filters {
+  display: flex;
+  width: fit-content;
+  gap: 5px;
+  margin-bottom: 18px;
+  padding: 5px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 14px;
+  background: var(--teacher-surface);
+}
+
+.teacherTasks__filters button {
+  min-height: 38px;
+  padding: 0 15px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--teacher-muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 720;
+}
+
+.teacherTasks__filters button[data-active="true"] {
+  background: var(--teacher-primary);
+  color: white;
+}
+
+.teacherTasks__list {
+  display: grid;
+  gap: 12px;
+}
+
+.teacherTasks__card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 18px;
+  background: var(--teacher-surface);
+  box-shadow: var(--teacher-shadow);
+}
+
+.teacherTasks__card[data-completed="true"] {
+  opacity: 0.72;
+}
+
+.teacherTasks__icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 15px;
+}
+
+.teacherTasks__icon[data-tone="warning"] {
+  background: color-mix(in srgb, var(--teacher-warning) 18%, transparent);
+  color: var(--teacher-warning);
+}
+
+.teacherTasks__icon[data-tone="danger"] {
+  background: color-mix(in srgb, var(--teacher-danger) 12%, transparent);
+  color: var(--teacher-danger);
+}
+
+.teacherTasks__content,
+.teacherTasks__heading {
+  min-width: 0;
+}
+
+.teacherTasks__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.teacherTasks__heading h2 {
+  color: var(--teacher-heading);
+  font-size: 15px;
+  font-weight: 790;
+}
+
+.teacherTasks__heading p {
+  max-width: 68ch;
+  margin-top: 4px;
+  color: var(--teacher-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.teacherTasks__details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.teacherTasks__details div {
+  display: flex;
+  gap: 6px;
+}
+.teacherTasks__details dt {
+  color: var(--teacher-muted);
+  font-size: 11px;
+}
+.teacherTasks__details dd {
+  color: var(--teacher-text);
+  font-size: 11px;
+  font-weight: 720;
+}
+
+.teacherTasks__completeState {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--teacher-success);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.teacherTasks__actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.teacherTasks__actions details {
+  position: relative;
+}
+.teacherTasks__actions summary {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 11px;
+  color: var(--teacher-muted);
+  cursor: pointer;
+  list-style: none;
+}
+.teacherTasks__actions summary::-webkit-details-marker {
+  display: none;
+}
+.teacherTasks__actions details[open] summary {
+  background: var(--teacher-surface-subtle);
+  color: var(--teacher-primary);
+}
+.teacherTasks__actions details button {
+  position: absolute;
+  z-index: 2;
+  top: 44px;
+  right: 0;
+  min-width: 110px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 10px;
+  background: var(--teacher-surface);
+  color: var(--teacher-text);
+  box-shadow: var(--teacher-shadow);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 730;
+}
+
+@media (width <= 760px) {
+  .teacherTasks__filters {
+    width: 100%;
+  }
+  .teacherTasks__filters button {
+    flex: 1;
+    padding-inline: 8px;
+  }
+  .teacherTasks__card {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    padding: 15px;
+  }
+  .teacherTasks__actions,
+  .teacherTasks__completeState {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    justify-content: center;
+  }
+  .teacherTasks__heading {
+    display: grid;
+  }
+}
