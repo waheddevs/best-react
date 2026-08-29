@@ -1,52 +1,37 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
-import { isLocale, locales } from "@/config/Locales";
 import {
-  getTeacherGroup,
-  getTeacherGroupLearners,
-  teacherPreviewData,
+  getTeacherGroupAssignments,
+  getTeacherGroupLessons,
+  getTeacherGroupMaterials,
+  getTeacherGroupTests,
 } from "@/data/teacher/TeacherPreviewData";
-import { getTeacherCopy } from "@/dictionaries/teacher/Teacher";
 
-import { GroupHeader } from "./GroupHeader";
-import { GroupStudentList } from "./GroupStudentList";
+import { GroupOverview } from "./GroupOverview";
+import {
+  createGroupWorkspaceMetadata,
+  getGroupWorkspaceContext,
+  type GroupWorkspaceParams,
+} from "./GroupWorkspaceRoute";
 
-type GroupDetailPageProps = { params: Promise<{ locale: string; slug: string }> };
+type GroupOverviewPageProps = { params: GroupWorkspaceParams };
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) =>
-    teacherPreviewData.groups.map((group) => ({ locale, slug: group.slug })),
-  );
+export function generateMetadata({ params }: GroupOverviewPageProps): Promise<Metadata> {
+  return createGroupWorkspaceMetadata(params, "overview");
 }
 
-export async function generateMetadata({ params }: GroupDetailPageProps): Promise<Metadata> {
-  const { locale, slug } = await params;
-  if (!isLocale(locale)) return {};
-  const group = getTeacherGroup(slug);
-  if (!group) return {};
-  return {
-    title: group.name,
-    description: getTeacherCopy(locale).metadata.groups.description,
-    robots: { follow: false, index: false },
-  };
-}
-
-export default async function GroupDetailPage({ params }: GroupDetailPageProps) {
-  const { locale, slug } = await params;
-  if (!isLocale(locale)) notFound();
-  const group = getTeacherGroup(slug);
-  if (!group) notFound();
-  const copy = getTeacherCopy(locale);
+export default async function GroupOverviewPage({ params }: GroupOverviewPageProps) {
+  const { copy, group, locale, slug } = await getGroupWorkspaceContext(params);
 
   return (
-    <main>
-      <GroupHeader copy={copy} group={group} locale={locale} />
-      <GroupStudentList
-        copy={copy}
-        initialLearners={getTeacherGroupLearners(slug)}
-        locale={locale}
-      />
-    </main>
+    <GroupOverview
+      assignments={getTeacherGroupAssignments(slug)}
+      copy={copy}
+      group={group}
+      lessons={getTeacherGroupLessons(slug)}
+      locale={locale}
+      materials={getTeacherGroupMaterials(slug)}
+      tests={getTeacherGroupTests(slug)}
+    />
   );
 }
