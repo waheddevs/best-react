@@ -1,13 +1,15 @@
-# BEST LC Public Website — Project Instructions
+# BEST LC Website and Teacher Workspace — Project Instructions
 
 ## 1. Project mission
 
-Build a production-quality public website for **BEST LC**, an education brand.
-The website must feel **minimalistic, creative, bright, modern, trustworthy, and
-professional**. This is a real project, not a generic demo or an admin template.
+Build a production-quality public website and localized Teacher Workspace for
+**BEST LC**, an education brand. The product must feel **minimalistic, creative,
+bright, modern, trustworthy, and professional**. This is a real project, not a
+generic demo or an off-the-shelf admin template.
 
-The current milestone is **frontend only**. Implement only the public website
-described in the BEST LC Notion plan:
+The completed public milestone and the current Teacher Workspace milestone are
+both **frontend only**. Preserve the public website described in the BEST LC
+Notion plan:
 
 - Home
 - Events
@@ -21,13 +23,18 @@ described in the BEST LC Notion plan:
 Source plan:
 https://strong-cartwheel-b38.notion.site/BEST-LC-3a7609e0e68d80639a23c4c941e8ad5d
 
+The active milestone is the localized Teacher Workspace described in sections
+2C and 20A. Its complete functional inventory comes from the user-supplied
+102.2-second mobile reference video `IMG_7623.MP4`; every screen, section, and
+visible function captured there is required within the frontend-preview
+boundary defined below.
+
 ## 2. Non-negotiable scope boundaries
 
 Do not implement or scaffold any of the following in this milestone:
 
 - Student dashboard or student account pages, except the explicitly approved
   localized Student Library catalogue described below
-- Teacher dashboard or teacher account pages
 - Administrator dashboard or admin tools
 - Password reset, custom credentials authentication, or account dashboards
   beyond the explicitly approved auth-shell exception below
@@ -41,17 +48,20 @@ Do not implement or scaffold any of the following in this milestone:
 Public exam pages may explain exam formats, rules, dates, and registration steps,
 but users must not be able to take an exam in this frontend milestone.
 
-If a requested change expands the project into dashboards, authentication, or a
-backend, stop and ask for explicit approval before implementing it.
+The Teacher Workspace is the one newly approved dashboard exception. If a
+requested change expands into a Student dashboard, Administrator dashboard,
+real credentials authentication, route protection, persistence, or any other
+backend capability, stop and ask for explicit approval before implementing it.
 
 The user has approved one narrow student-area exception: move the existing
 localized Library catalogue and its detail routes from public ownership to
 `/[locale]/student/library`. Its route components, feature logic, hook, CSS,
 typed data, types, and dictionary must remain under student-owned directories.
 The route remains unprotected; the social-auth approval below does not authorize
-protecting Student Library or adding another student route. Other student,
-teacher, and administrator placeholders remain `.gitkeep`-only; obtain fresh
-explicit approval before implementing them.
+protecting Student Library or adding another student route. Other student and
+administrator placeholders remain `.gitkeep`-only; obtain fresh explicit
+approval before implementing them. Teacher-owned directories are now active
+only for the scope in sections 2C and 20A.
 
 ## 2A. Approved auth-shell and social-auth exception
 
@@ -84,10 +94,11 @@ exception is deliberately narrow:
   attendance, and payment status. It is not Super Admin. Do not add Super Admin
   to this selector or scaffold its future separate URL without fresh approval.
 - A client-selected role, role ID, or query parameter is presentation state,
-  never trusted authorization. The approval does not include email/password
-  registration, server-side role verification, password reset, a user database,
-  email delivery, profile management, dashboards, or route protection. Obtain
-  fresh explicit approval before adding any of these.
+  never trusted authorization. The auth-shell approval does not include
+  email/password registration, server-side role verification, password reset,
+  a user database, email delivery, or route protection. The separately approved
+  Teacher Workspace may present the profile and settings UI in section 20A, but
+  it remains an unprotected frontend preview and does not expand authentication.
 - The approved auth card may show email, password, confirmation, and forgot-
   password controls to match the supplied visual reference. Until credentials
   auth is separately approved, these values must never leave the browser or be
@@ -101,13 +112,15 @@ exception is deliberately narrow:
   Uzbek, Russian, or English context.
 - Public and Student Library routes use the shared `SiteChrome`; auth routes
   intentionally bypass it while remaining under the locale root providers.
+  Teacher routes also bypass `SiteChrome` and use their own application shell.
 
 ## 2B. Client-preview content convention
 
 This milestone is a client-preview prototype. Until the client supplies real
-business content, use complete, thematic fictional placeholder data throughout
-the public website so layouts, content density, filtering, detail pages, and
-conversion journeys can be reviewed realistically.
+business content and backend contracts, use complete, thematic fictional
+placeholder data throughout the public website and Teacher Workspace so
+layouts, content density, filtering, detail pages, and workflows can be
+reviewed realistically.
 
 - Placeholder content may include course details, event schedules, preview
   statistics, fictional learner stories, teacher profiles, business history,
@@ -132,6 +145,51 @@ conversion journeys can be reviewed realistically.
   not add submission or persistence. Never simulate payments or other backend
   flows without fresh explicit approval; authentication must use only the real,
   narrowly approved provider flow above.
+
+## 2C. Approved Teacher Workspace exception
+
+The user explicitly approved a complete localized Teacher Workspace based on
+the supplied mobile reference video. This exception is deliberately limited to
+the teacher-owned frontend preview:
+
+- Own the workspace at `/[locale]/teacher` and the child routes listed in
+  section 20A, inside the `(teacher)` route group with a dedicated responsive
+  application shell and no public Navbar or Footer.
+- Deliver one responsive Next.js web application, not a separate native mobile
+  application. Desktop/web and mobile presentations share the same routes,
+  typed data, interaction logic, and feature set.
+- Reproduce every screen, content section, navigation item, control, state, and
+  function visible in the reference video. Do not reduce it to only Overview,
+  Courses, Schedule, Students, and Settings.
+- Treat the video as a product-structure and interaction reference, not a source
+  of production data or a pixel-perfect mandate. Do not copy names, phone
+  numbers, financial figures, messages, avatars, or other identifying content
+  visible in the recording. Use centralized fictional preview data and reserved
+  technical identifiers.
+- The workspace remains unprotected until real Teacher credential verification
+  and authorization are separately approved. It must not expose real learner,
+  teacher, attendance, payment, salary, chat, session, or account data.
+- All required preview interactions use in-memory fictional state unless this
+  file explicitly permits a safe browser preference such as the teacher-only
+  night-mode setting. Session-local changes reset on refresh and must be
+  disclosed as preview behavior where a user could otherwise mistake them for
+  saved server data.
+- Search, filters, tabs, drawers, dialogs, menus, accordions, language routing,
+  theme switching, and local message/task state may work fully in the browser.
+  No teacher action may call an API, send a message, place a phone call, upload
+  a file, change a password, create or delete an account, alter a real session,
+  modify a payment, or persist business data.
+- Buttons representing future server work must still have the visible and
+  accessible UI required by the video, but their preview outcome must be honest:
+  open the relevant form/detail/confirmation, update only fictional in-memory
+  state when specifically allowed in section 20A, or show a localized
+  unavailable notice. Never claim that remote work succeeded.
+- Real Auth.js logout may continue to operate for an actual provider session.
+  The Teacher Workspace does not authorize Teacher credentials auth, role
+  claims, redirects based on trusted roles, or route guards.
+- Keep all teacher route components, features, hooks, CSS, dictionaries, typed
+  preview data, and types under teacher-owned directories. Do not leak Teacher
+  Workspace copy or business entities into public or student ownership.
 
 ## 3. Required technical stack
 
@@ -300,10 +358,37 @@ src/
           progress/.gitkeep
           settings/.gitkeep
       (teacher)/
+        layout.tsx
+        loading.tsx
         teacher/
-          courses/.gitkeep
-          students/.gitkeep
-          settings/.gitkeep
+          DashboardOverview.tsx
+          page.tsx
+          groups/
+            GroupsCatalog.tsx
+            page.tsx
+            [slug]/
+              GroupHeader.tsx
+              GroupStudentList.tsx
+              page.tsx
+          general-group/
+            GeneralGroupChat.tsx
+            page.tsx
+          tasks/
+            TeacherTaskList.tsx
+            page.tsx
+          finance/
+            FinanceDashboard.tsx
+            page.tsx
+          reception/
+            ReceptionSchedule.tsx
+            page.tsx
+          transfer-requests/
+            TransferRequestList.tsx
+            page.tsx
+          profile/
+            TeacherProfile.tsx
+            TeacherSettings.tsx
+            page.tsx
       (admin)/
         admin/
           users/.gitkeep
@@ -333,6 +418,14 @@ src/
       library/
         ResourceCatalog.tsx
         ResourceCard.tsx
+    teacher/
+      dashboard/
+      groups/
+      chat/
+      tasks/
+      finance/
+      reception/
+      profile/
   hooks/
     useCurrentLocale.ts
     navigation/
@@ -349,11 +442,20 @@ src/
     student/
       library/
         useResourceCatalog.ts
+    teacher/
+      dashboard/
+      groups/
+      chat/
+      tasks/
+      finance/
+      profile/
   config/
   data/
     PublicExams.ts
     student/
       LibraryResources.ts
+    teacher/
+      TeacherPreviewData.ts
   dictionaries/
     public/
       En.ts
@@ -365,7 +467,8 @@ src/
       GetDictionary.ts
     student/
       Library.ts
-    teacher/.gitkeep
+    teacher/
+      Teacher.ts
     admin/.gitkeep
   css/
     public/
@@ -382,13 +485,25 @@ src/
       footer.module.css
     student/
       library.module.css
-    teacher/.gitkeep
+    teacher/
+      shell.module.css
+      dashboard.module.css
+      groups.module.css
+      chat.module.css
+      tasks.module.css
+      finance.module.css
+      reception.module.css
+      profile.module.css
+      transferRequests.module.css
+      loading.module.css
     admin/.gitkeep
   lib/
   types/
     ExamPreview.ts
     student/
       Library.ts
+    teacher/
+      Teacher.ts
 public/
   icons/
     logo.svg
@@ -446,8 +561,9 @@ route-local components may compose those shared layers.
 Keep all public-website localization files under `dictionaries/public/`,
 including the locale dictionaries, their shared types, page copy, and the
 dictionary loader. Keep Student Library copy in
-`dictionaries/student/Library.ts`. Reserve `dictionaries/teacher/` and
-`dictionaries/admin/` exclusively for their future role areas.
+`dictionaries/student/Library.ts`. Keep all Teacher Workspace copy in
+`dictionaries/teacher/`; reserve `dictionaries/admin/` exclusively for the
+future administrator area.
 
 Whenever any new user-facing copy, label, FAQ, content item, or fictional
 preview data is added, provide Uzbek (`uz`), Russian (`ru`), and English (`en`)
@@ -459,8 +575,9 @@ one stylesheet per public page under `css/public/`, named after its route, such
 as `home.module.css` or `about.module.css`. Keep reusable public primitives in
 `css/public/shared.module.css`, and keep Navbar/Footer styling in
 `css/layout/navbar.module.css` and `css/layout/footer.module.css`. Student
-Library styles belong in `css/student/library.module.css`; reserve the empty
-`css/teacher/` and `css/admin/` directories for their future role areas.
+Library styles belong in `css/student/library.module.css`; Teacher Workspace
+shell and page styles belong in focused modules under `css/teacher/`. Reserve
+the empty `css/admin/` directory for the future administrator area.
 
 Within each page stylesheet, separate ownership with exact section comments,
 for example `/* HomeHero */`, `/* FeaturedCourses */`, and `/* FaqPreview */`.
@@ -765,13 +882,19 @@ Use the following approved palette as the design source of truth.
 - Define semantic CSS variables in `globals.css`, then expose them through the
   current Tailwind theme-variable approach.
 
-## 9. Light theme
+## 9. Theme boundaries
 
-The website uses one fixed light BEST LC theme. Do not add a dark/light toggle,
-color-scheme state, browser-preference detection, theme persistence, dark
-semantic tokens, or dark-mode locale labels unless the user explicitly
-reintroduces that feature. Keep `BestThemeProvider` only as the light BEST MUI
-theme integration.
+The public website, Student Library, and auth shell use one fixed light BEST LC
+theme. Do not add a public or auth dark/light toggle, browser-preference
+detection, dark semantic tokens, or dark-mode locale labels. Keep
+`BestThemeProvider` as the light BEST MUI theme integration for those areas.
+
+The Teacher Workspace is the approved exception: its Profile screen must expose
+the `Night mode` control visible in the reference video and apply a complete,
+accessible teacher-only dark theme. Scope the theme state and semantic tokens to
+the `(teacher)` layout so the public, auth, and Student Library surfaces never
+change. A small safe browser preference may remember the teacher theme; do not
+store profile, student, finance, chat, or other business data with it.
 
 ## 10. Typography and visual rhythm
 
@@ -932,6 +1055,25 @@ public navigation.
 Prepare equivalent `/ru` and `/en` routes. Default locale is `uz`. The locale
 switcher should preserve the corresponding current path when possible.
 
+The approved Teacher Workspace route map is:
+
+```text
+/uz/teacher
+/uz/teacher/groups
+/uz/teacher/groups/[slug]
+/uz/teacher/general-group
+/uz/teacher/tasks
+/uz/teacher/finance
+/uz/teacher/reception
+/uz/teacher/transfer-requests
+/uz/teacher/profile
+```
+
+Prepare equivalent `/ru` and `/en` routes. Teacher routes are application
+surfaces, not public marketing pages: exclude them from public navigation and
+the public sitemap, and mark their metadata `noindex, nofollow` while they remain
+an unprotected client preview.
+
 Use the current documented Next.js locale-routing mechanism. If current docs
 use `proxy.ts`, follow that documentation rather than older middleware examples.
 
@@ -951,12 +1093,13 @@ A top-level Navbar link is active for its exact route and nested detail routes;
 active links use the Action blue token (`--action-blue`, the same color as
 “today” in the hero).
 
-Every internal route link across the public and approved student UI—including
-Navbar, Footer, cards, CTA buttons, locale controls, and back links—must use the
-shared `ScrollToTopLink` component or the same `useScrollToTop` hook so a newly
-selected route opens at the top. Hash links must retain their target-section
-scrolling. Do not implement a pathname effect that overrides the browser's
-normal Back/Forward scroll restoration.
+Every internal route link across the public, approved student UI, and Teacher
+Workspace—including Navbar, Footer, cards, CTA buttons, locale controls, side
+navigation, bottom navigation, and back links—must use the shared
+`ScrollToTopLink` component or the same `useScrollToTop` hook so a newly selected
+route opens at the top. Hash links must retain their target-section scrolling.
+Do not implement a pathname effect that overrides the browser's normal
+Back/Forward scroll restoration.
 
 The shared layout component filenames and named exports must be exactly
 `Navbar.tsx` / `Navbar` and `Footer.tsx` / `Footer`. Do not restore the older
@@ -1148,6 +1291,304 @@ student-owned directories. No upload system, user bookmarks, protected
 downloads, Library authorization, or CMS integration is authorized in this
 milestone.
 
+## 20A. Teacher Workspace
+
+The Teacher Workspace is a responsive web CRM preview. The 102.2-second
+user-supplied mobile reference video is authoritative for feature inventory and
+mobile behavior, but it is not the desktop layout specification. Its visual
+language may be refined to match BEST LC, but none of the screens, sections, or
+visible functions below may be omitted.
+
+Design and implement desktop/web and mobile compositions in parallel for every
+Teacher feature. Do not finish the narrow mobile version first and postpone the
+desktop workspace, and do not build a desktop-only interface with mobile polish
+left for the end. Each route is complete only when both compositions have full
+feature parity. Desktop must use the available space as a professional web
+workspace with persistent navigation, wider information hierarchy, responsive
+grids or split views where useful, and bounded content widths rather than a
+stretched phone screen.
+
+### Teacher design architecture
+
+Use the approved `Bright Educational Workspace` direction. The Teacher
+Workspace must remain visibly related to the public BEST LC brand while becoming
+denser, faster to scan, and more operational. It must not resemble a generic
+admin template.
+
+- Use the approved fullscreen composition derived from the supplied dashboard
+  reference: a solid Action-blue side rail fixed to the viewport edge and a
+  bright white workspace filling the rest of the screen. Do not wrap the
+  application in a centred floating card, viewport margin, outer radius, or
+  decorative page-canvas frame. Keep navigation items fully contained inside
+  the rail. The active destination is a floating white card with a 14 px soft
+  radius, balanced side insets, subtle depth, a slim turquoise leading
+  indicator, and a small turquoise-tinted icon surface. Do not merge the active
+  item into the workspace or add concave connector curves. Use the same active
+  navigation treatment in the mobile Drawer and height-constrained scrolling
+  navigation. Use brand turquoise for supportive identity and sunny yellow
+  only for selective educational emphasis or warnings.
+- Teacher semantic tokens are: primary `#2563EB`, brand accent `#49BFD1`, deep
+  navy `#102A43`, yellow `#FFC857`, canvas `#F4FBFD`, surface `#FFFFFF`, main
+  text `#172033`, muted text `#64748B`, and border `#D9EDF1`.
+- Operational states use success `#15803D`, warning `#B45309`, danger
+  `#DC2626`, information `#2563EB`, and neutral `#64748B`. Always pair color
+  with an icon and localized text; never encode status through color alone.
+- Avoid rainbow cards. Prefer white surfaces with a semantic icon wrapper,
+  subtle tinted badge, progress accent, or narrow state border. Reserve solid
+  color or dark cards for a small number of focal summaries such as monthly
+  income.
+- Use `16px` standard card radii, `20px` focal-dashboard card radii, and
+  `12px-14px` control radii. Use one-pixel borders and restrained shadows only
+  for floating or important surfaces.
+- Use Geist throughout. Page titles are approximately `28px-32px`, section
+  titles `20px-24px`, card titles `16px-18px`, body copy `14px-16px`, metadata
+  `12px-13px`, and primary statistics `28px-40px`. Preserve the type hierarchy
+  when labels grow in Russian or English.
+- Desktop uses a `256px` persistent blue side rail, an approximately `72px`
+  clean white top bar, and a fullscreen workspace. Only the inner content
+  column remains bounded for readability; the application shell itself always
+  fills the viewport without outer corner radii or shell shadows. Use a
+  twelve-column responsive content layout, multi-column metric grids, compact
+  bordered rows, split views, and wide schedule/chat layouts where they
+  materially improve scanning.
+- Mobile uses `16px` gutters, a compact top bar, the approved four-item bottom
+  navigation, touch targets of at least `44px`, primarily single-column cards,
+  and bounded horizontal scrollers only for quick metrics, month filters, or
+  schedules that genuinely require them.
+- Below the desktop breakpoint, keep the shell fullscreen. Preserve the same
+  blue-rail identity inside the MUI Drawer and use a white bottom-navigation
+  surface with a solid-blue active destination. Do not introduce tablet-only
+  outer margins or radii, and do not shrink the desktop rail into a narrow
+  icon-only column.
+- Use the MUI Rounded icon family consistently. Avatars may use fictional
+  initials or synthetic preview imagery; never reuse identities from the video.
+- Interaction motion is subtle: approximately `160ms-280ms` for hover/focus,
+  a two-pixel card/button lift on fine pointers, and short opacity/transform
+  entrances for route content or new preview messages. Never animate business
+  data continuously, and honor reduced motion.
+- The teacher-only dark palette uses canvas `#0B1220`, sidebar/surface
+  `#111C2E`, elevated surface `#17243A`, border `#263750`, text `#F3F7FC`, muted
+  text `#A7B4C7`, primary `#60A5FA`, and turquoise `#67D8E8`. Define complete
+  semantic dark tokens rather than inverting the light UI.
+
+### Teacher application shell and navigation
+
+- Use a dedicated `(teacher)/layout.tsx` with a persistent desktop side rail,
+  an accessible MUI `Drawer` on smaller screens, a compact top bar, and the
+  four-item mobile bottom navigation visible in the reference.
+- Desktop and mobile shells must be alternative responsive presentations of the
+  same navigation model, not duplicated route trees or independent state
+  implementations.
+- The top bar includes the BEST identity, contextual page title where useful,
+  an accessible menu control, and the visible notification control. Dashboard
+  also exposes the teacher identity and a shortcut to the general-group chat.
+- The mobile bottom navigation contains exactly the primary destinations shown
+  in the video: Dashboard, Groups, Finance, and Profile. It must expose the
+  current route, respect safe areas, remain keyboard accessible, and never hide
+  focused content.
+- The full navigation drawer contains the teacher preview identity card plus:
+  Dashboard, Groups, General Group, Tasks, Finance, Reception, Transfer
+  Requests, and Log out. It also contains the Uzbek, Russian, and English
+  locale control shown in the recording.
+- Drawer and bottom-navigation items must preserve the active locale. The drawer
+  closes on selection and Escape, traps focus while open, restores focus to its
+  trigger, and indicates the active route without relying on color alone.
+- Notification and chat shortcuts must have accessible labels. The chat shortcut
+  opens General Group. Because the reference does not show a notification list,
+  the bell may open a localized fictional preview panel; it must not fabricate
+  remote delivery or read state.
+
+### Dashboard
+
+- Teacher header with fictional avatar, display name, role/handle, notification
+  control, chat shortcut, and menu access.
+- Horizontally scrollable circular quick-status/progress items matching the
+  reference composition, with labels localized in all three languages. Their
+  details use fictional preview content and accessible buttons rather than
+  unlabeled decorative circles.
+- Bento summary area containing the small `Together with BEST School` card, the
+  departed-student count card, and the large current-month new-student statistics
+  card shown in the video. Values are centralized fictional preview metrics.
+- `My groups` horizontal preview cards with group name, room, lesson days and
+  time, learner count, and progress/attendance percentage. Selecting a group
+  opens its localized detail route.
+- `Library` preview with the Podcasts and Videos entries shown in the recording.
+  These are teacher dashboard resources, not the Student Library route. Until
+  resource content is approved, they open an honest localized preview/unavailable
+  state and do not invent downloads or protected media.
+- Dashboard content must support loading/skeleton, populated, and useful empty
+  states using the same typed preview model.
+
+### Groups catalogue
+
+- Render every assigned group as a compact card with group name, fictional
+  teacher identity, lesson-day pattern, lesson time, room where supplied,
+  learner count, and navigation affordance.
+- Support the long scrolling catalogue density demonstrated in the video, plus
+  loading and empty states. Preserve legibility at mobile width and provide a
+  multi-column desktop layout.
+- Group selection opens `/[locale]/teacher/groups/[slug]`; unknown local slugs
+  use `notFound()` and all preview groups participate in `generateStaticParams`.
+
+### Group detail and learner roster
+
+- Header with back navigation, group name, room/schedule summary, member action,
+  and the green group-state control visible in the recording.
+- Summary counters for total, active, paused/stopped, departed, and other status
+  categories represented in the reference. Do not collapse the colored status
+  cards into one aggregate number.
+- Search field plus the debtors filter shown in the video. Filtering and search
+  operate on typed fictional learners and expose an accessible result count and
+  empty state.
+- Learner rows/cards include ordinal or avatar/initial, fictional name, status,
+  payment/balance summary, task/progress percentage, and the complete colored
+  quick-action strip visible in the reference. Problem/debtor rows retain the
+  distinct alert treatment and a text/icon status so color is never the sole cue.
+- Preserve the visible per-learner contact, status, task/progress, and detail
+  affordances. Where the low-resolution reference does not establish an exact
+  business effect, keep the control and accessible label but use a localized
+  preview detail/confirmation instead of inventing a backend mutation.
+- The fixed `Add learner` action opens a localized preview form/dialog and may
+  add a fictional learner to in-memory state for the session only. It must state
+  that the learner is not saved and must never collect or transmit real personal
+  data.
+- Contact actions never initiate a real call or external message in this
+  milestone. Use reserved phone numbers and a preview detail/confirmation.
+
+### General Group chat
+
+- Recreate the full-screen group conversation with back navigation, group
+  avatar/name, member count, `View members` action, search action, and overflow
+  menu visible in the video.
+- Render a scrollable fictional message history with avatars/initials, sender
+  names, teacher/learner role badges, timestamps, incoming/outgoing treatment,
+  and date separators.
+- `View members` opens an accessible member list; search filters or locates the
+  fictional message history; the overflow menu exposes only honest preview
+  options.
+- The composer includes the attachment control, localized message input, and
+  send action shown in the reference. Sending appends a clearly session-local
+  fictional message in memory and never transmits or persists it.
+- Attachment selection is a visual preview only: show the selected local file
+  name if implemented, revoke object URLs, do not upload, parse, log, or retain
+  the file, and clearly disclose that attachments are not sent.
+- Include initial loading, populated, no-results, empty-conversation, and
+  send-disabled states. Keep the composer reachable above the mobile safe area.
+
+### Tasks
+
+- Recreate the `Tasks` screen with back navigation and the top status filter,
+  including the `Pending` state visible in the recording.
+- Support at least the two reference task categories: `Missed attendance for
+  three days` with urgent/red treatment, and `Phone call required (PAUSE)` with
+  warning/yellow treatment.
+- Each task card includes type/status, localized explanation, fictional learner,
+  group, reserved phone number, created timestamp, overflow action, and the
+  `Done` control shown in the video.
+- Status filtering must work locally. Marking a task done updates only the
+  in-memory preview collection, provides honest localized feedback, and allows
+  the completed state to be inspected without claiming server persistence.
+- Provide loading, pending, completed, filtered-empty, and all-clear states.
+
+### Finance
+
+- Finance is a read-only teacher analytics screen; it must never include payment
+  entry, checkout, transfer, refund, payroll mutation, or editable financial
+  controls.
+- Include horizontally scrollable month tabs and the dark income summary card
+  from the reference with current-month income, expected amount, payment rate,
+  and attendance rate.
+- Include the complete finance-detail card grid represented in the recording:
+  paid amount, payment percentage, expected/pending amount, debt amount, learner
+  count, group count, salary/expense total, and penalty total. Labels and values
+  are typed, localized, fictional preview data.
+- Month selection updates the read-only summary and detail grid locally. Currency
+  and percentages use locale-aware formatting; financial differences include
+  icons/text and sufficient contrast rather than color alone.
+- Provide loading, populated, no-data, and unavailable states. Never copy the
+  exact figures visible in the supplied recording into production content.
+
+### Reception schedule
+
+- Recreate the `Reception` screen with its title, supporting branch/room copy,
+  refresh control, and the dense time-and-room schedule grid shown in the video.
+- The grid includes time rows, room/space columns, lesson cells, fictional
+  teacher/group labels, and the small status/count metadata visible in the
+  reference. It must support horizontal scrolling on mobile and an accessible
+  table or grid interpretation for assistive technology.
+- Refresh resets or reloads the current local preview snapshot and communicates
+  that no remote schedule was fetched. Include loading, populated, and empty
+  schedule states.
+
+### Transfer Requests
+
+- Provide the dedicated localized Transfer Requests route and the reference
+  empty state with directional-transfer icon, title, and supporting message.
+- Also define typed pending, approved, and declined preview request states so
+  the page is structurally ready when fictional rows are added, but do not add
+  approval/rejection mutations or claim a request was submitted in this
+  frontend milestone.
+
+### Profile and settings
+
+- Profile header card includes a fictional avatar, teacher display name,
+  `Teacher` role badge, reserved phone number, active language, and fictional
+  branch/location metadata.
+- Recreate every settings row visible in the recording: Profile information,
+  Change password, Computer login (QR), Change profile photo, Active sessions,
+  Language, Night mode, Delete account, and Log out.
+- Profile information may edit fictional display fields in memory only and must
+  disclose that changes are not saved. Do not collect or persist real personal
+  data.
+- Change password renders the complete localized form and validation states but
+  must clear values and show the unavailable notice; credentials never leave
+  the browser or enter logs/storage.
+- Computer login may show a clearly synthetic, non-scannable preview QR visual
+  and instructions. Never encode a token, credential, URL, or real session.
+- Change profile photo may show an ephemeral local preview only. Do not upload
+  or persist the file; validate type/size, clean up object URLs, and provide a
+  reset action.
+- Active sessions displays typed fictional device/session rows and explanatory
+  preview copy. It must not inspect browser, Auth.js, operating-system, or device
+  session stores and must not pretend to revoke a session.
+- Language switches between Uzbek, Russian, and English while preserving the
+  matching Teacher Workspace route.
+- Night mode is functional only inside the Teacher Workspace as defined in
+  section 9, with accessible contrast and a labeled switch.
+- Delete account opens the shared blocking confirmation, then reports that the
+  service is unavailable; it must not delete or mutate anything.
+- Log out uses real Auth.js sign-out when an actual provider session exists and
+  otherwise returns to the localized login screen without claiming a remote
+  Teacher credential session was ended.
+
+### Teacher data, interaction, and ownership rules
+
+- Centralize replaceable teacher, group, learner, message, task, finance,
+  schedule, transfer-request, profile, notification, and resource preview data
+  under `data/teacher/`, with explicit types under `types/teacher/`.
+- Centralize all Uzbek, Russian, and English Teacher Workspace copy under
+  `dictionaries/teacher/`. No teacher UI string may be hardcoded in a component.
+- Keep state and interaction rules in focused hooks under `hooks/teacher/` and
+  reusable teacher rendering under `features/teacher/`. Route-local sections
+  remain colocated beside their owning `page.tsx`.
+- Use the shared notification system for preview disclosures, completion
+  feedback, confirmations, and unavailable actions. Teacher notifications must
+  never claim a backend mutation succeeded.
+- Never use real identities or any personal/financial/chat content from the
+  reference video. Preview phone numbers use zero-filled reserved patterns, and
+  all people/messages remain clearly fictional data marked for replacement.
+- Do not store Teacher Workspace business state in cookies, localStorage,
+  sessionStorage, IndexedDB, URL query strings, analytics, or logs. The isolated
+  teacher night-mode preference is the only approved persistence exception.
+- All screens require responsive mobile, tablet, and desktop compositions,
+  WCAG 2.2 AA keyboard/focus behavior, reduced-motion support, loading/empty/
+  error states where applicable, and no horizontal page overflow. Intentional
+  horizontal scrolling inside group, finance-month, or schedule containers must
+  be keyboard reachable and clearly bounded.
+- Desktop and mobile must expose the same data, actions, filters, statuses, and
+  preview disclosures. A function shown in the reference video may change its
+  placement or presentation on desktop, but it may not disappear.
+
 ## 21. Exams
 
 The public Exams page is a frontend-only client preview with this sequence:
@@ -1213,6 +1654,9 @@ Do not send, store, or log submitted personal data.
 - Uzbek is the default.
 - Route and content localization must follow current App Router guidance.
 - Store UI strings in typed dictionaries.
+- Store Teacher Workspace strings exclusively in typed teacher dictionaries;
+  every Teacher route, label, status, empty state, dialog, and preview notice
+  must be complete in all three locales.
 - Do not hardcode translatable interface copy inside shared components.
 - The `<html lang>` value must match the active locale.
 - Metadata must be localized.
@@ -1237,6 +1681,15 @@ Create explicit TypeScript types for public entities, for example:
 - `ExamInfo`
 - `FaqItem`
 - `ContactDetails`
+- `TeacherProfile`
+- `TeacherDashboardMetric`
+- `TeacherGroup`
+- `TeacherLearner`
+- `TeacherMessage`
+- `TeacherTask`
+- `TeacherFinanceSnapshot`
+- `TeacherScheduleEntry`
+- `TeacherTransferRequest`
 
 Use local typed data modules for the current frontend. Keep data easy to replace
 with a future API or CMS without rewriting presentation components.
@@ -1418,9 +1871,14 @@ Accessibility is part of the design, not a final optional pass.
 Use placeholder domain configuration in one central site config until the real
 production domain is supplied.
 
+Teacher Workspace routes require localized titles and descriptions for browser
+context but must use `robots: { index: false, follow: false }`, remain outside
+the public sitemap, and never be linked from public marketing navigation.
+
 ## 32. Frontend form behavior
 
-Forms are UI-only in this milestone.
+Forms are UI-only in this milestone, including Teacher Workspace profile,
+password, add-learner, chat attachment, and other reference forms.
 
 - Validate locally with typed state.
 - Do not call an API.
@@ -1429,6 +1887,8 @@ Forms are UI-only in this milestone.
 - Instead show a clear development-state message such as:
   `Yuborish xizmati keyingi bosqichda ulanadi.`
 - Keep form logic isolated so a future endpoint can be connected cleanly.
+- Teacher preview interactions follow the explicit in-memory behavior in
+  section 20A. They must identify unsaved preview state and reset on refresh.
 
 ## 33. Implementation order
 
@@ -1448,6 +1908,16 @@ Follow this sequence unless the existing repository requires a safer order:
 10. Add purposeful motion with reduced-motion support.
 11. Add metadata, sitemap, robots, not-found UI, and final responsive polish.
 12. Run full verification and fix every relevant issue.
+13. Establish the shared Teacher Workspace data/contracts and implement the
+    desktop side rail/top bar and mobile drawer/bottom navigation together.
+14. Build Teacher Dashboard and Groups catalogue/detail route by route, finishing
+    desktop and mobile compositions for each before moving to dependent flows.
+15. Build General Group chat, Tasks, Finance, Reception, Transfer Requests, and
+    Profile/settings with desktop and mobile feature parity, required preview
+    states, and actions in the same iteration.
+16. Verify every Teacher route and reference-video function at mobile, tablet,
+    laptop, and wide-desktop widths, then run the complete repository checks
+    again.
 
 Do not begin with animation polish before semantic layout, content hierarchy,
 and responsive behavior are correct.
@@ -1480,7 +1950,25 @@ Also verify manually:
 - Google, Facebook, and Apple auth success, cancellation, configuration-error,
   session, and logout states work when provider credentials are available.
 - No dashboard or backend code outside the approved Auth.js boundary entered
-  the scope.
+  the scope, except the explicitly approved frontend-only Teacher Workspace.
+- Every Teacher Workspace route renders in Uzbek, Russian, and English.
+- Teacher drawer, bottom navigation, locale preservation, active states, and
+  back navigation work with keyboard and touch input.
+- Desktop side rail/top bar and mobile drawer/bottom navigation expose the same
+  complete Teacher destination set and preserve equivalent route state.
+- Dashboard cards and resource previews, group search/debtor filter, learner
+  actions, add-learner preview, chat search/member/composer behavior, task
+  filtering and completion preview, finance month tabs, reception grid refresh,
+  transfer-request states, and all profile/settings rows behave as specified in
+  section 20A.
+- Teacher session-local preview mutations reset on refresh, no business or
+  personal data is persisted or transmitted, and unavailable server actions do
+  not claim success.
+- Teacher-only night mode remains scoped to `(teacher)` and meets contrast
+  requirements without changing public, auth, or Student Library pages.
+- Teacher routes are excluded from the sitemap and use noindex/nofollow metadata.
+- No Teacher function exists only on mobile or only on desktop; placement may
+  adapt, but feature behavior and preview disclosures remain equivalent.
 
 Do not hide failures with `eslint-disable`, `@ts-ignore`, unsafe casts, or skipped
 build steps. Fix the underlying problem.
@@ -1498,9 +1986,13 @@ The milestone is complete only when:
 - Public content is typed and centralized.
 - Preview business claims are centralized, marked for replacement, and not
   treated as production-verified facts.
-- No student, teacher, or admin feature exists beyond the approved unprotected
-  Student Library, and no backend feature exists beyond the approved Auth.js
-  social-auth boundary.
+- No student or admin feature exists beyond the approved unprotected Student
+  Library, and no Teacher feature exists beyond the complete unprotected
+  frontend-preview scope in section 20A. No backend feature exists beyond the
+  approved Auth.js social-auth boundary.
+- Every screen, section, navigation item, state, and visible function from the
+  supplied Teacher reference video is present with the honest frontend behavior
+  defined in section 20A.
 - Lint, type checking, and production build pass.
 - The final handoff lists implemented routes, verification results, remaining
   placeholder business content, and any required official assets.
@@ -1523,7 +2015,7 @@ The milestone is complete only when:
 - Report important assumptions clearly.
 - Keep the codebase clean enough for a real team to continue building the later
   student, teacher, admin, and backend milestones without rewriting the public
-  frontend.
+  frontend or the approved Teacher Workspace foundations.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
