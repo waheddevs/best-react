@@ -33,7 +33,7 @@ export async function handleProviderSignIn(
   });
 
   try {
-    await signIn(provider, { redirectTo: `/${locale}` });
+    await signIn(provider, { redirectTo: `/${locale}/student` });
   } catch (error) {
     if (error instanceof AuthError) {
       redirect(`/${locale}/login?error=${encodeURIComponent(getAuthErrorCode(error))}`);
