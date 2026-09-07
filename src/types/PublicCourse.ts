@@ -20,10 +20,12 @@ export type PublicCourse = {
   comparisonTitle?: LocalizedCourseText;
   curriculum: LocalizedCourseList;
   duration: LocalizedCourseText;
+  featured?: boolean;
   focus: LocalizedCourseText;
   formatLabel: LocalizedCourseText;
   highlights: LocalizedCourseList;
   heroVariant?: "immersive";
+  id?: string;
   image?: string;
   imageAlt?: LocalizedCourseText;
   level: LocalizedCourseText;

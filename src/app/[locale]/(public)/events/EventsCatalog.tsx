@@ -6,15 +6,16 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/events.module.css";
-import { events } from "@/data/PublicContent";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { PublicEvent } from "@/types/PublicContent";
 
 type EventsCatalogProps = {
   locale: Locale;
   copy: PageCopy;
+  events: PublicEvent[];
 };
 
-export function EventsCatalog({ locale, copy }: EventsCatalogProps) {
+export function EventsCatalog({ locale, copy, events }: EventsCatalogProps) {
   const upcoming = events.filter((event) => event.status === "upcoming");
   const past = events.filter((event) => event.status === "past");
 

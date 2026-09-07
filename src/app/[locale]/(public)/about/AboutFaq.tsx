@@ -3,17 +3,18 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/about.module.css";
-import { aboutFaqItems } from "@/data/PublicContent";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { FaqItem } from "@/types/PublicContent";
 
 import { AboutFaqList } from "./AboutFaqList";
 
 type AboutFaqProps = {
   copy: PageCopy;
   locale: Locale;
+  items: FaqItem[];
 };
 
-export function AboutFaq({ copy, locale }: AboutFaqProps) {
+export function AboutFaq({ copy, locale, items }: AboutFaqProps) {
   return (
     <Section
       className={styles.about__faqSection}
@@ -29,7 +30,7 @@ export function AboutFaq({ copy, locale }: AboutFaqProps) {
           title={copy.about.faq.title}
         />
       </Reveal>
-      <AboutFaqList items={aboutFaqItems} locale={locale} />
+      <AboutFaqList items={items} locale={locale} />
     </Section>
   );
 }

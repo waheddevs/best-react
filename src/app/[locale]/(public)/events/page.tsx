@@ -6,6 +6,7 @@ import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import styles from "@/css/public/events.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
+import { getPublicEvents } from "@/lib/PublicContentApi";
 
 import { EventsCatalog } from "./EventsCatalog";
 import { EventsHero } from "./EventsHero";
@@ -25,11 +26,12 @@ export default async function EventsPage({ params }: EventsPageProps) {
 
   const copy = getPageCopy(locale);
   const dictionary = getDictionary(locale);
+  const events = await getPublicEvents(locale);
 
   return (
     <main className={styles.events}>
       <EventsHero eyebrow={dictionary.navigation.events} copy={copy} />
-      <EventsCatalog locale={locale} copy={copy} />
+      <EventsCatalog locale={locale} copy={copy} events={events} />
     </main>
   );
 }

@@ -6,6 +6,7 @@ import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import styles from "@/css/public/results.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
+import { getPublicResultVideos } from "@/lib/PublicContentApi";
 
 import { LearningJourney } from "./LearningJourney";
 import { OutcomeCategories } from "./OutcomeCategories";
@@ -28,11 +29,12 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
 
   const copy = getPageCopy(locale);
   const dictionary = getDictionary(locale);
+  const videos = await getPublicResultVideos(locale);
 
   return (
     <main className={styles.results}>
       <ResultsHero eyebrow={dictionary.navigation.results} copy={copy} />
-      <ResultStories copy={copy} locale={locale} />
+      <ResultStories copy={copy} locale={locale} videos={videos} />
       <LearningJourney copy={copy} />
       <OutcomeCategories copy={copy} />
       <ResultsCta locale={locale} copy={copy} />

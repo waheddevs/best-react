@@ -7,15 +7,16 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/home.module.css";
-import { events } from "@/data/PublicContent";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { PublicEvent } from "@/types/PublicContent";
 
 type UpcomingEventsProps = {
   locale: Locale;
   copy: PageCopy;
+  events: PublicEvent[];
 };
 
-export function UpcomingEvents({ locale, copy }: UpcomingEventsProps) {
+export function UpcomingEvents({ locale, copy, events }: UpcomingEventsProps) {
   const upcomingEvents = events.filter((event) => event.status === "upcoming");
 
   return (

@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/motion/Reveal";
 import { isLocale, locales } from "@/config/Locales";
-import { courses } from "@/data/PublicCourses";
 import styles from "@/css/public/courses.module.css";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
+import { getPublicCourse, getPublicCourses } from "@/lib/PublicContentApi";
 
 import { CourseAudience } from "./CourseAudience";
 import { CourseBackAction } from "./CourseBackAction";
@@ -23,14 +23,19 @@ type CourseDetailPageProps = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) => courses.map((course) => ({ locale, slug: course.slug })));
+export async function generateStaticParams() {
+  const localizedCourses = await Promise.all(
+    locales.map(async (locale) => ({ locale, courses: await getPublicCourses(locale) })),
+  );
+  return localizedCourses.flatMap(({ locale, courses }) =>
+    courses.map((course) => ({ locale, slug: course.slug })),
+  );
 }
 
 export async function generateMetadata({ params }: CourseDetailPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
-  const course = courses.find((item) => item.slug === slug);
+  const course = await getPublicCourse(locale, slug);
   if (!course) return {};
   return createPageMetadata(
     locale,
@@ -45,7 +50,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
 
-  const course = courses.find((item) => item.slug === slug);
+  const course = await getPublicCourse(locale, slug);
   if (!course) notFound();
 
   const copy = getPageCopy(locale);

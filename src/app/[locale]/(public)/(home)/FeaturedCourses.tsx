@@ -7,15 +7,16 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/home.module.css";
-import { featuredCourses } from "@/data/PublicCourses";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { PublicCourse } from "@/types/PublicCourse";
 
 type FeaturedCoursesProps = {
   locale: Locale;
   copy: PageCopy;
+  courses: PublicCourse[];
 };
 
-export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
+export function FeaturedCourses({ locale, copy, courses }: FeaturedCoursesProps) {
   return (
     <Section tone="background">
       <Reveal className={styles.home__featuredCoursesHeader}>
@@ -30,7 +31,7 @@ export function FeaturedCourses({ locale, copy }: FeaturedCoursesProps) {
         </ButtonLink>
       </Reveal>
       <StaggerGroup className={styles.home__featuredCoursesGrid}>
-        {featuredCourses.map((course) => (
+        {courses.filter((course) => course.featured).map((course) => (
           <StaggerItem key={course.slug} className={styles.home__featuredCoursesItem}>
             <CoursePosterCard course={course} locale={locale} copy={copy} />
           </StaggerItem>

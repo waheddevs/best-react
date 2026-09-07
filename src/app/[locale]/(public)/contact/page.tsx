@@ -29,7 +29,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
   return (
     <main className={styles.contact}>
       <ContactHero eyebrow={dictionary.navigation.contact} copy={copy} />
-      <ContactContent copy={copy} />
+      <ContactContent copy={copy} locale={locale} />
     </main>
   );
 }

@@ -6,6 +6,7 @@ import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import styles from "@/css/public/courses.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
+import { getPublicCourses } from "@/lib/PublicContentApi";
 
 import { CourseComparison } from "./CourseComparison";
 import { CoursesCatalog } from "./CoursesCatalog";
@@ -29,13 +30,14 @@ export default async function CoursesPage({ params }: CoursesPageProps) {
 
   const copy = getPageCopy(locale);
   const dictionary = getDictionary(locale);
+  const courses = await getPublicCourses(locale);
 
   return (
     <main className={styles.courses}>
       <CoursesHero eyebrow={dictionary.navigation.courses} copy={copy} />
-      <CoursesCatalog locale={locale} copy={copy} />
-      <LanguageCourses locale={locale} copy={copy} />
-      <CourseComparison locale={locale} copy={copy} />
+      <CoursesCatalog locale={locale} copy={copy} courses={courses} />
+      <LanguageCourses locale={locale} copy={copy} courses={courses} />
+      <CourseComparison locale={locale} copy={copy} courses={courses} />
       <LearningProcess copy={copy} />
       <CoursesCta locale={locale} copy={copy} />
     </main>

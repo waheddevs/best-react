@@ -1,11 +1,6 @@
 import type { Locale } from "@/config/Locales";
 
-export type EventSlug =
-  | "language-thinking-webinar"
-  | "football-match"
-  | "movie-day"
-  | "spelling-bee"
-  | "graduation-ceremony";
+export type EventSlug = string;
 
 export type EventProgrammeItem = {
   description: string;

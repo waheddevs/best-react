@@ -3,15 +3,16 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
-import { courses } from "@/data/PublicCourses";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import type { PublicCourse } from "@/types/PublicCourse";
 
 type CourseComparisonProps = {
   locale: Locale;
   copy: PageCopy;
+  courses: PublicCourse[];
 };
 
-export function CourseComparison({ locale, copy }: CourseComparisonProps) {
+export function CourseComparison({ locale, copy, courses }: CourseComparisonProps) {
   return (
     <Section tone="surface">
       <Reveal className={styles.courses__sectionHeading}>

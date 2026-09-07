@@ -7,17 +7,18 @@ import Image from "next/image";
 
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
-import { publicResultVideos } from "@/data/PublicResults";
 import styles from "@/css/public/results.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useResultVideoGallery } from "@/hooks/public/results/useResultVideoGallery";
+import type { PublicResultVideo } from "@/types/PublicResult";
 
 type ResultVideoGalleryProps = {
   copy: PageCopy["results"];
   locale: Locale;
+  videos: PublicResultVideo[];
 };
 
-export function ResultVideoGallery({ copy, locale }: ResultVideoGalleryProps) {
+export function ResultVideoGallery({ copy, locale, videos }: ResultVideoGalleryProps) {
   /* HOOKS */
 
   const { activeStory, handleClose, handleOpen } = useResultVideoGallery();
@@ -27,7 +28,7 @@ export function ResultVideoGallery({ copy, locale }: ResultVideoGalleryProps) {
   return (
     <>
       <div className={styles.results__storiesGrid}>
-        {publicResultVideos.map((story) => {
+        {videos.map((story) => {
           const title = story.title[locale];
 
           return (

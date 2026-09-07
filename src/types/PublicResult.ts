@@ -5,12 +5,12 @@ export type LocalizedResultText = Record<Locale, string>;
 export type PublicResultVideoSource = {
   creator: string;
   licenseUrl: string;
-  provider: "Pexels";
+  provider: string;
   url: string;
 };
 
 export type PublicResultVideo = {
-  duration: "00:05";
+  duration: string;
   key: string;
   posterSrc: string;
   source: PublicResultVideoSource;

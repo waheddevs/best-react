@@ -10,13 +10,13 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
-import { languageCourses } from "@/data/PublicCourses";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
-import type { CourseAccent } from "@/types/PublicCourse";
+import type { CourseAccent, PublicCourse } from "@/types/PublicCourse";
 
 type LanguageCoursesProps = {
   locale: Locale;
   copy: PageCopy;
+  courses: PublicCourse[];
 };
 
 const accentClassNames: Record<CourseAccent, string> = {
@@ -25,7 +25,7 @@ const accentClassNames: Record<CourseAccent, string> = {
   yellow: styles.courses__languageSymbolYellow,
 };
 
-export function LanguageCourses({ locale, copy }: LanguageCoursesProps) {
+export function LanguageCourses({ locale, copy, courses }: LanguageCoursesProps) {
   return (
     <Section tone="background">
       <Reveal className={styles.courses__sectionHeading}>
@@ -37,7 +37,7 @@ export function LanguageCourses({ locale, copy }: LanguageCoursesProps) {
         />
       </Reveal>
       <StaggerGroup className={styles.courses__languageGrid} delay={0.06}>
-        {languageCourses.map((course) => (
+        {courses.filter((course) => course.category === "language").map((course) => (
           <StaggerItem className={styles.courses__languageItem} key={course.slug}>
             <article className={styles.courses__languageCard}>
               <div className={styles.courses__languageHeader}>

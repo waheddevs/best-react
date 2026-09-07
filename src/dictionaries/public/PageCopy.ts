@@ -157,6 +157,7 @@ export type PageCopy = {
     send: string;
     required: string;
     invalidEmail: string;
+    consent: string;
     serviceNoticeTitle: string;
     serviceNotice: string;
     responseNotice: string;
@@ -573,8 +574,9 @@ const uz: PageCopy = {
     send: "Yuborish",
     required: "Bu maydonni to‘ldiring.",
     invalidEmail: "Email manzilini to‘g‘ri kiriting.",
-    serviceNoticeTitle: "Yuborish ulanmagan",
-    serviceNotice: "Xizmat keyingi bosqichda ulanadi. Murojaatingiz uchun rahmat.",
+    serviceNoticeTitle: "Xabar yuborildi",
+    serviceNotice: "Murojaatingiz qabul qilindi. Jamoamiz tez orada siz bilan bog‘lanadi.",
+    consent: "Ma’lumotlarim murojaatimga javob berish uchun qayta ishlanishiga roziman.",
     responseNotice:
       "Savolingiz bo‘lsa, biz bilan bog‘laning — jamoamiz sizga tez orada javob beradi.",
   },
@@ -593,7 +595,8 @@ const uz: PageCopy = {
     socialNoticeTitle: "Tez orada",
     socialNoticeMessage: "Yangiliklar tayyorlanmoqda. Biz bilan qoling.",
     socialNoticeClose: "Tushunarli",
-    legalPlaceholder: "Maxfiylik va foydalanish shartlari keyingi bosqichda tasdiqlanadi.",
+    legalPlaceholder:
+      "BEST LC taqdimot versiyasi · Maxfiylik siyosati · Foydalanish shartlari",
     copyright: "BEST LC. Barcha huquqlar himoyalangan.",
   },
 };
@@ -982,8 +985,9 @@ const ru: PageCopy = {
     send: "Отправить",
     required: "Заполните это поле.",
     invalidEmail: "Введите корректный email.",
-    serviceNoticeTitle: "Отправка не подключена",
-    serviceNotice: "Сервис подключат на следующем этапе. Спасибо за обращение.",
+    serviceNoticeTitle: "Сообщение отправлено",
+    serviceNotice: "Ваше обращение принято. Наша команда скоро свяжется с вами.",
+    consent: "Я согласен на обработку моих данных для ответа на обращение.",
     responseNotice:
       "Свяжитесь с нами, если у вас есть вопрос — наша команда ответит вам в ближайшее время.",
   },
@@ -1002,7 +1006,8 @@ const ru: PageCopy = {
     socialNoticeTitle: "Скоро",
     socialNoticeMessage: "Новости уже готовятся. Оставайтесь с нами.",
     socialNoticeClose: "Понятно",
-    legalPlaceholder: "Политика конфиденциальности и условия будут подтверждены позже.",
+    legalPlaceholder:
+      "Демонстрационная версия BEST LC · Политика конфиденциальности · Условия использования",
     copyright: "BEST LC. Все права защищены.",
   },
 };
@@ -1401,8 +1406,9 @@ const en: PageCopy = {
     send: "Send",
     required: "Complete this field.",
     invalidEmail: "Enter a valid email address.",
-    serviceNoticeTitle: "Submission unavailable",
-    serviceNotice: "The service will be connected later. Thanks for reaching out.",
+    serviceNoticeTitle: "Message sent",
+    serviceNotice: "Your enquiry was received. Our team will contact you shortly.",
+    consent: "I agree that my data may be processed to respond to this enquiry.",
     responseNotice: "Have a question? Get in touch — our team will get back to you shortly.",
   },
   footer: {
@@ -1420,7 +1426,8 @@ const en: PageCopy = {
     socialNoticeTitle: "Coming soon",
     socialNoticeMessage: "Good things are on the way. Stay close.",
     socialNoticeClose: "Done",
-    legalPlaceholder: "Privacy and terms will be confirmed in a later phase.",
+    legalPlaceholder:
+      "BEST LC client preview · Privacy policy · Terms of use",
     copyright: "BEST LC. All rights reserved.",
   },
 };

@@ -4,13 +4,15 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { ResultVideoGallery } from "@/features/results/ResultVideoGallery";
+import type { PublicResultVideo } from "@/types/PublicResult";
 
 type ResultStoriesProps = {
   copy: PageCopy;
   locale: Locale;
+  videos: PublicResultVideo[];
 };
 
-export function ResultStories({ copy, locale }: ResultStoriesProps) {
+export function ResultStories({ copy, locale, videos }: ResultStoriesProps) {
   return (
     <Section tone="surface">
       <Reveal>
@@ -22,7 +24,7 @@ export function ResultStories({ copy, locale }: ResultStoriesProps) {
         />
       </Reveal>
       <Reveal delay={0.08}>
-        <ResultVideoGallery copy={copy.results} locale={locale} />
+        <ResultVideoGallery copy={copy.results} locale={locale} videos={videos} />
       </Reveal>
     </Section>
   );

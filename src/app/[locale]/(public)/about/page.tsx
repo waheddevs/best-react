@@ -6,6 +6,7 @@ import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import styles from "@/css/public/about.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
+import { getPublicFaq } from "@/lib/PublicContentApi";
 
 import { AboutFaq } from "./AboutFaq";
 import { AboutHero } from "./AboutHero";
@@ -29,6 +30,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
   const copy = getPageCopy(locale);
   const dictionary = getDictionary(locale);
+  const faqItems = await getPublicFaq(locale);
 
   return (
     <main className={styles.about}>
@@ -37,7 +39,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
       <Mission locale={locale} copy={copy} />
       <Values copy={copy} />
       <Testimonials copy={copy} />
-      <AboutFaq copy={copy} locale={locale} />
+      <AboutFaq copy={copy} items={faqItems} locale={locale} />
     </main>
   );
 }

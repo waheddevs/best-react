@@ -6,9 +6,10 @@ import type { EventSlug } from "@/types/EventDetail";
 export type LocalizedText = Record<Locale, string>;
 
 export type PublicEvent = {
+  id?: string;
   slug: EventSlug;
   status: "upcoming" | "past";
-  image: StaticImageData;
+  image: StaticImageData | string;
   imageAlt: LocalizedText;
   title: LocalizedText;
   summary: LocalizedText;

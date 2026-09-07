@@ -5,6 +5,7 @@ import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
+import { getPublicCourses, getPublicEvents } from "@/lib/PublicContentApi";
 import styles from "@/css/public/home.module.css";
 
 import { FeaturedCourses } from "./FeaturedCourses";
@@ -35,15 +36,19 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const dictionary = getDictionary(locale);
   const copy = getPageCopy(locale);
+  const [courses, events] = await Promise.all([
+    getPublicCourses(locale),
+    getPublicEvents(locale),
+  ]);
 
   return (
     <main className={styles.home}>
       <HomeHero locale={locale} content={dictionary.home} />
       <TrustStrip content={dictionary.home} />
-      <FeaturedCourses locale={locale} copy={copy} />
+      <FeaturedCourses locale={locale} copy={copy} courses={courses} />
       <LearningProcess copy={copy} />
       <ResultsPreview locale={locale} copy={copy} />
-      <UpcomingEvents locale={locale} copy={copy} />
+      <UpcomingEvents locale={locale} copy={copy} events={events} />
       <FinalCta locale={locale} copy={copy} />
     </main>
   );
