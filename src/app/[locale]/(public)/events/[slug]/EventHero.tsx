@@ -42,6 +42,7 @@ export function EventHero({ event, locale, copy }: EventHeroProps) {
             <Image
               alt={event.imageAlt[locale]}
               className={styles.events__detailHeroImage}
+              fill
               preload
               sizes="(max-width: 1024px) calc(100vw - 2.5rem), 30rem"
               src={event.image}

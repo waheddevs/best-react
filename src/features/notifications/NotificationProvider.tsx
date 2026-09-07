@@ -9,8 +9,8 @@ import {
   type ReactNode,
   type SyntheticEvent,
 } from "react";
-import Fade from "@mui/material/Fade";
 import Snackbar from "@mui/material/Snackbar";
+import Slide, { type SlideProps } from "@mui/material/Slide";
 
 import styles from "@/css/public/shared.module.css";
 import { NotificationContext } from "@/features/notifications/NotificationContext";
@@ -45,7 +45,9 @@ type QueuedNotification = {
   tone: NotificationTone;
 };
 
-const defaultToastDuration = 1000;
+const defaultToastDuration = 1500;
+
+const NotificationToastTransition = (props: SlideProps) => <Slide {...props} direction="down" />;
 
 export function NotificationProvider({ children, copy }: NotificationProviderProps) {
   /* HOOKS */
@@ -229,13 +231,13 @@ export function NotificationProvider({ children, copy }: NotificationProviderPro
           key={currentToast.renderKey}
           onClose={handleToastClose}
           open={isToastOpen}
+          slots={{ transition: NotificationToastTransition }}
           slotProps={{
             transition: {
               onExited: handleToastExited,
               timeout: { enter: 220, exit: 180 },
             },
           }}
-          slots={{ transition: Fade }}
         >
           <LiquidToast
             action={currentToast.action}

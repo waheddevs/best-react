@@ -1,5 +1,27 @@
 @reference "../../app/globals.css";
 
+/* CourseRegistrationAction */
+
+.courses__registrationForm {
+  @apply flex flex-col gap-3 p-6 sm:p-8;
+}
+
+.courses__registrationForm > h2 {
+  @apply text-2xl font-semibold;
+}
+
+.courses__registrationForm > p {
+  color: var(--color-text-muted);
+}
+
+.courses__registrationForm > small {
+  color: var(--color-error);
+}
+
+.courses__registrationActions {
+  @apply mt-2 flex justify-end gap-3;
+}
+
 .courses {
   @apply min-h-screen;
 }

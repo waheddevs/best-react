@@ -686,11 +686,11 @@
 }
 
 .events__detailHeroVisual {
-  @apply w-full max-w-[30rem] justify-self-center overflow-hidden rounded-[2rem] shadow-[0_24px_70px_rgb(16_42_67/16%)];
+  @apply relative aspect-[2/3] w-full max-w-[30rem] justify-self-center overflow-hidden rounded-[2rem] shadow-[0_24px_70px_rgb(16_42_67/16%)];
 }
 
 .events__detailHeroImage {
-  @apply block h-auto w-full;
+  @apply object-cover;
 }
 
 .events__detailHeroCopy {

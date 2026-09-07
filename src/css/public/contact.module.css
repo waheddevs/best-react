@@ -163,11 +163,11 @@
 /* ContactForm */
 
 .contact__form {
-  @apply grid gap-5;
+  @apply grid gap-4;
 }
 
 .contact__formNameRow {
-  @apply grid gap-5 sm:grid-cols-2;
+  @apply grid gap-4 sm:grid-cols-2;
 }
 
 .contact__form .contact__formSingleLineLabel:not(:global(.MuiInputLabel-shrink)) {

@@ -47,6 +47,11 @@ export function createFormComponentOverrides({
         },
         input: {
           lineHeight: 1.5,
+          "&:-webkit-autofill": {
+            WebkitBoxShadow: `0 0 0 1000px ${surfaceColor} inset`,
+            WebkitTextFillColor: "inherit",
+            caretColor: "inherit",
+          },
           "&:focus-visible": {
             outline: "none",
           },
