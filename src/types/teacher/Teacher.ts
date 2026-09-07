@@ -361,6 +361,8 @@ export type TeacherCopy = {
     panelLabel: string;
   };
   profile: {
+    accessSecurity: string;
+    accountSettings: string;
     activeSessions: string;
     activeSessionsDescription: string;
     branch: string;
@@ -371,19 +373,26 @@ export type TeacherCopy = {
     computerLogin: string;
     computerLoginDescription: string;
     currentPassword: string;
+    dangerZone: string;
     deleteAccount: string;
     deleteAccountCancel: string;
     deleteAccountConfirm: string;
     deleteAccountDescription: string;
     deleteAccountMessage: string;
     deleteAccountTitle: string;
+    deleteVerificationMessage: string;
+    deleteVerificationTitle: string;
     description: string;
     displayName: string;
     eyebrow: string;
     language: string;
     languageDescription: string;
     logout: string;
+    logoutCancel: string;
+    logoutConfirm: string;
     logoutDescription: string;
+    logoutVerificationMessage: string;
+    logoutVerificationTitle: string;
     newPassword: string;
     nightMode: string;
     nightModeDescription: string;
@@ -395,6 +404,7 @@ export type TeacherCopy = {
     photoTitle: string;
     profileInformation: string;
     profileInformationDescription: string;
+    preferences: string;
     qrMessage: string;
     qrTitle: string;
     sessionDevice: string;

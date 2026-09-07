@@ -1,8 +1,7 @@
 "use client";
 
 import Drawer from "@mui/material/Drawer";
-import { signOut, useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useMemo, useState, type ReactNode } from "react";
 
 import type { Locale } from "@/config/Locales";
@@ -35,8 +34,6 @@ export function TeacherWorkspaceShell({
 }: TeacherWorkspaceShellProps) {
   /* HOOKS */
   const pathname = usePathname();
-  const router = useRouter();
-  const session = useSession();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pageTitle = useMemo(() => {
     const match = [...teacherNavigationItems]
@@ -57,20 +54,11 @@ export function TeacherWorkspaceShell({
     setIsDrawerOpen(false);
   };
 
-  const handleLogout = async () => {
-    const redirectTo = `/${locale}/login?role=teacher`;
-    if (session.status === "authenticated") {
-      await signOut({ redirectTo });
-      return;
-    }
-    router.push(redirectTo);
-  };
-
   return (
     <TeacherThemeProvider>
       <div className={styles.teacherShell}>
         <aside className={styles.teacherShell__desktopSidebar}>
-          <TeacherSidebar copy={copy} locale={locale} onLogout={handleLogout} profile={profile} />
+          <TeacherSidebar copy={copy} locale={locale} profile={profile} />
         </aside>
 
         <Drawer
@@ -82,7 +70,6 @@ export function TeacherWorkspaceShell({
           <TeacherSidebar
             copy={copy}
             locale={locale}
-            onLogout={handleLogout}
             onNavigate={handleDrawerClose}
             profile={profile}
           />

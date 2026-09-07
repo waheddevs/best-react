@@ -314,26 +314,6 @@
   padding-top: 1.5rem;
 }
 
-.teacherShell__logout {
-  display: flex;
-  min-height: 2.75rem;
-  align-items: center;
-  gap: 0.75rem;
-  padding-inline: 0.8rem;
-  color: rgb(255 255 255 / 88%);
-  border: 0;
-  border-radius: 0.85rem;
-  background: transparent;
-  font: inherit;
-  font-size: 0.84rem;
-  font-weight: 750;
-}
-
-.teacherShell__logout:hover {
-  color: #ffffff;
-  background: rgb(255 255 255 / 10%);
-}
-
 .teacherShell__localeGroup {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -352,6 +332,10 @@
   font: inherit;
   font-size: 0.68rem;
   font-weight: 800;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
 }
 
 .teacherShell__localeButton[aria-pressed="true"] {
@@ -603,8 +587,12 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .teacherShell__localeButton[aria-pressed="false"]:hover {
+    color: #ffffff;
+    background: rgb(255 255 255 / 10%);
+  }
+
   .teacherShell__navigationLink:hover,
-  .teacherShell__logout:hover,
   .teacherShell__localeButton:hover {
     transform: translateY(-2px);
   }

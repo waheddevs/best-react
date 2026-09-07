@@ -81,8 +81,8 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
     const accepted = await confirm({
       cancelLabel: copy.profile.deleteAccountCancel,
       confirmLabel: copy.profile.deleteAccountConfirm,
-      message: copy.profile.deleteAccountMessage,
-      title: copy.profile.deleteAccountTitle,
+      message: copy.profile.deleteVerificationMessage,
+      title: copy.profile.deleteVerificationTitle,
       tone: "danger",
     });
     if (accepted)
@@ -93,6 +93,15 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
   };
 
   const handleLogout = async () => {
+    const accepted = await confirm({
+      cancelLabel: copy.profile.logoutCancel,
+      confirmLabel: copy.profile.logoutConfirm,
+      message: copy.profile.logoutVerificationMessage,
+      title: copy.profile.logoutVerificationTitle,
+      tone: "danger",
+    });
+    if (!accepted) return;
+
     const redirectTo = `/${locale}/login?role=teacher`;
     if (session.status === "authenticated") {
       await signOut({ redirectTo });
@@ -101,17 +110,11 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
     router.push(redirectTo);
   };
 
-  const handleSettingSelect = (
-    settingId: "information" | "password" | "qr" | "photo" | "sessions" | "language",
-  ) => {
-    if (settingId === "photo") {
-      handlePhotoOpen();
-      return;
-    }
+  const handleSettingSelect = (settingId: Exclude<ProfileDialog, null>) => {
     handleDialogOpen(settingId);
   };
 
-  const settings = [
+  const accountSettings = [
     {
       description: copy.profile.profileInformationDescription,
       icon: BadgeRounded,
@@ -124,6 +127,9 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
       id: "password" as const,
       label: copy.profile.changePassword,
     },
+  ];
+
+  const accessSettings = [
     {
       description: copy.profile.computerLoginDescription,
       icon: ComputerRounded,
@@ -131,120 +137,191 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
       label: copy.profile.computerLogin,
     },
     {
-      description: copy.profile.changePhotoDescription,
-      icon: CameraAltRounded,
-      id: "photo" as const,
-      label: copy.profile.changePhoto,
-    },
-    {
       description: copy.profile.activeSessionsDescription,
       icon: DevicesRounded,
       id: "sessions" as const,
       label: copy.profile.activeSessions,
     },
-    {
-      description: copy.profile.languageDescription,
-      icon: LanguageRounded,
-      id: "language" as const,
-      label: copy.profile.language,
-    },
   ];
 
   return (
-    <main>
+    <main className={styles.teacherProfile__page}>
       <TeacherPageHeader
         description={copy.profile.description}
         eyebrow={copy.profile.eyebrow}
         title={copy.profile.pageTitle}
       />
-      <section className={styles.teacherProfile__identity}>
-        <span className={styles.teacherProfile__avatar}>{profile.initials}</span>
-        <div>
-          <h2>{displayName}</h2>
-          <p>
-            {copy.common.teacherRole} · {profile.handle} · {subject}
-          </p>
-          <small>
-            {phone} · {locale.toUpperCase()} · {profile.branch[locale]}
-          </small>
-        </div>
-        {photoName ? (
-          <button
-            className={styles.teacherProfile__file}
-            onClick={() => setPhotoName(null)}
-            type="button"
-          >
-            {copy.common.reset}: {photoName}
-          </button>
-        ) : null}
-      </section>
-
-      <section className={styles.teacherProfile__settings}>
-        {settings.map((setting) => {
-          const SettingIcon = setting.icon;
-          return (
+      <div className={styles.teacherProfile__layout}>
+        <aside className={styles.teacherProfile__summary}>
+          <div className={styles.teacherProfile__identity}>
+            <span className={styles.teacherProfile__avatar}>{profile.initials}</span>
+            <div>
+              <h2>{displayName}</h2>
+              <p>
+                {copy.common.teacherRole} · {profile.handle} · {subject}
+              </p>
+              <small>
+                {phone} · {locale.toUpperCase()} · {profile.branch[locale]}
+              </small>
+            </div>
+          </div>
+          {photoName ? (
             <button
-              className={styles.teacherProfile__setting}
-              key={setting.label}
-              onClick={() => handleSettingSelect(setting.id)}
+              className={styles.teacherProfile__file}
+              onClick={() => setPhotoName(null)}
               type="button"
             >
-              <span>
-                <SettingIcon />
-              </span>
-              <div>
-                <strong>{setting.label}</strong>
-                <small>{setting.description}</small>
-              </div>
-              <ChevronRightRounded />
+              {copy.common.reset}: {photoName}
             </button>
-          );
-        })}
-        <div className={styles.teacherProfile__setting}>
-          <span>
-            <DarkModeRounded />
-          </span>
-          <div>
-            <strong>{copy.profile.nightMode}</strong>
-            <small>{copy.profile.nightModeDescription}</small>
+          ) : null}
+          <div className={styles.teacherProfile__summaryActions}>
+            <button
+              className={styles.teacherProfile__summaryAction}
+              onClick={handlePhotoOpen}
+              type="button"
+            >
+              <span className={styles.teacherProfile__summaryActionIcon}>
+                <CameraAltRounded />
+              </span>
+              <span>
+                <strong>{copy.profile.changePhoto}</strong>
+                <small>{copy.profile.changePhotoDescription}</small>
+              </span>
+            </button>
+            <button
+              className={styles.teacherProfile__summaryAction}
+              data-danger="true"
+              onClick={handleLogout}
+              type="button"
+            >
+              <span className={styles.teacherProfile__summaryActionIcon}>
+                <LogoutRounded />
+              </span>
+              <span>
+                <strong>{copy.profile.logout}</strong>
+                <small>{copy.profile.logoutDescription}</small>
+              </span>
+            </button>
           </div>
-          <Switch
-            checked={teacherTheme.mode === "dark"}
-            onChange={teacherTheme.toggleMode}
-            slotProps={{ input: { "aria-label": copy.profile.nightMode } }}
-          />
+        </aside>
+
+        <div className={styles.teacherProfile__settings}>
+          <section className={styles.teacherProfile__settingsGroup}>
+            <header className={styles.teacherProfile__settingsGroupHeader}>
+              <h2>{copy.profile.accountSettings}</h2>
+            </header>
+            <div className={styles.teacherProfile__settingsList}>
+              {accountSettings.map((setting) => {
+                const SettingIcon = setting.icon;
+                return (
+                  <button
+                    className={styles.teacherProfile__setting}
+                    key={setting.id}
+                    onClick={() => handleSettingSelect(setting.id)}
+                    type="button"
+                  >
+                    <span className={styles.teacherProfile__settingIcon}>
+                      <SettingIcon />
+                    </span>
+                    <div>
+                      <strong>{setting.label}</strong>
+                      <small>{setting.description}</small>
+                    </div>
+                    <ChevronRightRounded />
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className={styles.teacherProfile__settingsGroup}>
+            <header className={styles.teacherProfile__settingsGroupHeader}>
+              <h2>{copy.profile.accessSecurity}</h2>
+            </header>
+            <div className={styles.teacherProfile__settingsList}>
+              {accessSettings.map((setting) => {
+                const SettingIcon = setting.icon;
+                return (
+                  <button
+                    className={styles.teacherProfile__setting}
+                    key={setting.id}
+                    onClick={() => handleSettingSelect(setting.id)}
+                    type="button"
+                  >
+                    <span className={styles.teacherProfile__settingIcon}>
+                      <SettingIcon />
+                    </span>
+                    <div>
+                      <strong>{setting.label}</strong>
+                      <small>{setting.description}</small>
+                    </div>
+                    <ChevronRightRounded />
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className={styles.teacherProfile__settingsGroup}>
+            <header className={styles.teacherProfile__settingsGroupHeader}>
+              <h2>{copy.profile.preferences}</h2>
+            </header>
+            <div className={styles.teacherProfile__settingsList}>
+              <button
+                className={styles.teacherProfile__setting}
+                onClick={() => handleSettingSelect("language")}
+                type="button"
+              >
+                <span className={styles.teacherProfile__settingIcon}>
+                  <LanguageRounded />
+                </span>
+                <div>
+                  <strong>{copy.profile.language}</strong>
+                  <small>{copy.profile.languageDescription}</small>
+                </div>
+                <ChevronRightRounded />
+              </button>
+              <div className={styles.teacherProfile__setting}>
+                <span className={styles.teacherProfile__settingIcon}>
+                  <DarkModeRounded />
+                </span>
+                <div>
+                  <strong>{copy.profile.nightMode}</strong>
+                  <small>{copy.profile.nightModeDescription}</small>
+                </div>
+                <Switch
+                  checked={teacherTheme.mode === "dark"}
+                  onChange={teacherTheme.toggleMode}
+                  slotProps={{ input: { "aria-label": copy.profile.nightMode } }}
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className={styles.teacherProfile__settingsGroup} data-danger="true">
+            <header className={styles.teacherProfile__settingsGroupHeader}>
+              <h2>{copy.profile.dangerZone}</h2>
+            </header>
+            <div className={styles.teacherProfile__settingsList}>
+              <button
+                className={styles.teacherProfile__setting}
+                data-danger="true"
+                onClick={handleDelete}
+                type="button"
+              >
+                <span className={styles.teacherProfile__settingIcon}>
+                  <DeleteOutlineRounded />
+                </span>
+                <div>
+                  <strong>{copy.profile.deleteAccount}</strong>
+                  <small>{copy.profile.deleteAccountDescription}</small>
+                </div>
+                <ChevronRightRounded />
+              </button>
+            </div>
+          </section>
         </div>
-        <button
-          className={styles.teacherProfile__setting}
-          data-danger="true"
-          onClick={handleDelete}
-          type="button"
-        >
-          <span>
-            <DeleteOutlineRounded />
-          </span>
-          <div>
-            <strong>{copy.profile.deleteAccount}</strong>
-            <small>{copy.profile.deleteAccountDescription}</small>
-          </div>
-          <ChevronRightRounded />
-        </button>
-        <button
-          className={styles.teacherProfile__setting}
-          data-danger="true"
-          onClick={handleLogout}
-          type="button"
-        >
-          <span>
-            <LogoutRounded />
-          </span>
-          <div>
-            <strong>{copy.profile.logout}</strong>
-            <small>{copy.profile.logoutDescription}</small>
-          </div>
-          <ChevronRightRounded />
-        </button>
-      </section>
+      </div>
 
       <input
         accept="image/*"

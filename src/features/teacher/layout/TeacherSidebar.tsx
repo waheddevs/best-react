@@ -1,6 +1,5 @@
 "use client";
 
-import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -16,17 +15,10 @@ type TeacherSidebarProps = {
   copy: TeacherCopy;
   locale: Locale;
   onNavigate?: () => void;
-  onLogout: () => void;
   profile: TeacherProfileData;
 };
 
-export function TeacherSidebar({
-  copy,
-  locale,
-  onNavigate,
-  onLogout,
-  profile,
-}: TeacherSidebarProps) {
+export function TeacherSidebar({ copy, locale, onNavigate, profile }: TeacherSidebarProps) {
   /* HOOKS */
   const pathname = usePathname();
   const localeSwitcher = useLocaleSwitcher();
@@ -57,35 +49,32 @@ export function TeacherSidebar({
       </div>
 
       <nav aria-label={copy.navigation.panelLabel} className={styles.teacherShell__navigation}>
-        {teacherNavigationItems.map((item) => {
-          const itemIsActive = isActive(item.href);
-          return (
-            <span
-              className={styles.teacherShell__navigationItem}
-              data-active={itemIsActive}
-              key={item.key}
-            >
-              <ScrollToTopLink
-                aria-current={itemIsActive ? "page" : undefined}
-                className={styles.teacherShell__navigationLink}
+        {teacherNavigationItems
+          .filter((item) => item.sidebarVisible)
+          .map((item) => {
+            const itemIsActive = isActive(item.href);
+            return (
+              <span
+                className={styles.teacherShell__navigationItem}
                 data-active={itemIsActive}
-                href={`/${locale}${item.href}`}
-                onClick={onNavigate}
+                key={item.key}
               >
-                <TeacherNavigationIcon navigationKey={item.key} />
-                <span>{copy.navigation[item.key]}</span>
-              </ScrollToTopLink>
-            </span>
-          );
-        })}
+                <ScrollToTopLink
+                  aria-current={itemIsActive ? "page" : undefined}
+                  className={styles.teacherShell__navigationLink}
+                  data-active={itemIsActive}
+                  href={`/${locale}${item.href}`}
+                  onClick={onNavigate}
+                >
+                  <TeacherNavigationIcon navigationKey={item.key} />
+                  <span>{copy.navigation[item.key]}</span>
+                </ScrollToTopLink>
+              </span>
+            );
+          })}
       </nav>
 
       <div className={styles.teacherShell__sidebarFooter}>
-        <button className={styles.teacherShell__logout} onClick={onLogout} type="button">
-          <LogoutRounded aria-hidden="true" />
-          <span>{copy.navigation.logout}</span>
-        </button>
-
         <div aria-label={copy.profile.language} className={styles.teacherShell__localeGroup}>
           {locales.map((item) => (
             <button

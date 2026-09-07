@@ -4,14 +4,20 @@ export type TeacherNavigationItem = {
   href: string;
   key: TeacherNavigationKey;
   mobilePrimary: boolean;
+  sidebarVisible: boolean;
 };
 
 export const teacherNavigationItems: TeacherNavigationItem[] = [
-  { href: "/teacher", key: "dashboard", mobilePrimary: true },
-  { href: "/teacher/groups", key: "groups", mobilePrimary: true },
-  { href: "/teacher/tasks", key: "tasks", mobilePrimary: false },
-  { href: "/teacher/finance", key: "finance", mobilePrimary: true },
-  { href: "/teacher/reception", key: "reception", mobilePrimary: false },
-  { href: "/teacher/transfer-requests", key: "transferRequests", mobilePrimary: false },
-  { href: "/teacher/profile", key: "profile", mobilePrimary: true },
+  { href: "/teacher", key: "dashboard", mobilePrimary: true, sidebarVisible: true },
+  { href: "/teacher/groups", key: "groups", mobilePrimary: true, sidebarVisible: true },
+  { href: "/teacher/tasks", key: "tasks", mobilePrimary: false, sidebarVisible: true },
+  { href: "/teacher/finance", key: "finance", mobilePrimary: true, sidebarVisible: true },
+  { href: "/teacher/reception", key: "reception", mobilePrimary: false, sidebarVisible: false },
+  {
+    href: "/teacher/transfer-requests",
+    key: "transferRequests",
+    mobilePrimary: false,
+    sidebarVisible: true,
+  },
+  { href: "/teacher/profile", key: "profile", mobilePrimary: true, sidebarVisible: true },
 ];
