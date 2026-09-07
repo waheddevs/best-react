@@ -18,4 +18,14 @@ export type EventRegistrationCopy = {
   successMessage: string;
   pastEventTitle: string;
   pastEventMessage: string;
+  required: string;
+  invalidEmail: string;
+};
+
+export type EventRegistrationValues = {
+  consent: boolean;
+  email: string;
+  fullName: string;
+  participantCount: number;
+  phone: string;
 };

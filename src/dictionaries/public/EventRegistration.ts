@@ -23,6 +23,8 @@ const eventRegistrationCopy = {
     successMessage: "{event} uchun joyingiz band qilindi. Sizni tadbirda kutamiz.",
     pastEventTitle: "Ro‘yxatdan o‘tish yopilgan",
     pastEventMessage: "{event} tadbiri {date} kuni yakunlangan. Keyingi tadbirda sizni kutamiz.",
+    required: "Bu maydonni to‘ldiring.",
+    invalidEmail: "Email manzilini to‘g‘ri kiriting.",
   },
   ru: {
     eyebrow: "РЕГИСТРАЦИЯ НА СОБЫТИЕ",
@@ -46,6 +48,8 @@ const eventRegistrationCopy = {
     pastEventTitle: "Регистрация закрыта",
     pastEventMessage:
       "Событие «{event}» завершилось {date}. Будем рады видеть вас на следующем событии.",
+    required: "Заполните это поле.",
+    invalidEmail: "Введите корректный email.",
   },
   en: {
     eyebrow: "EVENT REGISTRATION",
@@ -68,6 +72,8 @@ const eventRegistrationCopy = {
     successMessage: "Your place for {event} is reserved. We’re happy to have you with us.",
     pastEventTitle: "Registration closed",
     pastEventMessage: "{event} ended on {date}. We’d love to see you at the next event.",
+    required: "Complete this field.",
+    invalidEmail: "Enter a valid email address.",
   },
 } satisfies Record<Locale, EventRegistrationCopy>;
 

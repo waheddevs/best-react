@@ -9,13 +9,14 @@ import Dialog from "@mui/material/Dialog";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Image from "next/image";
-import { useId, type FormEvent } from "react";
+import { useId } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/events.module.css";
-import type { EventRegistrationCopy } from "@/types/EventRegistration";
+import { useEventRegistrationForm } from "@/hooks/public/events/useEventRegistrationForm";
+import type { EventRegistrationCopy, EventRegistrationValues } from "@/types/EventRegistration";
 import type { PublicEvent } from "@/types/PublicContent";
 
 type EventRegistrationDialogProps = {
@@ -25,7 +26,7 @@ type EventRegistrationDialogProps = {
   locale: Locale;
   onClose: () => void;
   onExited: () => void;
-  onRegister: () => void;
+  onRegister: (values: EventRegistrationValues) => Promise<boolean>;
 };
 
 export function EventRegistrationDialog({
@@ -40,6 +41,8 @@ export function EventRegistrationDialog({
   /* HOOKS */
   const titleId = useId();
   const descriptionId = useId();
+  const registration = useEventRegistrationForm(copy, onRegister);
+  const { errors, isSubmitting, values } = registration;
 
   if (!event) return null;
 
@@ -48,10 +51,8 @@ export function EventRegistrationDialog({
     onClose();
   };
 
-  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
-    formEvent.preventDefault();
-    onRegister();
-  };
+  const { handleConsentChange, handleFieldChange, handleParticipantChange, handleSubmit } =
+    registration;
 
   return (
     <Dialog
@@ -133,30 +134,42 @@ export function EventRegistrationDialog({
               <span>{copy.fullName}</span>
               <input
                 autoComplete="name"
+                aria-invalid={Boolean(errors.fullName)}
                 name="fullName"
+                onChange={handleFieldChange}
                 placeholder={copy.fullNamePlaceholder}
                 type="text"
+                value={values.fullName}
               />
+              {errors.fullName ? <small>{errors.fullName}</small> : null}
             </label>
             <label className={styles.events__registrationField}>
               <span>{copy.phone}</span>
               <input
                 autoComplete="tel"
+                aria-invalid={Boolean(errors.phone)}
                 inputMode="tel"
                 name="phone"
+                onChange={handleFieldChange}
                 placeholder={copy.phonePlaceholder}
                 type="tel"
+                value={values.phone}
               />
+              {errors.phone ? <small>{errors.phone}</small> : null}
             </label>
             <label className={styles.events__registrationField}>
               <span>{copy.email}</span>
               <input
                 autoComplete="email"
+                aria-invalid={Boolean(errors.email)}
                 inputMode="email"
                 name="email"
+                onChange={handleFieldChange}
                 placeholder={copy.emailPlaceholder}
                 type="email"
+                value={values.email}
               />
+              {errors.email ? <small>{errors.email}</small> : null}
             </label>
             <label className={styles.events__registrationField}>
               <span>{copy.participants}</span>
@@ -164,11 +177,12 @@ export function EventRegistrationDialog({
                 <GroupsRounded aria-hidden="true" />
                 <Select
                   className={styles.events__registrationSelect}
-                  defaultValue={1}
+                  value={values.participantCount}
                   IconComponent={KeyboardArrowDownRounded}
                   inputProps={{ "aria-label": copy.participants }}
                   MenuProps={{ className: styles.events__registrationSelectMenu }}
                   name="participants"
+                  onChange={handleParticipantChange}
                 >
                   {[1, 2, 3, 4].map((participantCount) => (
                     <MenuItem
@@ -185,15 +199,21 @@ export function EventRegistrationDialog({
           </div>
 
           <label className={styles.events__registrationConsent}>
-            <input name="consent" type="checkbox" />
+            <input
+              checked={values.consent}
+              name="consent"
+              onChange={handleConsentChange}
+              type="checkbox"
+            />
             <span>{copy.consent}</span>
           </label>
+          {errors.consent ? <small>{errors.consent}</small> : null}
 
           <div className={styles.events__registrationActions}>
             <Button onClick={handleClose} variant="outline">
               {copy.cancel}
             </Button>
-            <Button hoverEffect="jump" type="submit">
+            <Button disabled={isSubmitting} hoverEffect="jump" type="submit">
               {copy.register}
             </Button>
           </div>

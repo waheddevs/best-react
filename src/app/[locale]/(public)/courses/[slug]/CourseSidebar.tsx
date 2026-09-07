@@ -4,11 +4,11 @@ import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
 import CoPresentRounded from "@mui/icons-material/CoPresentRounded";
 import TimelineRounded from "@mui/icons-material/TimelineRounded";
 
-import { ButtonLink } from "@/components/ui/ButtonLink";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { PublicCourse } from "@/types/PublicCourse";
+import { CourseRegistrationAction } from "@/features/courses/CourseRegistrationAction";
 
 type CourseSidebarProps = {
   course: PublicCourse;
@@ -110,15 +110,11 @@ export function CourseSidebar({ course, locale, copy }: CourseSidebarProps) {
       <div className={styles.courses__sidebarCta}>
         <h2 className={styles.courses__sidebarTitle}>{copy.courses.detailCtaTitle}</h2>
         <div className={styles.courses__sidebarAction}>
-          <ButtonLink
-            fullWidth
-            hoverEffect="jump"
-            href={`/${locale}/contact`}
-            shape="pill"
-            size="large"
-          >
-            {copy.common.contactCta}
-          </ButtonLink>
+          <CourseRegistrationAction
+            courseSlug={course.slug}
+            courseTitle={course.title[locale]}
+            locale={locale}
+          />
         </div>
       </div>
     </aside>
