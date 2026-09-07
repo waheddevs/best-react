@@ -16,13 +16,14 @@ import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/exams.module.css";
-import { mockExamDates, publicExamOptions } from "@/data/PublicExams";
 import { useExamRegistration } from "@/hooks/public/exams/useExamRegistration";
-import type { ExamKind, ExamPreviewCopy } from "@/types/ExamPreview";
+import type { ExamKind, ExamPreviewCopy, MockExamDate, PublicExamOption } from "@/types/ExamPreview";
 
 type ExamRegistrationCatalogProps = {
   copy: ExamPreviewCopy;
   locale: Locale;
+  dates: MockExamDate[];
+  options: PublicExamOption[];
 };
 
 const examIcons: Record<ExamKind, ReactNode> = {
@@ -31,17 +32,18 @@ const examIcons: Record<ExamKind, ReactNode> = {
   mock: <FactCheckRounded aria-hidden="true" />,
 };
 
-export function ExamRegistrationCatalog({ copy, locale }: ExamRegistrationCatalogProps) {
+export function ExamRegistrationCatalog({ copy, locale, dates, options }: ExamRegistrationCatalogProps) {
   /* HOOKS */
   const titleId = useId();
   const descriptionId = useId();
   const registration = useExamRegistration(copy, locale);
-  const { errors, isOpen, selectedExam, values } = registration;
+  const { errors, isOpen, isSubmitting, selectedExam, values } = registration;
 
   /* HANDLERS */
   const {
     handleDialogExited,
     handleFieldChange,
+    handleConsentChange,
     handleLevelChange,
     handleRegistrationClose,
     handleRegistrationOpen,
@@ -51,7 +53,7 @@ export function ExamRegistrationCatalog({ copy, locale }: ExamRegistrationCatalo
   return (
     <>
       <div className={styles.exams__catalogGrid}>
-        {publicExamOptions.map((exam, index) => (
+        {options.map((exam, index) => (
           <article className={styles.exams__optionCard} data-exam={exam.key} key={exam.key}>
             <div className={styles.exams__optionTopline}>
               <span className={styles.exams__optionIcon}>{examIcons[exam.key]}</span>
@@ -234,7 +236,7 @@ export function ExamRegistrationCatalog({ copy, locale }: ExamRegistrationCatalo
                   <legend>{copy.preferredDate}</legend>
                   <p>{copy.preferredDateDescription}</p>
                   <div className={styles.exams__dateOptions}>
-                    {mockExamDates.map((slot) => (
+                    {dates.map((slot) => (
                       <label key={slot.value}>
                         <input
                           checked={values.mockDate === slot.value}
@@ -258,11 +260,22 @@ export function ExamRegistrationCatalog({ copy, locale }: ExamRegistrationCatalo
                 </fieldset>
               ) : null}
 
+              <label>
+                <input
+                  checked={values.consent}
+                  name="consent"
+                  onChange={handleConsentChange}
+                  type="checkbox"
+                />
+                <span>{copy.consent}</span>
+              </label>
+              {errors.consent ? <small role="alert">{errors.consent}</small> : null}
+
               <div className={styles.exams__dialogActions}>
                 <Button onClick={handleRegistrationClose} variant="outline">
                   {copy.cancel}
                 </Button>
-                <Button hoverEffect="jump" type="submit">
+                <Button disabled={isSubmitting} hoverEffect="jump" type="submit">
                   {copy.submit}
                 </Button>
               </div>

@@ -9,6 +9,7 @@ export type PublicExamOption = {
   duration: LocalizedExamText;
   format: LocalizedExamText;
   highlights: LocalizedExamText[];
+  id?: string;
   key: ExamKind;
   level: LocalizedExamText;
   title: LocalizedExamText;
@@ -21,6 +22,7 @@ export type MockExamDate = {
 };
 
 export type ExamRegistrationValues = {
+  consent: boolean;
   currentLevel: string;
   email: string;
   fullName: string;
@@ -65,6 +67,7 @@ export type ExamPreviewCopy = {
   preferredDateDescription: string;
   required: string;
   invalidEmail: string;
+  consent: string;
   cancel: string;
   done: string;
   submit: string;

@@ -4,7 +4,14 @@ import type { SelectChangeEvent } from "@mui/material/Select";
 import { useCallback, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
+import {
+  SubmitExamRegistrationDocument,
+  type SubmitExamRegistrationInput,
+  type SubmitExamRegistrationMutation,
+} from "@/gql/graphql";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
+import { executePublicApi } from "@/lib/PublicApi";
+import { getApiLanguage } from "@/lib/PublicContentApi";
 import type {
   ExamPreviewCopy,
   ExamRegistrationValues,
@@ -15,6 +22,7 @@ import type { CenterAlertInput } from "@/types/Notification";
 type ExamRegistrationErrors = Partial<Record<keyof ExamRegistrationValues, string>>;
 
 const initialValues: ExamRegistrationValues = {
+  consent: false,
   currentLevel: "",
   email: "",
   fullName: "",
@@ -29,7 +37,8 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
   const [selectedExam, setSelectedExam] = useState<PublicExamOption | null>(null);
   const [values, setValues] = useState<ExamRegistrationValues>(initialValues);
   const [errors, setErrors] = useState<ExamRegistrationErrors>({});
-  const { showCenterAlert } = useNotifications();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { promise, showCenterAlert } = useNotifications();
 
   const validate = useCallback(() => {
     const nextErrors: ExamRegistrationErrors = {};
@@ -37,6 +46,7 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
     if (!values.fullName.trim()) nextErrors.fullName = copy.required;
     if (!values.phone.trim()) nextErrors.phone = copy.required;
     if (!values.currentLevel) nextErrors.currentLevel = copy.required;
+    if (!values.consent) nextErrors.consent = copy.required;
 
     if (!values.email.trim()) {
       nextErrors.email = copy.required;
@@ -79,17 +89,47 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
     setErrors((current) => ({ ...current, currentLevel: undefined }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleConsentChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValues((current) => ({ ...current, consent: event.target.checked }));
+    setErrors((current) => ({ ...current, consent: undefined }));
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedExam || !validate()) return;
 
-    pendingAlertRef.current = {
-      closeLabel: copy.done,
-      message: copy.successMessage.replace("{exam}", selectedExam.title[locale]),
-      title: copy.successTitle,
-      tone: "success",
-    };
-    setIsOpen(false);
+    setIsSubmitting(true);
+    try {
+      await promise(
+        executePublicApi<SubmitExamRegistrationMutation, { input: SubmitExamRegistrationInput }>(
+          SubmitExamRegistrationDocument,
+          {
+            input: {
+              consent: values.consent,
+              currentLevel: values.currentLevel,
+              email: values.email.trim(),
+              locale: getApiLanguage(locale),
+              name: values.fullName.trim(),
+              offeringKey: selectedExam.key,
+              phone: values.phone.trim(),
+              ...(values.mockDate ? { sessionId: values.mockDate } : {}),
+            },
+          },
+          { cache: "no-store" },
+        ),
+      );
+      pendingAlertRef.current = {
+        closeLabel: copy.done,
+        message: copy.successMessage.replace("{exam}", selectedExam.title[locale]),
+        title: copy.successTitle,
+        tone: "success",
+      };
+      setIsOpen(false);
+    } catch {
+      // The notification system already exposes the API error to the user.
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleDialogExited = () => {
@@ -104,11 +144,13 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
   return {
     errors,
     isOpen,
+    isSubmitting,
     selectedExam,
     values,
     handleDialogExited,
     handleFieldChange,
     handleLevelChange,
+    handleConsentChange,
     handleRegistrationClose,
     handleRegistrationOpen,
     handleSubmit,

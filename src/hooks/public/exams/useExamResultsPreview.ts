@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
+import { useCurrentLocale } from "@/hooks/useCurrentLocale";
 import type { ExamPreviewCopy, ExamResultsValues } from "@/types/ExamPreview";
 
 type ExamResultsErrors = Partial<Record<keyof ExamResultsValues, string>>;
@@ -15,6 +17,8 @@ const initialValues: ExamResultsValues = {
 export function useExamResultsPreview(copy: ExamPreviewCopy) {
   /* HOOKS */
   const confirm = useConfirmDialog();
+  const locale = useCurrentLocale();
+  const router = useRouter();
   const [values, setValues] = useState<ExamResultsValues>(initialValues);
   const [errors, setErrors] = useState<ExamResultsErrors>({});
 
@@ -46,12 +50,13 @@ export function useExamResultsPreview(copy: ExamPreviewCopy) {
     event.preventDefault();
     if (!validate()) return;
 
-    await confirm({
+    const accepted = await confirm({
       cancelLabel: copy.loginCancel,
       confirmLabel: copy.loginConfirm,
       message: copy.loginMessage,
       title: copy.loginTitle,
     });
+    if (accepted) router.push(`/${locale}/login?role=student`);
   };
 
   return { errors, values, handleBirthDateChange, handleFieldChange, handleSubmit };

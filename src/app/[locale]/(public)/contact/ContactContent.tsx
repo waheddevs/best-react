@@ -4,15 +4,17 @@ import PhoneRounded from "@mui/icons-material/PhoneRounded";
 import Image from "next/image";
 
 import { Section } from "@/components/ui/Section";
+import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/contact.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { ContactForm } from "@/features/contact/ContactForm";
 
 type ContactContentProps = {
   copy: PageCopy;
+  locale: Locale;
 };
 
-export function ContactContent({ copy }: ContactContentProps) {
+export function ContactContent({ copy, locale }: ContactContentProps) {
   const contactItems = [
     { label: copy.footer.address, Icon: LocationOnRounded },
     { label: copy.footer.phone, Icon: PhoneRounded },
@@ -44,7 +46,7 @@ export function ContactContent({ copy }: ContactContentProps) {
         </aside>
         <section className={styles.contact__formPanel}>
           <h2 className={styles.contact__formTitle}>{copy.contact.formTitle}</h2>
-          <ContactForm copy={copy} />
+          <ContactForm copy={copy} locale={locale} />
         </section>
       </div>
     </Section>
