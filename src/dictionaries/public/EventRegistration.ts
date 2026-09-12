@@ -15,8 +15,8 @@ const eventRegistrationCopy = {
     email: "Email",
     emailPlaceholder: "student@example.com",
     participants: "Ishtirokchilar soni",
-    consent: "Tadbir yangiliklari va tashkiliy ma’lumotlarni olishga roziman.",
     cancel: "Bekor qilish",
+    consentLabel: "Ma’lumotlarim ushbu murojaat uchun ishlatilishiga roziman.",
     register: "Register",
     close: "Tushunarli",
     successTitle: "Ishtirokingiz tasdiqlandi",
@@ -25,6 +25,7 @@ const eventRegistrationCopy = {
     pastEventMessage: "{event} tadbiri {date} kuni yakunlangan. Keyingi tadbirda sizni kutamiz.",
     required: "Bu maydonni to‘ldiring.",
     invalidEmail: "Email manzilini to‘g‘ri kiriting.",
+    invalidPhone: "Davlat kodi bilan to‘g‘ri telefon raqamini kiriting.",
   },
   ru: {
     eyebrow: "РЕГИСТРАЦИЯ НА СОБЫТИЕ",
@@ -39,8 +40,8 @@ const eventRegistrationCopy = {
     email: "Email",
     emailPlaceholder: "student@example.com",
     participants: "Количество участников",
-    consent: "Я согласен получать новости события и организационную информацию.",
     cancel: "Отмена",
+    consentLabel: "Я согласен на обработку моих данных для этого обращения.",
     register: "Register",
     close: "Готово",
     successTitle: "Участие подтверждено",
@@ -50,6 +51,7 @@ const eventRegistrationCopy = {
       "Событие «{event}» завершилось {date}. Будем рады видеть вас на следующем событии.",
     required: "Заполните это поле.",
     invalidEmail: "Введите корректный email.",
+    invalidPhone: "Введите корректный номер телефона с кодом страны.",
   },
   en: {
     eyebrow: "EVENT REGISTRATION",
@@ -64,8 +66,8 @@ const eventRegistrationCopy = {
     email: "Email",
     emailPlaceholder: "student@example.com",
     participants: "Number of participants",
-    consent: "I agree to receive event updates and organisational information.",
     cancel: "Cancel",
+    consentLabel: "I consent to my details being used for this request.",
     register: "Register",
     close: "Done",
     successTitle: "Attendance confirmed",
@@ -74,6 +76,7 @@ const eventRegistrationCopy = {
     pastEventMessage: "{event} ended on {date}. We’d love to see you at the next event.",
     required: "Complete this field.",
     invalidEmail: "Enter a valid email address.",
+    invalidPhone: "Enter a valid phone number with its country code.",
   },
 } satisfies Record<Locale, EventRegistrationCopy>;
 

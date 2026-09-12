@@ -12,23 +12,23 @@ import { executePublicApi } from "@/lib/PublicApi";
 import { getApiLanguage } from "@/lib/PublicContentApi";
 
 type FormValues = {
+  consent: boolean;
   firstName: string;
   lastName: string;
   email: string;
   subject: string;
   message: string;
-  consent: boolean;
 };
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
 const initialValues: FormValues = {
+  consent: false,
   firstName: "",
   lastName: "",
   email: "",
   subject: "",
   message: "",
-  consent: false,
 };
 
 export function useContactForm(copy: PageCopy, locale: Locale) {
@@ -38,7 +38,7 @@ export function useContactForm(copy: PageCopy, locale: Locale) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const updateField = (field: keyof FormValues, value: string) => {
+  const updateField = (field: Exclude<keyof FormValues, "consent">, value: string) => {
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
   };

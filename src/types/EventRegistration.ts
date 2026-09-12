@@ -10,8 +10,8 @@ export type EventRegistrationCopy = {
   email: string;
   emailPlaceholder: string;
   participants: string;
-  consent: string;
   cancel: string;
+  consentLabel: string;
   register: string;
   close: string;
   successTitle: string;
@@ -20,6 +20,7 @@ export type EventRegistrationCopy = {
   pastEventMessage: string;
   required: string;
   invalidEmail: string;
+  invalidPhone: string;
 };
 
 export type EventRegistrationValues = {

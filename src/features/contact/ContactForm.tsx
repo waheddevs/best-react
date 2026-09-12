@@ -1,7 +1,5 @@
 "use client";
 
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 
 import { Button } from "@/components/ui/Button";
@@ -96,11 +94,20 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
         value={values.message}
       />
       <div>
-        <FormControlLabel
-          control={<Checkbox checked={values.consent} onChange={handleConsentChange} />}
-          label={copy.contact.consent}
-        />
-        {errors.consent ? <small>{errors.consent}</small> : null}
+        <label className={styles.contact__consent}>
+          <input
+            aria-invalid={Boolean(errors.consent)}
+            checked={values.consent}
+            onChange={handleConsentChange}
+            type="checkbox"
+          />
+          <span>{copy.contact.consentLabel}</span>
+        </label>
+        {errors.consent ? (
+          <small className={styles.contact__consentError} role="alert">
+            {errors.consent}
+          </small>
+        ) : null}
       </div>
       <Button
         className={`${sharedStyles.publicShared__formAction} ${styles.contact__formAction}`}

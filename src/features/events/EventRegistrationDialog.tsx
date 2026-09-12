@@ -198,16 +198,22 @@ export function EventRegistrationDialog({
             </label>
           </div>
 
-          <label className={styles.events__registrationConsent}>
-            <input
-              checked={values.consent}
-              name="consent"
-              onChange={handleConsentChange}
-              type="checkbox"
-            />
-            <span>{copy.consent}</span>
-          </label>
-          {errors.consent ? <small>{errors.consent}</small> : null}
+          <div>
+            <label className={styles.events__registrationConsent}>
+              <input
+                aria-invalid={Boolean(errors.consent)}
+                checked={values.consent}
+                onChange={handleConsentChange}
+                type="checkbox"
+              />
+              <span>{copy.consentLabel}</span>
+            </label>
+            {errors.consent ? (
+              <small className={styles.events__registrationConsentError} role="alert">
+                {errors.consent}
+              </small>
+            ) : null}
+          </div>
 
           <div className={styles.events__registrationActions}>
             <Button onClick={handleClose} variant="outline">

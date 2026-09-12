@@ -13,6 +13,7 @@ import {
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import { executePublicApi } from "@/lib/PublicApi";
 import { getApiLanguage } from "@/lib/PublicContentApi";
+import { normalizePhoneNumber } from "@/lib/PhoneNumber";
 import type { EventRegistrationCopy, EventRegistrationValues } from "@/types/EventRegistration";
 import type { CenterAlertInput } from "@/types/Notification";
 import type { PublicEvent } from "@/types/PublicContent";
@@ -83,40 +84,43 @@ export function EventRegistrationProvider({
     setIsDialogOpen(false);
   }, []);
 
-  const handleRegister = useCallback(async (values: EventRegistrationValues) => {
-    if (!selectedEvent?.id) return false;
+  const handleRegister = useCallback(
+    async (values: EventRegistrationValues) => {
+      if (!selectedEvent?.id) return false;
 
-    try {
-      await promise(
-        executePublicApi<RegisterForEventMutation, { input: RegisterForEventInput }>(
-          RegisterForEventDocument,
-          {
-            input: {
-              consent: values.consent,
-              email: values.email.trim() || undefined,
-              eventId: selectedEvent.id,
-              locale: getApiLanguage(locale),
-              name: values.fullName.trim(),
-              participantCount: values.participantCount,
-              phone: values.phone.trim(),
+      try {
+        await promise(
+          executePublicApi<RegisterForEventMutation, { input: RegisterForEventInput }>(
+            RegisterForEventDocument,
+            {
+              input: {
+                consent: values.consent,
+                email: values.email.trim() || undefined,
+                eventId: selectedEvent.id,
+                locale: getApiLanguage(locale),
+                name: values.fullName.trim(),
+                participantCount: values.participantCount,
+                phone: normalizePhoneNumber(values.phone),
+              },
             },
-          },
-          { cache: "no-store" },
-        ),
-      );
-      const eventTitle = selectedEvent.title[locale];
-      pendingAlertRef.current = {
-        closeLabel: copy.close,
-        message: copy.successMessage.replace("{event}", eventTitle),
-        title: copy.successTitle,
-        tone: "success",
-      };
-      setIsDialogOpen(false);
-      return true;
-    } catch {
-      return false;
-    }
-  }, [copy.close, copy.successMessage, copy.successTitle, locale, promise, selectedEvent]);
+            { cache: "no-store" },
+          ),
+        );
+        const eventTitle = selectedEvent.title[locale];
+        pendingAlertRef.current = {
+          closeLabel: copy.close,
+          message: copy.successMessage.replace("{event}", eventTitle),
+          title: copy.successTitle,
+          tone: "success",
+        };
+        setIsDialogOpen(false);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [copy.close, copy.successMessage, copy.successTitle, locale, promise, selectedEvent],
+  );
 
   const handleExited = useCallback(() => {
     setSelectedEvent(null);

@@ -15,7 +15,6 @@ export const ruDictionary = {
     language: "Выбрать язык",
     coursesCta: "Посмотреть курсы",
     login: "Войти",
-    signup: "Регистрация",
     logout: "Выйти",
     signedInAs: "Вы вошли как",
     courseMenu: {

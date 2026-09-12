@@ -15,7 +15,6 @@ export const uzDictionary = {
     language: "Tilni tanlash",
     coursesCta: "Kurslarni ko‘rish",
     login: "Kirish",
-    signup: "Ro‘yxatdan o‘tish",
     logout: "Chiqish",
     signedInAs: "Tizimga kirgan foydalanuvchi",
     courseMenu: {

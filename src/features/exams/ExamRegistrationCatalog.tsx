@@ -17,7 +17,12 @@ import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/exams.module.css";
 import { useExamRegistration } from "@/hooks/public/exams/useExamRegistration";
-import type { ExamKind, ExamPreviewCopy, MockExamDate, PublicExamOption } from "@/types/ExamPreview";
+import type {
+  ExamKind,
+  ExamPreviewCopy,
+  MockExamDate,
+  PublicExamOption,
+} from "@/types/ExamPreview";
 
 type ExamRegistrationCatalogProps = {
   copy: ExamPreviewCopy;
@@ -32,7 +37,12 @@ const examIcons: Record<ExamKind, ReactNode> = {
   mock: <FactCheckRounded aria-hidden="true" />,
 };
 
-export function ExamRegistrationCatalog({ copy, locale, dates, options }: ExamRegistrationCatalogProps) {
+export function ExamRegistrationCatalog({
+  copy,
+  locale,
+  dates,
+  options,
+}: ExamRegistrationCatalogProps) {
   /* HOOKS */
   const titleId = useId();
   const descriptionId = useId();
@@ -41,9 +51,9 @@ export function ExamRegistrationCatalog({ copy, locale, dates, options }: ExamRe
 
   /* HANDLERS */
   const {
+    handleConsentChange,
     handleDialogExited,
     handleFieldChange,
-    handleConsentChange,
     handleLevelChange,
     handleRegistrationClose,
     handleRegistrationOpen,
@@ -260,16 +270,22 @@ export function ExamRegistrationCatalog({ copy, locale, dates, options }: ExamRe
                 </fieldset>
               ) : null}
 
-              <label>
-                <input
-                  checked={values.consent}
-                  name="consent"
-                  onChange={handleConsentChange}
-                  type="checkbox"
-                />
-                <span>{copy.consent}</span>
-              </label>
-              {errors.consent ? <small role="alert">{errors.consent}</small> : null}
+              <div>
+                <label className={styles.exams__consent}>
+                  <input
+                    aria-invalid={Boolean(errors.consent)}
+                    checked={values.consent}
+                    onChange={handleConsentChange}
+                    type="checkbox"
+                  />
+                  <span>{copy.consentLabel}</span>
+                </label>
+                {errors.consent ? (
+                  <small className={styles.exams__consentError} role="alert">
+                    {errors.consent}
+                  </small>
+                ) : null}
+              </div>
 
               <div className={styles.exams__dialogActions}>
                 <Button onClick={handleRegistrationClose} variant="outline">

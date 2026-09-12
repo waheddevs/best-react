@@ -333,6 +333,18 @@
   @apply mt-7 grid gap-4 sm:grid-cols-2;
 }
 
+.exams__consent {
+  @apply mt-6 flex items-start gap-3 text-sm leading-6 text-muted;
+}
+
+.exams__consent input {
+  @apply mt-1 h-4 w-4 shrink-0 accent-action;
+}
+
+.exams__consentError {
+  @apply mt-1 block text-xs text-coral;
+}
+
 .exams__field {
   @apply grid gap-2;
 }

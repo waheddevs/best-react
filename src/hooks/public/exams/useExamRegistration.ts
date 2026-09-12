@@ -12,6 +12,7 @@ import {
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import { executePublicApi } from "@/lib/PublicApi";
 import { getApiLanguage } from "@/lib/PublicContentApi";
+import { formatPhoneNumber, normalizePhoneNumber, validatePhoneNumber } from "@/lib/PhoneNumber";
 import type {
   ExamPreviewCopy,
   ExamRegistrationValues,
@@ -44,10 +45,12 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
     const nextErrors: ExamRegistrationErrors = {};
 
     if (!values.fullName.trim()) nextErrors.fullName = copy.required;
-    if (!values.phone.trim()) nextErrors.phone = copy.required;
+    if (!values.phone.trim()) {
+      nextErrors.phone = copy.required;
+    } else if (!validatePhoneNumber(values.phone)) {
+      nextErrors.phone = copy.invalidPhone;
+    }
     if (!values.currentLevel) nextErrors.currentLevel = copy.required;
-    if (!values.consent) nextErrors.consent = copy.required;
-
     if (!values.email.trim()) {
       nextErrors.email = copy.required;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
@@ -57,10 +60,11 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
     if (selectedExam?.key === "mock" && !values.mockDate) {
       nextErrors.mockDate = copy.required;
     }
+    if (!values.consent) nextErrors.consent = copy.required;
 
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
-  }, [copy.invalidEmail, copy.required, selectedExam?.key, values]);
+  }, [copy.invalidEmail, copy.invalidPhone, copy.required, selectedExam?.key, values]);
 
   /* HANDLERS */
   const handleRegistrationOpen = useCallback((exam: PublicExamOption) => {
@@ -77,8 +81,8 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
   }, []);
 
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const field = event.target.name as keyof ExamRegistrationValues;
-    const value = event.target.value;
+    const field = event.target.name as Exclude<keyof ExamRegistrationValues, "consent">;
+    const value = field === "phone" ? formatPhoneNumber(event.target.value) : event.target.value;
 
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
@@ -111,7 +115,7 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
               locale: getApiLanguage(locale),
               name: values.fullName.trim(),
               offeringKey: selectedExam.key,
-              phone: values.phone.trim(),
+              phone: normalizePhoneNumber(values.phone),
               ...(values.mockDate ? { sessionId: values.mockDate } : {}),
             },
           },
@@ -149,8 +153,8 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
     values,
     handleDialogExited,
     handleFieldChange,
-    handleLevelChange,
     handleConsentChange,
+    handleLevelChange,
     handleRegistrationClose,
     handleRegistrationOpen,
     handleSubmit,

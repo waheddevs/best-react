@@ -170,6 +170,18 @@
   @apply grid gap-4 sm:grid-cols-2;
 }
 
+.contact__consent {
+  @apply flex items-start gap-3 text-sm leading-6 text-muted;
+}
+
+.contact__consent input {
+  @apply mt-1 h-4 w-4 shrink-0 accent-action;
+}
+
+.contact__consentError {
+  @apply mt-1 block text-xs text-coral;
+}
+
 .contact__form .contact__formSingleLineLabel:not(:global(.MuiInputLabel-shrink)) {
   transform: translate(14px, 12px) scale(1);
 }

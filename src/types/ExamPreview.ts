@@ -54,6 +54,7 @@ export type ExamPreviewCopy = {
   formEyebrow: string;
   formTitle: string;
   formDescription: string;
+  consentLabel: string;
   selectedExam: string;
   fullName: string;
   fullNamePlaceholder: string;
@@ -67,7 +68,7 @@ export type ExamPreviewCopy = {
   preferredDateDescription: string;
   required: string;
   invalidEmail: string;
-  consent: string;
+  invalidPhone: string;
   cancel: string;
   done: string;
   submit: string;

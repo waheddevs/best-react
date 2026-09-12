@@ -466,6 +466,18 @@
   @apply mt-7 grid gap-4 sm:grid-cols-2;
 }
 
+.events__registrationConsent {
+  @apply mt-5 flex items-start gap-3 text-sm leading-6 text-muted;
+}
+
+.events__registrationConsent input {
+  @apply mt-1 h-4 w-4 shrink-0 accent-action;
+}
+
+.events__registrationConsentError {
+  @apply mt-1 block text-xs text-coral;
+}
+
 .events__registrationField {
   @apply flex min-w-0 flex-col gap-2;
 }
@@ -567,15 +579,6 @@
 
 .events__registrationSelectOption:global(.Mui-selected):hover {
   background: color-mix(in srgb, var(--action-blue) 15%, var(--surface)) !important;
-}
-
-.events__registrationConsent {
-  @apply mt-5 flex cursor-pointer items-start gap-3 text-xs leading-5 text-muted;
-}
-
-.events__registrationConsent input {
-  @apply mt-0.5 size-4.5 shrink-0 cursor-pointer;
-  accent-color: var(--action-blue);
 }
 
 .events__registrationActions {

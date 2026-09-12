@@ -154,10 +154,10 @@ export type PageCopy = {
     email: string;
     subject: string;
     message: string;
+    consentLabel: string;
     send: string;
     required: string;
     invalidEmail: string;
-    consent: string;
     serviceNoticeTitle: string;
     serviceNotice: string;
     responseNotice: string;
@@ -571,12 +571,12 @@ const uz: PageCopy = {
     email: "Email manzilingiz",
     subject: "Mavzu",
     message: "Xabaringiz",
+    consentLabel: "Ma’lumotlarim ushbu murojaat uchun ishlatilishiga roziman.",
     send: "Yuborish",
     required: "Bu maydonni to‘ldiring.",
     invalidEmail: "Email manzilini to‘g‘ri kiriting.",
     serviceNoticeTitle: "Xabar yuborildi",
     serviceNotice: "Murojaatingiz qabul qilindi. Jamoamiz tez orada siz bilan bog‘lanadi.",
-    consent: "Ma’lumotlarim murojaatimga javob berish uchun qayta ishlanishiga roziman.",
     responseNotice:
       "Savolingiz bo‘lsa, biz bilan bog‘laning — jamoamiz sizga tez orada javob beradi.",
   },
@@ -595,8 +595,7 @@ const uz: PageCopy = {
     socialNoticeTitle: "Tez orada",
     socialNoticeMessage: "Yangiliklar tayyorlanmoqda. Biz bilan qoling.",
     socialNoticeClose: "Tushunarli",
-    legalPlaceholder:
-      "BEST LC taqdimot versiyasi · Maxfiylik siyosati · Foydalanish shartlari",
+    legalPlaceholder: "BEST LC taqdimot versiyasi · Maxfiylik siyosati · Foydalanish shartlari",
     copyright: "BEST LC. Barcha huquqlar himoyalangan.",
   },
 };
@@ -982,12 +981,12 @@ const ru: PageCopy = {
     email: "Ваш email",
     subject: "Тема",
     message: "Сообщение",
+    consentLabel: "Я согласен на обработку моих данных для этого обращения.",
     send: "Отправить",
     required: "Заполните это поле.",
     invalidEmail: "Введите корректный email.",
     serviceNoticeTitle: "Сообщение отправлено",
     serviceNotice: "Ваше обращение принято. Наша команда скоро свяжется с вами.",
-    consent: "Я согласен на обработку моих данных для ответа на обращение.",
     responseNotice:
       "Свяжитесь с нами, если у вас есть вопрос — наша команда ответит вам в ближайшее время.",
   },
@@ -1403,12 +1402,12 @@ const en: PageCopy = {
     email: "Your email",
     subject: "Title",
     message: "Message",
+    consentLabel: "I consent to my details being used for this request.",
     send: "Send",
     required: "Complete this field.",
     invalidEmail: "Enter a valid email address.",
     serviceNoticeTitle: "Message sent",
     serviceNotice: "Your enquiry was received. Our team will contact you shortly.",
-    consent: "I agree that my data may be processed to respond to this enquiry.",
     responseNotice: "Have a question? Get in touch — our team will get back to you shortly.",
   },
   footer: {
@@ -1426,8 +1425,7 @@ const en: PageCopy = {
     socialNoticeTitle: "Coming soon",
     socialNoticeMessage: "Good things are on the way. Stay close.",
     socialNoticeClose: "Done",
-    legalPlaceholder:
-      "BEST LC client preview · Privacy policy · Terms of use",
+    legalPlaceholder: "BEST LC client preview · Privacy policy · Terms of use",
     copyright: "BEST LC. All rights reserved.",
   },
 };

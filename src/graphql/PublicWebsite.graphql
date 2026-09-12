@@ -1,51 +1,246 @@
 query PublicCourses($language: Language!, $first: Int = 50) {
   publicCourses(language: $language, first: $first) {
-    edges { node { id slug language status category accent symbol featured position heroVariant imagePath posterImagePath title description audience comparisonTitle duration focus formatLabel imageAlt level posterAlt posterTitle prerequisites schedule overview highlights outcomes curriculum tracks { position title level summary highlights } } }
+    edges {
+      node {
+        id
+        slug
+        language
+        status
+        category
+        accent
+        symbol
+        featured
+        position
+        heroVariant
+        imagePath
+        posterImagePath
+        title
+        description
+        audience
+        comparisonTitle
+        duration
+        focus
+        formatLabel
+        imageAlt
+        level
+        posterAlt
+        posterTitle
+        prerequisites
+        schedule
+        overview
+        highlights
+        outcomes
+        curriculum
+        tracks {
+          position
+          title
+          level
+          summary
+          highlights
+        }
+      }
+    }
   }
 }
 
 query PublicCourse($language: Language!, $slug: String!) {
   publicCourse(language: $language, slug: $slug) {
-    id slug language status category accent symbol featured position heroVariant imagePath posterImagePath title description audience comparisonTitle duration focus formatLabel imageAlt level posterAlt posterTitle prerequisites schedule overview highlights outcomes curriculum tracks { position title level summary highlights }
+    id
+    slug
+    language
+    status
+    category
+    accent
+    symbol
+    featured
+    position
+    heroVariant
+    imagePath
+    posterImagePath
+    title
+    description
+    audience
+    comparisonTitle
+    duration
+    focus
+    formatLabel
+    imageAlt
+    level
+    posterAlt
+    posterTitle
+    prerequisites
+    schedule
+    overview
+    highlights
+    outcomes
+    curriculum
+    tracks {
+      position
+      title
+      level
+      summary
+      highlights
+    }
   }
 }
 
 query PublicEvents($language: Language!, $first: Int = 50) {
   publicEvents(language: $language, first: $first) {
-    edges { node { id slug language status timelineStatus position startsAt endsAt capacity location imagePath title description imageAlt formatLabel dateLabel timeLabel durationLabel locationLabel topics overview audience takeaways practicalInfo programme { position timeLabel title description } faq { position question answer } } }
+    edges {
+      node {
+        id
+        slug
+        language
+        status
+        timelineStatus
+        position
+        startsAt
+        endsAt
+        capacity
+        location
+        imagePath
+        title
+        description
+        imageAlt
+        formatLabel
+        dateLabel
+        timeLabel
+        durationLabel
+        locationLabel
+        topics
+        overview
+        audience
+        takeaways
+        practicalInfo
+        programme {
+          position
+          timeLabel
+          title
+          description
+        }
+        faq {
+          position
+          question
+          answer
+        }
+      }
+    }
   }
 }
 
 query PublicEvent($language: Language!, $slug: String!) {
   publicEvent(language: $language, slug: $slug) {
-    id slug language status timelineStatus position startsAt endsAt capacity location imagePath title description imageAlt formatLabel dateLabel timeLabel durationLabel locationLabel topics overview audience takeaways practicalInfo programme { position timeLabel title description } faq { position question answer }
+    id
+    slug
+    language
+    status
+    timelineStatus
+    position
+    startsAt
+    endsAt
+    capacity
+    location
+    imagePath
+    title
+    description
+    imageAlt
+    formatLabel
+    dateLabel
+    timeLabel
+    durationLabel
+    locationLabel
+    topics
+    overview
+    audience
+    takeaways
+    practicalInfo
+    programme {
+      position
+      timeLabel
+      title
+      description
+    }
+    faq {
+      position
+      question
+      answer
+    }
   }
 }
 
 query PublicFaq($language: Language!) {
-  publicFaq(language: $language) { id key category position question answer }
+  publicFaq(language: $language) {
+    id
+    key
+    category
+    position
+    question
+    answer
+  }
 }
 
 query PublicExamOfferings($language: Language!) {
-  publicExamOfferings(language: $language) { id key position title description level duration formatLabel highlights sessions { id startsAt capacity availablePlaces } }
+  publicExamOfferings(language: $language) {
+    id
+    key
+    position
+    title
+    description
+    level
+    duration
+    formatLabel
+    highlights
+    sessions {
+      id
+      startsAt
+      capacity
+      availablePlaces
+    }
+  }
 }
 
 query PublicResultVideos($language: Language!) {
-  publicResultVideos(language: $language) { id key position title duration videoPath posterPath source { provider creator url licenseUrl } }
+  publicResultVideos(language: $language) {
+    id
+    key
+    position
+    title
+    duration
+    videoPath
+    posterPath
+    source {
+      provider
+      creator
+      url
+      licenseUrl
+    }
+  }
 }
 
 mutation RegisterForCourse($input: RegisterForCourseInput!) {
-  registerForCourse(input: $input) { accepted receiptId }
+  registerForCourse(input: $input) {
+    accepted
+    receiptId
+  }
 }
 
 mutation RegisterForEvent($input: RegisterForEventInput!) {
-  registerForEvent(input: $input) { accepted receiptId }
+  registerForEvent(input: $input) {
+    accepted
+    receiptId
+  }
 }
 
 mutation SubmitExamRegistration($input: SubmitExamRegistrationInput!) {
-  submitExamRegistration(input: $input) { accepted receiptId }
+  submitExamRegistration(input: $input) {
+    accepted
+    receiptId
+  }
 }
 
 mutation SubmitContactRequest($input: SubmitContactRequestInput!) {
-  submitContactRequest(input: $input) { accepted receiptId }
+  submitContactRequest(input: $input) {
+    accepted
+    receiptId
+  }
 }

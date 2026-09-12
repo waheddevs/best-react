@@ -1,10 +1,8 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import type { SelectChangeEvent } from "@mui/material/Select";
 
-import type {
-  EventRegistrationCopy,
-  EventRegistrationValues,
-} from "@/types/EventRegistration";
+import { formatPhoneNumber, validatePhoneNumber } from "@/lib/PhoneNumber";
+import type { EventRegistrationCopy, EventRegistrationValues } from "@/types/EventRegistration";
 
 type FormErrors = Partial<Record<keyof EventRegistrationValues, string>>;
 
@@ -28,7 +26,11 @@ export function useEventRegistrationForm(
   const validate = () => {
     const nextErrors: FormErrors = {};
     if (!values.fullName.trim()) nextErrors.fullName = copy.required;
-    if (!values.phone.trim()) nextErrors.phone = copy.required;
+    if (!values.phone.trim()) {
+      nextErrors.phone = copy.required;
+    } else if (!validatePhoneNumber(values.phone)) {
+      nextErrors.phone = copy.invalidPhone;
+    }
     if (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
       nextErrors.email = copy.invalidEmail;
     }
@@ -40,7 +42,8 @@ export function useEventRegistrationForm(
   /* HANDLERS */
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const field = event.target.name as "email" | "fullName" | "phone";
-    setValues((current) => ({ ...current, [field]: event.target.value }));
+    const value = field === "phone" ? formatPhoneNumber(event.target.value) : event.target.value;
+    setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
   };
 
@@ -66,8 +69,8 @@ export function useEventRegistrationForm(
 
   return {
     errors,
-    handleConsentChange,
     handleFieldChange,
+    handleConsentChange,
     handleParticipantChange,
     handleSubmit,
     isSubmitting,
