@@ -1,301 +1,243 @@
 import type { Locale } from "@/config/Locales";
-import type { AuthMode, AuthProviderId, AuthRole } from "@/types/Auth";
-
-type AuthModeCopy = {
-  metadataTitle: string;
-  metadataDescription: string;
-  eyebrow: string;
-  title: string;
-  description: string;
-  submitLabel: string;
-  switchPrompt: string;
-  switchAction: string;
-};
+import type { AuthRole } from "@/types/Auth";
 
 type AuthRoleCopy = {
-  title: string;
   description: string;
-  idLabel?: string;
-  idPlaceholder?: string;
+  title: string;
 };
 
 export type AuthCopy = {
-  languageLabel: string;
-  fullNameLabel: string;
-  fullNamePlaceholder: string;
+  backToLogin: string;
+  codeLabel: string;
+  codePlaceholder: string;
   emailLabel: string;
   emailPlaceholder: string;
+  errors: {
+    codeLength: string;
+    generic: string;
+    invalidEmail: string;
+    required: string;
+    session: string;
+    title: string;
+  };
+  hidePassword: string;
+  login: {
+    description: string;
+    eyebrow: string;
+    metadataDescription: string;
+    metadataTitle: string;
+    submitLabel: string;
+    title: string;
+  };
+  nameLabel: string;
+  namePlaceholder: string;
   passwordLabel: string;
   passwordPlaceholder: string;
-  confirmPasswordLabel: string;
-  confirmPasswordPlaceholder: string;
-  showPassword: string;
-  hidePassword: string;
-  forgotPassword: string;
-  orContinue: string;
-  credentialNoticeTitle: string;
-  credentialNoticeMessage: string;
-  unavailable: string;
   pending: string;
+  resend: string;
+  resendCountdown: string;
   roleSelection: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    selectedRoleLabel: string;
     changeRole: string;
+    description: string;
+    eyebrow: string;
+    selectedRoleLabel: string;
+    title: string;
   };
   roles: Record<AuthRole, AuthRoleCopy>;
-  providers: Record<AuthProviderId, string>;
-  errors: {
+  showPassword: string;
+  verification: {
+    codeHint: string;
+    description: string;
+    eyebrow: string;
+    expiresIn: string;
+    submitLabel: string;
     title: string;
-    accessDenied: string;
-    accountNotLinked: string;
-    configuration: string;
-    default: string;
   };
-  modes: Record<AuthMode, AuthModeCopy>;
 };
 
 const uz: AuthCopy = {
-  languageLabel: "Tilni tanlash",
-  fullNameLabel: "To‘liq ism",
-  fullNamePlaceholder: "Ismingizni kiriting",
+  backToLogin: "Kirishga qaytish",
+  codeLabel: "Tasdiqlash kodi",
+  codePlaceholder: "000000",
   emailLabel: "Email manzil",
   emailPlaceholder: "name@example.com",
+  errors: {
+    codeLength: "Emailga yuborilgan 6 xonali kodni kiriting.",
+    generic: "Ma’lumotlarni tekshirib, qayta urinib ko‘ring.",
+    invalidEmail: "To‘g‘ri email manzilini kiriting.",
+    required: "Bu maydonni to‘ldiring.",
+    session: "Xavfsiz sessiyani yaratib bo‘lmadi. Qayta urinib ko‘ring.",
+    title: "Kirishni yakunlab bo‘lmadi",
+  },
+  hidePassword: "Parolni yashirish",
+  login: {
+    description: "Admin bergan hisob ma’lumotlari bilan tizimga kiring.",
+    eyebrow: "XUSH KELIBSIZ",
+    metadataDescription: "BEST LC hisobingizga email, parol va tasdiqlash kodi bilan kiring.",
+    metadataTitle: "Kirish",
+    submitLabel: "Davom etish",
+    title: "Kirish",
+  },
+  nameLabel: "To‘liq ism",
+  namePlaceholder: "Ism va familiyangiz",
   passwordLabel: "Parol",
   passwordPlaceholder: "Parolingizni kiriting",
-  confirmPasswordLabel: "Parolni tasdiqlang",
-  confirmPasswordPlaceholder: "Parolni qayta kiriting",
-  showPassword: "Parolni ko‘rsatish",
-  hidePassword: "Parolni yashirish",
-  forgotPassword: "Parolni unutdingizmi?",
-  orContinue: "yoki davom eting",
-  credentialNoticeTitle: "Email orqali kirish ulanmagan",
-  credentialNoticeMessage:
-    "Email va parol orqali kirish hali ulanmagan. Hozircha quyidagi xavfsiz tasdiqlash xizmatlaridan birini tanlang.",
-  unavailable: "Bu xizmat credentials sozlangandan keyin faol bo‘ladi.",
-  pending: "Yo‘naltirilmoqda…",
+  pending: "Tekshirilmoqda…",
+  resend: "Kodni qayta yuborish",
+  resendCountdown: "Qayta yuborish: {seconds} soniya",
   roleSelection: {
-    eyebrow: "DAVOM ETISH UCHUN",
-    title: "Rolni tanlang",
-    description: "Hisobingiz turini tanlang va xavfsiz kirishni davom ettiring.",
-    selectedRoleLabel: "Tanlangan rol",
     changeRole: "Rolni o‘zgartirish",
+    description: "Admin yaratgan hisobingiz turini tanlang.",
+    eyebrow: "DAVOM ETISH UCHUN",
+    selectedRoleLabel: "Tanlangan rol",
+    title: "Rolni tanlang",
   },
   roles: {
-    teacher: {
-      title: "O‘qituvchi",
-      description: "Darslar va o‘quv jarayonini boshqarish uchun.",
-      idLabel: "Teacher ID",
-      idPlaceholder: "Teacher ID’ni kiriting",
+    admin: {
+      description: "O‘quvchilar, o‘qituvchilar va markaz faoliyatini boshqarish uchun.",
+      title: "Admin",
     },
     student: {
+      description: "Kurslar, topshiriqlar va natijalardan foydalanish uchun.",
       title: "O‘quvchi",
-      description: "Kurslar va o‘quv imkoniyatlaridan foydalanish uchun.",
     },
-    admin: {
-      title: "Admin",
-      description: "O‘quvchilar, davomat va to‘lov holatlarini boshqarish uchun.",
-      idLabel: "Admin ID",
-      idPlaceholder: "Admin ID’ni kiriting",
+    teacher: {
+      description: "Darslar, guruhlar va o‘quv jarayonini boshqarish uchun.",
+      title: "O‘qituvchi",
     },
   },
-  providers: {
-    google: "Google orqali davom etish",
-    facebook: "Facebook orqali davom etish",
-    apple: "Apple orqali davom etish",
-  },
-  errors: {
-    title: "Kirishni yakunlab bo‘lmadi",
-    accessDenied: "Tasdiqlash bekor qilindi yoki kirishga ruxsat berilmadi.",
-    accountNotLinked: "Bu email boshqa kirish usuliga bog‘langan.",
-    configuration: "Provayder sozlamalari hali to‘liq tayyor emas.",
-    default: "Kutilmagan xatolik yuz berdi. Qayta urinib ko‘ring.",
-  },
-  modes: {
-    login: {
-      metadataTitle: "Kirish",
-      metadataDescription: "Google, Facebook yoki Apple orqali BEST LC saytiga xavfsiz kiring.",
-      eyebrow: "XUSH KELIBSIZ",
-      title: "Kirish",
-      description: "Ma’lumotlarni kiriting yoki xavfsiz usulni tanlang.",
-      submitLabel: "Kirish",
-      switchPrompt: "Hali ro‘yxatdan o‘tmaganmisiz?",
-      switchAction: "Ro‘yxatdan o‘tish",
-    },
-    signup: {
-      metadataTitle: "Ro‘yxatdan o‘tish",
-      metadataDescription:
-        "Google, Facebook yoki Apple orqali BEST LC saytida shaxsingizni xavfsiz tasdiqlang.",
-      eyebrow: "BIRINCHI QADAM",
-      title: "Ro‘yxatdan o‘tish",
-      description: "Ma’lumotlarni kiriting yoki xavfsiz usulni tanlang.",
-      submitLabel: "Hisob yaratish",
-      switchPrompt: "Hisobingiz bormi?",
-      switchAction: "Kirish",
-    },
+  showPassword: "Parolni ko‘rsatish",
+  verification: {
+    codeHint: "Kod bir marta ishlatiladi. Uni hech kimga bermang.",
+    description: "6 xonali kod {email} manziliga yuborildi.",
+    eyebrow: "EMAIL TASDIQLASH",
+    expiresIn: "Kod {minutes} daqiqa amal qiladi.",
+    submitLabel: "Tasdiqlash",
+    title: "Emailni tasdiqlang",
   },
 };
 
 const ru: AuthCopy = {
-  languageLabel: "Выбрать язык",
-  fullNameLabel: "Полное имя",
-  fullNamePlaceholder: "Введите ваше имя",
+  backToLogin: "Вернуться ко входу",
+  codeLabel: "Код подтверждения",
+  codePlaceholder: "000000",
   emailLabel: "Email адрес",
   emailPlaceholder: "name@example.com",
+  errors: {
+    codeLength: "Введите шестизначный код, отправленный на email.",
+    generic: "Проверьте данные и попробуйте ещё раз.",
+    invalidEmail: "Введите корректный email адрес.",
+    required: "Заполните это поле.",
+    session: "Не удалось создать безопасную сессию. Попробуйте ещё раз.",
+    title: "Не удалось завершить вход",
+  },
+  hidePassword: "Скрыть пароль",
+  login: {
+    description: "Войдите с данными аккаунта, выданными администратором.",
+    eyebrow: "С ВОЗВРАЩЕНИЕМ",
+    metadataDescription: "Войдите в BEST LC с помощью email, пароля и кода подтверждения.",
+    metadataTitle: "Вход",
+    submitLabel: "Продолжить",
+    title: "Войти",
+  },
+  nameLabel: "Полное имя",
+  namePlaceholder: "Ваше имя и фамилия",
   passwordLabel: "Пароль",
   passwordPlaceholder: "Введите пароль",
-  confirmPasswordLabel: "Подтвердите пароль",
-  confirmPasswordPlaceholder: "Введите пароль ещё раз",
-  showPassword: "Показать пароль",
-  hidePassword: "Скрыть пароль",
-  forgotPassword: "Забыли пароль?",
-  orContinue: "или продолжите",
-  credentialNoticeTitle: "Вход по email не подключён",
-  credentialNoticeMessage:
-    "Вход по email и паролю пока не подключён. Выберите один из безопасных сервисов подтверждения ниже.",
-  unavailable: "Сервис станет доступен после настройки credentials.",
-  pending: "Перенаправляем…",
+  pending: "Проверяем…",
+  resend: "Отправить код ещё раз",
+  resendCountdown: "Повторная отправка: {seconds} сек.",
   roleSelection: {
-    eyebrow: "ПРОДОЛЖИТЬ КАК",
-    title: "Выберите роль",
-    description: "Выберите тип аккаунта и продолжите безопасный вход.",
-    selectedRoleLabel: "Выбранная роль",
     changeRole: "Изменить роль",
+    description: "Выберите тип аккаунта, созданного администратором.",
+    eyebrow: "ПРОДОЛЖИТЬ КАК",
+    selectedRoleLabel: "Выбранная роль",
+    title: "Выберите роль",
   },
   roles: {
-    teacher: {
-      title: "Преподаватель",
-      description: "Для работы с занятиями и учебным процессом.",
-      idLabel: "Teacher ID",
-      idPlaceholder: "Введите Teacher ID",
+    admin: {
+      description: "Для управления учениками, преподавателями и работой центра.",
+      title: "Администратор",
     },
     student: {
+      description: "Для доступа к курсам, заданиям и результатам.",
       title: "Ученик",
-      description: "Для доступа к курсам и учебным возможностям.",
     },
-    admin: {
-      title: "Администратор",
-      description: "Для работы с учениками, посещаемостью и оплатами.",
-      idLabel: "Admin ID",
-      idPlaceholder: "Введите Admin ID",
+    teacher: {
+      description: "Для управления занятиями, группами и учебным процессом.",
+      title: "Преподаватель",
     },
   },
-  providers: {
-    google: "Продолжить с Google",
-    facebook: "Продолжить с Facebook",
-    apple: "Продолжить с Apple",
-  },
-  errors: {
-    title: "Не удалось завершить вход",
-    accessDenied: "Проверка была отменена или доступ не был разрешён.",
-    accountNotLinked: "Этот email уже связан с другим способом входа.",
-    configuration: "Настройки провайдера пока не завершены.",
-    default: "Произошла непредвиденная ошибка. Попробуйте ещё раз.",
-  },
-  modes: {
-    login: {
-      metadataTitle: "Вход",
-      metadataDescription: "Безопасный вход в BEST LC через Google, Facebook или Apple.",
-      eyebrow: "С ВОЗВРАЩЕНИЕМ",
-      title: "Войти",
-      description: "Введите данные или выберите безопасный вход.",
-      submitLabel: "Войти",
-      switchPrompt: "Ещё нет аккаунта?",
-      switchAction: "Зарегистрироваться",
-    },
-    signup: {
-      metadataTitle: "Регистрация",
-      metadataDescription:
-        "Безопасно подтвердите личность для BEST LC через Google, Facebook или Apple.",
-      eyebrow: "ПЕРВЫЙ ШАГ",
-      title: "Регистрация",
-      description: "Введите данные или выберите безопасный вход.",
-      submitLabel: "Создать аккаунт",
-      switchPrompt: "Уже есть аккаунт?",
-      switchAction: "Войти",
-    },
+  showPassword: "Показать пароль",
+  verification: {
+    codeHint: "Код одноразовый. Не сообщайте его другим.",
+    description: "Шестизначный код отправлен на адрес {email}.",
+    eyebrow: "ПОДТВЕРЖДЕНИЕ EMAIL",
+    expiresIn: "Код действует {minutes} минут.",
+    submitLabel: "Подтвердить",
+    title: "Подтвердите email",
   },
 };
 
 const en: AuthCopy = {
-  languageLabel: "Choose language",
-  fullNameLabel: "Full name",
-  fullNamePlaceholder: "Enter your name",
+  backToLogin: "Back to login",
+  codeLabel: "Verification code",
+  codePlaceholder: "000000",
   emailLabel: "Email address",
   emailPlaceholder: "name@example.com",
+  errors: {
+    codeLength: "Enter the six-digit code sent to your email.",
+    generic: "Check your details and try again.",
+    invalidEmail: "Enter a valid email address.",
+    required: "Complete this field.",
+    session: "We could not create a secure session. Please try again.",
+    title: "We could not complete login",
+  },
+  hidePassword: "Hide password",
+  login: {
+    description: "Sign in with the account details issued by your administrator.",
+    eyebrow: "WELCOME BACK",
+    metadataDescription: "Access BEST LC with your email, password, and verification code.",
+    metadataTitle: "Login",
+    submitLabel: "Continue",
+    title: "Log in",
+  },
+  nameLabel: "Full name",
+  namePlaceholder: "Your first and last name",
   passwordLabel: "Password",
   passwordPlaceholder: "Enter your password",
-  confirmPasswordLabel: "Confirm password",
-  confirmPasswordPlaceholder: "Enter your password again",
-  showPassword: "Show password",
-  hidePassword: "Hide password",
-  forgotPassword: "Forgot password?",
-  orContinue: "or continue with",
-  credentialNoticeTitle: "Email login is not connected",
-  credentialNoticeMessage:
-    "Email and password login is not connected yet. Please choose one of the secure verification services below.",
-  unavailable: "This service will activate when its credentials are configured.",
-  pending: "Redirecting…",
+  pending: "Checking…",
+  resend: "Resend code",
+  resendCountdown: "Resend in {seconds}s",
   roleSelection: {
-    eyebrow: "CONTINUE AS",
-    title: "Choose your role",
-    description: "Select your account type and continue to secure access.",
-    selectedRoleLabel: "Selected role",
     changeRole: "Change role",
+    description: "Select the account type created by your administrator.",
+    eyebrow: "CONTINUE AS",
+    selectedRoleLabel: "Selected role",
+    title: "Choose your role",
   },
   roles: {
-    teacher: {
-      title: "Teacher",
-      description: "For managing lessons and the learning process.",
-      idLabel: "Teacher ID",
-      idPlaceholder: "Enter your Teacher ID",
+    admin: {
+      description: "For managing learners, teachers, and centre operations.",
+      title: "Admin",
     },
     student: {
+      description: "For accessing courses, assignments, and results.",
       title: "Student",
-      description: "For accessing courses and learning opportunities.",
     },
-    admin: {
-      title: "Admin",
-      description: "For managing students, attendance, and payment status.",
-      idLabel: "Admin ID",
-      idPlaceholder: "Enter your Admin ID",
+    teacher: {
+      description: "For managing lessons, groups, and the learning process.",
+      title: "Teacher",
     },
   },
-  providers: {
-    google: "Continue with Google",
-    facebook: "Continue with Facebook",
-    apple: "Continue with Apple",
-  },
-  errors: {
-    title: "We could not complete login",
-    accessDenied: "Verification was cancelled or access was not granted.",
-    accountNotLinked: "This email is already connected to another login method.",
-    configuration: "The provider configuration is not ready yet.",
-    default: "Something unexpected happened. Please try again.",
-  },
-  modes: {
-    login: {
-      metadataTitle: "Login",
-      metadataDescription: "Log in to BEST LC securely with Google, Facebook, or Apple.",
-      eyebrow: "WELCOME BACK",
-      title: "Log in",
-      description: "Enter your details or use secure verification.",
-      submitLabel: "Log in",
-      switchPrompt: "New to BEST LC?",
-      switchAction: "Create an account",
-    },
-    signup: {
-      metadataTitle: "Create an account",
-      metadataDescription:
-        "Verify your identity for BEST LC securely with Google, Facebook, or Apple.",
-      eyebrow: "YOUR FIRST STEP",
-      title: "Sign up",
-      description: "Enter your details or use secure verification.",
-      submitLabel: "Create account",
-      switchPrompt: "Already have an account?",
-      switchAction: "Log in",
-    },
+  showPassword: "Show password",
+  verification: {
+    codeHint: "This code is single-use. Do not share it with anyone.",
+    description: "A six-digit code was sent to {email}.",
+    eyebrow: "EMAIL VERIFICATION",
+    expiresIn: "The code expires in {minutes} minutes.",
+    submitLabel: "Verify",
+    title: "Verify your email",
   },
 };
 

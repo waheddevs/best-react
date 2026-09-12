@@ -1,0 +1,39 @@
+mutation BeginCredentialLogin($input: BeginCredentialLoginInput!) {
+  beginCredentialLogin(input: $input) {
+    challengeId
+    maskedEmail
+    expiresAt
+    resendAvailableAt
+  }
+}
+
+mutation ResendCredentialLoginCode($input: ResendCredentialLoginCodeInput!) {
+  resendCredentialLoginCode(input: $input) {
+    challengeId
+    maskedEmail
+    expiresAt
+    resendAvailableAt
+  }
+}
+
+mutation VerifyCredentialLogin($input: VerifyCredentialLoginInput!) {
+  verifyCredentialLogin(input: $input) {
+    accessToken
+    expiresInSeconds
+    user {
+      id
+      displayName
+      role
+    }
+  }
+}
+
+mutation AdminProvisionUser($input: AdminProvisionUserInput!) {
+  adminProvisionUser(input: $input) {
+    user {
+      id
+      displayName
+      role
+    }
+  }
+}

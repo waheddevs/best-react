@@ -29,27 +29,16 @@ export function AuthNavbarActions({ locale, labels }: AuthNavbarActionsProps) {
 
   if (!session?.user) {
     return (
-      <>
-        <ButtonLink
-          href={`/${locale}/login`}
-          endIcon={null}
-          shape="rounded"
-          size="small"
-          variant="outline"
-        >
-          {labels.login}
-        </ButtonLink>
-        <ButtonLink
-          className={styles.navbar__signup}
-          href={`/${locale}/signup`}
-          endIcon={null}
-          hoverEffect="jump"
-          shape="rounded"
-          size="small"
-        >
-          {labels.signup}
-        </ButtonLink>
-      </>
+      <ButtonLink
+        className={styles.navbar__login}
+        href={`/${locale}/login`}
+        endIcon={null}
+        hoverEffect="jump"
+        shape="rounded"
+        size="small"
+      >
+        {labels.login}
+      </ButtonLink>
     );
   }
 

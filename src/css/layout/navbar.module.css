@@ -62,7 +62,7 @@
   @apply flex items-center gap-2;
 }
 
-.navbar__signup {
+.navbar__login {
   background-image: var(--gradient-cta-corner);
 }
 

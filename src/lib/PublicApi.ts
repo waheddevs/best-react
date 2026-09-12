@@ -19,7 +19,7 @@ function getGraphqlUrl(baseUrl: string): string {
 export async function executePublicApi<TResult, TVariables>(
   document: DocumentNode,
   variables: TVariables,
-  options: { cache?: RequestCache; revalidate?: number } = {},
+  options: { accessToken?: string; cache?: RequestCache; revalidate?: number } = {},
 ): Promise<TResult> {
   const baseUrl =
     typeof window === "undefined"
@@ -28,11 +28,12 @@ export async function executePublicApi<TResult, TVariables>(
   const response = await fetch(getGraphqlUrl(baseUrl), {
     body: JSON.stringify({ query: print(document), variables }),
     cache: options.cache,
-    headers: { "content-type": "application/json" },
+    headers: {
+      ...(options.accessToken ? { authorization: `Bearer ${options.accessToken}` } : {}),
+      "content-type": "application/json",
+    },
     method: "POST",
-    ...(options.revalidate === undefined
-      ? {}
-      : { next: { revalidate: options.revalidate } }),
+    ...(options.revalidate === undefined ? {} : { next: { revalidate: options.revalidate } }),
   });
   const payload = (await response.json()) as GraphqlResponse<TResult>;
   const message = payload.errors?.[0]?.message;

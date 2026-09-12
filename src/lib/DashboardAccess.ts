@@ -2,7 +2,7 @@ import "server-only";
 
 import { auth } from "@/Auth";
 
-export type DashboardRole = "ADMIN" | "STUDENT";
+export type DashboardRole = "ADMIN" | "STUDENT" | "TEACHER";
 
 type ViewerResponse = {
   data?: { viewer?: { role?: unknown } | null };
@@ -18,7 +18,7 @@ export async function canAccessDashboard(expectedRole: DashboardRole): Promise<b
   const session = await auth();
   const accessToken = session?.bestApi?.accessToken;
   const apiUrl = process.env.BEST_API_INTERNAL_URL;
-  if (!accessToken || !apiUrl) return false;
+  if (!accessToken || !apiUrl || session.bestApi?.role !== expectedRole) return false;
 
   try {
     const response = await fetch(`${apiUrl.replace(/\/$/, "")}/graphql`, {

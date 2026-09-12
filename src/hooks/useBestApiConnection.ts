@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export type BestApiConnectionState = "connected" | "preview" | "checking";
-type WorkspaceRole = "ADMIN" | "STUDENT";
+type WorkspaceRole = "ADMIN" | "STUDENT" | "TEACHER";
 
 function hasExpectedViewerRole(value: unknown, expectedRole: WorkspaceRole): boolean {
   if (typeof value !== "object" || value === null) return false;

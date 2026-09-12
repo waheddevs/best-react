@@ -1,37 +1,20 @@
 import "server-only";
 
-import Apple from "next-auth/providers/apple";
-import Facebook from "next-auth/providers/facebook";
-import Google from "next-auth/providers/google";
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
-import { exchangeSocialIdentity } from "@/lib/AuthExchange";
+import { validateCredentialAccessToken } from "@/lib/CredentialSession";
 
 const developmentSecret =
   process.env.NODE_ENV === "development" ? "best-lc-development-session-secret-only" : undefined;
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   callbacks: {
-    async jwt({ account, profile, token }) {
-      if (
-        account &&
-        (account.provider === "google" ||
-          account.provider === "facebook" ||
-          account.provider === "apple")
-      ) {
-        const profileRecord = profile as Record<string, unknown> | undefined;
-        const verifiedClaim = profileRecord?.email_verified;
-        const bestApi = await exchangeSocialIdentity({
-          displayName: token.name ?? token.email ?? "BEST LC Student",
-          email: token.email,
-          emailVerified: verifiedClaim === true || verifiedClaim === "true",
-          provider: account.provider,
-          providerAccountId: account.providerAccountId,
-        });
-        if (bestApi) {
-          token.bestApiAccessToken = bestApi.accessToken;
-          token.bestApiExpiresAt = bestApi.expiresAt;
-        }
+    async jwt({ token, user }) {
+      if (user?.bestApiAccessToken && user.bestApiExpiresAt && user.bestApiRole) {
+        token.bestApiAccessToken = user.bestApiAccessToken;
+        token.bestApiExpiresAt = user.bestApiExpiresAt;
+        token.bestApiRole = user.bestApiRole;
       }
       return token;
     },
@@ -39,22 +22,55 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (
         typeof token.bestApiAccessToken === "string" &&
         typeof token.bestApiExpiresAt === "number" &&
-        token.bestApiExpiresAt > Date.now()
+        token.bestApiExpiresAt > Date.now() &&
+        (token.bestApiRole === "ADMIN" ||
+          token.bestApiRole === "STUDENT" ||
+          token.bestApiRole === "TEACHER")
       ) {
         session.bestApi = {
           accessToken: token.bestApiAccessToken,
           expiresAt: token.bestApiExpiresAt,
+          role: token.bestApiRole,
         };
       }
       return session;
     },
   },
-  secret: process.env.AUTH_SECRET ?? developmentSecret,
-  providers: [Google, Facebook, Apple],
   pages: {
-    signIn: "/login",
     error: "/login",
+    signIn: "/login",
   },
+  providers: [
+    Credentials({
+      credentials: {
+        accessToken: { type: "text" },
+        expiresInSeconds: { type: "text" },
+      },
+      async authorize(credentials) {
+        const accessToken = credentials.accessToken;
+        const expiresInSeconds = Number(credentials.expiresInSeconds);
+        if (
+          typeof accessToken !== "string" ||
+          !Number.isSafeInteger(expiresInSeconds) ||
+          expiresInSeconds <= 0
+        ) {
+          return null;
+        }
+
+        const identity = await validateCredentialAccessToken(accessToken);
+        if (!identity) return null;
+
+        return {
+          bestApiAccessToken: accessToken,
+          bestApiExpiresAt: Date.now() + expiresInSeconds * 1_000,
+          bestApiRole: identity.role,
+          id: identity.id,
+          name: identity.displayName,
+        };
+      },
+    }),
+  ],
+  secret: process.env.AUTH_SECRET ?? developmentSecret,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,

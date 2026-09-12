@@ -11,12 +11,11 @@ import type { ComponentType } from "react";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/auth.module.css";
 import type { AuthCopy } from "@/dictionaries/public/Auth";
-import { authRoles, type AuthMode, type AuthRole } from "@/types/Auth";
+import { authRoles, type AuthRole } from "@/types/Auth";
 
 type AuthRoleSelectorProps = {
   copy: AuthCopy;
   locale: Locale;
-  mode: AuthMode;
 };
 
 const roleIcons: Record<AuthRole, ComponentType<{ "aria-hidden"?: boolean }>> = {
@@ -27,7 +26,7 @@ const roleIcons: Record<AuthRole, ComponentType<{ "aria-hidden"?: boolean }>> = 
 
 const motionEase = [0.22, 1, 0.36, 1] as const;
 
-export function AuthRoleSelector({ copy, locale, mode }: AuthRoleSelectorProps) {
+export function AuthRoleSelector({ copy, locale }: AuthRoleSelectorProps) {
   /* HOOKS */
   const reduceMotion = useReducedMotion();
 
@@ -70,7 +69,7 @@ export function AuthRoleSelector({ copy, locale, mode }: AuthRoleSelectorProps) 
           <motion.li className={styles.auth__roleItem} key={role} variants={itemVariants}>
             <Link
               className={styles.auth__roleCard}
-              href={`/${locale}/${mode}?role=${role}`}
+              href={`/${locale}/login?role=${role}`}
               scroll={false}
             >
               <span className={styles.auth__roleIcon}>
