@@ -7,16 +7,29 @@ import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/admin/workspace.module.css";
+import { AdminProvisionUserForm } from "@/features/admin/users/AdminProvisionUserForm";
 import { useAdminWorkspaceRecords } from "@/hooks/admin/useAdminWorkspaceRecords";
+import type {
+  AdminProvisionUserCopy,
+  ProvisionableUserRole,
+} from "@/types/admin/AdminProvisionUser";
 import type { AdminSectionCopy, AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
 
 type AdminSectionPageProps = {
   common: AdminWorkspaceCopy["common"];
   locale: Locale;
+  provisionCopy?: AdminProvisionUserCopy;
+  provisionRole?: ProvisionableUserRole;
   section: AdminSectionCopy;
 };
 
-export function AdminSectionPage({ common, locale, section }: AdminSectionPageProps) {
+export function AdminSectionPage({
+  common,
+  locale,
+  provisionCopy,
+  provisionRole,
+  section,
+}: AdminSectionPageProps) {
   /* HOOKS */
   const {
     attentionOnly,
@@ -64,6 +77,9 @@ export function AdminSectionPage({ common, locale, section }: AdminSectionPagePr
           <strong>10:28</strong>
         </div>
       </section>
+      {provisionCopy && provisionRole ? (
+        <AdminProvisionUserForm copy={provisionCopy} role={provisionRole} />
+      ) : null}
       <div className={styles.adminWorkspace__toolbar}>
         <label>
           <SearchRounded aria-hidden="true" />
