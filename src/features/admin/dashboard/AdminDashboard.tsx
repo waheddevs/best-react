@@ -30,11 +30,11 @@ export function AdminDashboard({ common, locale, section }: AdminDashboardProps)
         </div>
         <div className={styles.adminWorkspace__health}>
           <i />
-          <span>{common.previewNotice}</span>
+          <span>{common.connectedNotice}</span>
         </div>
       </header>
 
-      <AdminDashboardMetrics common={common} records={section.records} title={section.title} />
+      <AdminDashboardMetrics metrics={section.metrics} title={section.title} />
       <AdminDashboardQueue
         attentionOnly={attentionOnly}
         common={common}

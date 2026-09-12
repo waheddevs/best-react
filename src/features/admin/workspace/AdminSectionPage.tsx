@@ -49,7 +49,7 @@ export function AdminSectionPage({
         </div>
         <div className={styles.adminWorkspace__health}>
           <i />
-          <span>{common.previewNotice}</span>
+          <span>{common.connectedNotice}</span>
         </div>
       </header>
       <section className={styles.adminWorkspace__metrics} aria-label={section.title}>
@@ -60,22 +60,19 @@ export function AdminSectionPage({
         <div>
           <span>{common.openQueueLabel}</span>
           <strong>
-            {Math.max(
-              1,
+            {
               section.records.filter(
                 (record) => record.status === "warning" || record.status === "danger",
-              ).length,
-            )}
+              ).length
+            }
           </strong>
         </div>
-        <div>
-          <span>{common.serviceLevelLabel}</span>
-          <strong>98.4%</strong>
-        </div>
-        <div>
-          <span>{common.lastSyncLabel}</span>
-          <strong>10:28</strong>
-        </div>
+        {section.metrics.map((metric) => (
+          <div key={metric.label}>
+            <span>{metric.label}</span>
+            <strong>{metric.value}</strong>
+          </div>
+        ))}
       </section>
       {provisionCopy && provisionRole ? (
         <AdminProvisionUserForm copy={provisionCopy} role={provisionRole} />

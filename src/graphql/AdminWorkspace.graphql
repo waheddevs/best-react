@@ -1,0 +1,374 @@
+query AdminOperationalOverview {
+  adminOperationalOverview {
+    activeGroups
+    activeUsers
+    openTransfers
+    pendingIntakes
+    pendingMedia
+    unreadNotifications
+  }
+  adminAcademicOverview {
+    activeStudentCount
+    activeTeacherCount
+    assignedTestCount
+    completionPercentage
+  }
+}
+
+query AdminContactRequests($after: String, $first: Int) {
+  adminContactRequests(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        name
+        kind
+        status
+        createdAt
+        email
+        phone
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminEventRegistrations($after: String, $first: Int) {
+  adminEventRegistrations(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        name
+        kind
+        status
+        createdAt
+        email
+        phone
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminExamRegistrations($after: String, $first: Int) {
+  adminExamRegistrations(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        name
+        kind
+        status
+        createdAt
+        email
+        phone
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminStudents($after: String, $first: Int) {
+  adminStudents(after: $after, first: $first) {
+    edges {
+      node {
+        studentId
+        displayName
+        currentGroupName
+        status
+        averagePercentage
+        scoredTestCount
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminUsers($after: String, $first: Int, $role: UserRole) {
+  adminUsers(after: $after, first: $first, role: $role) {
+    edges {
+      node {
+        id
+        displayName
+        email
+        branchName
+        teacherSubject
+        status
+        role
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminGroups($after: String, $first: Int) {
+  adminGroups(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        slug
+        name
+        room
+        status
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminCourses($after: String, $first: Int, $language: Language!) {
+  adminCourses(after: $after, first: $first, language: $language) {
+    edges {
+      node {
+        id
+        slug
+        title
+        level
+        status
+        duration
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminEvents($after: String, $first: Int, $language: Language!) {
+  adminEvents(after: $after, first: $first, language: $language) {
+    edges {
+      node {
+        id
+        slug
+        title
+        location
+        startsAt
+        status
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminLocations {
+  adminLocations {
+    room
+    activeGroupCount
+    scheduledLessonCount
+    nextLessonAt
+  }
+}
+
+query AdminSchedule($from: DateTime!, $to: DateTime!) {
+  adminSchedule(from: $from, to: $to) {
+    id
+    groupId
+    startsAt
+    endsAt
+    room
+    status
+    translations {
+      language
+      title
+    }
+  }
+}
+
+query AdminAttendance($lessonId: ID!) {
+  adminAttendance(lessonId: $lessonId) {
+    id
+    studentId
+    studentName
+    status
+    note
+    recordedAt
+  }
+}
+
+query AdminTuitionLedger($after: String, $first: Int) {
+  adminTuitionLedger(after: $after, first: $first) {
+    edges {
+      node {
+        chargeId
+        studentDisplayName
+        groupName
+        billingMonth
+        dueDate
+        amountUzs
+        outstandingAmountUzs
+        status
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminTests($after: String, $first: Int, $language: Language!) {
+  adminTests(after: $after, first: $first, language: $language) {
+    edges {
+      node {
+        id
+        title
+        groupName
+        teacherDisplayName
+        questionCount
+        attemptCount
+        awaitingReviewCount
+        status
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminGroupProgresses($after: String, $first: Int) {
+  adminGroupProgresses(after: $after, first: $first) {
+    edges {
+      node {
+        groupId
+        groupName
+        teacherDisplayName
+        completionPercentage
+        averagePercentage
+        groupStatus
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminLibraryItems($after: String, $first: Int) {
+  adminLibraryItems(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        title
+        ownerName
+        status
+        updatedAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminMediaObjects($after: String, $first: Int) {
+  adminMediaObjects(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        originalName
+        mimeType
+        status
+        malwareStatus
+        createdAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminTransferRequests($after: String, $first: Int) {
+  adminTransferRequests(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        studentDisplayName
+        fromGroupName
+        toGroupName
+        status
+        createdAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminNotifications($after: String, $first: Int) {
+  myNotifications(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        title
+        body
+        kind
+        readAt
+        createdAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminAuditLogs($after: String, $first: Int) {
+  adminAuditLogs(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        action
+        actorId
+        targetId
+        targetType
+        reason
+        createdAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query AdminProfile {
+  myProfile {
+    id
+    displayName
+    email
+    branchName
+    phone
+    status
+    role
+  }
+}

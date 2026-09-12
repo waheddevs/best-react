@@ -5,6 +5,7 @@ import { isLocale } from "@/config/Locales";
 import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import { AdminDashboard } from "@/features/admin/dashboard/AdminDashboard";
 import { createAdminMetadata } from "@/features/admin/layout/AdminMetadata";
+import { loadAdminWorkspaceData } from "@/lib/admin/AdminWorkspaceData";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
@@ -17,5 +18,12 @@ export default async function AdminPage({ params }: PageProps) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const copy = getAdminWorkspaceCopy(locale);
-  return <AdminDashboard common={copy.common} locale={locale} section={copy.sections.dashboard} />;
+  const data = await loadAdminWorkspaceData("dashboard", locale);
+  return (
+    <AdminDashboard
+      common={copy.common}
+      locale={locale}
+      section={{ ...copy.sections.dashboard, ...data, metrics: data.metrics ?? [] }}
+    />
+  );
 }

@@ -18,9 +18,19 @@ import type { AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
 
 import { AdminWorkspaceNavigation } from "./AdminWorkspaceNavigation";
 
-type AdminWorkspaceShellProps = { children: ReactNode; copy: AdminWorkspaceCopy; locale: Locale };
+type AdminWorkspaceShellProps = {
+  adminName: string;
+  children: ReactNode;
+  copy: AdminWorkspaceCopy;
+  locale: Locale;
+};
 
-export function AdminWorkspaceShell({ children, copy, locale }: AdminWorkspaceShellProps) {
+export function AdminWorkspaceShell({
+  adminName,
+  children,
+  copy,
+  locale,
+}: AdminWorkspaceShellProps) {
   /* HOOKS */
   const connectionState = useBestApiConnection("ADMIN");
   const { handleMenuToggle, handleNavigation, localeOptions, menuOpen, navigationItems } =
@@ -29,7 +39,7 @@ export function AdminWorkspaceShell({ children, copy, locale }: AdminWorkspaceSh
       items: adminNavigationItems,
       locale,
     });
-  const adminInitials = getWorkspaceInitials(copy.common.adminName, locale);
+  const adminInitials = getWorkspaceInitials(adminName, locale);
   const dockItems = navigationItems.filter((item) => adminDockNavigationKeys.includes(item.key));
 
   return (
@@ -57,7 +67,7 @@ export function AdminWorkspaceShell({ children, copy, locale }: AdminWorkspaceSh
             <strong>
               {connectionState === "connected"
                 ? copy.common.connectedNotice
-                : copy.common.previewNotice}
+                : copy.common.unavailableNotice}
             </strong>
             <small>{copy.common.stackLabel}</small>
           </div>
@@ -76,7 +86,7 @@ export function AdminWorkspaceShell({ children, copy, locale }: AdminWorkspaceSh
           </button>
           <div className={styles.adminShell__breadcrumb}>
             <span>{copy.common.workspaceLabel}</span>
-            <strong>{copy.common.adminName}</strong>
+            <strong>{adminName}</strong>
           </div>
           <div className={styles.adminShell__topActions}>
             <WorkspaceLocaleNavigation

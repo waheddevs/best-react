@@ -39,22 +39,21 @@ export type AdminSectionCopy = {
 
 export type AdminWorkspaceCopy = {
   common: {
-    adminName: string;
     all: string;
     contextLabel: string;
     connectedNotice: string;
     detailLabel: string;
     emptyLabel: string;
+    errorLabel: string;
     idRecordLabel: string;
     languageLabel: string;
-    lastSyncLabel: string;
     menuClose: string;
     menuOpen: string;
     openQueueLabel: string;
-    previewNotice: string;
+    unavailableNotice: string;
     searchLabel: string;
     searchPlaceholder: string;
-    serviceLevelLabel: string;
+    retryLabel: string;
     stackLabel: string;
     statusLabel: string;
     workspaceLabel: string;

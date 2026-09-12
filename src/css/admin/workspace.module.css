@@ -1,6 +1,24 @@
 @reference "../../app/globals.css";
 
 /* AdminSectionPage */
+.adminWorkspace__error {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  border: 1px solid #dce3ea;
+  border-radius: 13px;
+  background: white;
+  padding: 28px;
+  color: #152238;
+}
+.adminWorkspace__error button {
+  border: 0;
+  border-radius: 9px;
+  background: #168a6e;
+  padding: 10px 16px;
+  color: white;
+  cursor: pointer;
+}
 .adminWorkspace {
   display: grid;
   gap: 20px;

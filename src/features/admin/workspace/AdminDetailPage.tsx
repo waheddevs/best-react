@@ -31,7 +31,7 @@ export function AdminDetailPage({ backHref, common, locale, record }: AdminDetai
       </header>
       <div className={styles.adminWorkspace__detailPanels}>
         <section>
-          <span>{common.previewNotice}</span>
+          <span>{common.connectedNotice}</span>
           <h2>{record.title}</h2>
           <p>{record.detail}</p>
         </section>
