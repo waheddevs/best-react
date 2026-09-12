@@ -37,46 +37,48 @@ export function LanguageCourses({ locale, copy, courses }: LanguageCoursesProps)
         />
       </Reveal>
       <StaggerGroup className={styles.courses__languageGrid} delay={0.06}>
-        {courses.filter((course) => course.category === "language").map((course) => (
-          <StaggerItem className={styles.courses__languageItem} key={course.slug}>
-            <article className={styles.courses__languageCard}>
-              <div className={styles.courses__languageHeader}>
-                <span
-                  className={`${styles.courses__languageSymbol} ${accentClassNames[course.accent]}`}
-                >
-                  {course.symbol}
-                </span>
-                <span className={styles.courses__languageLevel}>{course.level[locale]}</span>
-              </div>
-              <h2 className={styles.courses__languageTitle}>{course.title[locale]}</h2>
-              <p className={styles.courses__languageSummary}>{course.summary[locale]}</p>
-              <ul className={styles.courses__languageHighlights}>
-                {course.highlights[locale].map((highlight) => (
-                  <li key={highlight}>
-                    <CheckRounded aria-hidden="true" />
-                    <span>{highlight}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className={styles.courses__languageFooter}>
-                <span className={styles.courses__languageSchedule}>
-                  <ScheduleRounded aria-hidden="true" />
-                  {course.schedule[locale]}
-                </span>
-                <ButtonLink
-                  aria-label={`${copy.common.learnMore}: ${course.title[locale]}`}
-                  endIcon={<ArrowOutwardRounded />}
-                  href={`/${locale}/courses/${course.slug}`}
-                  shape="rounded"
-                  size="small"
-                  variant="ghost"
-                >
-                  {copy.common.learnMore}
-                </ButtonLink>
-              </div>
-            </article>
-          </StaggerItem>
-        ))}
+        {courses
+          .filter((course) => course.category === "language")
+          .map((course) => (
+            <StaggerItem className={styles.courses__languageItem} key={course.slug}>
+              <article className={styles.courses__languageCard}>
+                <div className={styles.courses__languageHeader}>
+                  <span
+                    className={`${styles.courses__languageSymbol} ${accentClassNames[course.accent]}`}
+                  >
+                    {course.symbol}
+                  </span>
+                  <span className={styles.courses__languageLevel}>{course.level[locale]}</span>
+                </div>
+                <h2 className={styles.courses__languageTitle}>{course.title[locale]}</h2>
+                <p className={styles.courses__languageSummary}>{course.summary[locale]}</p>
+                <ul className={styles.courses__languageHighlights}>
+                  {course.highlights[locale].map((highlight) => (
+                    <li key={highlight}>
+                      <CheckRounded aria-hidden="true" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className={styles.courses__languageFooter}>
+                  <span className={styles.courses__languageSchedule}>
+                    <ScheduleRounded aria-hidden="true" />
+                    {course.schedule[locale]}
+                  </span>
+                  <ButtonLink
+                    aria-label={`${copy.common.learnMore}: ${course.title[locale]}`}
+                    endIcon={<ArrowOutwardRounded />}
+                    href={`/${locale}/courses/${course.slug}`}
+                    shape="rounded"
+                    size="small"
+                    variant="ghost"
+                  >
+                    {copy.common.learnMore}
+                  </ButtonLink>
+                </div>
+              </article>
+            </StaggerItem>
+          ))}
       </StaggerGroup>
     </Section>
   );

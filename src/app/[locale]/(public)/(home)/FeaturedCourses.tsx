@@ -31,11 +31,13 @@ export function FeaturedCourses({ locale, copy, courses }: FeaturedCoursesProps)
         </ButtonLink>
       </Reveal>
       <StaggerGroup className={styles.home__featuredCoursesGrid}>
-        {courses.filter((course) => course.featured).map((course) => (
-          <StaggerItem key={course.slug} className={styles.home__featuredCoursesItem}>
-            <CoursePosterCard course={course} locale={locale} copy={copy} />
-          </StaggerItem>
-        ))}
+        {courses
+          .filter((course) => course.featured)
+          .map((course) => (
+            <StaggerItem key={course.slug} className={styles.home__featuredCoursesItem}>
+              <CoursePosterCard course={course} locale={locale} copy={copy} />
+            </StaggerItem>
+          ))}
       </StaggerGroup>
     </Section>
   );

@@ -1,11 +1,11 @@
 export type CourseRegistrationCopy = {
   apply: string;
   cancel: string;
-  consent: string;
-  currentLevel: string;
+  consentLabel: string;
   email: string;
   fullName: string;
   invalidEmail: string;
+  invalidPhone: string;
   message: string;
   phone: string;
   required: string;
@@ -17,7 +17,6 @@ export type CourseRegistrationCopy = {
 
 export type CourseRegistrationValues = {
   consent: boolean;
-  currentLevel: string;
   email: string;
   fullName: string;
   message: string;

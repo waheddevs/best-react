@@ -2,24 +2,175 @@
 
 /* CourseRegistrationAction */
 
+.courses__registrationBackdrop {
+  background: rgb(16 42 67 / 32%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(118%);
+  backdrop-filter: blur(12px) saturate(118%);
+}
+
+.courses__registrationDialog {
+  @apply max-w-4xl! overflow-hidden rounded-[2rem]! bg-surface! shadow-[0_32px_90px_rgb(16_42_67/28%)]!;
+}
+
+.courses__registrationLayout {
+  @apply grid grid-cols-[minmax(17rem,0.8fr)_minmax(0,1.2fr)];
+}
+
+.courses__registrationSummary {
+  --registration-accent: var(--action-blue);
+  @apply relative isolate overflow-hidden p-8 text-white;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--registration-accent) 44%, var(--brand-navy)),
+    var(--brand-navy) 72%
+  );
+}
+
+.courses__registrationSummary[data-accent="turquoise"] {
+  --registration-accent: var(--brand-turquoise);
+}
+
+.courses__registrationSummary[data-accent="yellow"] {
+  --registration-accent: var(--sunny-yellow);
+}
+
+.courses__registrationSummaryGlow {
+  @apply pointer-events-none absolute -top-20 -right-24 -z-10 size-64 rounded-full blur-2xl;
+  background: color-mix(in srgb, var(--registration-accent) 52%, transparent);
+}
+
+.courses__registrationSummaryEyebrow {
+  @apply text-xs font-black tracking-[0.14em] text-white/65 uppercase;
+}
+
+.courses__registrationSummarySymbol {
+  @apply mt-7 grid size-14 place-items-center rounded-2xl text-2xl font-black text-heading shadow-[0_16px_36px_rgb(0_0_0/16%)];
+  background: var(--registration-accent);
+}
+
+.courses__registrationSummaryTitle {
+  @apply mt-6 text-3xl leading-tight font-black tracking-[-0.04em];
+}
+
+.courses__registrationSummaryDescription {
+  @apply mt-3 text-sm leading-6 text-white/72;
+}
+
+.courses__registrationSummaryMeta {
+  @apply mt-8 grid gap-3;
+}
+
+.courses__registrationSummaryMeta > div {
+  @apply rounded-2xl border border-white/12 bg-white/8 p-3.5 backdrop-blur-sm;
+}
+
+.courses__registrationSummaryMeta dt {
+  @apply flex items-center gap-2 text-[0.68rem] font-black tracking-[0.08em] text-white/58 uppercase;
+}
+
+.courses__registrationSummaryMeta dt svg {
+  @apply size-4;
+  color: var(--registration-accent);
+}
+
+.courses__registrationSummaryMeta dd {
+  @apply mt-1.5 text-sm leading-5 font-bold text-white;
+}
+
 .courses__registrationForm {
-  @apply flex flex-col gap-3 p-6 sm:p-8;
+  @apply flex min-w-0 flex-col p-6 sm:p-8;
 }
 
 .courses__registrationForm > h2 {
-  @apply text-2xl font-semibold;
+  @apply text-[1.75rem] leading-tight font-extrabold tracking-[-0.035em] text-heading;
 }
 
-.courses__registrationForm > p {
-  color: var(--color-text-muted);
+.courses__registrationFields {
+  @apply flex flex-1 flex-col justify-center gap-4 py-8;
 }
 
-.courses__registrationForm > small {
-  color: var(--color-error);
+.courses__registrationConsent {
+  @apply flex items-start gap-3 text-sm leading-6 text-muted;
+}
+
+.courses__registrationConsent input {
+  @apply mt-1 h-4 w-4 shrink-0 accent-action;
+}
+
+.courses__registrationConsentError {
+  @apply mt-1 block text-xs text-coral;
+}
+
+.courses__registrationForm
+  .courses__registrationSingleLineLabel:not(:global(.MuiInputLabel-shrink)) {
+  transform: translate(14px, 12px) scale(1);
+}
+
+.courses__registrationForm :global(.MuiOutlinedInput-root:not(.MuiInputBase-multiline)) {
+  min-height: 3rem;
+}
+
+.courses__registrationForm
+  :global(.MuiOutlinedInput-root:not(.MuiInputBase-multiline) .MuiInputBase-input) {
+  padding-block: 0.75rem;
+}
+
+.courses__registrationForm :global(.MuiInputBase-input:focus-visible) {
+  outline: none;
 }
 
 .courses__registrationActions {
-  @apply mt-2 flex justify-end gap-3;
+  @apply mt-auto flex justify-end gap-3 pt-5;
+}
+
+@media (max-width: 767px) {
+  .courses__registrationDialog {
+    @apply rounded-[1.5rem]!;
+  }
+
+  .courses__registrationLayout {
+    @apply grid-cols-1;
+  }
+
+  .courses__registrationSummary {
+    @apply p-5;
+  }
+
+  .courses__registrationSummaryEyebrow {
+    @apply pr-16;
+  }
+
+  .courses__registrationSummarySymbol {
+    @apply absolute top-5 right-5 mt-0 size-11 rounded-xl text-lg;
+  }
+
+  .courses__registrationSummaryTitle {
+    @apply mt-3 pr-14 text-2xl;
+  }
+
+  .courses__registrationSummaryDescription {
+    @apply hidden;
+  }
+
+  .courses__registrationSummaryMeta {
+    @apply mt-4 grid-cols-3 gap-2;
+  }
+
+  .courses__registrationSummaryMeta > div {
+    @apply min-w-0 p-2.5;
+  }
+
+  .courses__registrationSummaryMeta dt {
+    @apply text-[0.58rem];
+  }
+
+  .courses__registrationSummaryMeta dt svg {
+    @apply hidden;
+  }
+
+  .courses__registrationSummaryMeta dd {
+    @apply truncate text-xs;
+  }
 }
 
 .courses {

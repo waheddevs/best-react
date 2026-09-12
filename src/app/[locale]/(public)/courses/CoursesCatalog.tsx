@@ -27,11 +27,13 @@ export function CoursesCatalog({ locale, copy, courses }: CoursesCatalogProps) {
         />
       </Reveal>
       <StaggerGroup className={styles.courses__catalogGrid} delay={0.08}>
-        {courses.filter((course) => course.featured).map((course) => (
-          <StaggerItem className={styles.courses__catalogItem} key={course.slug}>
-            <CoursePosterCard course={course} locale={locale} copy={copy} />
-          </StaggerItem>
-        ))}
+        {courses
+          .filter((course) => course.featured)
+          .map((course) => (
+            <StaggerItem className={styles.courses__catalogItem} key={course.slug}>
+              <CoursePosterCard course={course} locale={locale} copy={copy} />
+            </StaggerItem>
+          ))}
       </StaggerGroup>
     </Section>
   );

@@ -110,11 +110,7 @@ export function CourseSidebar({ course, locale, copy }: CourseSidebarProps) {
       <div className={styles.courses__sidebarCta}>
         <h2 className={styles.courses__sidebarTitle}>{copy.courses.detailCtaTitle}</h2>
         <div className={styles.courses__sidebarAction}>
-          <CourseRegistrationAction
-            courseSlug={course.slug}
-            courseTitle={course.title[locale]}
-            locale={locale}
-          />
+          <CourseRegistrationAction course={course} locale={locale} pageCopy={copy.courses} />
         </div>
       </div>
     </aside>

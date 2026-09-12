@@ -36,10 +36,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const dictionary = getDictionary(locale);
   const copy = getPageCopy(locale);
-  const [courses, events] = await Promise.all([
-    getPublicCourses(locale),
-    getPublicEvents(locale),
-  ]);
+  const [courses, events] = await Promise.all([getPublicCourses(locale), getPublicEvents(locale)]);
 
   return (
     <main className={styles.home}>

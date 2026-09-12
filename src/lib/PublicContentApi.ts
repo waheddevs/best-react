@@ -45,10 +45,7 @@ export async function getPublicCourses(locale: Locale): Promise<PublicCourse[]> 
   return data.publicCourses.edges.map(({ node }) => mapCourse(node));
 }
 
-export async function getPublicCourse(
-  locale: Locale,
-  slug: string,
-): Promise<PublicCourse | null> {
+export async function getPublicCourse(locale: Locale, slug: string): Promise<PublicCourse | null> {
   try {
     const data = await executePublicApi<PublicCourseQuery, { language: Language; slug: string }>(
       PublicCourseDocument,

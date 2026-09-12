@@ -9,15 +9,12 @@ import {
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import { executePublicApi } from "@/lib/PublicApi";
 import { getApiLanguage } from "@/lib/PublicContentApi";
-import type {
-  CourseRegistrationCopy,
-  CourseRegistrationValues,
-} from "@/types/CourseRegistration";
+import { formatPhoneNumber, normalizePhoneNumber, validatePhoneNumber } from "@/lib/PhoneNumber";
+import type { CourseRegistrationCopy, CourseRegistrationValues } from "@/types/CourseRegistration";
 
 type Errors = Partial<Record<keyof CourseRegistrationValues, string>>;
 const initialValues: CourseRegistrationValues = {
   consent: false,
-  currentLevel: "",
   email: "",
   fullName: "",
   message: "",
@@ -40,7 +37,11 @@ export function useCourseRegistration(
   const validate = () => {
     const nextErrors: Errors = {};
     if (!values.fullName.trim()) nextErrors.fullName = copy.required;
-    if (!values.phone.trim()) nextErrors.phone = copy.required;
+    if (!values.phone.trim()) {
+      nextErrors.phone = copy.required;
+    } else if (!validatePhoneNumber(values.phone)) {
+      nextErrors.phone = copy.invalidPhone;
+    }
     if (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
       nextErrors.email = copy.invalidEmail;
     }
@@ -56,7 +57,8 @@ export function useCourseRegistration(
   };
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const field = event.target.name as Exclude<keyof CourseRegistrationValues, "consent">;
-    setValues((current) => ({ ...current, [field]: event.target.value }));
+    const value = field === "phone" ? formatPhoneNumber(event.target.value) : event.target.value;
+    setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: undefined }));
   };
   const handleConsentChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -75,12 +77,11 @@ export function useCourseRegistration(
             input: {
               consent: values.consent,
               courseSlug,
-              currentLevel: values.currentLevel.trim() || undefined,
               email: values.email.trim() || undefined,
               locale: getApiLanguage(locale),
               message: values.message.trim() || undefined,
               name: values.fullName.trim(),
-              phone: values.phone.trim(),
+              phone: normalizePhoneNumber(values.phone),
             },
           },
           { cache: "no-store" },
@@ -104,8 +105,8 @@ export function useCourseRegistration(
   return {
     errors,
     handleClose,
-    handleConsentChange,
     handleFieldChange,
+    handleConsentChange,
     handleOpen,
     handleSubmit,
     isOpen,
