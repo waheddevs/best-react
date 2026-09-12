@@ -42,8 +42,9 @@ Student, Teacher, and operational Admin milestones:
   beyond the explicitly approved auth-shell exception below
 - Payment-provider checkout, card collection, bank transfer initiation, payroll
   execution, or refunds
-- Certificates or AI grading
-- Teacher or Student chat
+- Certificates; AI grading remains deferred until the section 2F gate
+- Teacher/Student messaging; the scoped AI assistant remains deferred until
+  the section 2F gate
 - Fake integrations or buttons that pretend to perform server-side work
 
 Public exam pages may explain exam formats, rules, dates, and registration steps,
@@ -73,63 +74,72 @@ the public website.
   test using fictional/reserved test data and database persistence assertions.
 
 Student, Teacher, and operational Admin frontend/backend work is approved only
-within sections 2C, 2D, and 20A-20D. Stop and ask before adding a Parent portal,
-Super Admin, credentials registration/password reset, payment-provider
-processing, certificates, AI grading, chat, or unrelated backend capability.
+within sections 2C, 2D, and 20A-20D until the deferred section 2F gate passes.
+Stop and ask before adding a Parent portal, Super Admin, credentials
+registration/password reset, payment-provider processing, certificates, AI
+grading or assistant chat before that gate, unrelated chat, or unrelated backend
+capability.
 
 The localized Student Library at `/[locale]/student/library` remains
 student-owned and is now integrated into the approved Student application shell.
 Its content, slugs, feature logic, data, types, dictionaries, and styles must
 remain under student-owned directories.
 
-## 2A. Approved auth-shell and social-auth exception
+## 2A. Approved admin-provisioned credentials and email-code login
 
-The user explicitly approved localized login and signup screens, a frontend role
-selection step, and real Google, Facebook, and Apple verification. This
-exception is deliberately narrow:
+The user replaced the former signup/social-provider flow with a real localized
+login-only flow for accounts provisioned by operational Admin. This approval
+supersedes every earlier Google, Facebook, Apple, public signup, role-ID, and
+credentials-preview instruction:
 
-- Own the UI at `/[locale]/login` and `/[locale]/signup` inside an `(auth)` route
-  group with a dedicated full-screen shell and no public Navbar or Footer.
-- Keep the mirrored full-screen background in the shared `(auth)/layout.tsx` so
-  it remains stable while the login and signup panels transition independently.
-- Use Auth.js with the App Router callback handler at
-  `/api/auth/[...nextauth]`, JWT sessions, secure HttpOnly cookies, and logout.
-- Keep provider credentials in ignored environment files. Commit only an
-  `.env.example` template; never commit secrets, private keys, or provider
-  tokens.
-- Keep Google, Facebook, and Apple actions disabled when their required
-  credentials are absent. Do not pretend verification succeeded.
-- Before either auth form, show the localized liquid-glass role selector for
-  Teacher, Student, and operational Admin. Preserve the selected role through
-  the localized Login/Signup switch with a validated query parameter; missing
-  or unknown values must return to the selector.
-- Teacher forms add a Teacher ID field and Admin forms add an Admin ID field.
-  Student forms retain the existing fields. Login uses role ID where applicable,
-  email, and password; Signup additionally uses name and confirmation.
-- Show Google, Facebook, and Apple verification only for the Student role.
-  Teacher and Admin auth forms must not render the social divider or provider
-  controls.
-- The Admin option represents operational staff who will later manage learners,
-  attendance, and payment status. It is not Super Admin. Do not add Super Admin
-  to this selector or scaffold its future separate URL without fresh approval.
-- A client-selected role, role ID, or query parameter is presentation state,
-  never trusted authorization. The auth shell still does not authorize
-  email/password registration, password reset, or email delivery. Database-
-  backed identity mapping, server-loaded roles, route protection, and field-
-  level authorization are approved only for the Student/Admin integration in
-  section 2D and must be implemented by the sibling backend; never trust the
-  selector or query parameter itself.
-- The approved auth card may show email, password, confirmation, and forgot-
-  password controls to match the supplied visual reference. Until credentials
-  auth is separately approved, these values must never leave the browser or be
-  stored; submission clears the form and shows a localized unavailable notice.
+- Own the login UI at `/[locale]/login` inside the `(auth)` route group with the
+  existing dedicated full-screen shell and no public Navbar or Footer. Public
+  signup is unavailable; do not render Create account, signup mode switches,
+  provider dividers, or social-provider controls anywhere.
+- Keep the localized liquid-glass role selector for Student, Teacher, and
+  operational Admin. The selected role and query parameter are presentation
+  context only; the backend-owned role must match before a session is issued.
+- Student and Teacher login step one contains name, email, and password as the
+  user requested. Name is normalized profile confirmation, never authorization;
+  email is the unique login identifier. Operational Admin uses the same secure
+  flow and may omit the redundant name field only when the backend contract
+  supports that behavior.
+- On valid step-one credentials, replace the fields inside the same auth card
+  with a six-digit email-code form. Never append a second form below the first,
+  navigate to a public verification page, retain the password in state, or
+  create a session before code verification succeeds.
+- The email code is server-generated, short-lived, single-use, stored only as a
+  hash, bound to its login challenge, limited to five verification attempts,
+  and expires after five minutes. Resend uses a sixty-second cooldown, rotates
+  the previous code, and remains rate-limited by account and request origin.
+- Step-one and code failures use localized generic responses that do not reveal
+  whether an email, name, password, role, or challenge exists. Mask the email on
+  the code screen and provide Verify, Resend code, and Back to login actions.
+- Only operational Admin can provision Student or Teacher accounts and issue a
+  temporary credential/reset. There is no public registration, self-service
+  password reset, provider linking, or account creation. Permanent plaintext
+  passwords must never be stored, logged, redisplayed, or recoverable.
+- Passwords use the backend's approved adaptive password hashing. Temporary
+  credentials distributed offline or through the separately managed business
+  channel must be rotated by Admin and should be forced to change on first
+  completed login when that capability is available.
+- After successful code verification, use Auth.js Credentials only as the
+  frontend session-cookie boundary. JWT/session cookies remain secure, HttpOnly,
+  SameSite-appropriate, and contain the short-lived backend access token needed
+  by server-side dashboard authorization. Never persist access tokens in local
+  storage, URLs, or user-editable role state.
+- Resolve Student, Teacher, and operational Admin authorization from PostgreSQL
+  on every protected backend request. Protect all three workspace layouts and
+  redirect unauthenticated or mismatched roles to their localized login route.
+- Keep all secrets and mail-provider credentials in ignored environment files;
+  commit only documented placeholders in `.env.example`. Development delivery
+  must be explicitly labeled and must never pretend that production email was
+  sent when no mail transport is configured.
 - Keep auth copy localized in Uzbek, Russian, and English under
-  `dictionaries/public/Auth.ts`, server-only provider availability in
-  `config/AuthProviders.ts`, and auth presentation/actions in `features/auth/`.
-- Do not render a separate locale switcher inside the auth shell. Every Login,
-  Signup, enrolment-to-auth, mode-switch, provider-error, and auth-home link must
-  preserve the active localized route so users enter auth in their current
-  Uzbek, Russian, or English context.
+  `dictionaries/public/Auth.ts`, auth behavior under `features/auth/` and focused
+  hooks, and generated GraphQL contracts under `src/gql/`. Do not render a
+  separate locale switcher inside the auth shell; login, verification, resend,
+  back, error, and destination behavior preserves the active locale.
 - Public routes use `SiteChrome`. Auth, Student, Teacher, and Admin routes each
   bypass it and use their own role-appropriate shell while remaining under the
   locale root providers.
@@ -187,8 +197,8 @@ the teacher-owned frontend preview:
   numbers, financial figures, messages, avatars, or other identifying content
   visible in the recording. Use centralized fictional preview data and reserved
   technical identifiers.
-- The workspace remains unprotected until real Teacher credential verification
-  and authorization are separately approved. It must not expose real learner,
+- The workspace is protected by the approved Teacher credential plus email-code
+  flow. Its current preview datasets must not be mistaken for real learner,
   teacher, attendance, payment, salary, session, or account data.
 - All required preview interactions use in-memory fictional state unless this
   file explicitly permits a safe browser preference such as the teacher-only
@@ -205,9 +215,9 @@ the teacher-owned frontend preview:
   open the relevant form/detail/confirmation, update only fictional in-memory
   state when specifically allowed in section 20A, or show a localized
   unavailable notice. Never claim that remote work succeeded.
-- Real Auth.js logout may continue to operate for an actual provider session.
-  The Teacher Workspace does not authorize Teacher credentials auth, role
-  claims, redirects based on trusted roles, or route guards.
+- Real Auth.js logout operates for the verified credential session. Teacher
+  route access requires the backend-resolved `TEACHER` role; client role claims
+  and query parameters remain untrusted.
 - Keep all teacher route components, features, hooks, CSS, dictionaries, typed
   preview data, and types under teacher-owned directories. Do not leak Teacher
   Workspace copy or business entities into public or student ownership.
@@ -240,6 +250,32 @@ both this frontend repository and the sibling `best-server` backend repository.
 - Preserve the repositories as siblings. Do not move `best-react` into
   `best-server` or create a combined monorepo.
 - Keep all four product surfaces visually distinct as defined in section 11A.
+
+## 2F. Approved deferred Gemini integration plan
+
+The user chose Gemini as the initial free AI candidate and explicitly directed
+that integration begin only after the Teacher and Student dashboards are fully
+finished. `docs/GEMINI_INTEGRATION_PLAN.md` is the reviewable implementation
+plan and start gate. Planning is approved now; no AI code, credentials, route,
+worker, migration, or provider call belongs in the active dashboard milestone.
+
+After the documented gate passes, the approved AI scope is Teacher-owned test
+draft generation and quality review, source-backed educational research,
+Student explanations of entitled lessons and released results, and a bounded
+educational assistant in those role workspaces. Original Writing/Speaking AI
+evaluation suggestions are a later phase that requires the plan's sensitive-
+data and teacher-review gate. Existing deterministic scoring remains
+authoritative. AI cannot publish tests, set official grades, reveal active test
+answers, access unrelated records, or act on business data autonomously.
+
+The assistant exception permits only Student/Teacher interaction with Gemini
+for the educational tasks above; it does not restore Teacher/Student messaging
+or the chat workflow removed from the mobile reference. Free-tier processing
+uses fictional/reserved or demonstrably non-sensitive content only. Real learner
+data requires a documented provider/data-processing decision before use. Keep
+Gemini access in `best-server`, behind backend authorization and the existing
+GraphQL boundary. Update the sibling backend's instructions when implementation
+starts, preserving its data-design and migration rules.
 
 ## 3. Required technical stack
 
@@ -805,7 +841,7 @@ and Admin refactor unless the user explicitly changes scope:
 - Page and feature CSS may control layout, state-specific visibility, or a
   genuinely domain-specific accent, but must not duplicate shared button
   padding, typography, radius, focus, disabled, or common hover rules.
-- Use the shared `hoverEffect="jump"` option for the Navbar signup, event
+- Use the shared `hoverEffect="jump"` option for the Navbar login, event
   registration submit, homepage Explore Courses CTA, About Mission course CTA,
   Courses contact CTA, notification confirmation action, centred-alert Close,
   and event Attend action. On fine-pointer hover, move the control upward by
@@ -1027,7 +1063,7 @@ Use the following approved palette as the design source of truth.
 - Coral is an accent, not a primary color.
 - Gradients must be focused accents, not backgrounds for every section or card.
 - Reserve `--gradient-cta-corner` for the homepage Explore Courses CTA, Navbar
-  signup button, and the matching centred-alert Close action, with the dark end
+  login button, and the matching centred-alert Close action, with the dark end
   at bottom-left and the lighter end at top-right.
 - Avoid uncontrolled neon colors and rainbow gradients.
 - Define semantic CSS variables in `globals.css`, then expose them through the
@@ -1815,8 +1851,8 @@ admin template.
 - Delete account opens the shared blocking confirmation, then reports that the
   service is unavailable; it must not delete or mutate anything.
 - Log out first opens the shared danger confirmation, then uses real Auth.js
-  sign-out when an actual provider session exists and otherwise returns to the
-  localized login screen without claiming a remote Teacher credential session
+  sign-out when a verified credential session exists and otherwise returns to
+  the localized login screen without claiming a remote Teacher session
   was ended. Keep both Delete account and Log out confirmations localized and
   thematically matched to their danger or warning tone.
 
@@ -1931,8 +1967,8 @@ and indexing policy are approved.
   milestone. Do not inherit or control the Teacher-only night-mode preference.
 - The top bar notification control opens fictional preview notifications or the
   Notifications route. It must not claim delivery, read receipt, or remote state.
-- Logout follows the same approved Auth.js behavior as the Teacher shell when an
-  actual provider session exists; otherwise it returns to the localized Student
+- Logout follows the same approved Auth.js behavior as the Teacher shell when a
+  verified credential session exists; otherwise it returns to the localized Student
   login form without claiming a server session ended.
 
 ### Student dashboard
@@ -2511,12 +2547,14 @@ Before the Admin frontend milestone can be presented as complete:
   preserve unrelated work and extend existing domains rather than duplicating
   them.
 
-Explicit non-goals remain Parent/Guardian portals, Super Admin, Teacher/Student
-chat, lead-sales CRM beyond the defined request queue, HR/payroll execution,
-payment-provider checkout, production CMS outside the defined Course/Event/
-Library operations, certificates, AI grading, native mobile applications, and
-real integrations. Add any of these only through a new user-approved scope
-change recorded in this file.
+For the active Student/Admin delivery milestone, explicit non-goals remain
+Parent/Guardian portals, Super Admin, Teacher/Student messaging, lead-sales CRM
+beyond the defined request queue, HR/payroll execution, payment-provider
+checkout, production CMS outside the defined Course/Event/Library operations,
+certificates, AI grading, AI assistant chat, native mobile applications, and
+unrelated integrations. The scoped Gemini exception is already approved as a
+deferred milestone in section 2F; all other additions need a new user-approved
+scope change recorded in this file.
 
 The current frontend does not need to be visually complete before Student/Admin
 work begins. Preserve the working baseline and complete UI and backend contracts
@@ -2895,14 +2933,20 @@ AuditModule
 
 ### Authentication and authorization
 
-The backend milestone expands the current narrow Auth.js preview only after
-explicit approval.
+The approved backend identity flow is Admin-provisioned credentials followed by
+a six-digit email login challenge. It replaces the former social-provider
+direction.
 
-- Retain Auth.js for approved Google, Facebook, and Apple provider interaction,
-  but replace presentation-only role state with database-backed identity,
-  sessions, roles, and permissions.
-- Prefer secure database-backed sessions for the shared web/API architecture.
-  Store real users, provider accounts, and sessions in PostgreSQL.
+- Do not expose public signup, OAuth/social-provider exchange, self-service
+  password reset, or account creation. Only operational Admin can provision and
+  manage Student/Teacher credentials through authorized operations.
+- Verify the adaptive password hash before issuing a short-lived, hashed,
+  single-use email-code challenge. A valid challenge is not a session; issue a
+  backend access token only after the code succeeds within its expiry and
+  attempt limits.
+- Auth.js Credentials owns the frontend HttpOnly session-cookie boundary after
+  backend verification. The NestJS API remains authoritative for active status,
+  role, ownership, and permissions on every protected request.
 - Resolve the session in the NestJS GraphQL context and load roles and
   permissions from the server. Never trust a client role, role query parameter,
   Teacher ID, Admin ID, or GraphQL input as authorization evidence.
@@ -2910,17 +2954,14 @@ explicit approval.
   fresh approval.
 - Enforce authentication, role, ownership, group membership, attempt ownership,
   and field-level permissions on the server.
-- Protect connected Student and Admin data only after server-side identity and
-  role validation. Explicit preview routes and fixture adapters must never be
-  treated as secure or expose real records. Teacher remains preview-only until
-  its credential-verification scope is separately approved.
+- Protect connected Student, Teacher, and Admin data only after server-side
+  identity and role validation. Explicit preview routes and fixture adapters
+  must never be treated as secure or expose real records.
 - Keep cookies secure, HttpOnly, appropriately SameSite, narrowly scoped, and
   compatible with the approved gateway/origin topology.
 - Add CSRF protections where cookie-authenticated state changes require them,
-  restrict origins, and do not expose provider tokens to the browser or GraphQL
-  schema.
-- Keep email/password credentials disabled until a separately approved secure
-  credentials service exists.
+  restrict origins, and do not expose mail credentials, password hashes, code
+  hashes, or internal challenge state to the browser or GraphQL schema.
 
 ### PostgreSQL and Prisma data domains
 
@@ -3382,8 +3423,9 @@ Phase 3 — contract freeze and integration hardening:
 
 Phase 4 — identity and authorization:
 
-- Add database-backed Auth.js identity/sessions, roles, NestJS GraphQL context,
-  server guards, and protected Student/Teacher/Admin boundaries.
+- Maintain the approved Auth.js Credentials session boundary, backend identity,
+  email-code challenges, roles, NestJS GraphQL context, server guards, and
+  protected Student/Teacher/Admin boundaries.
 - Replace presentation-only role state only after the secure flow is proven.
 
 Phase 5 — first test vertical slice:
@@ -3434,8 +3476,8 @@ The public Exams page is database-backed and has this sequence:
   using the shared reveal system. Preserve full reduced-motion support.
 
 Do not implement Telegram delivery, a public exam engine, questions, timers,
-scoring, result storage, or certificates. The approved site-wide social-auth
-flow does not expand Exams.
+scoring, result storage, or certificates. The approved site-wide credential
+login flow does not expand Exams.
 
 ## 22. About us
 
@@ -3788,10 +3830,13 @@ Also verify manually:
 - There is no horizontal overflow at supported breakpoints.
 - There are no console errors, React warnings, or broken internal links.
 - The fixed light theme has sufficient contrast.
-- Google, Facebook, and Apple auth success, cancellation, configuration-error,
-  session, and logout states work when provider credentials are available.
-- Student/Admin routes use server-authenticated authorization and connected
-  backend contracts; presentation-only role state never grants access.
+- Student, Teacher, and Admin credential login, email-code verification, resend,
+  expiry, attempt-limit, generic-error, session, role-mismatch, and logout states
+  work against the backend contract.
+- Student/Teacher accounts can only be provisioned by an authorized operational
+  Admin; signup and social-provider UI/contracts are absent.
+- Student/Admin/Teacher routes use server-authenticated authorization and
+  connected backend contracts; presentation-only role state never grants access.
 - Every Teacher Workspace route renders in Uzbek, Russian, and English.
 - Teacher drawer, bottom navigation, locale preservation, active states, and
   back navigation work with keyboard and touch input.
@@ -3835,9 +3880,11 @@ The milestone is complete only when:
   treated as production-verified facts.
 - The complete approved Student and operational Admin inventories in sections
   20B-20D are implemented with matching backend contracts; Parent, Super Admin,
-  chat, payment-provider execution, certificates, and AI grading remain absent.
-- Teacher remains within section 20A and Auth.js social-provider callbacks remain
-  frontend-owned; no client-selected role is trusted as authorization.
+  chat, payment-provider execution, certificates, and AI grading remain absent
+  from this dashboard milestone. The deferred section 2F Gemini work begins
+  only after its Teacher and Student start gate passes.
+- Teacher remains within section 20A and now uses the approved credentials plus
+  email-code gate; no client-selected role is trusted as authorization.
 - Every in-scope screen, section, navigation item, state, and visible function
   from the supplied Teacher reference video is present with the honest frontend
   behavior defined in section 20A; the explicitly removed Teacher chat workflow
