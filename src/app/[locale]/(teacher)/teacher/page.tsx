@@ -5,6 +5,8 @@ import { isLocale } from "@/config/Locales";
 import { teacherPreviewData } from "@/data/teacher/TeacherPreviewData";
 import { getTeacherCopy } from "@/dictionaries/teacher/Teacher";
 import { createTeacherMetadata } from "@/features/teacher/layout/TeacherMetadata";
+import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+import { loadConnectedTeacherGroups } from "@/lib/teacher/TeacherGroupData";
 
 import { DashboardOverview } from "./DashboardOverview";
 
@@ -19,7 +21,9 @@ export default async function TeacherDashboardPage({ params }: TeacherDashboardP
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
-  return (
-    <DashboardOverview copy={getTeacherCopy(locale)} data={teacherPreviewData} locale={locale} />
-  );
+  const preview = isDashboardPreviewEnabled();
+  const groups = preview ? teacherPreviewData.groups : await loadConnectedTeacherGroups(locale);
+  const data = preview ? teacherPreviewData : { ...teacherPreviewData, groups };
+
+  return <DashboardOverview copy={getTeacherCopy(locale)} data={data} locale={locale} />;
 }
