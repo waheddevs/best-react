@@ -6,9 +6,7 @@ import type {
   TeacherLessonTest,
   TeacherFinanceSnapshot,
   TeacherGroup,
-  TeacherLearner,
   TeacherPreviewData,
-  TeacherScheduleEntry,
   TeacherTask,
 } from "@/types/teacher/Teacher";
 
@@ -19,104 +17,95 @@ function localized(uz: string, ru: string, en: string): LocalizedText {
 const groups: TeacherGroup[] = [
   {
     attendance: 92,
+    category: "generalEnglish",
     id: "group-01",
-    learnerCount: 24,
+    learnerCount: 12,
+    scheduleDays: [1, 3, 5],
+    startsAtMinutes: 480,
+    endsAtMinutes: 600,
     lessonDays: localized("Du / Chor / Ju", "Пн / Ср / Пт", "Mon / Wed / Fri"),
     name: "Beginner Nova",
+    recordSlug: "beginner-nova",
     room: "501",
     slug: "beginner-nova",
     time: "08:00–10:00",
   },
   {
     attendance: 88,
+    category: "cefr",
     id: "group-02",
-    learnerCount: 18,
+    learnerCount: 9,
+    scheduleDays: [2, 4, 6],
+    startsAtMinutes: 600,
+    endsAtMinutes: 720,
     lessonDays: localized("Se / Pay / Sha", "Вт / Чт / Сб", "Tue / Thu / Sat"),
     name: "Pre-Intermediate Orbit",
+    recordSlug: "pre-intermediate-orbit",
     room: "402",
     slug: "pre-intermediate-orbit",
     time: "10:00–12:00",
   },
   {
     attendance: 95,
+    category: "cefr",
     id: "group-03",
-    learnerCount: 21,
+    learnerCount: 11,
+    scheduleDays: [1, 3, 5],
+    startsAtMinutes: 840,
+    endsAtMinutes: 960,
     lessonDays: localized("Du / Chor / Ju", "Пн / Ср / Пт", "Mon / Wed / Fri"),
     name: "Intermediate Pulse",
+    recordSlug: "intermediate-pulse",
     room: "304",
     slug: "intermediate-pulse",
     time: "14:00–16:00",
   },
   {
     attendance: 90,
+    category: "ielts",
     id: "group-04",
-    learnerCount: 16,
+    learnerCount: 10,
+    scheduleDays: [2, 4, 6],
+    startsAtMinutes: 960,
+    endsAtMinutes: 1080,
     lessonDays: localized("Se / Pay / Sha", "Вт / Чт / Сб", "Tue / Thu / Sat"),
     name: "IELTS Momentum",
+    recordSlug: "ielts-momentum",
     room: "403",
     slug: "ielts-momentum",
     time: "16:00–18:00",
   },
   {
     attendance: 84,
+    category: "generalEnglish",
     id: "group-05",
-    learnerCount: 20,
+    learnerCount: 8,
+    scheduleDays: [1, 3, 5],
+    startsAtMinutes: 1080,
+    endsAtMinutes: 1200,
     lessonDays: localized("Du / Chor / Ju", "Пн / Ср / Пт", "Mon / Wed / Fri"),
     name: "Beginner Horizon",
+    recordSlug: "beginner-horizon",
     room: "301",
     slug: "beginner-horizon",
     time: "18:00–20:00",
   },
   {
     attendance: 93,
+    category: "ielts",
     id: "group-06",
-    learnerCount: 19,
+    learnerCount: 9,
+    scheduleDays: [2, 4, 6],
+    startsAtMinutes: 1080,
+    endsAtMinutes: 1200,
     lessonDays: localized("Se / Pay / Sha", "Вт / Чт / Сб", "Tue / Thu / Sat"),
     name: "Pre-IELTS Summit",
+    recordSlug: "pre-ielts-summit",
     room: "502",
     slug: "pre-ielts-summit",
     time: "18:00–20:00",
   },
 ];
-
-const learnerNames = [
-  "Samira Navoiy",
-  "Kamol Rayhon",
-  "Dilnoza Atlas",
-  "Jasur Hilol",
-  "Malika Ziyo",
-  "Temur Sohil",
-  "Aziza Nigor",
-  "Sardor Kamalak",
-  "Laylo Shabnam",
-  "Bekzod Zamin",
-  "Madina Ravo",
-  "Umid Falak",
-];
-
-const learners: TeacherLearner[] = groups.flatMap((group, groupIndex) =>
-  learnerNames.slice(0, groupIndex === 0 ? 12 : 6).map((name, index) => {
-    const statusCycle: TeacherLearner["status"][] = [
-      "active",
-      "active",
-      "active",
-      "paused",
-      "active",
-      "debtor",
-    ];
-    const names = name.split(" ");
-    return {
-      balance: index % 6 === 5 ? -420000 : 280000 + index * 35000,
-      groupSlug: group.slug,
-      id: `${group.id}-learner-${index + 1}`,
-      initials: `${names[0]?.[0] ?? "B"}${names[1]?.[0] ?? "L"}`,
-      name: groupIndex === 0 ? name : `${names[0]} ${groupIndex + 1}`,
-      phone: `+998 00 000 ${String(groupIndex * 20 + index).padStart(2, "0")} 00`,
-      status: statusCycle[index % statusCycle.length] ?? "active",
-      taskProgress: Math.max(42, 96 - index * 4),
-    };
-  }),
-);
 
 const tasks: TeacherTask[] = [
   {
@@ -220,69 +209,6 @@ const financeSnapshots: TeacherFinanceSnapshot[] = [
     ],
     month: "2026-06",
     paymentRate: 88.2,
-  },
-];
-
-const schedule: TeacherScheduleEntry[] = [
-  {
-    endsAt: "10:00",
-    groupName: "Beginner Nova",
-    groupSlug: "beginner-nova",
-    id: "lesson-beginner-nova",
-    learnerCount: 24,
-    room: "501",
-    startsAt: "08:00",
-    status: "active",
-  },
-  {
-    endsAt: "12:00",
-    groupName: "Pre-Intermediate Orbit",
-    groupSlug: "pre-intermediate-orbit",
-    id: "lesson-pre-intermediate-orbit",
-    learnerCount: 18,
-    room: "402",
-    startsAt: "10:00",
-    status: "next",
-  },
-  {
-    endsAt: "16:00",
-    groupName: "Intermediate Pulse",
-    groupSlug: "intermediate-pulse",
-    id: "lesson-intermediate-pulse",
-    learnerCount: 21,
-    room: "304",
-    startsAt: "14:00",
-    status: "planned",
-  },
-  {
-    endsAt: "18:00",
-    groupName: "IELTS Momentum",
-    groupSlug: "ielts-momentum",
-    id: "lesson-ielts-momentum",
-    learnerCount: 16,
-    room: "403",
-    startsAt: "16:00",
-    status: "planned",
-  },
-  {
-    endsAt: "20:00",
-    groupName: "Beginner Horizon",
-    groupSlug: "beginner-horizon",
-    id: "lesson-beginner-horizon",
-    learnerCount: 20,
-    room: "301",
-    startsAt: "18:00",
-    status: "planned",
-  },
-  {
-    endsAt: "20:00",
-    groupName: "Pre-IELTS Summit",
-    groupSlug: "pre-ielts-summit",
-    id: "lesson-pre-ielts-summit",
-    learnerCount: 19,
-    room: "502",
-    startsAt: "18:00",
-    status: "planned",
   },
 ];
 
@@ -467,7 +393,6 @@ const groupTests: TeacherLessonTest[] = groups.flatMap((group) => [
 export const teacherPreviewData: TeacherPreviewData = {
   dashboardMetrics: [
     {
-      featured: true,
       id: "new",
       label: localized(
         "Bu oy qo‘shilgan yangi o‘quvchilar",
@@ -478,21 +403,18 @@ export const teacherPreviewData: TeacherPreviewData = {
       value: 19,
     },
     {
-      featured: false,
       id: "active",
       label: localized("Jami faol o‘quvchilar", "Всего активных учеников", "Total active learners"),
       tone: "turquoise",
       value: 79,
     },
     {
-      featured: false,
       id: "departed",
       label: localized("Bu oy ketganlar", "Ушли в этом месяце", "Departed this month"),
-      tone: "yellow",
+      tone: "red",
       value: 4,
     },
     {
-      featured: false,
       id: "together",
       label: localized("BEST bilan birga — oy", "Месяцев вместе с BEST", "Months with BEST"),
       tone: "navy",
@@ -505,7 +427,6 @@ export const teacherPreviewData: TeacherPreviewData = {
   groupMaterials,
   groupTests,
   groups,
-  learners,
   notifications: [
     {
       id: "notification-01",
@@ -539,40 +460,12 @@ export const teacherPreviewData: TeacherPreviewData = {
     role: "teacher",
     subject: localized("Ingliz tili", "Английский язык", "English"),
   },
-  resources: [
-    {
-      description: localized(
-        "Metodika va speaking tavsiyalari",
-        "Методика и советы по speaking",
-        "Methodology and speaking tips",
-      ),
-      id: "resource-podcast",
-      title: localized("Podkastlar", "Подкасты", "Podcasts"),
-      type: "podcast",
-    },
-    {
-      description: localized(
-        "Qisqa dars va seminar yozuvlari",
-        "Короткие уроки и записи семинаров",
-        "Short lessons and seminar recordings",
-      ),
-      id: "resource-video",
-      title: localized("Videolar", "Видео", "Videos"),
-      type: "video",
-    },
-  ],
-  schedule,
-  scheduleDate: "2026-08-29",
   tasks,
   transferRequests: [],
 };
 
 export function getTeacherGroup(slug: string) {
   return groups.find((group) => group.slug === slug);
-}
-
-export function getTeacherGroupLearners(slug: string) {
-  return learners.filter((learner) => learner.groupSlug === slug);
 }
 
 export function getTeacherGroupLessons(slug: string) {

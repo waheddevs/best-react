@@ -18,19 +18,25 @@ export type TeacherProfileData = {
 };
 
 export type TeacherDashboardMetric = {
-  featured: boolean;
-  id: string;
+  id: "new" | "active" | "departed" | "together";
   label: LocalizedText;
-  tone: "blue" | "navy" | "turquoise" | "yellow";
+  tone: "blue" | "navy" | "red" | "turquoise";
   value: number;
 };
 
+export type TeacherGroupCategory = "ielts" | "cefr" | "generalEnglish";
+
 export type TeacherGroup = {
-  attendance: number;
+  attendance: number | null;
+  category: TeacherGroupCategory | null;
   id: string;
   learnerCount: number;
   lessonDays: LocalizedText;
+  scheduleDays: number[];
+  startsAtMinutes: number | null;
+  endsAtMinutes: number | null;
   name: string;
+  recordSlug: string;
   room: string;
   slug: string;
   time: string;
@@ -43,10 +49,37 @@ export type TeacherLearner = {
   groupSlug: string;
   id: string;
   initials: string;
+  membershipId: string;
   name: string;
   phone: string;
   status: TeacherLearnerStatus;
-  taskProgress: number;
+  taskProgress: number | null;
+};
+
+export type TeacherGroupRosterSummary = {
+  active: number;
+  debtor: number;
+  departed: number;
+  historicalTotal: number;
+  paused: number;
+  total: number;
+};
+
+export type TeacherGroupOverviewMetrics = {
+  activeAssignments: number;
+  materials: number;
+  scheduledTests: number;
+  students: number;
+};
+
+export type TeacherGroupOverviewLesson = {
+  date: string;
+  endsAt: string;
+  id: string;
+  room: string;
+  startsAt: string;
+  status: "completed" | "planned";
+  topic: LocalizedText;
 };
 
 export type TeacherTaskKind = "attendance" | "pauseCall";
@@ -85,6 +118,7 @@ export type TeacherScheduleEntry = {
   groupSlug: string;
   id: string;
   learnerCount: number;
+  lessonDays: number[];
   room: string;
   startsAt: string;
   status: "active" | "completed" | "next" | "planned";
@@ -180,13 +214,6 @@ export type TeacherTransferRequest = {
   toGroup: string;
 };
 
-export type TeacherResource = {
-  description: LocalizedText;
-  id: string;
-  title: LocalizedText;
-  type: "podcast" | "video";
-};
-
 export type TeacherNotificationPreview = {
   id: string;
   message: LocalizedText;
@@ -203,12 +230,8 @@ export type TeacherPreviewData = {
   groupLessons: TeacherLessonSession[];
   groupMaterials: TeacherLessonMaterial[];
   groupTests: TeacherLessonTest[];
-  learners: TeacherLearner[];
   notifications: TeacherNotificationPreview[];
   profile: TeacherProfileData;
-  resources: TeacherResource[];
-  schedule: TeacherScheduleEntry[];
-  scheduleDate: string;
   tasks: TeacherTask[];
   transferRequests: TeacherTransferRequest[];
 };
@@ -230,6 +253,7 @@ export type TeacherCopy = {
     pending: string;
     refresh: string;
     reset: string;
+    save: string;
     savePreview: string;
     search: string;
     teacherRole: string;
@@ -237,15 +261,16 @@ export type TeacherCopy = {
   dashboard: {
     description: string;
     eyebrow: string;
+    financeChange: string;
+    financeComparison: string;
+    financePreview: string;
+    financeViewMore: string;
     groupsTitle: string;
-    libraryTitle: string;
+    newClassesEmpty: string;
+    newClassesTitle: string;
+    newClassStatus: string;
     pageTitle: string;
-    resourceUnavailableMessage: string;
-    resourceUnavailableTitle: string;
     scheduleMonths: string[];
-    scheduleStatuses: Record<TeacherScheduleEntry["status"], string>;
-    scheduleTitle: string;
-    scheduleViewAll: string;
     viewAll: string;
   };
   finance: {
@@ -327,9 +352,40 @@ export type TeacherCopy = {
   };
   groups: {
     active: string;
+    categories: Record<TeacherGroupCategory | "all", string>;
+    categoryFilter: string;
+    createGroup: string;
+    createGroupUnavailable: string;
+    createGroupSuccess: string;
+    createGroupError: string;
+    createGroupConflict: string;
+    deleteGroup: string;
+    deleteGroupTitle: string;
+    deleteGroupMessage: string;
+    deleteGroupSuccess: string;
+    deleteGroupError: string;
+    deleteGroupConflict: string;
+    deleteGroupUnavailable: string;
+    groupNameField: string;
+    groupTypeField: string;
+    groupRoomField: string;
+    groupDaysField: string;
+    groupStartsField: string;
+    groupEndsField: string;
+    groupNameRequired: string;
+    groupTypeRequired: string;
+    groupRoomRequired: string;
+    groupDaysRequired: string;
+    groupStartsRequired: string;
+    groupEndsRequired: string;
+    groupCapacityReached: string;
+    groupTimeError: string;
+    groupTimeFormat: string;
+    weekdays: string[];
     addLearner: string;
     addLearnerMessage: string;
     addLearnerTitle: string;
+    addLearnerUnavailable: string;
     balance: string;
     contactMessage: string;
     contactTitle: string;
@@ -338,18 +394,28 @@ export type TeacherCopy = {
     description: string;
     detail: string;
     detailEyebrow: string;
+    detailPageEyebrow: string;
+    detailPageTitle: string;
+    editGroup: string;
+    editGroupConflict: string;
+    editGroupError: string;
+    editGroupSuccess: string;
+    editGroupUnavailable: string;
     empty: string;
     eyebrow: string;
-    groupState: string;
     learnerName: string;
     learners: string;
     lessonDays: string;
+    noGroupsInCategory: string;
+    noGroups: string;
     other: string;
     pageTitle: string;
     paused: string;
     phone: string;
     rosterTitle: string;
     searchPlaceholder: string;
+    statusUpdateError: string;
+    statusUpdateSuccess: string;
     taskProgress: string;
     total: string;
     unsavedMessage: string;
@@ -387,6 +453,7 @@ export type TeacherCopy = {
     eyebrow: string;
     language: string;
     languageDescription: string;
+    lastName: string;
     logout: string;
     logoutCancel: string;
     logoutConfirm: string;
@@ -420,8 +487,6 @@ export type TeacherCopy = {
     eyebrow: string;
     learnerCount: string;
     pageTitle: string;
-    refreshMessage: string;
-    refreshTitle: string;
     room: string;
     time: string;
   };

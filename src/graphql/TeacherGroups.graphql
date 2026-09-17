@@ -1,0 +1,144 @@
+query TeacherGroups($first: Int, $after: String) {
+  teacherGroups(first: $first, after: $after, status: ACTIVE) {
+    edges {
+      node {
+        id
+        createdAt
+        name
+        slug
+        category
+        room
+        scheduleDays
+        startsAtMinutes
+        endsAtMinutes
+        activeStudentCount
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query TeacherGroup($groupId: ID!) {
+  teacherGroup(groupId: $groupId) {
+    id
+    name
+    slug
+    category
+    room
+    scheduleDays
+    startsAtMinutes
+    endsAtMinutes
+    activeStudentCount
+  }
+}
+
+query TeacherGroupOverviewData($groupId: ID!, $first: Int, $after: String) {
+  teacherGroupOverview(groupId: $groupId) {
+    activeAssignmentCount
+    scheduledTestCount
+    materialCount
+    currentStudentCount
+  }
+  teacherGroupLessons(groupId: $groupId, first: $first, after: $after) {
+    edges {
+      node {
+        id
+        groupId
+        startsAt
+        endsAt
+        room
+        status
+        translations {
+          language
+          title
+          summary
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query TeacherGroupRosterData($groupId: ID!, $first: Int, $after: String) {
+  teacherGroupRosterSummary(groupId: $groupId) {
+    currentTotal
+    historicalTotal
+    active
+    paused
+    debtors
+    departed
+  }
+  teacherGroupRoster(groupId: $groupId, first: $first, after: $after, includeEnded: true) {
+    edges {
+      node {
+        membershipId
+        studentId
+        displayName
+        phone
+        rosterStatus
+        outstandingBalanceUzs
+        startedAt
+        endedAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+mutation TeacherCreateGroup($input: CreateTeacherGroupInput!) {
+  createTeacherGroup(input: $input) {
+    group {
+      id
+      name
+      category
+    }
+  }
+}
+
+mutation TeacherUpdateGroup($input: UpdateTeacherGroupInput!) {
+  updateTeacherGroup(input: $input) {
+    group {
+      id
+      name
+      slug
+      category
+      room
+      scheduleDays
+      startsAtMinutes
+      endsAtMinutes
+      activeStudentCount
+    }
+  }
+}
+
+mutation TeacherDeleteGroup($groupId: ID!) {
+  deleteTeacherGroup(groupId: $groupId) {
+    group {
+      id
+      status
+    }
+  }
+}
+
+mutation TeacherSetGroupMembershipParticipationStatus(
+  $input: SetGroupMembershipParticipationStatusInput!
+) {
+  setGroupMembershipParticipationStatus(input: $input) {
+    membership {
+      membershipId
+      studentId
+      rosterStatus
+      outstandingBalanceUzs
+      endedAt
+    }
+  }
+}

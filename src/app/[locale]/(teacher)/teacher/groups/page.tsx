@@ -5,6 +5,8 @@ import { isLocale } from "@/config/Locales";
 import { teacherPreviewData } from "@/data/teacher/TeacherPreviewData";
 import { getTeacherCopy } from "@/dictionaries/teacher/Teacher";
 import { createTeacherMetadata } from "@/features/teacher/layout/TeacherMetadata";
+import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+import { loadConnectedTeacherGroups } from "@/lib/teacher/TeacherGroupData";
 
 import { GroupsCatalog } from "./GroupsCatalog";
 
@@ -19,10 +21,14 @@ export default async function GroupsPage({ params }: GroupsPageProps) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
+  const preview = isDashboardPreviewEnabled();
+  const groups = preview ? teacherPreviewData.groups : await loadConnectedTeacherGroups(locale);
+
   return (
     <GroupsCatalog
       copy={getTeacherCopy(locale)}
-      groups={teacherPreviewData.groups}
+      connected={!preview}
+      groups={groups}
       locale={locale}
     />
   );
