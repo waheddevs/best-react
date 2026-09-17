@@ -26,7 +26,6 @@ export function TransferRequestList({ copy, requests }: TransferRequestListProps
   return (
     <main>
       <TeacherPageHeader
-        description={copy.transferRequests.description}
         eyebrow={copy.transferRequests.eyebrow}
         title={copy.transferRequests.pageTitle}
       />

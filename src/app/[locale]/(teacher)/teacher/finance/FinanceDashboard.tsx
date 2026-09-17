@@ -10,6 +10,7 @@ import { useState } from "react";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/teacher/finance.module.css";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
+import { formatTeacherCurrency, formatTeacherNumber } from "@/lib/teacher/TeacherNumberFormat";
 import type {
   TeacherCopy,
   TeacherFinanceMetric,
@@ -40,24 +41,15 @@ export function FinanceDashboard({ copy, locale, snapshots }: FinanceDashboardPr
 
   if (!snapshot) return null;
 
-  const currency = new Intl.NumberFormat(locale, {
-    maximumFractionDigits: 0,
-    style: "currency",
-    currency: "UZS",
-  });
   const formatMetric = (metric: TeacherFinanceMetric) => {
-    if (metric.valueType === "currency") return currency.format(metric.value);
+    if (metric.valueType === "currency") return formatTeacherCurrency(metric.value);
     if (metric.valueType === "percentage") return `${metric.value}%`;
-    return new Intl.NumberFormat(locale).format(metric.value);
+    return formatTeacherNumber(metric.value);
   };
 
   return (
     <main>
-      <TeacherPageHeader
-        description={copy.finance.description}
-        eyebrow={copy.finance.eyebrow}
-        title={copy.finance.pageTitle}
-      />
+      <TeacherPageHeader eyebrow={copy.finance.eyebrow} title={copy.finance.pageTitle} />
 
       <div
         aria-label={copy.finance.pageTitle}
@@ -81,10 +73,10 @@ export function FinanceDashboard({ copy, locale, snapshots }: FinanceDashboardPr
       <section className={styles.teacherFinance__summary}>
         <article className={styles.teacherFinance__heroCard}>
           <span>{copy.finance.income}</span>
-          <strong>{currency.format(snapshot.income)}</strong>
+          <strong>{formatTeacherCurrency(snapshot.income)}</strong>
           <div>
             <span>{copy.finance.expectedAmount}</span>
-            <b>{currency.format(snapshot.expectedAmount)}</b>
+            <b>{formatTeacherCurrency(snapshot.expectedAmount)}</b>
           </div>
           <div className={styles.teacherFinance__bar}>
             <span style={{ width: `${snapshot.paymentRate}%` }} />
