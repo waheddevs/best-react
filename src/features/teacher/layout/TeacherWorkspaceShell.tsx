@@ -11,39 +11,58 @@ import { TeacherMobileNavigation } from "@/features/teacher/layout/TeacherMobile
 import { TeacherSidebar } from "@/features/teacher/layout/TeacherSidebar";
 import { TeacherThemeProvider } from "@/features/teacher/layout/TeacherThemeProvider";
 import { TeacherTopbar } from "@/features/teacher/layout/TeacherTopbar";
+import type { TeacherCopy } from "@/types/teacher/Teacher";
 import type {
-  TeacherCopy,
-  TeacherNotificationPreview,
-  TeacherProfileData,
-} from "@/types/teacher/Teacher";
+  TeacherNoticeState,
+  TeacherTopbarProfile,
+} from "@/types/teacher/TeacherNotifications";
 
 type TeacherWorkspaceShellProps = {
   children: ReactNode;
+  connected: boolean;
   copy: TeacherCopy;
+  initialNotificationError: boolean;
   locale: Locale;
-  notifications: TeacherNotificationPreview[];
-  profile: TeacherProfileData;
+  notices: TeacherNoticeState;
+  profile: TeacherTopbarProfile;
 };
+
+const topAlignedPaths = [
+  "/teacher",
+  "/teacher/groups",
+  "/teacher/reception",
+  "/teacher/tasks",
+  "/teacher/finance",
+  "/teacher/transfer-requests",
+  "/teacher/profile",
+];
 
 export function TeacherWorkspaceShell({
   children,
+  connected,
   copy,
+  initialNotificationError,
   locale,
-  notifications,
+  notices,
   profile,
 }: TeacherWorkspaceShellProps) {
   /* HOOKS */
   const pathname = usePathname();
+  const normalizedPathname = pathname.replace(/\/+$/, "");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const isDashboard = normalizedPathname === `/${locale}/teacher`;
+  const hasTopAlignedHeader =
+    topAlignedPaths.some((path) => normalizedPathname === `/${locale}${path}`) ||
+    normalizedPathname.startsWith(`/${locale}/teacher/groups/`);
   const pageTitle = useMemo(() => {
     const match = [...teacherNavigationItems]
       .sort((first, second) => second.href.length - first.href.length)
       .find((item) => {
         const href = `/${locale}${item.href}`;
-        return pathname === href || pathname.startsWith(`${href}/`);
+        return normalizedPathname === href || normalizedPathname.startsWith(`${href}/`);
       });
     return copy.navigation[match?.key ?? "dashboard"];
-  }, [copy.navigation, locale, pathname]);
+  }, [copy.navigation, locale, normalizedPathname]);
 
   /* HANDLERS */
   const handleDrawerOpen = () => {
@@ -58,7 +77,7 @@ export function TeacherWorkspaceShell({
     <TeacherThemeProvider>
       <div className={styles.teacherShell}>
         <aside className={styles.teacherShell__desktopSidebar}>
-          <TeacherSidebar copy={copy} locale={locale} profile={profile} />
+          <TeacherSidebar copy={copy} locale={locale} />
         </aside>
 
         <Drawer
@@ -67,19 +86,20 @@ export function TeacherWorkspaceShell({
           open={isDrawerOpen}
           slotProps={{ paper: { className: styles.teacherShell__drawerPaper } }}
         >
-          <TeacherSidebar
-            copy={copy}
-            locale={locale}
-            onNavigate={handleDrawerClose}
-            profile={profile}
-          />
+          <TeacherSidebar copy={copy} locale={locale} onNavigate={handleDrawerClose} />
         </Drawer>
 
-        <div className={styles.teacherShell__workspace}>
+        <div
+          className={styles.teacherShell__workspace}
+          data-dashboard={isDashboard}
+          data-top-aligned={hasTopAlignedHeader}
+        >
           <TeacherTopbar
+            connected={connected}
             copy={copy}
+            initialNotificationError={initialNotificationError}
             locale={locale}
-            notifications={notifications}
+            notices={notices}
             onMenuOpen={handleDrawerOpen}
             pageTitle={pageTitle}
             profile={profile}

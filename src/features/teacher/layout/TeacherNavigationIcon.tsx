@@ -1,9 +1,9 @@
 import AccountBalanceWalletRounded from "@mui/icons-material/AccountBalanceWalletRounded";
+import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
 import DashboardRounded from "@mui/icons-material/DashboardRounded";
 import GroupsRounded from "@mui/icons-material/GroupsRounded";
 import ManageAccountsRounded from "@mui/icons-material/ManageAccountsRounded";
 import MoveUpRounded from "@mui/icons-material/MoveUpRounded";
-import ReceptionDeskRounded from "@mui/icons-material/RoomPreferencesRounded";
 import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
 
 import type { TeacherNavigationKey } from "@/types/teacher/Teacher";
@@ -18,7 +18,7 @@ export function TeacherNavigationIcon({ navigationKey }: TeacherNavigationIconPr
     finance: AccountBalanceWalletRounded,
     groups: GroupsRounded,
     profile: ManageAccountsRounded,
-    reception: ReceptionDeskRounded,
+    reception: CalendarMonthRounded,
     tasks: TaskAltRounded,
     transferRequests: MoveUpRounded,
   } satisfies Record<TeacherNavigationKey, typeof DashboardRounded>;

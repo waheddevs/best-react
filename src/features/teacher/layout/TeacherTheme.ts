@@ -30,7 +30,7 @@ export function createTeacherTheme(mode: TeacherThemeMode) {
       divider: isDark ? "#263750" : "#D9EDF1",
       success: { main: "#15803D" },
       warning: { main: "#B45309" },
-      error: { main: "#DC2626" },
+      error: { main: isDark ? "#F05454" : "#D32F2F" },
     },
     typography: {
       fontFamily: "var(--font-geist-sans), sans-serif",
