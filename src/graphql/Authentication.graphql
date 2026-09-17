@@ -20,12 +20,32 @@ mutation VerifyCredentialLogin($input: VerifyCredentialLoginInput!) {
   verifyCredentialLogin(input: $input) {
     accessToken
     expiresInSeconds
+    refreshToken
+    refreshExpiresAt
     user {
       id
       displayName
       role
     }
   }
+}
+
+mutation RefreshCredentialSession($input: RefreshCredentialSessionInput!) {
+  refreshCredentialSession(input: $input) {
+    accessToken
+    expiresInSeconds
+    refreshToken
+    refreshExpiresAt
+    user {
+      id
+      displayName
+      role
+    }
+  }
+}
+
+mutation RevokeCredentialSession($input: RevokeCredentialSessionInput!) {
+  revokeCredentialSession(input: $input)
 }
 
 mutation AdminProvisionUser($input: AdminProvisionUserInput!) {

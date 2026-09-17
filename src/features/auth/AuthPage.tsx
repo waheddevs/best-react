@@ -9,9 +9,10 @@ type AuthPageProps = {
   copy: AuthCopy;
   locale: Locale;
   role?: AuthRole;
+  sessionExpired?: boolean;
 };
 
-export function AuthPage({ copy, locale, role }: AuthPageProps) {
+export function AuthPage({ copy, locale, role, sessionExpired = false }: AuthPageProps) {
   if (!role) {
     return (
       <main className={styles.auth}>
@@ -43,7 +44,12 @@ export function AuthPage({ copy, locale, role }: AuthPageProps) {
         <div className={styles.auth__layout}>
           <section aria-labelledby="auth-title" className={styles.auth__panel}>
             <div aria-hidden="true" className={styles.auth__panelGlow} />
-            <AuthCredentialForm copy={copy} locale={locale} role={role} />
+            <AuthCredentialForm
+              copy={copy}
+              locale={locale}
+              role={role}
+              sessionExpired={sessionExpired}
+            />
           </section>
         </div>
       </div>

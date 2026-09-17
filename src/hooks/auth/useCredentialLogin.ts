@@ -2,7 +2,15 @@
 
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type ClipboardEvent,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 
 import type { Locale } from "@/config/Locales";
 import type { AuthCopy } from "@/dictionaries/public/Auth";
@@ -17,7 +25,7 @@ import {
   type VerifyCredentialLoginMutation,
   type VerifyCredentialLoginMutationVariables,
 } from "@/gql/graphql";
-import { executePublicApi } from "@/lib/PublicApi";
+import { executePublicApi, PublicApiError } from "@/lib/PublicApi";
 import {
   getAuthRoleFromBackend,
   type AuthLoginChallenge,
@@ -31,6 +39,7 @@ import {
 const initialValues: AuthLoginValues = {
   code: "",
   email: "",
+  lastName: "",
   name: "",
   password: "",
 };
@@ -41,14 +50,52 @@ const backendRoleByAuthRole: Record<AuthRole, BackendAuthRole> = {
   teacher: "TEACHER",
 };
 
+const credentialFieldOrder = ["name", "lastName", "email", "password"] as const;
+
 function getRemainingSeconds(timestamp: string | undefined, now: number) {
   if (!timestamp) return 0;
   return Math.max(0, Math.ceil((Date.parse(timestamp) - now) / 1000));
 }
 
+function loginRequestMessage(error: unknown, copy: AuthCopy): string {
+  return error instanceof PublicApiError && error.code === "SERVICE_UNAVAILABLE"
+    ? copy.errors.unavailable
+    : copy.errors.generic;
+}
+
+function credentialLoginErrors(error: unknown, copy: AuthCopy): AuthLoginErrors {
+  if (error instanceof PublicApiError) {
+    switch (error.code) {
+      case "LOGIN_EMAIL_INVALID":
+        return { email: copy.errors.emailMismatch };
+      case "LOGIN_FIRST_NAME_INVALID":
+        return { name: copy.errors.firstNameMismatch };
+      case "LOGIN_LAST_NAME_INVALID":
+        return { lastName: copy.errors.lastNameMismatch };
+      case "LOGIN_NAME_INVALID":
+        return { name: copy.errors.firstNameMismatch };
+      case "LOGIN_PASSWORD_INVALID":
+        return { password: copy.errors.passwordMismatch };
+      case "UNAUTHENTICATED":
+        return { form: copy.errors.credentialsRejected };
+    }
+  }
+  return { form: loginRequestMessage(error, copy) };
+}
+
+function focusFirstCredentialError(form: HTMLFormElement, nextErrors: AuthLoginErrors): void {
+  const field = credentialFieldOrder.find((fieldName) => Boolean(nextErrors[fieldName]));
+  if (!field) return;
+  window.requestAnimationFrame(() => {
+    const input = form.elements.namedItem(field);
+    if (input instanceof HTMLElement) input.focus();
+  });
+}
+
 export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole: AuthRole) {
   /* HOOKS */
   const router = useRouter();
+  const codeInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [challenge, setChallenge] = useState<AuthLoginChallenge>();
   const [errors, setErrors] = useState<AuthLoginErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,31 +112,85 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
   const expiresInSeconds = getRemainingSeconds(challenge?.expiresAt, now);
   const resendInSeconds = getRemainingSeconds(challenge?.resendAvailableAt, now);
 
-  const validateCredentials = () => {
+  const validateCredentials = (): AuthLoginErrors => {
     const nextErrors: AuthLoginErrors = {};
-    if (!values.name.trim()) nextErrors.name = copy.errors.required;
+    if (!values.name.trim()) nextErrors.name = copy.errors.nameRequired;
+    if (!values.lastName.trim()) nextErrors.lastName = copy.errors.lastNameRequired;
     if (!values.email.trim()) {
-      nextErrors.email = copy.errors.required;
+      nextErrors.email = copy.errors.emailRequired;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
       nextErrors.email = copy.errors.invalidEmail;
     }
-    if (!values.password) nextErrors.password = copy.errors.required;
-    setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
+    if (!values.password) nextErrors.password = copy.errors.passwordRequired;
+    return nextErrors;
   };
 
   /* HANDLERS */
   const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const field = event.target.name as keyof AuthLoginValues;
-    const value =
-      field === "code" ? event.target.value.replace(/\D/g, "").slice(0, 6) : event.target.value;
-    setValues((current) => ({ ...current, [field]: value }));
-    setErrors((current) => ({ ...current, [field]: undefined, form: undefined }));
+    setValues((current) => ({ ...current, [field]: event.target.value }));
+    setErrors((current) => ({
+      ...current,
+      [field]: undefined,
+      form: undefined,
+    }));
+  };
+
+  const handleCodeDigitChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
+    const digits = event.target.value.replace(/\D/g, "");
+    const slots = values.code.padEnd(6, " ").slice(0, 6).split("");
+    const entered = digits.length > 1 && !slots[index].trim() ? digits : digits.slice(-1);
+    for (let offset = 0; offset < entered.length && index + offset < 6; offset += 1) {
+      slots[index + offset] = entered[offset];
+    }
+    if (!entered) slots[index] = " ";
+    setValues((current) => ({ ...current, code: slots.join("") }));
+    setErrors((current) => ({ ...current, code: undefined, form: undefined }));
+    if (entered) codeInputRefs.current[Math.min(index + entered.length, 5)]?.focus();
+  };
+
+  const handleCodeDigitKeyDown = (index: number, event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "ArrowLeft" && index > 0) {
+      event.preventDefault();
+      codeInputRefs.current[index - 1]?.focus();
+    } else if (event.key === "ArrowRight" && index < 5) {
+      event.preventDefault();
+      codeInputRefs.current[index + 1]?.focus();
+    } else if (event.key === "Backspace" && !values.code[index]?.trim() && index > 0) {
+      event.preventDefault();
+      const slots = values.code.padEnd(6, " ").slice(0, 6).split("");
+      slots[index - 1] = " ";
+      setValues((current) => ({ ...current, code: slots.join("") }));
+      setErrors((current) => ({ ...current, code: undefined, form: undefined }));
+      codeInputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleCodePaste = (index: number, event: ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const digits = event.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6 - index);
+    if (!digits) return;
+    const slots = values.code.padEnd(6, " ").slice(0, 6).split("");
+    for (let offset = 0; offset < digits.length; offset += 1) {
+      slots[index + offset] = digits[offset];
+    }
+    setValues((current) => ({ ...current, code: slots.join("") }));
+    setErrors((current) => ({ ...current, code: undefined, form: undefined }));
+    codeInputRefs.current[Math.min(index + digits.length, 5)]?.focus();
   };
 
   const handleCredentialSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!validateCredentials()) return;
+    const form = event.currentTarget;
+    const validationErrors = validateCredentials();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      focusFirstCredentialError(form, validationErrors);
+      return;
+    }
     setIsSubmitting(true);
     setErrors({});
     try {
@@ -102,7 +203,9 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
           input: {
             email: values.email.trim(),
             expectedRole: backendRoleByAuthRole[selectedRole],
-            name: values.name.trim(),
+            firstName: values.name.trim(),
+            lastName: values.lastName.trim(),
+            name: [values.name, values.lastName].join(" ").trim().replace(/\s+/g, " "),
             password: values.password,
           },
         },
@@ -112,8 +215,10 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
       setValues((current) => ({ ...current, code: "", password: "" }));
       setNow(Date.now());
       setStep("verification");
-    } catch {
-      setErrors({ form: copy.errors.generic });
+    } catch (error) {
+      const nextErrors = credentialLoginErrors(error, copy);
+      setErrors(nextErrors);
+      focusFirstCredentialError(form, nextErrors);
     } finally {
       setIsSubmitting(false);
     }
@@ -121,7 +226,7 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
 
   const handleVerificationSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!challenge || values.code.length !== 6) {
+    if (!challenge || !/^\d{6}$/.test(values.code)) {
       setErrors({ code: copy.errors.codeLength });
       return;
     }
@@ -144,6 +249,8 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
       const result = await signIn("credentials", {
         accessToken: data.verifyCredentialLogin.accessToken,
         expiresInSeconds: String(data.verifyCredentialLogin.expiresInSeconds),
+        refreshExpiresAt: data.verifyCredentialLogin.refreshExpiresAt,
+        refreshToken: data.verifyCredentialLogin.refreshToken,
         redirect: false,
       });
       if (result?.error) {
@@ -153,8 +260,13 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
       setValues(initialValues);
       router.replace(`/${locale}/${authenticatedRole}`);
       router.refresh();
-    } catch {
-      setErrors({ form: copy.errors.generic });
+    } catch (error) {
+      setErrors(
+        error instanceof PublicApiError &&
+          (error.code === "LOGIN_CODE_INVALID" || error.code === "UNAUTHENTICATED")
+          ? { code: copy.errors.codeRejected }
+          : { form: loginRequestMessage(error, copy) },
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -176,8 +288,13 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
       setChallenge(data.resendCredentialLoginCode);
       setValues((current) => ({ ...current, code: "" }));
       setNow(Date.now());
-    } catch {
-      setErrors({ form: copy.errors.generic });
+      codeInputRefs.current[0]?.focus();
+    } catch (error) {
+      setErrors(
+        error instanceof PublicApiError && error.code === "LOGIN_CODE_INVALID"
+          ? { code: copy.errors.codeRejected }
+          : { form: loginRequestMessage(error, copy) },
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -192,9 +309,13 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
 
   return {
     challenge,
+    codeInputRefs,
     errors,
     expiresInSeconds,
     handleBackToLogin,
+    handleCodeDigitChange,
+    handleCodeDigitKeyDown,
+    handleCodePaste,
     handleCredentialSubmit,
     handleFieldChange,
     handleResend,

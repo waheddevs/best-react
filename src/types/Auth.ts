@@ -7,6 +7,7 @@ export type AuthStep = "credentials" | "verification";
 export type AuthLoginValues = {
   code: string;
   email: string;
+  lastName: string;
   name: string;
   password: string;
 };
