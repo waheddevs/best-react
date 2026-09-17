@@ -2,191 +2,136 @@
 
 /* TeacherTaskList */
 .teacherTasks__filters {
-  display: flex;
-  width: fit-content;
-  gap: 5px;
-  margin-bottom: 18px;
-  padding: 5px;
+  @apply mb-[18px] flex w-fit gap-[5px] p-[5px];
   border: 1px solid var(--teacher-border);
-  border-radius: 14px;
+  @apply rounded-[14px];
   background: var(--teacher-surface);
 }
 
 .teacherTasks__filters button {
-  min-height: 38px;
-  padding: 0 15px;
+  @apply min-h-[38px] p-[0_15px];
   border: 0;
-  border-radius: 10px;
+  @apply rounded-[10px];
   background: transparent;
-  color: var(--teacher-muted);
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 720;
+  @apply cursor-pointer text-[13px] font-[720] text-(--teacher-muted);
 }
 
 .teacherTasks__filters button[data-active="true"] {
   background: var(--teacher-primary);
-  color: white;
+  @apply text-white;
 }
 
 .teacherTasks__list {
-  display: grid;
-  gap: 12px;
+  @apply grid gap-[12px];
 }
 
 .teacherTasks__card {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 16px;
-  padding: 18px;
+  @apply grid grid-cols-[auto_minmax(0,_1fr)_auto] items-center gap-[16px] p-[18px];
   border: 1px solid var(--teacher-border);
-  border-radius: 18px;
+  @apply rounded-[18px];
   background: var(--teacher-surface);
   box-shadow: var(--teacher-shadow);
 }
 
 .teacherTasks__card[data-completed="true"] {
-  opacity: 0.72;
+  @apply opacity-[0.72];
+}
+
+.teacherTasks__card[data-target="true"] {
+  border-color: var(--teacher-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 16%, transparent);
 }
 
 .teacherTasks__icon {
-  display: grid;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  border-radius: 15px;
+  @apply grid h-[48px] w-[48px] place-items-center rounded-[15px];
 }
 
 .teacherTasks__icon[data-tone="warning"] {
   background: color-mix(in srgb, var(--teacher-warning) 18%, transparent);
-  color: var(--teacher-warning);
+  @apply text-(--teacher-warning);
 }
 
 .teacherTasks__icon[data-tone="danger"] {
   background: color-mix(in srgb, var(--teacher-danger) 12%, transparent);
-  color: var(--teacher-danger);
+  @apply text-(--teacher-danger);
 }
 
 .teacherTasks__content,
 .teacherTasks__heading {
-  min-width: 0;
+  @apply min-w-0;
 }
 
 .teacherTasks__heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+  @apply flex items-start justify-between gap-[12px];
 }
 
 .teacherTasks__heading h2 {
-  color: var(--teacher-heading);
-  font-size: 15px;
-  font-weight: 790;
+  @apply text-[15px] font-[790] text-(--teacher-heading);
 }
 
 .teacherTasks__heading p {
-  max-width: 68ch;
-  margin-top: 4px;
-  color: var(--teacher-muted);
-  font-size: 12px;
-  line-height: 1.5;
+  @apply mt-[4px] max-w-[68ch] text-[12px] leading-[1.5] text-(--teacher-muted);
 }
 
 .teacherTasks__details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  margin-top: 12px;
+  @apply mt-[12px] flex flex-wrap gap-[18px];
 }
 
 .teacherTasks__details div {
-  display: flex;
-  gap: 6px;
+  @apply flex gap-[6px];
 }
 .teacherTasks__details dt {
-  color: var(--teacher-muted);
-  font-size: 11px;
+  @apply text-[11px] text-(--teacher-muted);
 }
 .teacherTasks__details dd {
-  color: var(--teacher-text);
-  font-size: 11px;
-  font-weight: 720;
+  @apply text-[11px] font-[720] text-(--teacher-text);
 }
 
 .teacherTasks__completeState {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--teacher-success);
-  font-size: 12px;
-  font-weight: 760;
+  @apply inline-flex items-center gap-[6px] text-[12px] font-[760] text-(--teacher-success);
 }
 
 .teacherTasks__actions {
-  display: flex;
-  align-items: center;
-  gap: 7px;
+  @apply flex items-center gap-[7px];
 }
 .teacherTasks__actions details {
-  position: relative;
+  @apply relative;
 }
 .teacherTasks__actions summary {
-  display: grid;
-  width: 40px;
-  height: 40px;
-  place-items: center;
-  border-radius: 11px;
-  color: var(--teacher-muted);
-  cursor: pointer;
-  list-style: none;
+  @apply grid h-[40px] w-[40px] cursor-pointer list-none place-items-center rounded-[11px] text-(--teacher-muted);
 }
 .teacherTasks__actions summary::-webkit-details-marker {
-  display: none;
+  @apply hidden;
 }
 .teacherTasks__actions details[open] summary {
   background: var(--teacher-surface-subtle);
-  color: var(--teacher-primary);
+  @apply text-(--teacher-primary);
 }
 .teacherTasks__actions details button {
-  position: absolute;
-  z-index: 2;
-  top: 44px;
-  right: 0;
-  min-width: 110px;
-  min-height: 40px;
-  padding: 0 12px;
+  @apply absolute top-[44px] right-0 z-[2] min-h-[40px] min-w-[110px] p-[0_12px];
   border: 1px solid var(--teacher-border);
-  border-radius: 10px;
+  @apply rounded-[10px];
   background: var(--teacher-surface);
-  color: var(--teacher-text);
+  @apply text-(--teacher-text);
   box-shadow: var(--teacher-shadow);
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 730;
+  @apply cursor-pointer text-[12px] font-[730];
 }
 
 @media (width <= 760px) {
   .teacherTasks__filters {
-    width: 100%;
+    @apply w-full;
   }
   .teacherTasks__filters button {
-    flex: 1;
-    padding-inline: 8px;
+    @apply flex-1 px-[8px];
   }
   .teacherTasks__card {
-    grid-template-columns: auto 1fr;
-    align-items: start;
-    padding: 15px;
+    @apply grid-cols-[auto_1fr] items-start p-[15px];
   }
   .teacherTasks__actions,
   .teacherTasks__completeState {
-    grid-column: 1 / -1;
-    justify-self: stretch;
-    justify-content: center;
+    @apply col-span-full justify-center justify-self-stretch;
   }
   .teacherTasks__heading {
-    display: grid;
+    @apply grid;
   }
 }

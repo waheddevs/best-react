@@ -2,10 +2,9 @@
 
 /* ReceptionSchedule */
 .teacherReception__tableWrap {
-  max-width: 100%;
-  overflow-x: auto;
+  @apply max-w-full overflow-x-auto;
   border: 1px solid var(--teacher-border);
-  border-radius: 18px;
+  @apply rounded-[18px];
   background: var(--teacher-surface);
   box-shadow: var(--teacher-shadow);
 }
@@ -14,49 +13,40 @@
   outline-offset: 3px;
 }
 .teacherReception__table {
-  width: 100%;
-  min-width: 680px;
+  @apply w-full min-w-[560px];
   border-collapse: collapse;
 }
 .teacherReception__table th,
 .teacherReception__table td {
-  padding: 15px 18px;
+  @apply px-[18px] py-[15px] text-left;
   border-bottom: 1px solid var(--teacher-border);
-  text-align: left;
 }
 .teacherReception__table thead th {
+  @apply text-[11px] font-[790] tracking-[0.04em] uppercase;
   background: var(--teacher-surface-subtle);
-  color: var(--teacher-muted);
-  font-size: 11px;
-  font-weight: 790;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  @apply text-(--teacher-muted);
 }
 .teacherReception__table tbody tr:last-child th,
 .teacherReception__table tbody tr:last-child td {
   border-bottom: 0;
 }
-.teacherReception__table tbody tr[data-active="true"] {
-  background: color-mix(in srgb, var(--teacher-success) 5%, var(--teacher-surface));
-}
 .teacherReception__table tbody th {
-  color: var(--teacher-primary);
-  font-size: 14px;
+  @apply text-sm;
+  @apply text-(--teacher-primary);
 }
 .teacherReception__table tbody td {
-  color: var(--teacher-text);
-  font-size: 12px;
+  @apply text-xs;
+  @apply text-(--teacher-text);
 }
 .teacherReception__table td strong,
 .teacherReception__table td small {
-  display: block;
+  @apply block;
 }
 .teacherReception__table td strong {
-  color: var(--teacher-heading);
-  font-size: 13px;
+  @apply text-[13px];
+  @apply text-(--teacher-heading);
 }
 .teacherReception__table td small {
-  margin-top: 3px;
-  color: var(--teacher-muted);
-  font-size: 10px;
+  @apply mt-[3px] text-[10px];
+  @apply text-(--teacher-muted);
 }

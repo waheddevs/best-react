@@ -2,56 +2,42 @@
 
 /* TransferRequestList */
 .teacherTransfers__filters {
-  display: flex;
-  width: fit-content;
-  gap: 5px;
-  margin-bottom: 18px;
-  padding: 5px;
+  @apply mb-[18px] flex w-fit gap-[5px] p-[5px];
   border: 1px solid var(--teacher-border);
-  border-radius: 14px;
+  @apply rounded-[14px];
   background: var(--teacher-surface);
 }
 .teacherTransfers__filters button {
-  min-height: 38px;
-  padding: 0 14px;
+  @apply min-h-[38px] p-[0_14px];
   border: 0;
-  border-radius: 10px;
+  @apply rounded-[10px];
   background: transparent;
-  color: var(--teacher-muted);
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 740;
+  @apply cursor-pointer text-[12px] font-[740] text-(--teacher-muted);
 }
 .teacherTransfers__filters button[data-active="true"] {
   background: var(--teacher-primary);
-  color: white;
+  @apply text-white;
 }
 .teacherTransfers__list {
-  display: grid;
-  gap: 10px;
+  @apply grid gap-[10px];
 }
 .teacherTransfers__list article {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 17px;
+  @apply flex items-center justify-between p-[17px];
   border: 1px solid var(--teacher-border);
-  border-radius: 16px;
+  @apply rounded-[16px];
   background: var(--teacher-surface);
 }
 .teacherTransfers__list strong {
-  color: var(--teacher-heading);
+  @apply text-(--teacher-heading);
 }
 .teacherTransfers__list span {
-  color: var(--teacher-muted);
-  font-size: 12px;
+  @apply text-[12px] text-(--teacher-muted);
 }
 @media (width <= 560px) {
   .teacherTransfers__filters {
-    width: 100%;
+    @apply w-full;
   }
   .teacherTransfers__filters button {
-    flex: 1;
-    padding-inline: 6px;
+    @apply flex-1 px-[6px];
   }
 }
