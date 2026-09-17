@@ -90,11 +90,11 @@
 }
 
 .courses__registrationConsent {
-  @apply flex items-start gap-3 text-sm leading-6 text-muted;
+  @apply flex cursor-pointer items-start gap-3 text-sm leading-6 text-muted;
 }
 
 .courses__registrationConsent input {
-  @apply mt-1 h-4 w-4 shrink-0 accent-action;
+  @apply mt-1 h-4 w-4 shrink-0 cursor-pointer accent-action;
 }
 
 .courses__registrationConsentError {

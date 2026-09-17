@@ -4,12 +4,12 @@ import { LocaleSwitcher } from "@/components/navigation/LocaleSwitcher";
 import { MobileNavigation } from "@/components/navigation/MobileNavigation";
 import { NavbarLink } from "@/components/navigation/NavbarLink";
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Container } from "@/components/ui/Container";
 import { navbarNavigationItems } from "@/config/Navigation";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/layout/navbar.module.css";
 import type { Dictionary } from "@/dictionaries/public/Types";
-import { AuthNavbarActions } from "@/features/auth/AuthNavbarActions";
 
 type NavbarProps = {
   locale: Locale;
@@ -51,7 +51,18 @@ export function Navbar({ locale, labels }: NavbarProps) {
             <LocaleSwitcher locale={locale} label={labels.language} />
           </div>
           <div className={styles.navbar__auth}>
-            <AuthNavbarActions locale={locale} labels={labels} />
+            <ButtonLink
+              className={styles.navbar__login}
+              href={`/${locale}/login`}
+              endIcon={null}
+              hoverEffect="jump"
+              rel="noopener noreferrer"
+              shape="rounded"
+              size="small"
+              target="_blank"
+            >
+              {labels.login}
+            </ButtonLink>
           </div>
           <MobileNavigation locale={locale} labels={labels} />
         </div>

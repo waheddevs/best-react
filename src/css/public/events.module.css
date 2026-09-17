@@ -467,11 +467,11 @@
 }
 
 .events__registrationConsent {
-  @apply mt-5 flex items-start gap-3 text-sm leading-6 text-muted;
+  @apply mt-5 flex cursor-pointer items-start gap-3 text-sm leading-6 text-muted;
 }
 
 .events__registrationConsent input {
-  @apply mt-1 h-4 w-4 shrink-0 accent-action;
+  @apply mt-1 h-4 w-4 shrink-0 cursor-pointer accent-action;
 }
 
 .events__registrationConsentError {
@@ -484,6 +484,10 @@
 
 .events__registrationField > span:first-child {
   @apply text-xs font-extrabold text-heading;
+}
+
+.events__registrationField small {
+  @apply text-xs text-coral;
 }
 
 .events__registrationField input {

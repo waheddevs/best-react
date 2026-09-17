@@ -334,11 +334,11 @@
 }
 
 .exams__consent {
-  @apply mt-6 flex items-start gap-3 text-sm leading-6 text-muted;
+  @apply mt-6 flex cursor-pointer items-start gap-3 text-sm leading-6 text-muted;
 }
 
 .exams__consent input {
-  @apply mt-1 h-4 w-4 shrink-0 accent-action;
+  @apply mt-1 h-4 w-4 shrink-0 cursor-pointer accent-action;
 }
 
 .exams__consentError {
