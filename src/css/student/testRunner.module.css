@@ -158,10 +158,14 @@
   padding: 11px 14px;
   color: #3f3c52;
 }
+.testRunner__choices label {
+  cursor: pointer;
+}
 .testRunner__choices input {
   width: 20px;
   height: 20px;
   accent-color: #6658d9;
+  cursor: pointer;
 }
 .testRunner__matching label,
 .testRunner__ordering li {
