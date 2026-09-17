@@ -1,15 +1,11 @@
+import { useMutation } from "@apollo/client/react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
-import {
-  SubmitContactRequestDocument,
-  type SubmitContactRequestInput,
-  type SubmitContactRequestMutation,
-} from "@/gql/graphql";
+import { SubmitContactRequestDocument } from "@/gql/graphql";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
-import { executePublicApi } from "@/lib/PublicApi";
-import { getApiLanguage } from "@/lib/PublicContentApi";
+import { getApiLanguage } from "@/lib/ApiLanguage";
 
 type FormValues = {
   consent: boolean;
@@ -34,6 +30,9 @@ const initialValues: FormValues = {
 export function useContactForm(copy: PageCopy, locale: Locale) {
   /* HOOKS */
   const notify = useNotifications();
+  const [submitContactRequest] = useMutation(SubmitContactRequestDocument, {
+    fetchPolicy: "no-cache",
+  });
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,9 +70,8 @@ export function useContactForm(copy: PageCopy, locale: Locale) {
     setIsSubmitting(true);
     try {
       await notify.promise(
-        executePublicApi<SubmitContactRequestMutation, { input: SubmitContactRequestInput }>(
-          SubmitContactRequestDocument,
-          {
+        submitContactRequest({
+          variables: {
             input: {
               consent: values.consent,
               email: values.email.trim(),
@@ -83,8 +81,7 @@ export function useContactForm(copy: PageCopy, locale: Locale) {
               subject: values.subject.trim(),
             },
           },
-          { cache: "no-store" },
-        ),
+        }),
         {
           success: {
             message: copy.contact.serviceNotice,

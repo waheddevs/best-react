@@ -1,4 +1,5 @@
 import type { Locale } from "@/config/Locales";
+import { getApiLanguage } from "@/lib/ApiLanguage";
 import {
   PublicCourseDocument,
   PublicCoursesDocument,
@@ -22,12 +23,11 @@ import type { FaqCategory, FaqItem, PublicEvent } from "@/types/PublicContent";
 import type { PublicCourse } from "@/types/PublicCourse";
 import type { PublicResultVideo } from "@/types/PublicResult";
 
-import { executePublicApi } from "./PublicApi";
+import { executeApolloQuery } from "./apollo/ApolloServerClient";
 
 type CourseNode = PublicCourseQuery["publicCourse"];
 type EventNode = PublicEventQuery["publicEvent"];
 
-const languageByLocale: Record<Locale, Language> = { en: "EN", ru: "RU", uz: "UZ" };
 const faqCategories = new Set<FaqCategory>([
   "courses",
   "format",
@@ -37,9 +37,9 @@ const faqCategories = new Set<FaqCategory>([
 ]);
 
 export async function getPublicCourses(locale: Locale): Promise<PublicCourse[]> {
-  const data = await executePublicApi<PublicCoursesQuery, { language: Language; first: number }>(
+  const data = await executeApolloQuery<PublicCoursesQuery, { language: Language; first: number }>(
     PublicCoursesDocument,
-    { first: 50, language: languageByLocale[locale] },
+    { first: 50, language: getApiLanguage(locale) },
     { revalidate: 300 },
   );
   return data.publicCourses.edges.map(({ node }) => mapCourse(node));
@@ -47,9 +47,9 @@ export async function getPublicCourses(locale: Locale): Promise<PublicCourse[]> 
 
 export async function getPublicCourse(locale: Locale, slug: string): Promise<PublicCourse | null> {
   try {
-    const data = await executePublicApi<PublicCourseQuery, { language: Language; slug: string }>(
+    const data = await executeApolloQuery<PublicCourseQuery, { language: Language; slug: string }>(
       PublicCourseDocument,
-      { language: languageByLocale[locale], slug },
+      { language: getApiLanguage(locale), slug },
       { revalidate: 300 },
     );
     return mapCourse(data.publicCourse);
@@ -59,9 +59,9 @@ export async function getPublicCourse(locale: Locale, slug: string): Promise<Pub
 }
 
 export async function getPublicEvents(locale: Locale): Promise<PublicEvent[]> {
-  const data = await executePublicApi<PublicEventsQuery, { language: Language; first: number }>(
+  const data = await executeApolloQuery<PublicEventsQuery, { language: Language; first: number }>(
     PublicEventsDocument,
-    { first: 50, language: languageByLocale[locale] },
+    { first: 50, language: getApiLanguage(locale) },
     { revalidate: 300 },
   );
   return data.publicEvents.edges.map(({ node }) => mapEvent(node));
@@ -72,9 +72,9 @@ export async function getPublicEvent(
   slug: string,
 ): Promise<{ detail: EventDetailLocaleContent; event: PublicEvent } | null> {
   try {
-    const data = await executePublicApi<PublicEventQuery, { language: Language; slug: string }>(
+    const data = await executeApolloQuery<PublicEventQuery, { language: Language; slug: string }>(
       PublicEventDocument,
-      { language: languageByLocale[locale], slug },
+      { language: getApiLanguage(locale), slug },
       { revalidate: 300 },
     );
     const node = data.publicEvent;
@@ -99,9 +99,9 @@ export async function getPublicEvent(
 }
 
 export async function getPublicFaq(locale: Locale): Promise<FaqItem[]> {
-  const data = await executePublicApi<PublicFaqQuery, { language: Language }>(
+  const data = await executeApolloQuery<PublicFaqQuery, { language: Language }>(
     PublicFaqDocument,
-    { language: languageByLocale[locale] },
+    { language: getApiLanguage(locale) },
     { revalidate: 300 },
   );
   return data.publicFaq.map((item) => ({
@@ -117,9 +117,9 @@ export async function getPublicFaq(locale: Locale): Promise<FaqItem[]> {
 export async function getPublicExamData(
   locale: Locale,
 ): Promise<{ dates: MockExamDate[]; options: PublicExamOption[] }> {
-  const data = await executePublicApi<PublicExamOfferingsQuery, { language: Language }>(
+  const data = await executeApolloQuery<PublicExamOfferingsQuery, { language: Language }>(
     PublicExamOfferingsDocument,
-    { language: languageByLocale[locale] },
+    { language: getApiLanguage(locale) },
     { revalidate: 60 },
   );
   const mock = data.publicExamOfferings.find((item) => item.key === "mock");
@@ -143,9 +143,9 @@ export async function getPublicExamData(
 }
 
 export async function getPublicResultVideos(locale: Locale): Promise<PublicResultVideo[]> {
-  const data = await executePublicApi<PublicResultVideosQuery, { language: Language }>(
+  const data = await executeApolloQuery<PublicResultVideosQuery, { language: Language }>(
     PublicResultVideosDocument,
-    { language: languageByLocale[locale] },
+    { language: getApiLanguage(locale) },
     { revalidate: 300 },
   );
   return data.publicResultVideos.map((item) => ({
@@ -156,10 +156,6 @@ export async function getPublicResultVideos(locale: Locale): Promise<PublicResul
     title: localized(item.title),
     videoSrc: item.videoPath,
   }));
-}
-
-export function getApiLanguage(locale: Locale): Language {
-  return languageByLocale[locale];
 }
 
 function localized<T>(value: T): Record<Locale, T> {

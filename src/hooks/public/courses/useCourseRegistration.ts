@@ -1,14 +1,11 @@
+import { useMutation } from "@apollo/client/react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
-import {
-  RegisterForCourseDocument,
-  type RegisterForCourseInput,
-  type RegisterForCourseMutation,
-} from "@/gql/graphql";
+import { RegisterForCourseDocument } from "@/gql/graphql";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
-import { executePublicApi } from "@/lib/PublicApi";
-import { getApiLanguage } from "@/lib/PublicContentApi";
+import { toPublicApiError } from "@/lib/apollo/ApolloError";
+import { getApiLanguage } from "@/lib/ApiLanguage";
 import { formatPhoneNumber, normalizePhoneNumber, validatePhoneNumber } from "@/lib/PhoneNumber";
 import type { CourseRegistrationCopy, CourseRegistrationValues } from "@/types/CourseRegistration";
 
@@ -28,6 +25,9 @@ export function useCourseRegistration(
   copy: CourseRegistrationCopy,
 ) {
   /* HOOKS */
+  const [registerForCourse] = useMutation(RegisterForCourseDocument, {
+    fetchPolicy: "no-cache",
+  });
   const [errors, setErrors] = useState<Errors>({});
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,9 +71,8 @@ export function useCourseRegistration(
     setIsSubmitting(true);
     try {
       await notify.promise(
-        executePublicApi<RegisterForCourseMutation, { input: RegisterForCourseInput }>(
-          RegisterForCourseDocument,
-          {
+        registerForCourse({
+          variables: {
             input: {
               consent: values.consent,
               courseSlug,
@@ -84,9 +83,18 @@ export function useCourseRegistration(
               phone: normalizePhoneNumber(values.phone),
             },
           },
-          { cache: "no-store" },
-        ),
+        }),
         {
+          error: (error) => {
+            const apiError = toPublicApiError(error);
+            return apiError.code === "CONFLICT" &&
+              apiError.message === "Course registration has already been received"
+              ? {
+                  message: copy.alreadySubmittedMessage,
+                  title: copy.alreadySubmittedTitle,
+                }
+              : {};
+          },
           success: {
             message: copy.successMessage.replace("{course}", courseTitle),
             title: copy.successTitle,

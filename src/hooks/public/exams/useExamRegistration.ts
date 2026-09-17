@@ -1,17 +1,13 @@
 "use client";
 
 import type { SelectChangeEvent } from "@mui/material/Select";
+import { useMutation } from "@apollo/client/react";
 import { useCallback, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
-import {
-  SubmitExamRegistrationDocument,
-  type SubmitExamRegistrationInput,
-  type SubmitExamRegistrationMutation,
-} from "@/gql/graphql";
+import { SubmitExamRegistrationDocument } from "@/gql/graphql";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
-import { executePublicApi } from "@/lib/PublicApi";
-import { getApiLanguage } from "@/lib/PublicContentApi";
+import { getApiLanguage } from "@/lib/ApiLanguage";
 import { formatPhoneNumber, normalizePhoneNumber, validatePhoneNumber } from "@/lib/PhoneNumber";
 import type {
   ExamPreviewCopy,
@@ -33,6 +29,9 @@ const initialValues: ExamRegistrationValues = {
 
 export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
   /* HOOKS */
+  const [submitExamRegistration] = useMutation(SubmitExamRegistrationDocument, {
+    fetchPolicy: "no-cache",
+  });
   const pendingAlertRef = useRef<CenterAlertInput | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedExam, setSelectedExam] = useState<PublicExamOption | null>(null);
@@ -105,9 +104,8 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
     setIsSubmitting(true);
     try {
       await promise(
-        executePublicApi<SubmitExamRegistrationMutation, { input: SubmitExamRegistrationInput }>(
-          SubmitExamRegistrationDocument,
-          {
+        submitExamRegistration({
+          variables: {
             input: {
               consent: values.consent,
               currentLevel: values.currentLevel,
@@ -119,8 +117,7 @@ export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
               ...(values.mockDate ? { sessionId: values.mockDate } : {}),
             },
           },
-          { cache: "no-store" },
-        ),
+        }),
       );
       pendingAlertRef.current = {
         closeLabel: copy.done,
