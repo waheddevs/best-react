@@ -1,0 +1,68 @@
+@reference "../../app/globals.css";
+
+/* AdminAssignTeacherTaskForm */
+.adminTeacherTasks {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #d8e8f2;
+  border-radius: 1.25rem;
+  background: #fff;
+}
+
+.adminTeacherTasks h2 {
+  margin-bottom: 1rem;
+  color: #122942;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.adminTeacherTasks form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.adminTeacherTasks label {
+  display: grid;
+  gap: 0.4rem;
+  color: #445b74;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.adminTeacherTasks input,
+.adminTeacherTasks select {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cde1ed;
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #122942;
+}
+
+.adminTeacherTasks button {
+  width: fit-content;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.7rem;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.adminTeacherTasks button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.adminTeacherTasks > p {
+  margin-top: 0.75rem;
+  color: #445b74;
+}
+
+@media (max-width: 700px) {
+  .adminTeacherTasks form {
+    grid-template-columns: 1fr;
+  }
+}

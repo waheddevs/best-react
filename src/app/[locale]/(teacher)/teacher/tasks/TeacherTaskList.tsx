@@ -48,7 +48,6 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
             {copy.common.back}
           </ButtonLink>
         }
-        description={copy.tasks.description}
         eyebrow={copy.tasks.eyebrow}
         title={copy.tasks.pageTitle}
       />

@@ -8,6 +8,7 @@ import Link from "next/link";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/admin/workspace.module.css";
 import { AdminProvisionUserForm } from "@/features/admin/users/AdminProvisionUserForm";
+import { AdminAssignTeacherTaskForm } from "@/features/admin/notifications/AdminAssignTeacherTaskForm";
 import { useAdminWorkspaceRecords } from "@/hooks/admin/useAdminWorkspaceRecords";
 import type {
   AdminProvisionUserCopy,
@@ -21,6 +22,7 @@ type AdminSectionPageProps = {
   provisionCopy?: AdminProvisionUserCopy;
   provisionRole?: ProvisionableUserRole;
   section: AdminSectionCopy;
+  taskRecipients?: Array<{ id: string; name: string }>;
 };
 
 export function AdminSectionPage({
@@ -29,6 +31,7 @@ export function AdminSectionPage({
   provisionCopy,
   provisionRole,
   section,
+  taskRecipients,
 }: AdminSectionPageProps) {
   /* HOOKS */
   const {
@@ -76,6 +79,9 @@ export function AdminSectionPage({
       </section>
       {provisionCopy && provisionRole ? (
         <AdminProvisionUserForm copy={provisionCopy} role={provisionRole} />
+      ) : null}
+      {taskRecipients ? (
+        <AdminAssignTeacherTaskForm locale={locale} teachers={taskRecipients} />
       ) : null}
       <div className={styles.adminWorkspace__toolbar}>
         <label>
