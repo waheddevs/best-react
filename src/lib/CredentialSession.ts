@@ -1,10 +1,27 @@
 import "server-only";
 
 import type { BackendAuthRole } from "@/types/Auth";
+import {
+  RefreshCredentialSessionDocument,
+  type RefreshCredentialSessionMutation,
+  type RefreshCredentialSessionMutationVariables,
+  RevokeCredentialSessionDocument,
+  type RevokeCredentialSessionMutation,
+  type RevokeCredentialSessionMutationVariables,
+} from "@/gql/graphql";
+import { executePublicApi } from "@/lib/PublicApi";
 
 type CredentialIdentity = {
   displayName: string;
   id: string;
+  role: BackendAuthRole;
+};
+
+export type RefreshedCredentialSession = {
+  accessToken: string;
+  expiresInSeconds: number;
+  refreshExpiresAt: string;
+  refreshToken: string;
   role: BackendAuthRole;
 };
 
@@ -55,4 +72,29 @@ export async function validateCredentialAccessToken(
   } catch {
     return null;
   }
+}
+
+export async function refreshCredentialSession(
+  refreshToken: string,
+): Promise<RefreshedCredentialSession> {
+  const data = await executePublicApi<
+    RefreshCredentialSessionMutation,
+    RefreshCredentialSessionMutationVariables
+  >(RefreshCredentialSessionDocument, { input: { refreshToken } }, { cache: "no-store" });
+  const refreshed = data.refreshCredentialSession;
+  return {
+    accessToken: refreshed.accessToken,
+    expiresInSeconds: refreshed.expiresInSeconds,
+    refreshExpiresAt: refreshed.refreshExpiresAt,
+    refreshToken: refreshed.refreshToken,
+    role: refreshed.user.role,
+  };
+}
+
+export async function revokeCredentialSession(refreshToken: string): Promise<void> {
+  await executePublicApi<RevokeCredentialSessionMutation, RevokeCredentialSessionMutationVariables>(
+    RevokeCredentialSessionDocument,
+    { input: { refreshToken } },
+    { cache: "no-store" },
+  );
 }

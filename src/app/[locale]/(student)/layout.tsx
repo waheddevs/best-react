@@ -1,10 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { DashboardServiceUnavailable } from "@/components/ui/DashboardServiceUnavailable";
 import { isLocale } from "@/config/Locales";
 import { getStudentWorkspaceCopy } from "@/dictionaries/student/StudentWorkspace";
 import { StudentWorkspaceShell } from "@/features/student/layout/StudentWorkspaceShell";
-import { canAccessDashboard } from "@/lib/DashboardAccess";
+import { getDashboardAccessState } from "@/lib/DashboardAccess";
 import { StudentThemeProvider } from "@/theme/StudentThemeProvider";
 
 export const metadata = { robots: { follow: false, index: false } };
@@ -21,8 +22,15 @@ export default async function StudentLayout({ children, params }: StudentLayoutP
     notFound();
   }
 
-  if (!(await canAccessDashboard("STUDENT"))) {
+  const accessState = await getDashboardAccessState("STUDENT");
+  if (accessState === "expired") {
+    redirect(`/${locale}/login?role=student&reason=session-expired`);
+  }
+  if (accessState === "unauthenticated") {
     redirect(`/${locale}/login?role=student`);
+  }
+  if (accessState === "unavailable") {
+    return <DashboardServiceUnavailable locale={locale} />;
   }
 
   return (

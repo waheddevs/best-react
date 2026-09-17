@@ -154,7 +154,8 @@
   backdrop-filter: blur(18px);
 }
 .studentShell__menuButton,
-.studentShell__bell {
+.studentShell__bell,
+.studentShell__signOut {
   display: grid;
   width: 44px;
   height: 44px;
@@ -165,6 +166,9 @@
   color: var(--student-primary-strong);
   text-decoration: none;
   box-shadow: 0 8px 24px rgb(61 51 126 / 8%);
+}
+.studentShell__signOut {
+  cursor: pointer;
 }
 .studentShell__menuButton,
 .studentShell__mobileBrand {

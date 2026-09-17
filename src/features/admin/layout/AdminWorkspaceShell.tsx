@@ -1,8 +1,10 @@
 "use client";
 
 import CloseRounded from "@mui/icons-material/CloseRounded";
+import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import MenuOpenRounded from "@mui/icons-material/MenuOpenRounded";
 import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -101,6 +103,15 @@ export function AdminWorkspaceShell({
             >
               <NotificationsNoneRounded />
             </Link>
+            <button
+              aria-label={copy.common.logoutLabel}
+              className={styles.adminShell__signOut}
+              onClick={() => void signOut({ redirectTo: `/${locale}/login` })}
+              title={copy.common.logoutLabel}
+              type="button"
+            >
+              <LogoutRounded />
+            </button>
             <span>{adminInitials}</span>
           </div>
         </header>

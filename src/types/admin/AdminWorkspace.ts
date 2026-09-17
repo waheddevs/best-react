@@ -47,6 +47,7 @@ export type AdminWorkspaceCopy = {
     errorLabel: string;
     idRecordLabel: string;
     languageLabel: string;
+    logoutLabel: string;
     menuClose: string;
     menuOpen: string;
     openQueueLabel: string;

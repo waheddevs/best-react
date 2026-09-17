@@ -45,6 +45,7 @@ export type StudentWorkspaceCopy = {
     continueLabel: string;
     emptyLabel: string;
     languageLabel: string;
+    logoutLabel: string;
     menuClose: string;
     menuOpen: string;
     previewNotice: string;

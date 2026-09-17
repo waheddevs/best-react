@@ -1,8 +1,10 @@
 "use client";
 
 import CloseRounded from "@mui/icons-material/CloseRounded";
+import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import MenuRounded from "@mui/icons-material/MenuRounded";
 import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -101,6 +103,15 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
             >
               <NotificationsNoneRounded />
             </Link>
+            <button
+              aria-label={copy.common.logoutLabel}
+              className={styles.studentShell__signOut}
+              onClick={() => void signOut({ redirectTo: `/${locale}/login` })}
+              title={copy.common.logoutLabel}
+              type="button"
+            >
+              <LogoutRounded />
+            </button>
             <div aria-label={copy.common.accountLabel} className={styles.studentShell__avatar}>
               {studentInitials}
             </div>
