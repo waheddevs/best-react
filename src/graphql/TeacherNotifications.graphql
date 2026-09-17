@@ -1,0 +1,94 @@
+query TeacherHeader {
+  myProfile {
+    displayName
+    avatarMediaObjectId
+  }
+  myUnreadNotificationCount
+  myNotifications(first: 8) {
+    edges {
+      node {
+        id
+        kind
+        taskId
+        title
+        body
+        readAt
+        createdAt
+      }
+    }
+  }
+}
+
+query TeacherNotificationUpdates {
+  myUnreadNotificationCount
+  myNotifications(first: 8) {
+    edges {
+      node {
+        id
+        kind
+        taskId
+        title
+        body
+        readAt
+        createdAt
+      }
+    }
+  }
+}
+
+mutation TeacherMarkNotificationRead($input: MarkNotificationReadInput!) {
+  markNotificationRead(input: $input) {
+    notification {
+      id
+      readAt
+    }
+  }
+}
+
+mutation TeacherAvatarIntent($input: MediaObjectReferenceInput!) {
+  createMediaDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+    }
+  }
+}
+
+query TeacherTasks($after: String, $first: Int) {
+  teacherTasks(after: $after, first: $first) {
+    edges {
+      node {
+        id
+        groupId
+        kind
+        status
+        title
+        dueAt
+        createdAt
+        completedAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+mutation TeacherCompleteTask($input: CompleteTeacherTaskInput!) {
+  completeTeacherTask(input: $input) {
+    task {
+      id
+      status
+      completedAt
+    }
+  }
+}
+
+mutation AdminAssignTeacherTask($input: AdminAssignTeacherTaskInput!) {
+  adminAssignTeacherTask(input: $input) {
+    task {
+      id
+      title
+    }
+  }
+}

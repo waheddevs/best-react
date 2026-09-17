@@ -45,7 +45,7 @@ type QueuedNotification = {
   tone: NotificationTone;
 };
 
-const defaultToastDuration = 1500;
+const defaultToastDuration = 1800;
 
 const NotificationToastTransition = (props: SlideProps) => <Slide {...props} direction="down" />;
 
