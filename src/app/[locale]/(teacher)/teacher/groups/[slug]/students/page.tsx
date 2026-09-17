@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { getTeacherGroupLearners } from "@/data/teacher/TeacherPreviewData";
+import { loadConnectedTeacherGroupRoster } from "@/lib/teacher/TeacherGroupData";
 
 import { GroupStudentList } from "../GroupStudentList";
 import {
@@ -16,9 +16,18 @@ export function generateMetadata({ params }: GroupStudentsPageProps): Promise<Me
 }
 
 export default async function GroupStudentsPage({ params }: GroupStudentsPageProps) {
-  const { copy, locale, slug } = await getGroupWorkspaceContext(params);
+  const { connected, copy, group, locale } = await getGroupWorkspaceContext(params);
+  const roster = connected
+    ? await loadConnectedTeacherGroupRoster(locale, group.id)
+    : { learners: [], summary: undefined };
 
   return (
-    <GroupStudentList copy={copy} initialLearners={getTeacherGroupLearners(slug)} locale={locale} />
+    <GroupStudentList
+      connected={connected}
+      copy={copy}
+      initialLearners={roster.learners}
+      initialSummary={roster.summary}
+      locale={locale}
+    />
   );
 }

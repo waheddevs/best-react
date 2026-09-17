@@ -2,51 +2,52 @@
 
 import { useMemo, useRef, useState, type ChangeEvent } from "react";
 
-import type { TeacherLearner } from "@/types/teacher/Teacher";
+import { teacherGroupCapacity } from "@/config/teacher/TeacherGroupCapacity";
+import type { TeacherGroupRosterSummary, TeacherLearner } from "@/types/teacher/Teacher";
 
 type UseTeacherGroupRosterOptions = {
   initialLearners: TeacherLearner[];
+  initialSummary?: TeacherGroupRosterSummary;
 };
 
-export function useTeacherGroupRoster({ initialLearners }: UseTeacherGroupRosterOptions) {
+export type TeacherRosterStatusFilter = "total" | TeacherLearner["status"];
+
+export function useTeacherGroupRoster({
+  initialLearners,
+  initialSummary,
+}: UseTeacherGroupRosterOptions) {
   /* HOOKS */
   const previewSequence = useRef(0);
   const [learners, setLearners] = useState(initialLearners);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showDebtorsOnly, setShowDebtorsOnly] = useState(false);
+  const [activeStatusFilter, setActiveStatusFilter] = useState<TeacherRosterStatusFilter>("total");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newLearnerName, setNewLearnerName] = useState("");
   const [newLearnerPhone, setNewLearnerPhone] = useState("");
-  const visibleLearners = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLocaleLowerCase();
-    return learners.filter((learner) => {
-      const matchesQuery =
-        normalizedQuery.length === 0 || learner.name.toLocaleLowerCase().includes(normalizedQuery);
-      const matchesDebtor = !showDebtorsOnly || learner.status === "debtor";
-      return matchesQuery && matchesDebtor;
-    });
-  }, [learners, searchQuery, showDebtorsOnly]);
 
-  const summary = useMemo(
+  const derivedSummary = useMemo(
     () => ({
       active: learners.filter((learner) => learner.status === "active").length,
       debtor: learners.filter((learner) => learner.status === "debtor").length,
       departed: learners.filter((learner) => learner.status === "departed").length,
+      historicalTotal: learners.length,
       paused: learners.filter((learner) => learner.status === "paused").length,
-      total: learners.length,
+      total: learners.filter((learner) => learner.status !== "departed").length,
     }),
     [learners],
   );
+  const activeMembershipCount = learners.filter((learner) => learner.status !== "departed").length;
+  const atCapacity = activeMembershipCount >= teacherGroupCapacity;
+  const visibleLearners = useMemo(
+    () =>
+      learners.filter((learner) =>
+        activeStatusFilter === "total"
+          ? learner.status !== "departed"
+          : learner.status === activeStatusFilter,
+      ),
+    [activeStatusFilter, learners],
+  );
 
   /* HANDLERS */
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleDebtorsToggle = () => {
-    setShowDebtorsOnly((currentValue) => !currentValue);
-  };
-
   const handleAddDialogOpen = () => {
     setIsAddDialogOpen(true);
   };
@@ -67,13 +68,14 @@ export function useTeacherGroupRoster({ initialLearners }: UseTeacherGroupRoster
 
   const handleAddLearner = () => {
     const name = newLearnerName.trim();
-    if (!name) return false;
+    if (!name || atCapacity) return false;
     const names = name.split(/\s+/);
     const learner: TeacherLearner = {
       balance: 0,
       groupSlug: initialLearners[0]?.groupSlug ?? "preview-group",
       id: `preview-learner-${++previewSequence.current}`,
       initials: `${names[0]?.[0] ?? "P"}${names[1]?.[0] ?? "L"}`.toUpperCase(),
+      membershipId: `preview-membership-${previewSequence.current}`,
       name,
       phone: newLearnerPhone.trim() || "+998 00 000 00 00",
       status: "active",
@@ -94,21 +96,24 @@ export function useTeacherGroupRoster({ initialLearners }: UseTeacherGroupRoster
     );
   };
 
+  const handleStatusFilterChange = (statusFilter: TeacherRosterStatusFilter) => {
+    setActiveStatusFilter(statusFilter);
+  };
+
   return {
     handleAddDialogClose,
     handleAddDialogOpen,
     handleAddLearner,
-    handleDebtorsToggle,
     handleNewLearnerNameChange,
     handleNewLearnerPhoneChange,
-    handleSearchChange,
+    handleStatusFilterChange,
     handleStatusToggle,
+    activeStatusFilter,
+    atCapacity,
     isAddDialogOpen,
     newLearnerName,
     newLearnerPhone,
-    searchQuery,
-    showDebtorsOnly,
-    summary,
+    summary: initialSummary ?? derivedSummary,
     visibleLearners,
   };
 }

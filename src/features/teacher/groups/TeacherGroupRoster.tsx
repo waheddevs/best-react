@@ -12,25 +12,46 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 import { Button } from "@/components/ui/Button";
+import { teacherGroupCapacity } from "@/config/teacher/TeacherGroupCapacity";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/teacher/groups.module.css";
 import sharedStyles from "@/css/teacher/shared.module.css";
+import { setConnectedGroupMembershipParticipationStatus } from "@/features/teacher/groups/TeacherGroupActions";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
-import { useTeacherGroupRoster } from "@/hooks/teacher/groups/useTeacherGroupRoster";
-import type { TeacherCopy, TeacherLearner } from "@/types/teacher/Teacher";
+import {
+  useTeacherGroupRoster,
+  type TeacherRosterStatusFilter,
+} from "@/hooks/teacher/groups/useTeacherGroupRoster";
+import { formatTeacherNumber } from "@/lib/teacher/TeacherNumberFormat";
+import type {
+  TeacherCopy,
+  TeacherGroupRosterSummary,
+  TeacherLearner,
+} from "@/types/teacher/Teacher";
 
 type TeacherGroupRosterProps = {
+  connected: boolean;
   copy: TeacherCopy;
   initialLearners: TeacherLearner[];
+  initialSummary?: TeacherGroupRosterSummary;
   locale: Locale;
 };
 
-export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGroupRosterProps) {
+export function TeacherGroupRoster({
+  connected,
+  copy,
+  initialLearners,
+  initialSummary,
+}: TeacherGroupRosterProps) {
   /* HOOKS */
   const notifications = useNotifications();
-  const roster = useTeacherGroupRoster({ initialLearners });
+  const roster = useTeacherGroupRoster({ initialLearners, initialSummary });
+  const router = useRouter();
+  const [isStatusPending, startStatusTransition] = useTransition();
 
   const statusLabels: Record<TeacherLearner["status"], string> = {
     active: copy.groups.active,
@@ -38,6 +59,17 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
     departed: copy.groups.departed,
     paused: copy.groups.paused,
   };
+  const statusFilters: Array<{
+    label: string;
+    status: TeacherRosterStatusFilter;
+    value: number;
+  }> = [
+    { label: copy.groups.total, status: "total", value: roster.summary.total },
+    { label: copy.groups.active, status: "active", value: roster.summary.active },
+    { label: copy.groups.paused, status: "paused", value: roster.summary.paused },
+    { label: copy.groups.debtors, status: "debtor", value: roster.summary.debtor },
+    { label: copy.groups.departed, status: "departed", value: roster.summary.departed },
+  ];
 
   /* HANDLERS */
   const handleAddLearner = () => {
@@ -48,13 +80,44 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
     });
   };
 
+  const handleAddDialogOpen = () => {
+    if (!connected) {
+      roster.handleAddDialogOpen();
+      return;
+    }
+    notifications.info({
+      title: copy.groups.addLearner,
+      message: copy.groups.addLearnerUnavailable,
+    });
+  };
+
   const handleContact = () => {
     notifications.info({ title: copy.groups.contactTitle, message: copy.groups.contactMessage });
   };
 
-  const handleStatusToggle = (learnerId: string) => {
-    roster.handleStatusToggle(learnerId);
-    notifications.info({ title: copy.groups.unsavedTitle, message: copy.groups.unsavedMessage });
+  const handleStatusToggle = (learner: TeacherLearner) => {
+    if (!connected) {
+      roster.handleStatusToggle(learner.id);
+      notifications.info({ title: copy.groups.unsavedTitle, message: copy.groups.unsavedMessage });
+      return;
+    }
+    if (learner.status === "departed" || isStatusPending) return;
+    startStatusTransition(async () => {
+      const result = await setConnectedGroupMembershipParticipationStatus({
+        membershipId: learner.membershipId,
+        reason: "Teacher updated participation from the group roster.",
+        status: learner.status === "paused" ? "ACTIVE" : "PAUSED",
+      });
+      if (!result.ok) {
+        notifications.error({ title: copy.groups.paused, message: copy.groups.statusUpdateError });
+        return;
+      }
+      notifications.success({
+        title: copy.groups.paused,
+        message: copy.groups.statusUpdateSuccess,
+      });
+      router.refresh();
+    });
   };
 
   const handlePreviewAction = () => {
@@ -64,21 +127,19 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
   return (
     <section aria-labelledby="roster-title" className={styles.teacherGroups__rosterSection}>
       <div className={styles.teacherGroups__summaryGrid}>
-        {[
-          [copy.groups.total, roster.summary.total, "total"],
-          [copy.groups.active, roster.summary.active, "active"],
-          [copy.groups.paused, roster.summary.paused, "paused"],
-          [copy.groups.debtors, roster.summary.debtor, "debtor"],
-          [copy.groups.departed, roster.summary.departed, "departed"],
-        ].map(([label, value, tone]) => (
-          <article
+        {statusFilters.map(({ label, status, value }) => (
+          <button
+            aria-pressed={roster.activeStatusFilter === status}
             className={styles.teacherGroups__summaryCard}
-            data-tone={tone}
-            key={String(tone)}
+            data-active={roster.activeStatusFilter === status}
+            data-tone={status}
+            key={status}
+            onClick={() => roster.handleStatusFilterChange(status)}
+            type="button"
           >
             <strong>{value}</strong>
             <span>{label}</span>
-          </article>
+          </button>
         ))}
       </div>
 
@@ -88,39 +149,17 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
             {copy.groups.rosterTitle}
           </h2>
           <span className={styles.teacherGroups__resultCount}>
-            {roster.visibleLearners.length} {copy.groups.learners}
+            {roster.summary.total}/{teacherGroupCapacity} {copy.groups.learners}
           </span>
         </div>
         <Button
           hoverEffect="jump"
-          onClick={roster.handleAddDialogOpen}
+          onClick={handleAddDialogOpen}
           shape="soft"
           size="small"
           startIcon={<AddRounded />}
         >
           {copy.groups.addLearner}
-        </Button>
-      </div>
-
-      <div className={styles.teacherGroups__filters}>
-        <label className={styles.teacherGroups__searchField}>
-          <SearchRounded aria-hidden="true" />
-          <span className={styles.teacherGroups__srOnly}>{copy.common.search}</span>
-          <input
-            onChange={roster.handleSearchChange}
-            placeholder={copy.groups.searchPlaceholder}
-            type="search"
-            value={roster.searchQuery}
-          />
-        </label>
-        <Button
-          aria-pressed={roster.showDebtorsOnly}
-          onClick={roster.handleDebtorsToggle}
-          shape="pill"
-          size="small"
-          variant="filter"
-        >
-          {copy.groups.debtors}
         </Button>
       </div>
 
@@ -142,11 +181,11 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
               </div>
               <div className={styles.teacherGroups__learnerFinance}>
                 <small>{copy.groups.balance}</small>
-                <strong>{new Intl.NumberFormat(locale).format(learner.balance)} UZS</strong>
+                <strong>{formatTeacherNumber(learner.balance)} UZS</strong>
               </div>
               <div className={styles.teacherGroups__learnerProgress}>
                 <small>{copy.groups.taskProgress}</small>
-                <strong>{learner.taskProgress}%</strong>
+                <strong>{learner.taskProgress === null ? "—" : `${learner.taskProgress}%`}</strong>
               </div>
               <div className={styles.teacherGroups__learnerActions}>
                 <button
@@ -158,7 +197,8 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
                 </button>
                 <button
                   aria-label={`${copy.groups.paused}: ${learner.name}`}
-                  onClick={() => handleStatusToggle(learner.id)}
+                  disabled={isStatusPending || learner.status === "departed"}
+                  onClick={() => handleStatusToggle(learner)}
                   type="button"
                 >
                   <PauseCircleOutlineRounded />
@@ -210,7 +250,9 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
           <p>{copy.groups.addLearnerMessage}</p>
           <TextField
             autoFocus
+            error={roster.atCapacity}
             fullWidth
+            helperText={roster.atCapacity ? copy.groups.groupCapacityReached : undefined}
             label={copy.groups.learnerName}
             onChange={roster.handleNewLearnerNameChange}
             value={roster.newLearnerName}
@@ -226,7 +268,10 @@ export function TeacherGroupRoster({ copy, initialLearners, locale }: TeacherGro
           <Button onClick={roster.handleAddDialogClose} variant="ghost">
             {copy.common.cancel}
           </Button>
-          <Button disabled={!roster.newLearnerName.trim()} onClick={handleAddLearner}>
+          <Button
+            disabled={roster.atCapacity || !roster.newLearnerName.trim()}
+            onClick={handleAddLearner}
+          >
             {copy.common.add}
           </Button>
         </DialogActions>
