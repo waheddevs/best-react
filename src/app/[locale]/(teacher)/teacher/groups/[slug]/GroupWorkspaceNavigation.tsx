@@ -1,14 +1,10 @@
 "use client";
 
-import AssignmentRounded from "@mui/icons-material/AssignmentRounded";
-import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
-import DashboardRounded from "@mui/icons-material/DashboardRounded";
-import DescriptionRounded from "@mui/icons-material/DescriptionRounded";
-import GroupsRounded from "@mui/icons-material/GroupsRounded";
-import QuizRounded from "@mui/icons-material/QuizRounded";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/teacher/groups.module.css";
 import type { TeacherCopy, TeacherGroupWorkspaceTab } from "@/types/teacher/Teacher";
@@ -20,44 +16,50 @@ type GroupWorkspaceNavigationProps = {
 };
 
 const tabItems: Array<{
-  icon: typeof DashboardRounded;
   key: TeacherGroupWorkspaceTab;
   segment: string;
 }> = [
-  { icon: DashboardRounded, key: "overview", segment: "" },
-  { icon: GroupsRounded, key: "students", segment: "students" },
-  { icon: CalendarMonthRounded, key: "lessons", segment: "lessons" },
-  { icon: DescriptionRounded, key: "materials", segment: "materials" },
-  { icon: AssignmentRounded, key: "assignments", segment: "assignments" },
-  { icon: QuizRounded, key: "tests", segment: "tests" },
+  { key: "overview", segment: "" },
+  { key: "students", segment: "students" },
+  { key: "materials", segment: "materials" },
+  { key: "assignments", segment: "assignments" },
 ];
 
 export function GroupWorkspaceNavigation({ copy, locale, slug }: GroupWorkspaceNavigationProps) {
   /* HOOKS */
   const pathname = usePathname();
   const baseHref = `/${locale}/teacher/groups/${slug}`;
+  const activeTab =
+    tabItems.find(({ segment }) => {
+      const href = segment ? `${baseHref}/${segment}` : baseHref;
+
+      return segment ? pathname.startsWith(`${href}/`) || pathname === href : pathname === href;
+    })?.key ?? false;
 
   return (
-    <nav aria-label={copy.groups.detailEyebrow} className={styles.teacherGroups__workspaceNav}>
-      {tabItems.map(({ icon: Icon, key, segment }) => {
-        const href = segment ? `${baseHref}/${segment}` : baseHref;
-        const isActive = segment
-          ? pathname.startsWith(`${href}/`) || pathname === href
-          : pathname === href;
-
-        return (
-          <ScrollToTopLink
-            aria-current={isActive ? "page" : undefined}
-            className={styles.teacherGroups__workspaceNavLink}
-            data-active={isActive}
-            href={href}
+    <div className={styles.teacherGroups__workspaceNavSection}>
+      <Tabs
+        aria-label={copy.groups.detailEyebrow}
+        className={`${styles.teacherGroups__categoryTabs} ${styles.teacherGroups__workspaceNav}`}
+        component="nav"
+        scrollButtons={false}
+        value={activeTab}
+        variant="scrollable"
+      >
+        {tabItems.map(({ key, segment }) => (
+          <Tab
+            aria-controls="teacher-group-workspace-panel"
+            className={styles.teacherGroups__categoryTab}
+            component={Link}
+            href={segment ? `${baseHref}/${segment}` : baseHref}
+            id={`teacher-group-workspace-tab-${key}`}
             key={key}
-          >
-            <Icon aria-hidden="true" />
-            <span>{copy.groupWorkspace.tabs[key]}</span>
-          </ScrollToTopLink>
-        );
-      })}
-    </nav>
+            label={copy.groupWorkspace.tabs[key]}
+            scroll={false}
+            value={key}
+          />
+        ))}
+      </Tabs>
+    </div>
   );
 }

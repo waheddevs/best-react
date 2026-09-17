@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { isLocale, locales, type Locale } from "@/config/Locales";
+import { isLocale, locales } from "@/config/Locales";
 import { getTeacherGroup, teacherPreviewData } from "@/data/teacher/TeacherPreviewData";
 import { getTeacherCopy } from "@/dictionaries/teacher/Teacher";
+import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+import { PublicApiError } from "@/lib/ApiError";
+import { loadConnectedTeacherGroup } from "@/lib/teacher/TeacherGroupData";
 import type { TeacherGroupWorkspaceTab } from "@/types/teacher/Teacher";
 
 export type GroupWorkspaceParams = Promise<{ locale: string; slug: string }>;
@@ -17,10 +20,20 @@ export function generateGroupStaticParams() {
 export async function getGroupWorkspaceContext(params: GroupWorkspaceParams) {
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
-  const group = getTeacherGroup(slug);
+  const preview = isDashboardPreviewEnabled();
+  let group;
+  if (preview) {
+    group = getTeacherGroup(slug);
+  } else {
+    try {
+      group = await loadConnectedTeacherGroup(locale, slug);
+    } catch (error) {
+      if (!(error instanceof PublicApiError && error.code === "NOT_FOUND")) throw error;
+    }
+  }
   if (!group) notFound();
 
-  return { copy: getTeacherCopy(locale), group, locale, slug };
+  return { connected: !preview, copy: getTeacherCopy(locale), group, locale, slug };
 }
 
 export async function createGroupWorkspaceMetadata(
@@ -34,16 +47,4 @@ export async function createGroupWorkspaceMetadata(
     description: copy.metadata.groups.description,
     robots: { follow: false, index: false },
   };
-}
-
-export function formatGroupWorkspaceDate(date: string, locale: Locale, months: string[]) {
-  const [, monthValue, dayValue] = date.split("-");
-  const monthIndex = Number.parseInt(monthValue ?? "", 10) - 1;
-  const day = Number.parseInt(dayValue ?? "", 10);
-  const month = months[monthIndex];
-
-  if (!month || !Number.isInteger(day)) return date;
-  if (locale === "uz") return `${day}-${month}`;
-  if (locale === "ru") return `${day} ${month}`;
-  return `${month} ${day}`;
 }

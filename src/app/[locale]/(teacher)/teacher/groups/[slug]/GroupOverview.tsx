@@ -11,53 +11,41 @@ import sharedStyles from "@/css/teacher/shared.module.css";
 import type {
   TeacherCopy,
   TeacherGroup,
-  TeacherLessonAssignment,
-  TeacherLessonMaterial,
-  TeacherLessonSession,
-  TeacherLessonTest,
+  TeacherGroupOverviewLesson,
+  TeacherGroupOverviewMetrics,
 } from "@/types/teacher/Teacher";
 
-import { formatGroupWorkspaceDate } from "./GroupWorkspaceRoute";
+import { formatGroupWorkspaceDate } from "@/lib/teacher/TeacherGroupDate";
 
 type GroupOverviewProps = {
-  assignments: TeacherLessonAssignment[];
   copy: TeacherCopy;
   group: TeacherGroup;
-  lessons: TeacherLessonSession[];
+  lessons: TeacherGroupOverviewLesson[];
   locale: Locale;
-  materials: TeacherLessonMaterial[];
-  tests: TeacherLessonTest[];
+  metrics: TeacherGroupOverviewMetrics;
 };
 
-export function GroupOverview({
-  assignments,
-  copy,
-  group,
-  lessons,
-  locale,
-  materials,
-  tests,
-}: GroupOverviewProps) {
+export function GroupOverview({ copy, group, lessons, locale, metrics }: GroupOverviewProps) {
   const nextLesson = lessons.find((lesson) => lesson.status === "planned");
   const recentLesson = [...lessons].reverse().find((lesson) => lesson.status === "completed");
-  const activeAssignments = assignments.filter(
-    (assignment) => assignment.status === "active",
-  ).length;
-  const scheduledTests = tests.filter((test) => test.status === "scheduled").length;
 
   const highlights = [
     {
       icon: AssignmentTurnedInRounded,
       label: copy.groupWorkspace.activeAssignments,
-      value: activeAssignments,
+      value: metrics.activeAssignments,
     },
-    { icon: QuizRounded, label: copy.groupWorkspace.scheduledTests, value: scheduledTests },
+    {
+      icon: QuizRounded,
+      label: copy.groupWorkspace.scheduledTests,
+      value: metrics.scheduledTests,
+    },
     {
       icon: DescriptionRounded,
       label: copy.groupWorkspace.totalMaterials,
-      value: materials.length,
+      value: metrics.materials,
     },
-    { icon: CalendarMonthRounded, label: copy.groups.learners, value: group.learnerCount },
+    { icon: CalendarMonthRounded, label: copy.groups.learners, value: metrics.students },
   ];
 
   return (

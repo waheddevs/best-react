@@ -10,7 +10,7 @@ import type {
   TeacherLessonSession,
 } from "@/types/teacher/Teacher";
 
-import { formatGroupWorkspaceDate } from "../GroupWorkspaceRoute";
+import { formatGroupWorkspaceDate } from "@/lib/teacher/TeacherGroupDate";
 import { GroupWorkspaceCreateAction } from "../GroupWorkspaceCreateAction";
 import { GroupWorkspaceSectionHeader } from "../GroupWorkspaceSectionHeader";
 

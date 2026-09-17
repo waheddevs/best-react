@@ -1,5 +1,4 @@
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
-import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
 import GroupsRounded from "@mui/icons-material/GroupsRounded";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
@@ -7,13 +6,16 @@ import type { Locale } from "@/config/Locales";
 import styles from "@/css/teacher/groups.module.css";
 import type { TeacherCopy, TeacherGroup } from "@/types/teacher/Teacher";
 
+import { GroupEditAction } from "./GroupEditAction";
+
 type GroupHeaderProps = {
+  connected: boolean;
   copy: TeacherCopy;
   group: TeacherGroup;
   locale: Locale;
 };
 
-export function GroupHeader({ copy, group, locale }: GroupHeaderProps) {
+export function GroupHeader({ connected, copy, group, locale }: GroupHeaderProps) {
   return (
     <header className={styles.teacherGroups__detailHeader}>
       <ScrollToTopLink
@@ -33,10 +35,9 @@ export function GroupHeader({ copy, group, locale }: GroupHeaderProps) {
           {group.room} · {group.lessonDays[locale]} · {group.time}
         </span>
       </div>
-      <span className={styles.teacherGroups__groupState}>
-        <CheckCircleRounded aria-hidden="true" />
-        {copy.groups.groupState}
-      </span>
+      <div className={styles.teacherGroups__detailActions}>
+        <GroupEditAction connected={connected} copy={copy} group={group} />
+      </div>
     </header>
   );
 }

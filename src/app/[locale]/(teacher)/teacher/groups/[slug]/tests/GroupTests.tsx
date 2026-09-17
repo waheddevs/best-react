@@ -7,7 +7,7 @@ import styles from "@/css/teacher/groups.module.css";
 import sharedStyles from "@/css/teacher/shared.module.css";
 import type { TeacherCopy, TeacherLessonSession, TeacherLessonTest } from "@/types/teacher/Teacher";
 
-import { formatGroupWorkspaceDate } from "../GroupWorkspaceRoute";
+import { formatGroupWorkspaceDate } from "@/lib/teacher/TeacherGroupDate";
 import { GroupWorkspaceCreateAction } from "../GroupWorkspaceCreateAction";
 import { GroupWorkspaceSectionHeader } from "../GroupWorkspaceSectionHeader";
 

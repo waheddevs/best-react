@@ -6,6 +6,8 @@ import {
   getTeacherGroupMaterials,
   getTeacherGroupTests,
 } from "@/data/teacher/TeacherPreviewData";
+import { loadConnectedTeacherGroupOverview } from "@/lib/teacher/TeacherGroupData";
+import type { TeacherGroupOverviewLesson } from "@/types/teacher/Teacher";
 
 import { GroupOverview } from "./GroupOverview";
 import {
@@ -21,17 +23,44 @@ export function generateMetadata({ params }: GroupOverviewPageProps): Promise<Me
 }
 
 export default async function GroupOverviewPage({ params }: GroupOverviewPageProps) {
-  const { copy, group, locale, slug } = await getGroupWorkspaceContext(params);
+  const { connected, copy, group, locale, slug } = await getGroupWorkspaceContext(params);
+  const previewAssignments = connected ? [] : getTeacherGroupAssignments(slug);
+  const previewMaterials = connected ? [] : getTeacherGroupMaterials(slug);
+  const previewTests = connected ? [] : getTeacherGroupTests(slug);
+  const previewLessons: TeacherGroupOverviewLesson[] = connected
+    ? []
+    : getTeacherGroupLessons(slug)
+        .filter((lesson) => lesson.status === "planned" || lesson.status === "completed")
+        .map((lesson) => ({
+          date: lesson.date,
+          endsAt: lesson.endsAt,
+          id: lesson.id,
+          room: lesson.room,
+          startsAt: lesson.startsAt,
+          status: lesson.status === "completed" ? "completed" : "planned",
+          topic: lesson.topic,
+        }));
+  const workspace = connected
+    ? await loadConnectedTeacherGroupOverview(locale, group.id)
+    : {
+        lessons: previewLessons,
+        metrics: {
+          activeAssignments: previewAssignments.filter(
+            (assignment) => assignment.status === "active",
+          ).length,
+          materials: previewMaterials.length,
+          scheduledTests: previewTests.filter((test) => test.status === "scheduled").length,
+          students: group.learnerCount,
+        },
+      };
 
   return (
     <GroupOverview
-      assignments={getTeacherGroupAssignments(slug)}
       copy={copy}
       group={group}
-      lessons={getTeacherGroupLessons(slug)}
+      lessons={workspace.lessons}
       locale={locale}
-      materials={getTeacherGroupMaterials(slug)}
-      tests={getTeacherGroupTests(slug)}
+      metrics={workspace.metrics}
     />
   );
 }

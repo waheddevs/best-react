@@ -27,7 +27,7 @@ import type {
   TeacherLessonTest,
 } from "@/types/teacher/Teacher";
 
-import { formatGroupWorkspaceDate } from "../../GroupWorkspaceRoute";
+import { formatGroupWorkspaceDate } from "@/lib/teacher/TeacherGroupDate";
 import { GroupLessonEditorAction } from "../GroupLessonEditorAction";
 
 type LessonDetailProps = {

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import styles from "@/css/teacher/groups.module.css";
+import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
 
 import { GroupHeader } from "./GroupHeader";
 import { GroupWorkspaceNavigation } from "./GroupWorkspaceNavigation";
@@ -21,13 +22,23 @@ export default async function GroupWorkspaceLayout({
   children,
   params,
 }: GroupWorkspaceLayoutProps) {
-  const { copy, group, locale, slug } = await getGroupWorkspaceContext(params);
+  const { connected, copy, group, locale, slug } = await getGroupWorkspaceContext(params);
 
   return (
     <main className={styles.teacherGroups__workspace}>
-      <GroupHeader copy={copy} group={group} locale={locale} />
+      <TeacherPageHeader
+        eyebrow={copy.groups.detailPageEyebrow}
+        title={copy.groups.detailPageTitle}
+      />
+      <GroupHeader connected={connected} copy={copy} group={group} locale={locale} />
       <GroupWorkspaceNavigation copy={copy} locale={locale} slug={slug} />
-      <div className={styles.teacherGroups__workspaceContent}>{children}</div>
+      <div
+        className={styles.teacherGroups__workspaceContent}
+        id="teacher-group-workspace-panel"
+        role="tabpanel"
+      >
+        {children}
+      </div>
     </main>
   );
 }
