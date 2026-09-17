@@ -15,8 +15,6 @@ export const enDictionary = {
     language: "Choose language",
     coursesCta: "Explore courses",
     login: "Login",
-    logout: "Log out",
-    signedInAs: "Signed in as",
     courseMenu: {
       ielts: "IELTS",
       cefr: "CEFR",

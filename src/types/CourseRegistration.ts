@@ -1,5 +1,7 @@
 export type CourseRegistrationCopy = {
   apply: string;
+  alreadySubmittedMessage: string;
+  alreadySubmittedTitle: string;
   cancel: string;
   consentLabel: string;
   email: string;

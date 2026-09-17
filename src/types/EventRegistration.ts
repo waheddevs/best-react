@@ -16,6 +16,8 @@ export type EventRegistrationCopy = {
   close: string;
   successTitle: string;
   successMessage: string;
+  alreadySubmittedTitle: string;
+  alreadySubmittedMessage: string;
   pastEventTitle: string;
   pastEventMessage: string;
   required: string;

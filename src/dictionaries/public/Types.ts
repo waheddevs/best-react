@@ -7,8 +7,6 @@ export type Dictionary = {
     language: string;
     coursesCta: string;
     login: string;
-    logout: string;
-    signedInAs: string;
     courseMenu: Record<CourseNavigationKey, string>;
     examMenu: Record<ExamNavigationKey, string>;
   };

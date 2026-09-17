@@ -4,6 +4,8 @@ import type { CourseRegistrationCopy } from "@/types/CourseRegistration";
 const copy: Record<Locale, CourseRegistrationCopy> = {
   uz: {
     apply: "Kursga yozilish",
+    alreadySubmittedMessage: "Bu telefon raqami bilan ushbu kursga ariza allaqachon yuborilgan.",
+    alreadySubmittedTitle: "Ariza avval yuborilgan",
     cancel: "Bekor qilish",
     consentLabel: "Ma’lumotlarim ushbu murojaat uchun ishlatilishiga roziman.",
     email: "Email (ixtiyoriy)",
@@ -20,6 +22,8 @@ const copy: Record<Locale, CourseRegistrationCopy> = {
   },
   ru: {
     apply: "Записаться на курс",
+    alreadySubmittedMessage: "С этим номером телефона заявка на этот курс уже отправлена.",
+    alreadySubmittedTitle: "Заявка уже отправлена",
     cancel: "Отмена",
     consentLabel: "Я согласен на обработку моих данных для этого обращения.",
     email: "Email (необязательно)",
@@ -36,6 +40,9 @@ const copy: Record<Locale, CourseRegistrationCopy> = {
   },
   en: {
     apply: "Register for course",
+    alreadySubmittedMessage:
+      "A registration request for this course has already been submitted with this phone number.",
+    alreadySubmittedTitle: "Request already submitted",
     cancel: "Cancel",
     consentLabel: "I consent to my details being used for this request.",
     email: "Email (optional)",
