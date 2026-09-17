@@ -1,9 +1,15 @@
 import type { Locale } from "@/config/Locales";
-import type { TeacherCopy, TeacherProfileData } from "@/types/teacher/Teacher";
+import type { TeacherCopy } from "@/types/teacher/Teacher";
+import type { TeacherProfileRecord } from "@/types/teacher/TeacherProfile";
 
 import { TeacherSettings } from "./TeacherSettings";
 
-type TeacherProfileProps = { copy: TeacherCopy; locale: Locale; profile: TeacherProfileData };
+type TeacherProfileProps = {
+  connected: boolean;
+  copy: TeacherCopy;
+  locale: Locale;
+  profile: TeacherProfileRecord;
+};
 
 export function TeacherProfile(props: TeacherProfileProps) {
   return <TeacherSettings {...props} />;

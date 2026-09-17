@@ -17,6 +17,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Switch from "@mui/material/Switch";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 
@@ -24,17 +25,30 @@ import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
 import { locales } from "@/config/Locales";
 import styles from "@/css/teacher/profile.module.css";
+import { getTeacherProfileMessages } from "@/dictionaries/teacher/TeacherProfileMessages";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
+import { updateTeacherProfile } from "@/features/teacher/profile/TeacherProfileActions";
 import { useLocaleSwitcher } from "@/hooks/navigation/useLocaleSwitcher";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import { useTeacherTheme } from "@/hooks/teacher/useTeacherTheme";
-import type { TeacherCopy, TeacherProfileData } from "@/types/teacher/Teacher";
+import {
+  joinTeacherDisplayName,
+  splitTeacherDisplayName,
+  teacherInitials,
+} from "@/lib/teacher/TeacherDisplayName";
+import type { TeacherCopy } from "@/types/teacher/Teacher";
+import type { TeacherProfileRecord } from "@/types/teacher/TeacherProfile";
 
-type TeacherSettingsProps = { copy: TeacherCopy; locale: Locale; profile: TeacherProfileData };
+type TeacherSettingsProps = {
+  connected: boolean;
+  copy: TeacherCopy;
+  locale: Locale;
+  profile: TeacherProfileRecord;
+};
 type ProfileDialog = "information" | "password" | "qr" | "sessions" | "language" | null;
 
-export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps) {
+export function TeacherSettings({ connected, copy, locale, profile }: TeacherSettingsProps) {
   /* HOOKS */
   const router = useRouter();
   const session = useSession();
@@ -42,22 +56,84 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
   const confirm = useConfirmDialog();
   const localeSwitcher = useLocaleSwitcher();
   const teacherTheme = useTeacherTheme();
+  const messages = getTeacherProfileMessages(locale);
   const photoInputRef = useRef<HTMLInputElement | null>(null);
   const [activeDialog, setActiveDialog] = useState<ProfileDialog>(null);
-  const [displayName, setDisplayName] = useState(profile.displayName);
-  const [phone, setPhone] = useState(profile.phone);
-  const [subject, setSubject] = useState(profile.subject[locale]);
+  const [profileState, setProfileState] = useState(profile);
+  const [firstName, setFirstName] = useState(
+    () => splitTeacherDisplayName(profile.displayName).firstName,
+  );
+  const [lastName, setLastName] = useState(
+    () => splitTeacherDisplayName(profile.displayName).lastName,
+  );
+  const [phone, setPhone] = useState(profile.phone ?? "");
+  const [subject, setSubject] = useState(profile.teacherSubject ?? "");
   const [photoName, setPhotoName] = useState<string | null>(null);
+  const [avatarFailed, setAvatarFailed] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   /* HANDLERS */
-  const handleDialogOpen = (dialog: Exclude<ProfileDialog, null>) => setActiveDialog(dialog);
-  const handleDialogClose = () => setActiveDialog(null);
-
-  const handleInformationSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setActiveDialog(null);
-    notifications.info({ title: copy.profile.unsavedTitle, message: copy.profile.unsavedMessage });
+  const handleDialogOpen = (dialog: Exclude<ProfileDialog, null>) => {
+    if (dialog === "information") {
+      const name = splitTeacherDisplayName(profileState.displayName);
+      setFirstName(name.firstName);
+      setLastName(name.lastName);
+      setPhone(profileState.phone ?? "");
+      setSubject(profileState.teacherSubject ?? "");
+    }
+    setActiveDialog(dialog);
   };
+  const handleDialogClose = () => {
+    setActiveDialog(null);
+    const name = splitTeacherDisplayName(profileState.displayName);
+    setFirstName(name.firstName);
+    setLastName(name.lastName);
+    setPhone(profileState.phone ?? "");
+    setSubject(profileState.teacherSubject ?? "");
+  };
+
+  const handleInformationSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!connected) {
+      setActiveDialog(null);
+      notifications.info({
+        title: copy.profile.unsavedTitle,
+        message: copy.profile.unsavedMessage,
+      });
+      return;
+    }
+    setIsSaving(true);
+    try {
+      const updated = await updateTeacherProfile({
+        avatarMediaObjectId: profileState.avatarMediaObjectId,
+        branchName: profileState.branchName,
+        displayName: joinTeacherDisplayName(firstName, lastName),
+        phone: phone.trim() || null,
+        preferredLanguage: profileState.preferredLanguage,
+        teacherSubject: subject.trim() || null,
+      });
+      setProfileState((current) => ({
+        ...current,
+        displayName: updated.displayName,
+        email: updated.email ?? null,
+        phone: updated.phone ?? null,
+        teacherSubject: updated.teacherSubject ?? null,
+        branchName: updated.branchName ?? null,
+        preferredLanguage: updated.preferredLanguage,
+        avatarMediaObjectId: updated.avatarMediaObjectId ?? null,
+        initials: teacherInitials(updated.displayName),
+      }));
+      setActiveDialog(null);
+      notifications.success({ title: copy.profile.profileInformation, message: messages.saved });
+      router.refresh();
+    } catch {
+      notifications.error({ title: copy.profile.profileInformation, message: messages.saveError });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleAvatarError = () => setAvatarFailed(true);
 
   const handlePasswordSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -146,22 +222,35 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
 
   return (
     <main className={styles.teacherProfile__page}>
-      <TeacherPageHeader
-        description={copy.profile.description}
-        eyebrow={copy.profile.eyebrow}
-        title={copy.profile.pageTitle}
-      />
+      <TeacherPageHeader eyebrow={copy.profile.eyebrow} title={copy.profile.pageTitle} />
       <div className={styles.teacherProfile__layout}>
         <aside className={styles.teacherProfile__summary}>
           <div className={styles.teacherProfile__identity}>
-            <span className={styles.teacherProfile__avatar}>{profile.initials}</span>
+            <span className={styles.teacherProfile__avatar}>
+              {profileState.avatarUrl && !avatarFailed ? (
+                <Image
+                  alt={profileState.displayName}
+                  fill
+                  onError={handleAvatarError}
+                  sizes="84px"
+                  src={profileState.avatarUrl}
+                  unoptimized
+                />
+              ) : (
+                profileState.initials
+              )}
+            </span>
             <div>
-              <h2>{displayName}</h2>
+              <h2>{profileState.displayName}</h2>
               <p>
-                {copy.common.teacherRole} · {profile.handle} · {subject}
+                {[copy.common.teacherRole, profileState.email, profileState.teacherSubject]
+                  .filter(Boolean)
+                  .join(" · ")}
               </p>
               <small>
-                {phone} · {locale.toUpperCase()} · {profile.branch[locale]}
+                {[profileState.phone, profileState.preferredLanguage, profileState.branchName]
+                  .filter(Boolean)
+                  .join(" · ")}
               </small>
             </div>
           </div>
@@ -343,30 +432,35 @@ export function TeacherSettings({ copy, locale, profile }: TeacherSettingsProps)
             <label>
               {copy.profile.displayName}
               <input
-                onChange={(event) => setDisplayName(event.target.value)}
+                autoComplete="given-name"
+                onChange={(event) => setFirstName(event.target.value)}
                 required
-                value={displayName}
+                value={firstName}
+              />
+            </label>
+            <label>
+              {copy.profile.lastName}
+              <input
+                autoComplete="family-name"
+                onChange={(event) => setLastName(event.target.value)}
+                value={lastName}
               />
             </label>
             <label>
               {copy.profile.phone}
-              <input onChange={(event) => setPhone(event.target.value)} required value={phone} />
+              <input onChange={(event) => setPhone(event.target.value)} type="tel" value={phone} />
             </label>
             <label>
               {copy.profile.subject}
-              <input
-                onChange={(event) => setSubject(event.target.value)}
-                required
-                value={subject}
-              />
+              <input onChange={(event) => setSubject(event.target.value)} value={subject} />
             </label>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDialogClose} variant="ghost">
               {copy.common.cancel}
             </Button>
-            <Button type="submit" variant="primary">
-              {copy.common.savePreview}
+            <Button disabled={isSaving} type="submit" variant="primary">
+              {connected ? messages.save : copy.common.savePreview}
             </Button>
           </DialogActions>
         </form>

@@ -1,0 +1,25 @@
+query TeacherProfile {
+  myProfile {
+    displayName
+    email
+    phone
+    teacherSubject
+    branchName
+    preferredLanguage
+    avatarMediaObjectId
+  }
+}
+
+mutation TeacherUpdateProfile($input: UpdateMyProfileInput!) {
+  updateMyProfile(input: $input) {
+    profile {
+      displayName
+      email
+      phone
+      teacherSubject
+      branchName
+      preferredLanguage
+      avatarMediaObjectId
+    }
+  }
+}
