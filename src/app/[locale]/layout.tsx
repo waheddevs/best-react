@@ -8,6 +8,7 @@ import { MotionProvider } from "@/components/motion/MotionProvider";
 import { isLocale, locales } from "@/config/Locales";
 import { getEventRegistrationCopy } from "@/dictionaries/public/EventRegistration";
 import { getNotificationCopy } from "@/dictionaries/public/Notifications";
+import { ApolloProvider } from "@/features/apollo/ApolloProvider";
 import { NotificationProvider } from "@/features/notifications/NotificationProvider";
 import { EventRegistrationProvider } from "@/features/events/EventRegistrationProvider";
 import { AuthSessionProvider } from "@/features/auth/AuthSessionProvider";
@@ -67,15 +68,17 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       <body>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <BestThemeProvider>
-            <AuthSessionProvider>
-              <MotionProvider>
-                <NotificationProvider copy={notificationCopy}>
-                  <EventRegistrationProvider copy={eventRegistrationCopy} locale={locale}>
-                    {children}
-                  </EventRegistrationProvider>
-                </NotificationProvider>
-              </MotionProvider>
-            </AuthSessionProvider>
+            <ApolloProvider>
+              <AuthSessionProvider>
+                <MotionProvider>
+                  <NotificationProvider copy={notificationCopy}>
+                    <EventRegistrationProvider copy={eventRegistrationCopy} locale={locale}>
+                      {children}
+                    </EventRegistrationProvider>
+                  </NotificationProvider>
+                </MotionProvider>
+              </AuthSessionProvider>
+            </ApolloProvider>
           </BestThemeProvider>
         </AppRouterCacheProvider>
       </body>
