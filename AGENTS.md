@@ -70,6 +70,10 @@ the public website.
 - Use `BEST_API_INTERNAL_URL` for Server Component reads and the same-origin
   `/best-api/graphql` rewrite for browser mutations. Do not add duplicate Next.js
   API routes or expose backend infrastructure credentials to the browser.
+- Public GraphQL reads and mutations use the shared Apollo Client integration
+  described in section 7E. Preserve Next.js revalidation ownership for public
+  Server Component reads and use generated operations instead of handwritten
+  request/response interfaces.
 - Every new or changed public query/mutation needs a proportional API integration
   test using fictional/reserved test data and database persistence assertions.
 
@@ -112,9 +116,12 @@ credentials-preview instruction:
   hash, bound to its login challenge, limited to five verification attempts,
   and expires after five minutes. Resend uses a sixty-second cooldown, rotates
   the previous code, and remains rate-limited by account and request origin.
-- Step-one and code failures use localized generic responses that do not reveal
-  whether an email, name, password, role, or challenge exists. Mask the email on
-  the code screen and provide Verify, Resend code, and Back to login actions.
+- Step-one failures identify an incorrect email, first name, surname, or password
+  with distinct backend error codes and localized field errors, as explicitly
+  requested by the user. Code verification failures appear under the code
+  inputs. Keep role, account-status, and unexpected failures generic; preserve
+  throttling. Mask the email on the code screen and provide Verify, Resend code,
+  and Back to login actions.
 - Only operational Admin can provision Student or Teacher accounts and issue a
   temporary credential/reset. There is no public registration, self-service
   password reset, provider linking, or account creation. Permanent plaintext
@@ -177,6 +184,36 @@ explicit adapters only when an authenticated backend contract is available.
 
 ## 2C. Approved Teacher Workspace exception
 
+Teacher group creation is now explicitly approved as a connected exception to
+the frontend preview boundary: a verified Teacher may create an owned group
+through the sibling GraphQL API with a persisted category (IELTS, CEFR, or
+General English), name, room, lesson days, and daily time range. Keep the
+Teacher role and ownership checks on the backend, show success only after the
+database accepts the mutation, and load the catalog from the API in connected
+mode. Preview mode must clearly identify that it does not persist groups.
+The authenticated Teacher dashboard derives tomorrow's class cards from these
+API groups and shows a live Asia/Tashkent clock. Group cards show active learner
+capacity as a bar and percentage; the fixed maximum is 15 learners per group.
+The Teacher Schedule tab reads the same active groups from GraphQL on each route
+load, shows every group with lesson days and a valid time range, and derives
+time order, room, and active student count. Live status uses the Asia/Tashkent
+clock for today's lessons; other days remain upcoming. A newly created group
+appears on the next schedule navigation without a manual refresh control.
+Preview mode derives the schedule from its centralized preview groups.
+Roster add controls validate the cap in the UI, and the backend rejects full
+groups for both additions and approved transfers. Fictional seed groups contain
+no learners and must be created through the Teacher GraphQL mutation.
+Authenticated Teachers may also soft-delete their own groups through GraphQL.
+Deletion sets the database status to `DELETED` and writes an audit event; the
+record stays in PostgreSQL while Teacher lists and details hide it. Reject
+deletion if active student memberships remain. Show a confirmation dialog and
+remove the card only after the API succeeds. Connected group detail links load
+from the API. Preview mode must not claim that deletion persisted.
+Connected Teacher queries and mutations use the shared Apollo Client
+integration described in section 7E. Keep backend role and ownership checks
+authoritative; an Apollo context flag, cached object, route, or client session
+claim never grants Teacher access.
+
 The user explicitly approved a complete localized Teacher Workspace based on
 the supplied mobile reference video. This exception is deliberately limited to
 the teacher-owned frontend preview:
@@ -207,7 +244,9 @@ the teacher-owned frontend preview:
   saved server data.
 - Search, filters, tabs, drawers, dialogs, menus, accordions, language routing,
   theme switching, and local message/task state may work fully in the browser.
-  No teacher action may call an API, send a message, place a phone call, upload
+  Except for the approved connected group creation, soft deletion, and group
+  data reads above,
+  no teacher action may call an API, send a message, place a phone call, upload
   a file, change a password, create or delete an account, alter a real session,
   modify a payment, or persist business data.
 - Buttons representing future server work must still have the visible and
@@ -282,11 +321,16 @@ starts, preserving its data-design and migration rules.
 - Latest stable **Next.js** using the **App Router**
 - **React** version selected by the current stable Next.js installer
 - **TypeScript** in strict mode
-- **Tailwind CSS** using the current official Next.js installation approach
+- **Tailwind CSS v4** using its CSS-first configuration and current official
+  Next.js/PostCSS installation approach
 - **Material UI (MUI)** for Material icons and selected accessible interactive
   UI primitives
 - **Motion for React** (`motion`) only for animations that are not better served
   by CSS transitions
+- **Apollo Client** (`@apollo/client`) with the official Next.js integration
+  package for frontend GraphQL transport, normalized caching, and operation
+  state
+- **RxJS** only as required by Apollo Client's current supported dependency
 - ESLint using the configuration generated or recommended by current Next.js
 - Package manager: preserve the existing lockfile; if no lockfile exists, use npm
 
@@ -323,6 +367,11 @@ Primary references:
 - MUI with Next.js: https://mui.com/material-ui/integrations/nextjs/
 - MUI Material Icons: https://mui.com/material-ui/material-icons/
 - MUI theming: https://mui.com/material-ui/customization/theming/
+- Apollo Client with Next.js App Router:
+  https://github.com/apollographql/apollo-client-integrations/tree/main/packages/nextjs
+- Apollo Client caching: https://www.apollographql.com/docs/react/caching/overview
+- Apollo Client error handling:
+  https://www.apollographql.com/docs/react/data/error-handling
 
 Rules:
 
@@ -353,6 +402,10 @@ Rules:
 - Provide `not-found.tsx`; add loading UI only where it improves the experience.
 - Do not add Next.js API routes, route handlers, or server actions beyond the
   approved Auth.js handler. Public data and submissions use the sibling API.
+- Mount one shared Apollo provider at the locale root so every current and
+  future workspace can consume the same infrastructure without creating a
+  dashboard-specific client. A global provider is architectural readiness only;
+  it does not approve a new dashboard, route, operation, or backend capability.
 
 ## 6. Recommended source structure
 
@@ -543,6 +596,8 @@ src/
     ui/
     motion/
   features/
+    apollo/
+      ApolloProvider.tsx
     courses/
     events/
     results/
@@ -638,6 +693,13 @@ src/
       shell.module.css
       workspace.module.css
   lib/
+    apollo/
+      ApolloBrowserClient.ts
+      ApolloCache.ts
+      ApolloEndpoint.ts
+      ApolloError.ts
+      ApolloLinks.ts
+      ApolloServerClient.ts
   types/
     ExamPreview.ts
     student/
@@ -726,12 +788,26 @@ Use a page-scoped BEM namespace with camelCase element names, such as `.home`,
 through the `@/*` alias and reference `styles.home__hero`; do not place long
 Tailwind utility strings directly in TSX.
 
-CSS Modules that use Tailwind v4 utilities must begin with an `@reference` to
-`app/globals.css`, then group those utilities with `@apply`. Keep
-`app/globals.css` limited to Tailwind setup, semantic design tokens, theme/base
-rules, and truly global behavior. Use CSS variables directly for selectors or
-MUI overrides that are clearer as plain CSS. Avoid styling the same property in
-both a CSS Module and an inline utility or `sx` block.
+Public and Teacher component styling must use Tailwind CSS v4 as the primary
+authoring system while retaining scoped CSS Modules and the established BEM
+class contract. Every Public or Teacher CSS Module begins with an `@reference`
+to `app/globals.css` and groups ordinary layout, spacing, sizing, typography,
+responsive, and interaction utilities with `@apply`. Do not place long Tailwind
+utility strings directly in TSX.
+
+Keep native CSS only where it is materially clearer or required: semantic CSS
+variables, multi-line gradients and shadows, keyframes, complex pseudo/global
+selectors, masks/filters, browser-specific properties, MUI internal overrides,
+and runtime values such as progress widths. Tailwind v4 does not allow `@apply`
+inside `@keyframes`; keyframe declarations stay native. Avoid expressing the
+same property through both `@apply` and a native declaration in one rule unless
+the native declaration is an intentional cascade override.
+
+Keep `app/globals.css` limited to Tailwind setup, semantic design tokens,
+theme/base rules, and truly global behavior. Student and operational Admin
+styles remain unchanged during the current Public/Teacher Tailwind migration;
+adopt this Tailwind v4 convention for each of those dashboards only when its
+separate frontend/backend development phase begins.
 
 Keep the official Tailwind CSS IntelliSense VS Code extension in workspace
 recommendations. The workspace may ignore only the native CSS validator's
@@ -1024,6 +1100,109 @@ page-local alert implementations:
 - Public intake and MOCK dates use the approved backend contracts. Telegram
   delivery remains unimplemented; the separate result-lookup behavior follows
   the Student contract and must not fabricate a result.
+
+## 7E. Global Apollo Client architecture and migration boundary
+
+Apollo Client is the single frontend GraphQL transport foundation for the BEST
+LC application. Keep one global integration that can support Public, Teacher,
+Student, operational Admin, and a separately approved future workspace without
+creating one client implementation per dashboard. This shared foundation does
+not itself authorize any new dashboard or backend scope; the current Apollo
+migration includes only Public and Teacher-owned GraphQL operations. Do not
+migrate or otherwise modify Student or operational Admin data access until the
+user explicitly brings that dashboard into the Apollo migration scope. Super
+Admin remains out of scope under section 2.
+
+### Client ownership and endpoints
+
+- Own the global provider under `features/apollo/` and reusable client, cache,
+  link, endpoint, error, and server-execution modules under `lib/apollo/`.
+- Mount exactly one `ApolloNextAppProvider` integration at the locale root.
+  Browser rendering uses one Apollo client instance for the active tab; React
+  Server Components use the official request-scoped `registerApolloClient`
+  pattern. Never share one mutable server client across user requests.
+- Browser operations use the same-origin `/best-api/graphql` endpoint. Server
+  operations use `BEST_API_INTERNAL_URL` and may fall back only to the documented
+  local development API URL. Do not expose internal hosts or backend secrets to
+  browser bundles.
+- The current single NestJS GraphQL endpoint remains sufficient. Do not add
+  Apollo Gateway, Federation, GraphOS, another proxy route, or one GraphQL server
+  per dashboard without a measured architectural need and fresh approval.
+
+### Operation and cache rules
+
+- Author operations in the repository's GraphQL source files and consume the
+  generated documents and exact operation types from `src/gql/`. Never edit
+  generated artifacts or recreate handwritten response interfaces.
+- Public Server Component reads keep Next.js revalidation as the freshness
+  owner. Execute them through server Apollo with Apollo's per-operation cache
+  disabled so Next's data cache and Apollo's normalized cache do not compete.
+- Authenticated Teacher Server Component reads and server-side mutations use
+  request-scoped Apollo with no shared normalized persistence. Preserve the
+  existing explicit route revalidation after accepted mutations.
+- Public browser intake mutations use Apollo `useMutation`, `no-cache`, complete
+  client validation, and the existing localized success/error behavior. Never
+  show success before the backend returns an accepted receipt.
+- Define normalized cache identities and field policies centrally. Cursor lists
+  use argument-aware relay-style pagination policies; do not concatenate pages
+  manually in components or permit records from different filters/groups to
+  merge into one list.
+- Do not execute the same route-owned query independently in both a Server
+  Component and a Client Component unless an explicit hydration, polling, or
+  live-update requirement defines which layer owns freshness.
+
+### Authentication, refresh, errors, and retries
+
+- Apollo does not own authentication. Auth.js remains the secure HttpOnly
+  session boundary, and the backend remains authoritative for role, status,
+  ownership, and permissions.
+- Add a bearer token only to operations explicitly marked as authenticated.
+  Never place an access token or refresh token in Apollo cache, localStorage,
+  sessionStorage, URLs, logs, generated HTML, or user-editable state.
+- On an authenticated browser operation returning `UNAUTHENTICATED`, ask
+  Auth.js for the current session, use its refreshed access token when present,
+  and retry that operation at most once. Prevent retry loops. If refresh fails,
+  preserve a controlled unauthorized outcome and route the user through the
+  localized login flow rather than throwing a development runtime screen.
+- Clear the authenticated Apollo store on logout and when the authenticated
+  user or role changes. Public cache data may be refetched normally afterward.
+- Normalize Apollo GraphQL and network failures through the shared application
+  error shape so existing localized field, conflict, authorization, and generic
+  error handling remains intact. Never replace specific per-field validation
+  errors with one generic form alert.
+- Automatic retry is allowed only for query network failures, with bounded
+  jittered backoff and no more than two retry attempts. Never automatically
+  retry mutations, authentication failures, validation failures, permission
+  failures, or GraphQL business errors.
+
+### Migration and scope hygiene
+
+- Remove a domain's legacy `fetch` or `executePublicApi` path only after all of
+  that approved domain's operations use Apollo and equivalent error, cache,
+  revalidation, and persistence behavior is verified.
+- Direct Auth.js credential, session-validation, and token-refresh requests are
+  authentication transport and may remain outside Apollo. Student and Admin
+  legacy executors remain untouched until their own migration is approved.
+- A helper stored in a Teacher-named module but consumed only by Admin is
+  Admin-owned for migration scope. Do not migrate it merely because of its file
+  location; move or migrate it only with the Admin slice.
+- Do not retain dead duplicate fetch executors, manual authorization header
+  builders, request/response interfaces, or cache workarounds after an approved
+  domain migration is complete.
+
+### Apollo verification
+
+- Every Apollo migration runs GraphQL codegen, lint, strict typecheck, targeted
+  Apollo tests, the relevant frontend integration tests, and a production build.
+- Public tests must prove a real generated query succeeds and changed public
+  mutations persist through the backend. Teacher tests must prove unauthenticated
+  operations are rejected and authenticated ownership rules remain server-side.
+- Verify Public routes render, protected Teacher routes redirect cleanly when
+  signed out, and expired Teacher access tokens refresh without losing the
+  session when the refresh token remains valid.
+- Audit the migrated Public and Teacher surfaces for leftover manual GraphQL
+  `fetch` calls. Record intentional Auth, Student, and Admin exceptions in the
+  completion report instead of deleting them outside scope.
 
 ## 8. Brand color system
 
@@ -1644,15 +1823,14 @@ admin template.
 - Teacher header with fictional avatar, display name, role/handle, notification
   control, and menu access. Teacher chat is not part of this milestone and must
   not be added to the workspace.
-- Lead with a localized `Today’s classes` timeline instead of abstract circular
-  progress indicators. Wide screens show four schedule cards; tablet uses a
-  two-column grid and mobile uses a bounded horizontal scroller. Each card shows
-  stable lesson id, start/end time, group and slug, room, learner count, and an
-  explicit `active`, `next`, `planned`, or `completed` state. The active lesson
-  receives the strongest emphasis, each lesson opens its group, and the section
-  links to the complete Reception schedule. Keep this typed contract ready for
-  a future backend response rather than deriving core lesson identity from card
-  position or presentation labels.
+- Lead with localized `Tomorrow’s classes` derived from each connected group's
+  ISO lesson days and time in Asia/Tashkent. Show the live month/day and HH:MM
+  clock centered over the cards. Wide screens use four columns, tablet two,
+  and mobile a bounded horizontal scroller. Each card shows time, group, room,
+  active learners out of 15, and a capacity progress bar and percentage. Each
+  card opens its group; the section links to the complete Reception schedule.
+  Keep the section visible with a localized empty state when tomorrow has no
+  classes.
 - Use a wide-desktop `8 + 4` command-centre grid: `My groups` occupies the main
   two-thirds as a `2 x 2` card grid, while the summary metrics form a stacked
   right rail. On wide screens, offset the metric rail by the group section
@@ -1669,11 +1847,11 @@ admin template.
   approximately 136 px high. Values remain centralized fictional preview
   metrics.
 - Group preview cards include group name, room, lesson days and time, learner
-  count, and progress/attendance percentage. Selecting a group opens its
+  count, and capacity percentage. Selecting a group opens its
   localized detail route. Preserve the `2 x 2` arrangement through laptop and
   tablet widths, then use the reference-inspired horizontal card scroller on
   mobile. Keep each preview card compact at approximately 136 px high and place
-  its progress bar and attendance percentage together in one bottom-aligned
+  its progress bar and capacity percentage together in one bottom-aligned
   footer row so unused card height becomes intentional spacing rather than an
   empty lower area.
 - Keep the teacher content container left-aligned after the side rail with a
@@ -3817,6 +3995,9 @@ npm run build
 ```
 
 If the project uses a different package manager, run the equivalent commands.
+For any GraphQL or Apollo change, also run the repository's GraphQL codegen and
+Apollo integration test scripts before the full build. A generated-client diff
+must correspond to an intentional schema or operation change.
 
 Also verify manually:
 
@@ -3861,6 +4042,9 @@ Also verify manually:
   in section 11A at mobile, tablet, and desktop widths.
 - Matching backend schema checks, unit tests, integration tests, migrations, and
   generated-client compatibility checks pass in `best-server`.
+- Public and Teacher-owned GraphQL operations use the shared Apollo integration;
+  any remaining manual fetch paths are documented Auth, Student, or Admin scope
+  exceptions rather than duplicate implementations of migrated operations.
 
 Do not hide failures with `eslint-disable`, `@ts-ignore`, unsafe casts, or skipped
 build steps. Fix the underlying problem.
@@ -3876,6 +4060,9 @@ The milestone is complete only when:
 - Animations are polished, purposeful, performant, and reduced-motion aware.
 - The site is responsive and accessible.
 - Public content is typed and centralized.
+- The global Apollo foundation is shared, Public and Teacher-owned GraphQL
+  operations are migrated, and Student/Admin remain unchanged until explicitly
+  approved for their own migration.
 - Preview business claims are centralized, marked for replacement, and not
   treated as production-verified facts.
 - The complete approved Student and operational Admin inventories in sections
