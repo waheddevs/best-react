@@ -8,7 +8,6 @@ import TextField from "@mui/material/TextField";
 
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import { getCourseRegistrationCopy } from "@/dictionaries/public/CourseRegistration";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useCourseRegistration } from "@/hooks/public/courses/useCourseRegistration";
@@ -46,22 +45,20 @@ export function CourseRegistrationAction({
         onClose={handleClose}
         open={isOpen}
         slotProps={{
-          backdrop: { className: styles.courses__registrationBackdrop },
-          paper: { className: styles.courses__registrationDialog },
+          backdrop: { className: "courses__registrationBackdrop" },
+          paper: { className: "courses__registrationDialog" },
         }}
       >
-        <div className={styles.courses__registrationLayout}>
-          <aside className={styles.courses__registrationSummary} data-accent={course.accent}>
-            <div aria-hidden="true" className={styles.courses__registrationSummaryGlow} />
-            <p className={styles.courses__registrationSummaryEyebrow}>{pageCopy.snapshot}</p>
-            <span aria-hidden="true" className={styles.courses__registrationSummarySymbol}>
+        <div className="courses__registrationLayout">
+          <aside className="courses__registrationSummary" data-accent={course.accent}>
+            <div aria-hidden="true" className="courses__registrationSummaryGlow" />
+            <p className="courses__registrationSummaryEyebrow">{pageCopy.snapshot}</p>
+            <span aria-hidden="true" className="courses__registrationSummarySymbol">
               {course.symbol}
             </span>
-            <h3 className={styles.courses__registrationSummaryTitle}>{course.title[locale]}</h3>
-            <p className={styles.courses__registrationSummaryDescription}>
-              {course.summary[locale]}
-            </p>
-            <dl className={styles.courses__registrationSummaryMeta}>
+            <h3 className="courses__registrationSummaryTitle">{course.title[locale]}</h3>
+            <p className="courses__registrationSummaryDescription">{course.summary[locale]}</p>
+            <dl className="courses__registrationSummaryMeta">
               <div>
                 <dt>
                   <CoPresentRounded aria-hidden="true" />
@@ -86,9 +83,9 @@ export function CourseRegistrationAction({
             </dl>
           </aside>
 
-          <form className={styles.courses__registrationForm} noValidate onSubmit={handleSubmit}>
+          <form className="courses__registrationForm" noValidate onSubmit={handleSubmit}>
             <h2>{copy.title}</h2>
-            <div className={styles.courses__registrationFields}>
+            <div className="courses__registrationFields">
               <TextField
                 error={Boolean(errors.fullName)}
                 helperText={errors.fullName}
@@ -96,7 +93,7 @@ export function CourseRegistrationAction({
                 name="fullName"
                 onChange={handleFieldChange}
                 slotProps={{
-                  inputLabel: { className: styles.courses__registrationSingleLineLabel },
+                  inputLabel: { className: "courses__registrationSingleLineLabel" },
                 }}
                 value={values.fullName}
               />
@@ -109,7 +106,7 @@ export function CourseRegistrationAction({
                 onChange={handleFieldChange}
                 slotProps={{
                   htmlInput: { inputMode: "tel" },
-                  inputLabel: { className: styles.courses__registrationSingleLineLabel },
+                  inputLabel: { className: "courses__registrationSingleLineLabel" },
                 }}
                 type="tel"
                 value={values.phone}
@@ -121,7 +118,7 @@ export function CourseRegistrationAction({
                 name="email"
                 onChange={handleFieldChange}
                 slotProps={{
-                  inputLabel: { className: styles.courses__registrationSingleLineLabel },
+                  inputLabel: { className: "courses__registrationSingleLineLabel" },
                 }}
                 type="email"
                 value={values.email}
@@ -136,7 +133,7 @@ export function CourseRegistrationAction({
               />
             </div>
             <div>
-              <label className={styles.courses__registrationConsent}>
+              <label className="courses__registrationConsent">
                 <input
                   aria-invalid={Boolean(errors.consent)}
                   checked={values.consent}
@@ -146,12 +143,12 @@ export function CourseRegistrationAction({
                 <span>{copy.consentLabel}</span>
               </label>
               {errors.consent ? (
-                <small className={styles.courses__registrationConsentError} role="alert">
+                <small className="courses__registrationConsentError" role="alert">
                   {errors.consent}
                 </small>
               ) : null}
             </div>
-            <div className={styles.courses__registrationActions}>
+            <div className="courses__registrationActions">
               <Button disabled={isSubmitting} onClick={handleClose} size="small" variant="outline">
                 {copy.cancel}
               </Button>

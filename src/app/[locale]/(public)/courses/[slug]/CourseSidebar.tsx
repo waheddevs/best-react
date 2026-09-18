@@ -5,7 +5,6 @@ import CoPresentRounded from "@mui/icons-material/CoPresentRounded";
 import TimelineRounded from "@mui/icons-material/TimelineRounded";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { PublicCourse } from "@/types/PublicCourse";
 import { CourseRegistrationAction } from "@/features/courses/CourseRegistrationAction";
@@ -19,9 +18,9 @@ type CourseSidebarProps = {
 const levelScale = ["A0", "A1", "A2", "B1", "B2", "C1", "C2"] as const;
 
 const accentClassNames: Record<PublicCourse["accent"], string> = {
-  blue: styles.courses__sidebarAccentBlue,
-  turquoise: styles.courses__sidebarAccentTurquoise,
-  yellow: styles.courses__sidebarAccentYellow,
+  blue: "courses__sidebarAccentBlue",
+  turquoise: "courses__sidebarAccentTurquoise",
+  yellow: "courses__sidebarAccentYellow",
 };
 
 function getLevelStops(level: string) {
@@ -44,27 +43,27 @@ export function CourseSidebar({ course, locale, copy }: CourseSidebarProps) {
   const levelStops = getLevelStops(course.level[locale]);
 
   return (
-    <aside className={`${styles.courses__sidebar} ${accentClassNames[course.accent]}`}>
-      <div aria-hidden="true" className={styles.courses__sidebarGlow} />
-      <header className={styles.courses__sidebarHeader}>
-        <p className={styles.courses__sidebarEyebrow}>
+    <aside className={`courses__sidebar ${accentClassNames[course.accent]}`}>
+      <div aria-hidden="true" className="courses__sidebarGlow" />
+      <header className="courses__sidebarHeader">
+        <p className="courses__sidebarEyebrow">
           <AutoAwesomeRounded aria-hidden="true" />
           {copy.courses.snapshot}
         </p>
-        <span aria-hidden="true" className={styles.courses__sidebarWatermark}>
+        <span aria-hidden="true" className="courses__sidebarWatermark">
           {course.symbol}
         </span>
       </header>
-      <dl className={styles.courses__sidebarMeta}>
-        <div className={`${styles.courses__sidebarFact} ${styles.courses__sidebarFactLevel}`}>
-          <dt className={styles.courses__sidebarIconLabel}>
-            <span className={styles.courses__sidebarFactIcon}>
+      <dl className="courses__sidebarMeta">
+        <div className="courses__sidebarFact courses__sidebarFactLevel">
+          <dt className="courses__sidebarIconLabel">
+            <span className="courses__sidebarFactIcon">
               <TimelineRounded aria-hidden="true" />
             </span>
             {copy.courses.level}
           </dt>
           <dd>
-            <ol className={styles.courses__sidebarLevelTrack}>
+            <ol className="courses__sidebarLevelTrack">
               {levelStops.map((levelStop) => (
                 <li key={levelStop}>
                   <span aria-hidden="true" />
@@ -74,42 +73,42 @@ export function CourseSidebar({ course, locale, copy }: CourseSidebarProps) {
             </ol>
           </dd>
         </div>
-        <div className={`${styles.courses__sidebarFact} ${styles.courses__sidebarFactFormat}`}>
-          <dt className={styles.courses__sidebarIconLabel}>
-            <span className={styles.courses__sidebarFactIcon}>
+        <div className="courses__sidebarFact courses__sidebarFactFormat">
+          <dt className="courses__sidebarIconLabel">
+            <span className="courses__sidebarFactIcon">
               <CoPresentRounded aria-hidden="true" />
             </span>
             {copy.courses.format}
           </dt>
-          <dd className={styles.courses__sidebarValue}>{course.formatLabel[locale]}</dd>
+          <dd className="courses__sidebarValue">{course.formatLabel[locale]}</dd>
         </div>
-        <div className={`${styles.courses__sidebarFact} ${styles.courses__sidebarFactDuration}`}>
-          <dt className={styles.courses__sidebarIconLabel}>
-            <span className={styles.courses__sidebarFactIcon}>
+        <div className="courses__sidebarFact courses__sidebarFactDuration">
+          <dt className="courses__sidebarIconLabel">
+            <span className="courses__sidebarFactIcon">
               <AccessTimeRounded aria-hidden="true" />
             </span>
             {copy.courses.duration}
           </dt>
-          <dd className={styles.courses__sidebarValue}>{course.duration[locale]}</dd>
+          <dd className="courses__sidebarValue">{course.duration[locale]}</dd>
         </div>
-        <div className={`${styles.courses__sidebarFact} ${styles.courses__sidebarFactSchedule}`}>
-          <dt className={styles.courses__sidebarIconLabel}>
-            <span className={styles.courses__sidebarFactIcon}>
+        <div className="courses__sidebarFact courses__sidebarFactSchedule">
+          <dt className="courses__sidebarIconLabel">
+            <span className="courses__sidebarFactIcon">
               <CalendarMonthRounded aria-hidden="true" />
             </span>
             {copy.courses.schedule}
           </dt>
-          <dd className={styles.courses__sidebarValue}>{course.schedule[locale]}</dd>
-          <dd className={styles.courses__sidebarDays}>
+          <dd className="courses__sidebarValue">{course.schedule[locale]}</dd>
+          <dd className="courses__sidebarDays">
             {copy.courses.scheduleDays.map((day) => (
               <span key={day}>{day}</span>
             ))}
           </dd>
         </div>
       </dl>
-      <div className={styles.courses__sidebarCta}>
-        <h2 className={styles.courses__sidebarTitle}>{copy.courses.detailCtaTitle}</h2>
-        <div className={styles.courses__sidebarAction}>
+      <div className="courses__sidebarCta">
+        <h2 className="courses__sidebarTitle">{copy.courses.detailCtaTitle}</h2>
+        <div className="courses__sidebarAction">
           <CourseRegistrationAction course={course} locale={locale} pageCopy={copy.courses} />
         </div>
       </div>

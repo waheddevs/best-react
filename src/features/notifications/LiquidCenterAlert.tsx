@@ -9,7 +9,6 @@ import DialogContent from "@mui/material/DialogContent";
 import { useId } from "react";
 
 import { Button } from "@/components/ui/Button";
-import styles from "@/css/public/shared.module.css";
 import type { CenterAlertTone, ResolvedCenterAlertOptions } from "@/types/Notification";
 
 type LiquidCenterAlertProps = {
@@ -20,10 +19,10 @@ type LiquidCenterAlertProps = {
 };
 
 const toneClassNames: Record<CenterAlertTone, string> = {
-  success: styles.publicShared__centerAlertSuccess,
-  error: styles.publicShared__centerAlertError,
-  info: styles.publicShared__centerAlertInfo,
-  comingSoon: styles.publicShared__centerAlertComingSoon,
+  success: "publicShared__centerAlertSuccess",
+  error: "publicShared__centerAlertError",
+  info: "publicShared__centerAlertInfo",
+  comingSoon: "publicShared__centerAlertComingSoon",
 };
 
 function renderCenterAlertIcon(tone: CenterAlertTone) {
@@ -54,9 +53,9 @@ export function LiquidCenterAlert({ options, open, onClose, onExited }: LiquidCe
       onClose={handleClose}
       open={open}
       slotProps={{
-        backdrop: { className: styles.publicShared__centerAlertBackdrop },
+        backdrop: { className: "publicShared__centerAlertBackdrop" },
         paper: {
-          className: `${styles.publicShared__centerAlert} ${toneClassNames[options.tone]} ${open ? styles.publicShared__centerAlertOpen : styles.publicShared__centerAlertClosed}`,
+          className: `publicShared__centerAlert ${toneClassNames[options.tone]} ${open ? "publicShared__centerAlertOpen" : "publicShared__centerAlertClosed"}`,
         },
         transition: {
           easing: {
@@ -69,19 +68,17 @@ export function LiquidCenterAlert({ options, open, onClose, onExited }: LiquidCe
       }}
       transitionDuration={{ enter: 320, exit: 240 }}
     >
-      <DialogContent className={styles.publicShared__centerAlertContent}>
-        <span className={styles.publicShared__centerAlertIcon}>
-          {renderCenterAlertIcon(options.tone)}
-        </span>
-        <h2 className={styles.publicShared__centerAlertTitle} id={titleId}>
+      <DialogContent className="publicShared__centerAlertContent">
+        <span className="publicShared__centerAlertIcon">{renderCenterAlertIcon(options.tone)}</span>
+        <h2 className="publicShared__centerAlertTitle" id={titleId}>
           {options.title}
         </h2>
-        <p className={styles.publicShared__centerAlertMessage} id={messageId}>
+        <p className="publicShared__centerAlertMessage" id={messageId}>
           {options.message}
         </p>
-        <div className={styles.publicShared__centerAlertCloseSlot}>
+        <div className="publicShared__centerAlertCloseSlot">
           <Button
-            className={styles.publicShared__centerAlertClose}
+            className="publicShared__centerAlertClose"
             hoverEffect="jump"
             onClick={handleClose}
             shape="soft"

@@ -3,8 +3,6 @@
 import TrendingUpRounded from "@mui/icons-material/TrendingUpRounded";
 import { motion, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/results.module.css";
-
 const pathPoints = [
   [42, 248],
   [85, 242],
@@ -39,9 +37,9 @@ export function ResultsProgressMotion() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <div aria-hidden="true" className={styles.results__heroProgressMotion}>
+    <div aria-hidden="true" className="results__heroProgressMotion">
       <svg
-        className={styles.results__heroPath}
+        className="results__heroPath"
         viewBox="0 0 520 290"
         fill="none"
         preserveAspectRatio="none"
@@ -49,7 +47,7 @@ export function ResultsProgressMotion() {
         <path d="M42 248C128 248 133 188 214 188C298 188 303 126 382 126C441 126 462 76 486 45" />
       </svg>
       <motion.div
-        className={styles.results__heroProgressMarker}
+        className="results__heroProgressMarker"
         initial={false}
         animate={
           reduceMotion
@@ -71,7 +69,7 @@ export function ResultsProgressMotion() {
           times: markerTimes,
         }}
       >
-        <span className={styles.results__heroProgressTile}>
+        <span className="results__heroProgressTile">
           <TrendingUpRounded />
         </span>
       </motion.div>

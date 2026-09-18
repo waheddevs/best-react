@@ -3,8 +3,6 @@
 import AddRounded from "@mui/icons-material/AddRounded";
 import { motion, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/results.module.css";
-
 const plusDuration = 4.6;
 
 export function ResultsPlusMotion() {
@@ -14,7 +12,7 @@ export function ResultsPlusMotion() {
   return (
     <motion.div
       aria-hidden="true"
-      className={styles.results__heroPlus}
+      className="results__heroPlus"
       initial={false}
       animate={
         reduceMotion

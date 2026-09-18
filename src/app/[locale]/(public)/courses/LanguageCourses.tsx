@@ -9,7 +9,6 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { CourseAccent, PublicCourse } from "@/types/PublicCourse";
 
@@ -20,15 +19,15 @@ type LanguageCoursesProps = {
 };
 
 const accentClassNames: Record<CourseAccent, string> = {
-  blue: styles.courses__languageSymbolBlue,
-  turquoise: styles.courses__languageSymbolTurquoise,
-  yellow: styles.courses__languageSymbolYellow,
+  blue: "courses__languageSymbolBlue",
+  turquoise: "courses__languageSymbolTurquoise",
+  yellow: "courses__languageSymbolYellow",
 };
 
 export function LanguageCourses({ locale, copy, courses }: LanguageCoursesProps) {
   return (
     <Section tone="background">
-      <Reveal className={styles.courses__sectionHeading}>
+      <Reveal className="courses__sectionHeading">
         <SectionHeading
           align="center"
           eyebrow={copy.courses.languagesEyebrow}
@@ -36,23 +35,21 @@ export function LanguageCourses({ locale, copy, courses }: LanguageCoursesProps)
           description={copy.courses.languagesDescription}
         />
       </Reveal>
-      <StaggerGroup className={styles.courses__languageGrid} delay={0.06}>
+      <StaggerGroup className="courses__languageGrid" delay={0.06}>
         {courses
           .filter((course) => course.category === "language")
           .map((course) => (
-            <StaggerItem className={styles.courses__languageItem} key={course.slug}>
-              <article className={styles.courses__languageCard}>
-                <div className={styles.courses__languageHeader}>
-                  <span
-                    className={`${styles.courses__languageSymbol} ${accentClassNames[course.accent]}`}
-                  >
+            <StaggerItem className="courses__languageItem" key={course.slug}>
+              <article className="courses__languageCard">
+                <div className="courses__languageHeader">
+                  <span className={`courses__languageSymbol ${accentClassNames[course.accent]}`}>
                     {course.symbol}
                   </span>
-                  <span className={styles.courses__languageLevel}>{course.level[locale]}</span>
+                  <span className="courses__languageLevel">{course.level[locale]}</span>
                 </div>
-                <h2 className={styles.courses__languageTitle}>{course.title[locale]}</h2>
-                <p className={styles.courses__languageSummary}>{course.summary[locale]}</p>
-                <ul className={styles.courses__languageHighlights}>
+                <h2 className="courses__languageTitle">{course.title[locale]}</h2>
+                <p className="courses__languageSummary">{course.summary[locale]}</p>
+                <ul className="courses__languageHighlights">
                   {course.highlights[locale].map((highlight) => (
                     <li key={highlight}>
                       <CheckRounded aria-hidden="true" />
@@ -60,8 +57,8 @@ export function LanguageCourses({ locale, copy, courses }: LanguageCoursesProps)
                     </li>
                   ))}
                 </ul>
-                <div className={styles.courses__languageFooter}>
-                  <span className={styles.courses__languageSchedule}>
+                <div className="courses__languageFooter">
+                  <span className="courses__languageSchedule">
                     <ScheduleRounded aria-hidden="true" />
                     {course.schedule[locale]}
                   </span>

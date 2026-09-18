@@ -11,7 +11,6 @@ import type { MouseEvent } from "react";
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/events.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useEventRegistration } from "@/hooks/public/events/useEventRegistration";
 import type { PublicEvent } from "@/types/PublicContent";
@@ -35,45 +34,45 @@ export function EventCard({ event, locale, copy, variant = "summary" }: EventCar
 
   if (variant === "catalog") {
     return (
-      <article className={styles.events__catalogCard}>
-        <div className={styles.events__catalogCardMedia}>
+      <article className="events__catalogCard">
+        <div className="events__catalogCardMedia">
           <Image
             alt={event.imageAlt[locale]}
-            className={styles.events__catalogCardImage}
+            className="events__catalogCardImage"
             fill
             sizes="(min-width: 1280px) 390px, (min-width: 768px) 50vw, 100vw"
             src={event.image}
           />
         </div>
-        <span className={styles.events__catalogCardScrim} aria-hidden="true" />
+        <span className="events__catalogCardScrim" aria-hidden="true" />
 
-        <div className={styles.events__catalogCardPanel}>
-          <div className={styles.events__catalogCardHeading}>
+        <div className="events__catalogCardPanel">
+          <div className="events__catalogCardHeading">
             <div>
-              <h2 className={styles.events__catalogCardTitle}>{event.title[locale]}</h2>
-              <p className={styles.events__catalogCardLocation}>
+              <h2 className="events__catalogCardTitle">{event.title[locale]}</h2>
+              <p className="events__catalogCardLocation">
                 <LocationOnRounded aria-hidden="true" />
                 {event.locationLabel[locale]}
               </p>
             </div>
           </div>
 
-          <dl className={styles.events__catalogCardMeta}>
-            <div className={styles.events__catalogCardMetaItem}>
+          <dl className="events__catalogCardMeta">
+            <div className="events__catalogCardMetaItem">
               <dt>
                 <CalendarMonthRounded aria-hidden="true" />
                 {copy.events.date}:
               </dt>
               <dd>{event.dateLabel[locale]}</dd>
             </div>
-            <div className={styles.events__catalogCardMetaItem}>
+            <div className="events__catalogCardMetaItem">
               <dt>
                 <ScheduleRounded aria-hidden="true" />
                 {copy.events.time}:
               </dt>
               <dd>{event.timeLabel[locale]}</dd>
             </div>
-            <div className={styles.events__catalogCardMetaItem}>
+            <div className="events__catalogCardMetaItem">
               <dt>
                 <TimelapseRounded aria-hidden="true" />
                 {copy.events.duration}:
@@ -82,10 +81,10 @@ export function EventCard({ event, locale, copy, variant = "summary" }: EventCar
             </div>
           </dl>
 
-          <div className={styles.events__catalogCardActions}>
+          <div className="events__catalogCardActions">
             <ScrollToTopLink
               aria-label={`${copy.common.details}: ${event.title[locale]}`}
-              className={styles.events__catalogCardDetails}
+              className="events__catalogCardDetails"
               href={`/${locale}/events/${event.slug}`}
             >
               <span>{copy.common.details}</span>
@@ -93,7 +92,7 @@ export function EventCard({ event, locale, copy, variant = "summary" }: EventCar
             </ScrollToTopLink>
             <Button
               aria-label={`${copy.events.attend}: ${event.title[locale]}`}
-              className={styles.events__catalogCardAttend}
+              className="events__catalogCardAttend"
               hoverEffect="jump"
               onClick={handleAttendClick}
               size="small"
@@ -108,25 +107,22 @@ export function EventCard({ event, locale, copy, variant = "summary" }: EventCar
   }
 
   return (
-    <article className={styles.events__card}>
-      <div className={styles.events__cardVisual}>
-        <div className={styles.events__cardDecoration} />
-        <span className={styles.events__cardIcon}>
+    <article className="events__card">
+      <div className="events__cardVisual">
+        <div className="events__cardDecoration" />
+        <span className="events__cardIcon">
           <CalendarMonthRounded aria-hidden="true" />
         </span>
-        <p className={styles.events__cardDate}>{event.dateLabel[locale]}</p>
+        <p className="events__cardDate">{event.dateLabel[locale]}</p>
       </div>
-      <div className={styles.events__cardContent}>
-        <h2 className={styles.events__cardTitle}>{event.title[locale]}</h2>
-        <p className={styles.events__cardSummary}>{event.summary[locale]}</p>
-        <p className={styles.events__cardLocation}>
-          <LocationOnRounded aria-hidden="true" className={styles.events__cardLocationIcon} />
+      <div className="events__cardContent">
+        <h2 className="events__cardTitle">{event.title[locale]}</h2>
+        <p className="events__cardSummary">{event.summary[locale]}</p>
+        <p className="events__cardLocation">
+          <LocationOnRounded aria-hidden="true" className="events__cardLocationIcon" />
           {event.formatLabel[locale]}
         </p>
-        <ScrollToTopLink
-          href={`/${locale}/events/${event.slug}`}
-          className={styles.events__cardLink}
-        >
+        <ScrollToTopLink href={`/${locale}/events/${event.slug}`} className="events__cardLink">
           {copy.common.details}
           <ArrowOutwardRounded aria-hidden="true" />
         </ScrollToTopLink>

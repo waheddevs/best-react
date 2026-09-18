@@ -1,7 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import type { Locale } from "@/config/Locales";
 import type { Dictionary } from "@/dictionaries/public/Types";
-import styles from "@/css/public/home.module.css";
 
 import { HeroCopy } from "./HeroCopy";
 import { HeroLandmark } from "./HeroLandmark";
@@ -15,12 +14,12 @@ type HomeHeroProps = {
 
 export function HomeHero({ locale, content }: HomeHeroProps) {
   return (
-    <section className={styles.home__hero}>
-      <div aria-hidden="true" className={styles.home__heroGlowStart} />
-      <div aria-hidden="true" className={styles.home__heroGlowEnd} />
+    <section className="home__hero">
+      <div aria-hidden="true" className="home__heroGlowStart" />
+      <div aria-hidden="true" className="home__heroGlowEnd" />
       <HeroLandmark />
       <HeroPlanes />
-      <Container className={styles.home__heroContainer}>
+      <Container className="home__heroContainer">
         <HeroCopy locale={locale} content={content} />
         <HeroVisual label={content.visualLabel} />
       </Container>

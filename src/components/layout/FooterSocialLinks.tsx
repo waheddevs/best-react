@@ -5,7 +5,6 @@ import Instagram from "@mui/icons-material/Instagram";
 import Telegram from "@mui/icons-material/Telegram";
 import Twitter from "@mui/icons-material/Twitter";
 
-import styles from "@/css/layout/footer.module.css";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 
 type FooterSocialLinksProps = {
@@ -42,11 +41,11 @@ export function FooterSocialLinks({
   };
 
   return (
-    <div aria-label={ariaLabel} className={styles.footer__socials}>
+    <div aria-label={ariaLabel} className="footer__socials">
       {socialItems.map(({ label, Icon }) => (
         <button
           aria-label={label}
-          className={styles.footer__socialIcon}
+          className="footer__socialIcon"
           key={label}
           onClick={handleSocialClick}
           type="button"

@@ -8,7 +8,6 @@ import Image from "next/image";
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Container } from "@/components/ui/Container";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/events.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { PublicEvent } from "@/types/PublicContent";
 
@@ -26,22 +25,22 @@ export function EventHero({ event, locale, copy }: EventHeroProps) {
   const isUpcoming = event.status === "upcoming";
   const statusLabel = isUpcoming ? copy.events.upcoming : copy.events.past;
   const statusClassName = isUpcoming
-    ? styles.events__detailHeroStatusUpcoming
-    : styles.events__detailHeroStatusPast;
+    ? "events__detailHeroStatusUpcoming"
+    : "events__detailHeroStatusPast";
 
   return (
-    <section className={styles.events__detailHero}>
+    <section className="events__detailHero">
       <Container>
-        <ScrollToTopLink className={styles.events__detailBackLink} href={`/${locale}/events`}>
+        <ScrollToTopLink className="events__detailBackLink" href={`/${locale}/events`}>
           <ArrowBackRounded aria-hidden="true" />
           {copy.events.backToEvents}
         </ScrollToTopLink>
 
-        <div className={styles.events__detailHeroGrid}>
-          <EventHeroMotion className={styles.events__detailHeroVisual} variant="visual">
+        <div className="events__detailHeroGrid">
+          <EventHeroMotion className="events__detailHeroVisual" variant="visual">
             <Image
               alt={event.imageAlt[locale]}
-              className={styles.events__detailHeroImage}
+              className="events__detailHeroImage"
               fill
               preload
               sizes="(max-width: 1024px) calc(100vw - 2.5rem), 30rem"
@@ -49,19 +48,17 @@ export function EventHero({ event, locale, copy }: EventHeroProps) {
             />
           </EventHeroMotion>
 
-          <EventHeroMotion className={styles.events__detailHeroCopy} variant="copy">
-            <div className={styles.events__detailHeroStatusRow}>
-              <span className={`${styles.events__detailHeroStatus} ${statusClassName}`}>
-                {statusLabel}
-              </span>
-              <span className={styles.events__detailHeroFormat}>{event.formatLabel[locale]}</span>
+          <EventHeroMotion className="events__detailHeroCopy" variant="copy">
+            <div className="events__detailHeroStatusRow">
+              <span className={`events__detailHeroStatus ${statusClassName}`}>{statusLabel}</span>
+              <span className="events__detailHeroFormat">{event.formatLabel[locale]}</span>
             </div>
 
-            <h1 className={styles.events__detailHeroTitle}>{event.title[locale]}</h1>
-            <p className={styles.events__detailHeroDescription}>{event.summary[locale]}</p>
+            <h1 className="events__detailHeroTitle">{event.title[locale]}</h1>
+            <p className="events__detailHeroDescription">{event.summary[locale]}</p>
             <EventTopics copy={copy} event={event} locale={locale} />
 
-            <div className={styles.events__detailHeroMeta}>
+            <div className="events__detailHeroMeta">
               <span>
                 <CalendarMonthRounded aria-hidden="true" />
                 <small>{copy.events.date}</small>
@@ -72,14 +69,14 @@ export function EventHero({ event, locale, copy }: EventHeroProps) {
                 <small>{copy.events.time}</small>
                 <strong>{event.timeLabel[locale]}</strong>
               </span>
-              <span className={styles.events__detailHeroLocation}>
+              <span className="events__detailHeroLocation">
                 <LocationOnRounded aria-hidden="true" />
                 <small>{copy.events.location}</small>
                 <strong>{event.locationLabel[locale]}</strong>
               </span>
             </div>
 
-            <div className={styles.events__detailHeroAction}>
+            <div className="events__detailHeroAction">
               {isUpcoming ? (
                 <EventAttendAction
                   event={event}
@@ -88,7 +85,7 @@ export function EventHero({ event, locale, copy }: EventHeroProps) {
                   size="large"
                 />
               ) : (
-                <span className={styles.events__detailCompleted}>
+                <span className="events__detailCompleted">
                   <CheckCircleOutlineRounded aria-hidden="true" />
                   {copy.events.eventCompleted}
                 </span>

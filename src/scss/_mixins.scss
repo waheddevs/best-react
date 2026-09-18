@@ -1,0 +1,30 @@
+@use "breakpoints";
+
+@mixin mobile {
+  @media (width < breakpoints.$mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (width < breakpoints.$tablet) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (width >= breakpoints.$desktop) {
+    @content;
+  }
+}
+
+@mixin focus-ring {
+  outline: 3px solid color-mix(in srgb, var(--action-blue) 60%, white);
+  outline-offset: 3px;
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

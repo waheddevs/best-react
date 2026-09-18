@@ -16,6 +16,7 @@ import { createPageMetadata } from "@/lib/Metadata";
 import { BestThemeProvider } from "@/theme/BestThemeProvider";
 
 import "@/app/globals.css";
+import "@/scss/public/shared.scss";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

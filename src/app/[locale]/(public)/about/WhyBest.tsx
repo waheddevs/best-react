@@ -7,7 +7,6 @@ import { StaggerGroup } from "@/components/motion/StaggerGroup";
 import { StaggerItem } from "@/components/motion/StaggerItem";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import styles from "@/css/public/about.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 const whyIcons = [ExploreRounded, GroupsRounded, InsightsRounded];
@@ -26,19 +25,19 @@ export function WhyBest({ copy }: WhyBestProps) {
           title={copy.about.whyTitle}
         />
       </Reveal>
-      <StaggerGroup className={styles.about__whyGrid}>
+      <StaggerGroup className="about__whyGrid">
         {copy.about.whyItems.map((item, index) => {
           const Icon = whyIcons[index];
 
           return (
-            <StaggerItem key={item.title} className={styles.about__whyMotionItem}>
-              <article className={styles.about__whyCard}>
-                <span className={styles.about__whyIcon}>
+            <StaggerItem key={item.title} className="about__whyMotionItem">
+              <article className="about__whyCard">
+                <span className="about__whyIcon">
                   <Icon aria-hidden="true" />
                 </span>
-                <h3 className={styles.about__whyTitle}>{item.title}</h3>
-                <p className={styles.about__whyDescription}>{item.description}</p>
-                <div className={styles.about__whyDecoration} />
+                <h3 className="about__whyTitle">{item.title}</h3>
+                <p className="about__whyDescription">{item.description}</p>
+                <div className="about__whyDecoration" />
               </article>
             </StaggerItem>
           );

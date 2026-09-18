@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
-import styles from "@/css/public/about.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 import { getPublicFaq } from "@/lib/PublicContentApi";
 
@@ -33,7 +32,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const faqItems = await getPublicFaq(locale);
 
   return (
-    <main className={styles.about}>
+    <main className={"about"}>
       <AboutHero eyebrow={dictionary.navigation.about} copy={copy} />
       <WhyBest copy={copy} />
       <Mission locale={locale} copy={copy} />

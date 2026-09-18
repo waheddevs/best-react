@@ -4,7 +4,6 @@ import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import styles from "@/css/public/events.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { EventDetailFaqItem } from "@/types/EventDetail";
 
@@ -19,17 +18,17 @@ type EventPracticalInfoProps = {
 export function EventPracticalInfo({ copy, faq, items }: EventPracticalInfoProps) {
   return (
     <Section tone="background">
-      <div className={styles.events__practicalGrid}>
+      <div className="events__practicalGrid">
         <Reveal>
-          <section className={styles.events__practicalPanel}>
-            <span className={styles.events__practicalIcon}>
+          <section className="events__practicalPanel">
+            <span className="events__practicalIcon">
               <InfoOutlined aria-hidden="true" />
             </span>
             <SectionHeading
               description={copy.events.practicalInfoDescription}
               title={copy.events.practicalInfoTitle}
             />
-            <ul className={styles.events__practicalList}>
+            <ul className="events__practicalList">
               {items.map((item) => (
                 <li key={item}>
                   <CheckCircleRounded aria-hidden="true" />
@@ -41,7 +40,7 @@ export function EventPracticalInfo({ copy, faq, items }: EventPracticalInfoProps
         </Reveal>
 
         <Reveal delay={0.08}>
-          <section className={styles.events__detailFaqPanel}>
+          <section className="events__detailFaqPanel">
             <SectionHeading description={copy.events.faqDescription} title={copy.events.faqTitle} />
             <EventFaq items={faq} />
           </section>

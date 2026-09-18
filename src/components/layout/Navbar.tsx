@@ -8,7 +8,6 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Container } from "@/components/ui/Container";
 import { navbarNavigationItems } from "@/config/Navigation";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/layout/navbar.module.css";
 import type { Dictionary } from "@/dictionaries/public/Types";
 
 type NavbarProps = {
@@ -18,41 +17,37 @@ type NavbarProps = {
 
 export function Navbar({ locale, labels }: NavbarProps) {
   return (
-    <header className={styles.navbar}>
-      <Container className={styles.navbar__container}>
-        <ScrollToTopLink
-          href={`/${locale}`}
-          aria-label={labels.home}
-          className={styles.navbar__brand}
-        >
-          <span className={styles.navbar__brandMark}>
+    <header className="navbar">
+      <Container className="navbar__container">
+        <ScrollToTopLink href={`/${locale}`} aria-label={labels.home} className="navbar__brand">
+          <span className="navbar__brandMark">
             <Image
               src="/icons/logo.svg"
               alt=""
               width={36}
               height={36}
-              className={styles.navbar__brandIcon}
+              className="navbar__brandIcon"
               priority
             />
           </span>
-          <span className={styles.navbar__brandCopy}>
-            <span className={styles.navbar__brandName}>BEST LC</span>
+          <span className="navbar__brandCopy">
+            <span className="navbar__brandName">BEST LC</span>
           </span>
         </ScrollToTopLink>
 
-        <nav aria-label={labels.menu} className={styles.navbar__desktopNav}>
+        <nav aria-label={labels.menu} className="navbar__desktopNav">
           {navbarNavigationItems.map((item) => (
             <NavbarLink key={item.key} locale={locale} href={item.href} label={labels[item.key]} />
           ))}
         </nav>
 
-        <div className={styles.navbar__actions}>
-          <div className={styles.navbar__localeDesktop}>
+        <div className="navbar__actions">
+          <div className="navbar__localeDesktop">
             <LocaleSwitcher locale={locale} label={labels.language} />
           </div>
-          <div className={styles.navbar__auth}>
+          <div className="navbar__auth">
             <ButtonLink
-              className={styles.navbar__login}
+              className="navbar__login"
               href={`/${locale}/login`}
               endIcon={null}
               hoverEffect="jump"

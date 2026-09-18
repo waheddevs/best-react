@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/about.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 import { TestimonialCard } from "./TestimonialCard";
@@ -19,7 +18,7 @@ export function TestimonialGroup({ testimonials }: TestimonialGroupProps) {
 
   return (
     <motion.div
-      className={styles.about__testimonialGroup}
+      className="about__testimonialGroup"
       initial={{ opacity: 0, y: reduceMotion ? 0 : 18 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}

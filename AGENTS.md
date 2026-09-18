@@ -321,8 +321,9 @@ starts, preserving its data-design and migration rules.
 - Latest stable **Next.js** using the **App Router**
 - **React** version selected by the current stable Next.js installer
 - **TypeScript** in strict mode
-- **Tailwind CSS v4** using its CSS-first configuration and current official
-  Next.js/PostCSS installation approach
+- **Dart Sass** through Next.js built-in `.scss` support;
+  Tailwind CSS is being removed through the approved staged migration in
+  section 6
 - **Material UI (MUI)** for Material icons and selected accessible interactive
   UI primitives
 - **Motion for React** (`motion`) only for animations that are not better served
@@ -340,9 +341,10 @@ application files. Tool-required configuration files such as
 official documentation.
 
 MUI is the approved component library for icons and selected UI materials. Do
-not introduce another component framework or a prebuilt visual theme. Tailwind
-remains the primary layout and brand-styling system, while MUI components must be
-themed specifically for BEST LC rather than retaining their default appearance.
+not introduce another component framework or a prebuilt visual theme. Sass and
+semantic CSS remain the primary layout and brand-styling system, while MUI
+components must be themed specifically for BEST LC rather than retaining their
+default appearance.
 
 ## 4. Documentation-first rule
 
@@ -360,8 +362,8 @@ Primary references:
 - Metadata and OG images:
   https://nextjs.org/docs/app/getting-started/metadata-and-og-images
 - Image optimization: https://nextjs.org/docs/app/getting-started/images
-- Tailwind with Next.js:
-  https://tailwindcss.com/docs/installation/framework-guides/nextjs
+- Sass with Next.js: https://nextjs.org/docs/app/guides/sass
+- Sass module system: https://sass-lang.com/documentation/at-rules/use/
 - Motion for React: https://motion.dev/docs/react
 - Reduced motion: https://motion.dev/docs/react-use-reduced-motion
 - MUI with Next.js: https://mui.com/material-ui/integrations/nextjs/
@@ -377,7 +379,7 @@ Rules:
 
 - Do not copy an old Pages Router pattern into the App Router.
 - Do not use deprecated Next.js APIs.
-- Do not copy Tailwind v3 configuration into a newer Tailwind project.
+- Do not introduce deprecated Sass `@import`; use `@use` and `@forward`.
 - Do not suppress framework, TypeScript, or ESLint errors to make a build pass.
 - When documentation and an assumption conflict, follow the documentation.
 - Keep `devIndicators: false` in `next.config.ts` so the Next.js development
@@ -585,7 +587,7 @@ src/
           settings/
       layout.tsx
       not-found.tsx
-    globals.css
+    globals.css             # temporary until the Sass migration gate completes
     sitemap.ts
     robots.ts
   components/
@@ -662,36 +664,36 @@ src/
       Teacher.ts
     admin/
       AdminWorkspace.ts
-  css/
+  scss/
+    app.scss
+    _reset.scss
+    _variables.scss
+    _breakpoints.scss
+    _mixins.scss
     public/
-      home.module.css
-      about.module.css
-      contact.module.css
-      courses.module.css
-      events.module.css
-      exams.module.css
-      results.module.css
-      shared.module.css
-    layout/
-      navbar.module.css
-      footer.module.css
-    student/
-      library.module.css
-      shell.module.css
-      workspace.module.css
+      main.scss
+      _variables.scss
+      shared.scss
+      layout/
+        navbar.scss
+        footer.scss
+      pages/
+        home.scss
+        about.scss
+        contact.scss
+        courses.scss
+        events.scss
+        exams.scss
+        results.scss
+    auth/
+      main.scss
+      _variables.scss
     teacher/
-      shell.module.css
-      dashboard.module.css
-      groups.module.css
-      tasks.module.css
-      finance.module.css
-      reception.module.css
-      profile.module.css
-      transferRequests.module.css
-      loading.module.css
-    admin/
-      shell.module.css
-      workspace.module.css
+      main.scss
+      _variables.scss
+      pages/
+    student/                # create when the Student styling phase begins
+    admin/                  # create when the Admin styling phase begins
   lib/
     apollo/
       ApolloBrowserClient.ts
@@ -772,48 +774,71 @@ preview data is added, provide Uzbek (`uz`), Russian (`ru`), and English (`en`)
 versions in the same change. Do not ship a new content value in only one or two
 locales with the intention of translating it later.
 
-All component styling must live under `src/css/` as scoped CSS Modules. Keep
-one stylesheet per public page under `css/public/`, named after its route, such
-as `home.module.css` or `about.module.css`. Keep reusable public primitives in
-`css/public/shared.module.css`, and keep Navbar/Footer styling in
-`css/layout/navbar.module.css` and `css/layout/footer.module.css`. Student
-Library styles belong in `css/student/library.module.css`; Teacher Workspace
-shell and page styles belong in focused modules under `css/teacher/`. Reserve
-the empty `css/admin/` directory for the future administrator area.
+### Approved full-Sass styling architecture and migration
 
-Within each page stylesheet, separate ownership with exact section comments,
-for example `/* HomeHero */`, `/* FeaturedCourses */`, and `/* FaqPreview */`.
-Use a page-scoped BEM namespace with camelCase element names, such as `.home`,
-`.home__hero`, and `.home__heroImage`. Components must import the owning module
-through the `@/*` alias and reference `styles.home__hero`; do not place long
-Tailwind utility strings directly in TSX.
+The user approved replacing Tailwind CSS completely with Dart Sass. This is a
+staged, visual-parity migration: Public is migrated page by page, then Teacher
+is migrated section by section. Keep the application buildable after every
+slice. Do not start Student or Admin styling migration until its separately
+approved development phase begins.
 
-Public and Teacher component styling must use Tailwind CSS v4 as the primary
-authoring system while retaining scoped CSS Modules and the established BEM
-class contract. Every Public or Teacher CSS Module begins with an `@reference`
-to `app/globals.css` and groups ordinary layout, spacing, sizing, typography,
-responsive, and interaction utilities with `@apply`. Do not place long Tailwind
-utility strings directly in TSX.
+All long-term styling belongs under `src/scss/`. Root files have project-wide
+ownership: `app.scss` is the only application entrypoint, `_reset.scss` is the
+project-owned browser reset, `_variables.scss` contains genuinely shared
+compile-time values, and `_breakpoints.scss`/`_mixins.scss` contain reusable
+Sass APIs. Sass does not provide a built-in reset; maintain and test ours.
 
-Keep native CSS only where it is materially clearer or required: semantic CSS
-variables, multi-line gradients and shadows, keyframes, complex pseudo/global
-selectors, masks/filters, browser-specific properties, MUI internal overrides,
-and runtime values such as progress widths. Tailwind v4 does not allow `@apply`
-inside `@keyframes`; keyframe declarations stay native. Avoid expressing the
-same property through both `@apply` and a native declaration in one rule unless
-the native declaration is an intentional cascade override.
+Each product surface owns a folder. Public uses `scss/public/main.scss`, a
+surface-specific `_variables.scss`, and exactly one plain `.scss` page
+stylesheet in `scss/public/pages/` for Home, About, Contact, Courses, Events,
+Exams, and Results. Teacher and every later dashboard must follow the same
+plain-Sass naming rule under their own `pages/` folder. Do not add `.module` to
+Sass filenames or import Sass files as JavaScript style-map objects. Auth
+remains a separate surface under `scss/auth/`; it must not inherit Public page
+styling merely because login is publicly reachable. Create `scss/student/` and
+`scss/admin/` only when those styling phases begin.
 
-Keep `app/globals.css` limited to Tailwind setup, semantic design tokens,
-theme/base rules, and truly global behavior. Student and operational Admin
-styles remain unchanged during the current Public/Teacher Tailwind migration;
-adopt this Tailwind v4 convention for each of those dashboards only when its
-separate frontend/backend development phase begins.
+`app.scss` may load only the reset, project-wide variables/base behavior, and
+truly global accessibility or typography rules. Every surface `main.scss`
+loads its layout, shared surface rules, and page styles once through `@use`;
+the owning route-group layout imports that `main.scss` entrypoint. Components
+use explicit BEM class-name strings and never import Sass directly. Component
+migrations, entrypoint wiring, and stylesheet changes belong in the same
+commit. During the staged migration, `public/shared.scss` is imported at the
+locale root because shared button and notification primitives are consumed by
+more than the Public route group; keep its selectors under `publicShared__`.
 
-Keep the official Tailwind CSS IntelliSense VS Code extension in workspace
-recommendations. The workspace may ignore only the native CSS validator's
-`unknownAtRules` diagnostic because Tailwind v4 directives such as `@apply`,
-`@reference`, and `@theme` are validated by Tailwind tooling; do not disable
-general CSS validation or Tailwind linting.
+Use page-scoped BEM namespaces with camelCase element names, such as
+`.publicHome`, `.publicHome__hero`, and `.publicHome__heroImage`. Separate
+component ownership with exact section comments such as `/* HomeHero */` and
+`/* FeaturedCourses */`. Use native Sass nesting for child, state, pseudo, and
+responsive rules, but avoid nesting deeper than three selector levels.
+
+Use `@use` and `@forward`, never deprecated Sass `@import`. Prefix reusable
+partial filenames with `_`. Prefer namespaced members; do not use `as *` for
+shared modules. Avoid cross-surface `@extend`; use focused mixins or semantic
+HTML components instead. Do not programmatically generate large selector sets
+when explicit rules are clearer.
+
+Sass variables are compile-time-only and may be consumed only by `.scss` files.
+Keep runtime theme colors, values shared with MUI/Motion/TypeScript, and values
+changed by the Teacher night-mode control as semantic CSS custom properties.
+Keep only true cross-surface primitives in root `_variables.scss`; Public,
+Teacher, Student, and Admin visual tokens belong to their own `_variables.scss`
+so the workspaces remain visually distinct.
+
+During migration, legacy `src/css/**/*.module.css`, `app/globals.css`, Tailwind
+dependencies, PostCSS configuration, and Tailwind editor settings may remain
+only while an unmigrated surface still consumes them. Do not add new Tailwind
+utilities, `@apply`, `@reference`, or `@theme` usage. After Public and Teacher
+reach verified Sass parity, remove the obsolete Tailwind pipeline and remaining
+legacy files in a dedicated cleanup commit. Do not claim the migration complete
+until code search finds no runtime Tailwind dependency or directive.
+
+For every migration slice, preserve layout, responsive behavior, focus states,
+reduced-motion behavior, all three locales, and Teacher light/dark appearance.
+Run targeted formatting, lint, typecheck, tests, `git diff --check`, production
+build, and visual checks at representative mobile/tablet/desktop widths.
 
 Whenever the user introduces or changes a project-wide architecture, naming,
 source-organization, styling, or workflow convention, update this `AGENTS.md`
@@ -839,10 +864,11 @@ Apply clean-code and clean-source practices throughout the project:
 - Avoid deeply nested conditionals and duplicated markup.
 - Prefer composition over oversized components and prop-heavy abstractions.
 - Do not build abstractions before at least two real use cases exist.
-- Do not create page or component classes in global CSS; use the owning scoped
-  CSS Module.
-- Do not repeat long utility sets across CSS Modules; move genuinely shared
-  styles into `public/shared.module.css` or a focused reusable component.
+- Do not create an unscoped selector without the owning surface/page BEM
+  namespace. Keep project globals limited to reset, tokens, typography, and
+  accessibility behavior.
+- Do not duplicate long declaration sets across page styles; extract a focused
+  Sass mixin only after at least two real uses, or use a reusable component.
 - Do not hardcode brand colors repeatedly in JSX.
 - Do not leave dead code, commented-out experiments, unused imports, or console
   statements.
@@ -886,7 +912,7 @@ and Admin refactor unless the user explicitly changes scope:
 - Keep localized copy, typed preview data, presentation, and interaction logic
   in their existing ownership layers. Refactoring must not silently move
   business fixtures into JSX or turn frontend view models into backend DTOs.
-- Preserve unaffected CSS Module selectors and visible output during structural
+- Preserve unaffected Sass/BEM selectors and visible output during structural
   refactors. An explicitly requested or already approved feature may add the
   focused styles and states it requires. Do not combine role-specific Student/
   Admin/Public/Teacher styles merely because their logic shares a hook.
@@ -900,7 +926,7 @@ and Admin refactor unless the user explicitly changes scope:
 - Use `components/ui/Button.tsx` for semantic action buttons and
   `components/ui/ButtonLink.tsx` for navigation CTAs. Both must use the shared
   variant, size, shape, icon, disabled, and focus system from
-  `components/ui/ButtonStyles.ts` and `css/public/shared.module.css`.
+  `components/ui/ButtonStyles.ts` and the owning shared Sass surface rules.
 - Use the shared `components/ui/IconButton.tsx` wrapper for icon-only controls;
   always provide its required accessible `label`. Keep MUI Menu, Dialog,
   Drawer, Select, and similar accessibility-heavy primitives where appropriate.
@@ -943,8 +969,8 @@ Integration rules:
 
 - Use the documented `AppRouterCacheProvider` import that matches the installed
   Next.js major version. Do not hardcode an outdated versioned import path.
-- When combining MUI with Tailwind CSS, enable the documented CSS layer option
-  so style precedence is predictable.
+- Keep Sass/CSS and MUI injection precedence explicit through the documented
+  App Router cache provider and stable layer/order rules.
 - Create a typed, light-only BEST LC MUI theme that mirrors the approved brand
   tokens, typography, radius, spacing, and component states.
 - Keep shared MUI outlined-form treatment in `theme/FormStyles.ts` and compose
@@ -953,7 +979,7 @@ Integration rules:
   the rounded MUI root border remains the visible focus indicator. Give every
   shrunk outlined label a surface backing and inline breathing room so its text
   never collides with the notch border in light or dark mode.
-- Use the same Geist font variable in both Tailwind and the MUI theme.
+- Use the same Geist CSS font variable in Sass/CSS and the MUI theme.
 - Do not load Roboto or Material Icon fonts from a CDN.
 - Do not let default MUI blue, default typography, ripple behavior, shadows, or
   border radius define the website's visual identity.
@@ -966,7 +992,7 @@ Use MUI primarily for:
   interactive primitives when they improve quality
 - Consistent focus, disabled, validation, and keyboard behavior
 
-Use semantic HTML and Tailwind primarily for:
+Use semantic HTML and Sass/CSS primarily for:
 
 - Page layout and section composition
 - Containers, grids, spacing, responsive behavior, and decorative styling
@@ -974,7 +1000,7 @@ Use semantic HTML and Tailwind primarily for:
 - Brand-specific hero and marketing compositions
 
 Do not rebuild the entire site with `Box`, `Stack`, `Grid`, and `Typography` when
-semantic HTML plus Tailwind is simpler and sends less client JavaScript.
+semantic HTML plus Sass/CSS is simpler and sends less client JavaScript.
 
 Icon rules:
 
@@ -1030,7 +1056,7 @@ page-local alert implementations:
   instead of the alert.
 - Keep notification types in `types/Notification.ts`, localized default copy in
   `dictionaries/public/Notifications.ts`, and liquid-glass styles under the
-  `/* Notifications */` section of `css/public/shared.module.css`.
+  `/* Notifications */` section of the owning shared Public Sass rules.
 - The locale layout owns the single global `NotificationProvider`. Do not mount
   page-specific toaster instances.
 - Ordinary non-loading toasts auto-dismiss after 1000 ms by default. Loading
@@ -1245,8 +1271,8 @@ Use the following approved palette as the design source of truth.
   login button, and the matching centred-alert Close action, with the dark end
   at bottom-left and the lighter end at top-right.
 - Avoid uncontrolled neon colors and rainbow gradients.
-- Define semantic CSS variables in `globals.css`, then expose them through the
-  current Tailwind theme-variable approach.
+- Define semantic runtime CSS variables in `scss/app.scss` or the owning
+  surface `main.scss`; keep compile-time-only values in Sass partials.
 
 ## 9. Theme boundaries
 
@@ -1268,7 +1294,7 @@ store profile, student, finance, or other business data with it.
 - Use the official locally bundled `geist` package as the single optimized
   variable sans-serif family.
 - Keep `GeistSans.variable` connected to the shared `--font-geist-sans` token
-  used by Tailwind and the MUI theme.
+  used by Sass/CSS and the MUI theme.
 - Use large editorial headings with tight, deliberate line-height.
 - Use fluid type with `clamp()` where appropriate.
 - Keep body copy readable at approximately 16–18 px.
@@ -1336,7 +1362,7 @@ do not copy one role shell and merely recolor it.
   radii, a collapsible dark rail, dense filter toolbars, semantic data tables,
   split panes, bulk-action bars, and restrained transitions. Do not present the
   Admin area as a grid of Student/Teacher-style learning cards.
-- Each role owns its shell, semantic CSS variables, MUI theme, CSS Modules,
+- Each role owns its shell, semantic CSS variables, MUI theme, Sass entrypoint,
   responsive navigation composition, empty/loading/error visuals, and chart/
   status palette. Cross-role components may share behavior, but role adapters
   must control their appearance and density.
@@ -3952,8 +3978,8 @@ Follow this sequence unless the existing repository requires a safer order:
 
 1. Inspect the repository and preserve existing work.
 2. Initialize or align the current stable Next.js App Router TypeScript project.
-3. Establish strict TypeScript, linting, aliases, and Tailwind according to
-   current official docs.
+3. Establish strict TypeScript, linting, aliases, and the approved Sass
+   architecture according to current official docs.
 4. Add design tokens, typography, theme behavior, and base layout.
 5. Create typed locale dictionaries, config, entity types, and local public data.
 6. Build header, footer, mobile navigation, and shared UI components.

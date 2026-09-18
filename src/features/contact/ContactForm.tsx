@@ -4,8 +4,6 @@ import TextField from "@mui/material/TextField";
 
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/contact.module.css";
-import sharedStyles from "@/css/public/shared.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useContactForm } from "@/hooks/public/contact/useContactForm";
 
@@ -31,8 +29,8 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
   } = contactForm;
 
   return (
-    <form noValidate onSubmit={handleSubmit} className={styles.contact__form}>
-      <div className={styles.contact__formNameRow}>
+    <form noValidate onSubmit={handleSubmit} className="contact__form">
+      <div className="contact__formNameRow">
         <TextField
           autoComplete="given-name"
           error={Boolean(errors.firstName)}
@@ -41,7 +39,7 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
           onChange={handleFirstNameChange}
           slotProps={{
             htmlInput: { "aria-required": true },
-            inputLabel: { className: styles.contact__formSingleLineLabel },
+            inputLabel: { className: "contact__formSingleLineLabel" },
           }}
           value={values.firstName}
         />
@@ -53,7 +51,7 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
           onChange={handleLastNameChange}
           slotProps={{
             htmlInput: { "aria-required": true },
-            inputLabel: { className: styles.contact__formSingleLineLabel },
+            inputLabel: { className: "contact__formSingleLineLabel" },
           }}
           value={values.lastName}
         />
@@ -66,7 +64,7 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
         onChange={handleEmailChange}
         slotProps={{
           htmlInput: { "aria-required": true },
-          inputLabel: { className: styles.contact__formSingleLineLabel },
+          inputLabel: { className: "contact__formSingleLineLabel" },
         }}
         type="email"
         value={values.email}
@@ -79,7 +77,7 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
         onChange={handleSubjectChange}
         slotProps={{
           htmlInput: { "aria-required": true },
-          inputLabel: { className: styles.contact__formSingleLineLabel },
+          inputLabel: { className: "contact__formSingleLineLabel" },
         }}
         value={values.subject}
       />
@@ -94,7 +92,7 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
         value={values.message}
       />
       <div>
-        <label className={styles.contact__consent}>
+        <label className="contact__consent">
           <input
             aria-invalid={Boolean(errors.consent)}
             checked={values.consent}
@@ -104,13 +102,13 @@ export function ContactForm({ copy, locale }: ContactFormProps) {
           <span>{copy.contact.consentLabel}</span>
         </label>
         {errors.consent ? (
-          <small className={styles.contact__consentError} role="alert">
+          <small className="contact__consentError" role="alert">
             {errors.consent}
           </small>
         ) : null}
       </div>
       <Button
-        className={`${sharedStyles.publicShared__formAction} ${styles.contact__formAction}`}
+        className="publicShared__formAction contact__formAction"
         hoverEffect="jump"
         disabled={isSubmitting}
         shape="soft"

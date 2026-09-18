@@ -4,7 +4,6 @@ import { StaggerGroup } from "@/components/motion/StaggerGroup";
 import { StaggerItem } from "@/components/motion/StaggerItem";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { PublicCourse } from "@/types/PublicCourse";
 
@@ -20,11 +19,11 @@ export function CourseTracks({ course, locale, copy }: CourseTracksProps) {
   return (
     <section>
       <SectionHeading title={copy.courses.tracks} description={copy.courses.tracksDescription} />
-      <StaggerGroup className={styles.courses__trackGrid} delay={0.05}>
+      <StaggerGroup className="courses__trackGrid" delay={0.05}>
         {course.tracks.map((track, index) => (
-          <StaggerItem className={styles.courses__trackItem} key={track.title.en}>
-            <article className={styles.courses__trackCard}>
-              <div className={styles.courses__trackHeader}>
+          <StaggerItem className="courses__trackItem" key={track.title.en}>
+            <article className="courses__trackCard">
+              <div className="courses__trackHeader">
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <small>{track.level[locale]}</small>
               </div>

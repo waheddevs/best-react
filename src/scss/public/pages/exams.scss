@@ -1,0 +1,1806 @@
+﻿@use "../../breakpoints";
+@use "../../variables" as shared;
+
+.exams {
+  min-height: 100vh;
+}
+
+.exams__heroVisual {
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: #fffc;
+  border-radius: 2.25rem;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__heroVisual {
+    border-color: color-mix(in oklab, var(--color-white, #fff) 80%, transparent);
+  }
+}
+
+.exams__heroVisual {
+  --tw-shadow: 0 24px 70px var(--tw-shadow-color, #102a431a);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  isolation: isolate;
+  background-image: linear-gradient(145deg, #fff 0%, #edf8ff 100%);
+}
+
+.exams__heroOrbit {
+  border-style: var(--tw-border-style);
+  --tw-border-style: dashed;
+  border-style: dashed;
+  border-width: 2px;
+  border-color: var(--brand-turquoise);
+  border-radius: 3.40282e38px;
+  width: 78%;
+  height: 78%;
+  position: absolute;
+  top: 8%;
+  left: 13%;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__heroOrbit {
+    border-color: color-mix(in oklab, var(--brand-turquoise) 35%, transparent);
+  }
+}
+
+.exams__heroPaper {
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--surface);
+  --tw-shadow: 0 22px 55px var(--tw-shadow-color, #102a4324);
+  width: 56%;
+  height: 82%;
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  border-radius: 1.75rem;
+  flex-direction: column;
+  padding: 6%;
+  display: flex;
+  position: absolute;
+  top: 9%;
+  left: 22%;
+  rotate: -3deg;
+}
+
+.exams__heroPaperIcon {
+  width: calc(var(--spacing, 0.25rem) * 12);
+  height: calc(var(--spacing, 0.25rem) * 12);
+  border-radius: var(--radius-2xl, 1rem);
+  background-color: var(--brand-turquoise);
+  flex-shrink: 0;
+  place-items: center;
+  display: grid;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__heroPaperIcon {
+    background-color: color-mix(in oklab, var(--brand-turquoise) 15%, transparent);
+  }
+}
+
+.exams__heroPaperIcon {
+  color: var(--heading);
+}
+
+.exams__heroPaperTitle {
+  margin-top: calc(var(--spacing, 0.25rem) * 4);
+  --tw-leading: var(--leading-tight, 1.25);
+  max-width: 18ch;
+  font-size: clamp(0.72rem, 2.1vw, 0.95rem);
+  line-height: var(--leading-tight, 1.25);
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  color: var(--heading);
+  flex-shrink: 0;
+}
+
+.exams__heroPaperMeta {
+  margin-top: calc(var(--spacing, 0.25rem) * 2);
+  margin-bottom: var(--spacing, 0.25rem);
+  --tw-leading: var(--leading-tight, 1.25);
+  min-height: 1em;
+  font-size: clamp(0.6rem, 1.7vw, 0.75rem);
+  line-height: var(--leading-tight, 1.25);
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--muted);
+  flex-shrink: 0;
+  display: block;
+}
+
+.exams__heroChecklist {
+  margin-top: calc(var(--spacing, 0.25rem) * 3);
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  flex-shrink: 0;
+  display: grid;
+}
+
+.exams__heroChecklistRow {
+  align-items: center;
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  display: flex;
+}
+
+.exams__heroChecklistCheck {
+  width: calc(var(--spacing, 0.25rem) * 6);
+  height: calc(var(--spacing, 0.25rem) * 6);
+  background-color: var(--brand-turquoise);
+  color: var(--color-white, #fff);
+  border-radius: 3.40282e38px;
+  flex-shrink: 0;
+  place-items: center;
+  display: grid;
+  position: relative;
+  overflow: hidden;
+}
+
+.exams__heroChecklistCheckFill {
+  background-color: var(--action-blue);
+  opacity: 0;
+  border-radius: 3.40282e38px;
+  position: absolute;
+  inset: 0;
+}
+
+.exams__heroChecklistCheck svg {
+  z-index: 10;
+  position: relative;
+  font-size: 17px !important;
+}
+
+.exams__heroChecklistTrack {
+  height: calc(var(--spacing, 0.25rem) * 2);
+  background-color: var(--border);
+  border-radius: 3.40282e38px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__heroChecklistTrack {
+    background-color: color-mix(in srgb, var(--border) 75%, transparent);
+  }
+}
+
+.exams__heroChecklistFill {
+  transform-origin: 0;
+  background-color: var(--action-blue);
+  border-radius: 3.40282e38px;
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+}
+
+.exams__heroTimer {
+  width: calc(var(--spacing, 0.25rem) * 16);
+  height: calc(var(--spacing, 0.25rem) * 16);
+  border-radius: var(--radius-2xl, 1rem);
+  background-color: var(--sunny-yellow);
+  color: var(--heading);
+  --tw-shadow: 0 14px 30px var(--tw-shadow-color, #102a4329);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  place-items: center;
+  display: grid;
+  position: absolute;
+  top: 10%;
+  right: 8%;
+}
+
+.exams__heroClock {
+  width: calc(var(--spacing, 0.25rem) * 9);
+  height: calc(var(--spacing, 0.25rem) * 9);
+  border-style: var(--tw-border-style);
+  border-width: 3px;
+  border-color: var(--heading);
+  border-radius: 3.40282e38px;
+  display: block;
+  position: relative;
+}
+
+.exams__heroClock:before {
+  height: calc(var(--spacing, 0.25rem) * 2);
+  width: calc(var(--spacing, 0.25rem) * 3);
+  --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+  border-top-left-radius: var(--radius-sm, 0.25rem);
+  border-top-right-radius: var(--radius-sm, 0.25rem);
+  background-color: var(--heading);
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+}
+
+.exams__heroClockHour,
+.exams__heroClockMinute {
+  transform-origin: bottom;
+  background-color: var(--heading);
+  border-radius: 3.40282e38px;
+  display: block;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+}
+
+.exams__heroClockHour {
+  height: calc(var(--spacing, 0.25rem) * 2.5);
+  width: calc(var(--spacing, 0.25rem) * 0.5);
+}
+
+.exams__heroClockMinute {
+  height: calc(var(--spacing, 0.25rem) * 3.5);
+  width: calc(var(--spacing, 0.25rem) * 0.5);
+}
+
+.exams__heroClockHub {
+  width: calc(var(--spacing, 0.25rem) * 1.5);
+  height: calc(var(--spacing, 0.25rem) * 1.5);
+  --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
+  --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+  background-color: var(--heading);
+  border-radius: 3.40282e38px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.exams__heroPencil {
+  width: calc(var(--spacing, 0.25rem) * 14);
+  height: calc(var(--spacing, 0.25rem) * 14);
+  border-radius: var(--radius-2xl, 1rem);
+  background-image: var(--gradient-cta);
+  color: var(--color-white, #fff);
+  --tw-shadow: 0 14px 30px var(--tw-shadow-color, #2563eb33);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  place-items: center;
+  display: grid;
+  position: absolute;
+  bottom: 12%;
+  right: 12%;
+  rotate: 6deg;
+}
+
+.exams__heroAccent {
+  width: calc(var(--spacing, 0.25rem) * 5);
+  height: calc(var(--spacing, 0.25rem) * 5);
+  border-radius: var(--radius-sm, 0.25rem);
+  background-color: var(--coral);
+  position: absolute;
+  bottom: 14%;
+  left: 10%;
+  rotate: 45deg;
+}
+
+.exams__instructionList {
+  margin-top: calc(var(--spacing, 0.25rem) * 12);
+  gap: calc(var(--spacing, 0.25rem) * 4);
+  display: grid;
+}
+
+@media (min-width: 48rem) {
+  .exams__instructionList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.exams__instructionItem {
+  gap: calc(var(--spacing, 0.25rem) * 4);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--background);
+  min-width: 0;
+  padding: calc(var(--spacing, 0.25rem) * 5);
+  border-radius: 1.5rem;
+  display: flex;
+  position: relative;
+}
+
+@media (min-width: breakpoints.$mobile) {
+  .exams__instructionItem {
+    padding: calc(var(--spacing, 0.25rem) * 6);
+  }
+}
+
+.exams__instructionNumber {
+  width: calc(var(--spacing, 0.25rem) * 11);
+  height: calc(var(--spacing, 0.25rem) * 11);
+  border-radius: var(--radius-xl, 0.75rem);
+  background-color: var(--heading);
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: 0.1em;
+  letter-spacing: 0.1em;
+  color: var(--color-white, #fff);
+  flex-shrink: 0;
+  place-items: center;
+  display: grid;
+}
+
+.exams__instructionItem:nth-child(2) .exams__instructionNumber {
+  background-color: var(--action-blue);
+}
+
+.exams__instructionItem:nth-child(3) .exams__instructionNumber {
+  background-color: var(--sunny-yellow);
+  color: var(--heading);
+}
+
+.exams__instructionItem h3 {
+  font-size: var(--text-lg, 1.125rem);
+  line-height: var(--tw-leading, var(--text-lg--line-height, calc(1.75 / 1.125)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: -0.03em;
+  letter-spacing: -0.03em;
+  color: var(--heading);
+}
+
+.exams__instructionItem p {
+  margin-top: calc(var(--spacing, 0.25rem) * 2);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-leading: calc(var(--spacing, 0.25rem) * 6);
+  line-height: calc(var(--spacing, 0.25rem) * 6);
+  color: var(--muted);
+}
+
+.exams__instructionArrow {
+  top: 50%;
+  right: calc(var(--spacing, 0.25rem) * -3);
+  z-index: 10;
+  --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--surface);
+  padding: var(--spacing, 0.25rem);
+  color: var(--action-blue);
+  border-radius: 3.40282e38px;
+  display: none;
+  position: absolute;
+}
+
+@media (min-width: 48rem) {
+  .exams__instructionArrow {
+    display: block;
+  }
+}
+
+.exams__instructionArrow {
+  font-size: 25px !important;
+}
+
+.exams__options {
+  scroll-margin-top: calc(var(--spacing, 0.25rem) * 20);
+}
+
+.exams__catalogGrid {
+  margin-top: calc(var(--spacing, 0.25rem) * 10);
+  align-items: stretch;
+  gap: calc(var(--spacing, 0.25rem) * 5);
+  display: grid;
+}
+
+@media (min-width: breakpoints.$tablet) {
+  .exams__catalogGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.exams__optionCard {
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--surface);
+  min-width: 0;
+  padding: calc(var(--spacing, 0.25rem) * 6);
+  --tw-shadow: 0 16px 44px var(--tw-shadow-color, #102a430f);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  border-radius: 2rem;
+  flex-direction: column;
+  display: flex;
+}
+
+@media (min-width: breakpoints.$mobile) {
+  .exams__optionCard {
+    padding: calc(var(--spacing, 0.25rem) * 7);
+  }
+}
+
+.exams__optionCard[data-exam="ielts"] {
+  border-top-color: var(--action-blue);
+  border-top-width: 3px;
+}
+
+.exams__optionCard[data-exam="cefr"] {
+  border-top-color: var(--brand-turquoise);
+  border-top-width: 3px;
+}
+
+.exams__optionCard[data-exam="mock"] {
+  border-top-color: var(--sunny-yellow);
+  border-top-width: 3px;
+}
+
+.exams__optionTopline {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.exams__optionIcon {
+  width: calc(var(--spacing, 0.25rem) * 12);
+  height: calc(var(--spacing, 0.25rem) * 12);
+  border-radius: var(--radius-2xl, 1rem);
+  background-color: var(--action-blue);
+  place-items: center;
+  display: grid;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__optionIcon {
+    background-color: color-mix(in srgb, var(--action-blue) 10%, var(--surface));
+  }
+}
+
+.exams__optionIcon {
+  color: var(--action-blue);
+}
+
+.exams__optionCard[data-exam="cefr"] .exams__optionIcon {
+  background-color: var(--brand-turquoise);
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__optionCard[data-exam="cefr"] .exams__optionIcon {
+    background-color: color-mix(in srgb, var(--brand-turquoise) 17%, var(--surface));
+  }
+}
+
+.exams__optionCard[data-exam="cefr"] .exams__optionIcon {
+  color: var(--heading);
+}
+
+.exams__optionCard[data-exam="mock"] .exams__optionIcon {
+  background-color: var(--sunny-yellow);
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__optionCard[data-exam="mock"] .exams__optionIcon {
+    background-color: color-mix(in srgb, var(--sunny-yellow) 24%, var(--surface));
+  }
+}
+
+.exams__optionCard[data-exam="mock"] .exams__optionIcon {
+  color: var(--heading);
+}
+
+.exams__optionNumber {
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: 0.13em;
+  letter-spacing: 0.13em;
+  color: var(--action-blue);
+}
+
+.exams__optionTitle {
+  margin-top: calc(var(--spacing, 0.25rem) * 8);
+  font-size: var(--text-4xl, 2.25rem);
+  line-height: var(--tw-leading, var(--text-4xl--line-height, calc(2.5 / 2.25)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: -0.06em;
+  letter-spacing: -0.06em;
+  color: var(--heading);
+}
+
+.exams__optionDescription {
+  margin-top: calc(var(--spacing, 0.25rem) * 4);
+  min-height: calc(var(--spacing, 0.25rem) * 20);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-leading: calc(var(--spacing, 0.25rem) * 7);
+  line-height: calc(var(--spacing, 0.25rem) * 7);
+  color: var(--muted);
+}
+
+.exams__optionMeta {
+  margin-top: calc(var(--spacing, 0.25rem) * 6);
+}
+
+:where(.exams__optionMeta > :not(:last-child)) {
+  --tw-divide-y-reverse: 0;
+  border-bottom-style: var(--tw-border-style);
+  border-top-style: var(--tw-border-style);
+  border-top-width: calc(1px * var(--tw-divide-y-reverse));
+  border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-color: var(--border);
+}
+
+.exams__optionMeta {
+  border-radius: var(--radius-2xl, 1rem);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--background);
+  padding-inline: calc(var(--spacing, 0.25rem) * 4);
+}
+
+.exams__optionMeta > div {
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  padding-block: calc(var(--spacing, 0.25rem) * 3);
+  grid-template-columns: 7rem 1fr;
+  display: grid;
+}
+
+.exams__optionMeta dt {
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: 0.08em;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.exams__optionMeta dd {
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-font-weight: var(--font-weight-bold, 700);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--heading);
+}
+
+.exams__optionHighlights {
+  margin-block: calc(var(--spacing, 0.25rem) * 6);
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  display: grid;
+}
+
+.exams__optionHighlights li {
+  align-items: center;
+  gap: calc(var(--spacing, 0.25rem) * 2);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--heading);
+  display: flex;
+}
+
+.exams__optionHighlights svg {
+  color: var(--brand-turquoise);
+  flex-shrink: 0;
+  font-size: 18px !important;
+}
+
+.exams__optionAction {
+  width: 100%;
+  margin-top: auto;
+}
+
+.exams__dialogBackdrop {
+  background-color: var(--heading);
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__dialogBackdrop {
+    background-color: color-mix(in oklab, var(--heading) 32%, transparent);
+  }
+}
+
+.exams__dialogBackdrop {
+  --tw-backdrop-blur: blur(var(--blur-sm, 8px));
+  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,)
+    var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,)
+    var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,)
+    var(--tw-backdrop-sepia,);
+  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,)
+    var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,)
+    var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,)
+    var(--tw-backdrop-sepia,);
+}
+
+.exams__dialog {
+  overflow: hidden;
+  background-color: var(--surface) !important;
+  --tw-shadow: 0 32px 90px var(--tw-shadow-color, #102a4347) !important;
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow) !important;
+  border-radius: 2rem !important;
+}
+
+.exams__dialogLayout {
+  display: grid;
+}
+
+@media (min-width: 48rem) {
+  .exams__dialogLayout {
+    grid-template-columns: 17rem minmax(0, 1fr);
+  }
+}
+
+.exams__dialogSummary {
+  --exam-summary-start: #1d4ed8;
+  --exam-summary-end: #2563eb;
+  --exam-summary-text: #fff;
+  --exam-summary-muted: #ffffffb3;
+  --exam-summary-subtle: #ffffff9e;
+  --exam-summary-strong: #ffffffe0;
+  --exam-summary-icon-bg: #ffffff29;
+  --exam-summary-icon: #fff;
+  min-height: calc(var(--spacing, 0.25rem) * 64);
+  padding: calc(var(--spacing, 0.25rem) * 7);
+  color: var(--exam-summary-text);
+  background: linear-gradient(145deg, var(--exam-summary-start) 0%, var(--exam-summary-end) 100%);
+  flex-direction: column;
+  display: flex;
+}
+
+.exams__dialogSummary[data-exam="cefr"] {
+  --exam-summary-start: #239caf;
+  --exam-summary-end: #49bfd1;
+  --exam-summary-text: var(--heading);
+  --exam-summary-muted: #102a43b8;
+  --exam-summary-subtle: #102a439e;
+  --exam-summary-strong: #102a43e0;
+  --exam-summary-icon-bg: #ffffff4d;
+  --exam-summary-icon: var(--heading);
+}
+
+.exams__dialogSummary[data-exam="mock"] {
+  --exam-summary-start: #e4a72d;
+  --exam-summary-end: #ffc857;
+  --exam-summary-text: var(--heading);
+  --exam-summary-muted: #102a43b8;
+  --exam-summary-subtle: #102a439e;
+  --exam-summary-strong: #102a43e0;
+  --exam-summary-icon-bg: #ffffff57;
+  --exam-summary-icon: var(--heading);
+}
+
+.exams__dialogSummaryIcon {
+  width: calc(var(--spacing, 0.25rem) * 12);
+  height: calc(var(--spacing, 0.25rem) * 12);
+  border-radius: var(--radius-2xl, 1rem);
+  color: var(--exam-summary-icon);
+  background: var(--exam-summary-icon-bg);
+  place-items: center;
+  display: grid;
+}
+
+.exams__dialogSummary > p {
+  margin-top: calc(var(--spacing, 0.25rem) * 9);
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: 0.12em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--exam-summary-subtle);
+}
+
+.exams__dialogSummary > h3 {
+  margin-top: calc(var(--spacing, 0.25rem) * 2);
+  font-size: var(--text-4xl, 2.25rem);
+  line-height: var(--tw-leading, var(--text-4xl--line-height, calc(2.5 / 2.25)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: -0.06em;
+  letter-spacing: -0.06em;
+}
+
+.exams__dialogSummary > span:not(.exams__dialogSummaryIcon) {
+  margin-top: calc(var(--spacing, 0.25rem) * 2);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--exam-summary-muted);
+}
+
+.exams__dialogSummary ul {
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  padding-top: calc(var(--spacing, 0.25rem) * 8);
+  margin-top: auto;
+  display: grid;
+}
+
+.exams__dialogSummary li {
+  align-items: center;
+  gap: calc(var(--spacing, 0.25rem) * 2);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--exam-summary-strong);
+  display: flex;
+}
+
+.exams__dialogSummary li svg {
+  color: var(--exam-summary-icon);
+  font-size: 18px !important;
+}
+
+.exams__dialogForm {
+  padding: calc(var(--spacing, 0.25rem) * 6);
+  position: relative;
+}
+
+@media (min-width: breakpoints.$mobile) {
+  .exams__dialogForm {
+    padding: calc(var(--spacing, 0.25rem) * 8);
+  }
+}
+
+.exams__dialogClose {
+  top: calc(var(--spacing, 0.25rem) * 5);
+  right: calc(var(--spacing, 0.25rem) * 5);
+  position: absolute;
+}
+
+.exams__dialogEyebrow {
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: 0.14em;
+  letter-spacing: 0.14em;
+  color: var(--action-blue);
+}
+
+.exams__dialogTitle {
+  margin-top: calc(var(--spacing, 0.25rem) * 3);
+  padding-right: calc(var(--spacing, 0.25rem) * 12);
+  font-size: var(--text-3xl, 1.875rem);
+  line-height: var(--tw-leading, var(--text-3xl--line-height, calc(2.25 / 1.875)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: -0.05em;
+  letter-spacing: -0.05em;
+  color: var(--heading);
+}
+
+.exams__dialogDescription {
+  margin-top: calc(var(--spacing, 0.25rem) * 3);
+  --tw-leading: calc(var(--spacing, 0.25rem) * 6);
+  max-width: 54ch;
+  font-size: 0.9375rem;
+  line-height: calc(var(--spacing, 0.25rem) * 6);
+  color: var(--muted);
+}
+
+.exams__formGrid {
+  margin-top: calc(var(--spacing, 0.25rem) * 7);
+  gap: calc(var(--spacing, 0.25rem) * 4);
+  display: grid;
+}
+
+@media (min-width: breakpoints.$mobile) {
+  .exams__formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.exams__consent {
+  margin-top: calc(var(--spacing, 0.25rem) * 6);
+  cursor: pointer;
+  align-items: flex-start;
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-leading: calc(var(--spacing, 0.25rem) * 6);
+  line-height: calc(var(--spacing, 0.25rem) * 6);
+  color: var(--muted);
+  display: flex;
+}
+
+.exams__consent input {
+  margin-top: var(--spacing, 0.25rem);
+  height: calc(var(--spacing, 0.25rem) * 4);
+  width: calc(var(--spacing, 0.25rem) * 4);
+  cursor: pointer;
+  accent-color: var(--action-blue);
+  flex-shrink: 0;
+}
+
+.exams__consentError {
+  margin-top: var(--spacing, 0.25rem);
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+  color: var(--coral);
+  display: block;
+}
+
+.exams__field {
+  gap: calc(var(--spacing, 0.25rem) * 2);
+  display: grid;
+}
+
+.exams__field > span {
+  --tw-leading: 1.125rem;
+  --tw-font-weight: var(--font-weight-extrabold, 800);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--heading);
+}
+
+.exams__field input,
+.exams__field select {
+  min-height: calc(var(--spacing, 0.25rem) * 12);
+  border-radius: var(--radius-xl, 0.75rem);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--surface);
+  width: 100%;
+  padding-inline: calc(var(--spacing, 0.25rem) * 4);
+  --tw-leading: calc(var(--spacing, 0.25rem) * 5);
+  font-size: 0.9375rem;
+  line-height: calc(var(--spacing, 0.25rem) * 5);
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text);
+  transition-property: border-color, box-shadow;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))
+  );
+  transition-duration: var(
+    --tw-duration,
+    var(--default-transition-duration, shared.$transition-fast)
+  );
+  --tw-outline-style: none;
+  outline-style: none;
+}
+
+:is(.exams__field input, .exams__field select)::placeholder {
+  color: var(--muted);
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  :is(.exams__field input, .exams__field select)::placeholder {
+    color: color-mix(in oklab, var(--muted) 65%, transparent);
+  }
+}
+
+:is(.exams__field input, .exams__field select):focus {
+  border-color: var(--action-blue);
+  --tw-shadow: 0 0 0 3px var(--tw-shadow-color, #2563eb1f);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+.exams__levelSelect {
+  min-height: calc(var(--spacing, 0.25rem) * 12);
+  border-radius: var(--radius-xl, 0.75rem);
+  background-color: var(--surface);
+  --tw-leading: calc(var(--spacing, 0.25rem) * 5);
+  width: 100%;
+  font-size: 0.9375rem;
+  line-height: calc(var(--spacing, 0.25rem) * 5);
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text);
+  transition-property: border-color, box-shadow;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))
+  );
+  transition-duration: var(
+    --tw-duration,
+    var(--default-transition-duration, shared.$transition-fast)
+  );
+  --tw-duration: 0.2s;
+  transition-duration: 0.2s;
+  font-family: inherit !important;
+}
+
+.exams__levelSelect .MuiSelect-select {
+  min-height: calc(var(--spacing, 0.25rem) * 12);
+  padding-block: 0;
+  padding-right: calc(var(--spacing, 0.25rem) * 10);
+  padding-left: calc(var(--spacing, 0.25rem) * 4);
+  align-items: center;
+  display: flex;
+}
+
+.exams__levelSelect .MuiOutlinedInput-notchedOutline {
+  border-color: var(--border) !important;
+  border-width: 1px !important;
+}
+
+.exams__levelSelect:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--brand-turquoise) !important;
+}
+
+.exams__levelSelect.Mui-focused {
+  box-shadow: 0 0 0 3px #2563eb1f;
+}
+
+.exams__levelSelect.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--action-blue) !important;
+  border-width: 1px !important;
+}
+
+.exams__levelSelect.Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: var(--coral) !important;
+}
+
+.exams__levelSelect > .MuiSelect-icon {
+  color: var(--heading);
+  right: 0.875rem;
+  font-size: 1.25rem !important;
+}
+
+.exams__levelSelectMenu .MuiPaper-root {
+  border: 1px solid var(--border);
+  margin-top: 0.5rem;
+  padding: 0.375rem;
+  background: #fffffff7 !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 18px 46px #102a432e !important;
+}
+
+.exams__levelSelectMenu .MuiList-root {
+  padding: 0 !important;
+}
+
+.exams__levelOption {
+  transition:
+    color 0.16s,
+    background-color 0.16s;
+  cursor: pointer !important;
+  min-height: 2.75rem !important;
+  color: var(--text) !important;
+  border-radius: 0.75rem !important;
+  font-family: inherit !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+}
+
+.exams__levelOption:hover {
+  color: var(--heading) !important;
+  background: var(--brand-turquoise) !important;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__levelOption:hover {
+    background: color-mix(in srgb, var(--brand-turquoise) 12%, var(--surface)) !important;
+  }
+}
+
+.exams__levelOption.Mui-selected {
+  color: var(--action-blue) !important;
+  background: var(--action-blue) !important;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__levelOption.Mui-selected {
+    background: color-mix(in srgb, var(--action-blue) 10%, var(--surface)) !important;
+  }
+}
+
+.exams__levelOption.Mui-selected:hover {
+  background: var(--action-blue) !important;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__levelOption.Mui-selected:hover {
+    background: color-mix(in srgb, var(--action-blue) 15%, var(--surface)) !important;
+  }
+}
+
+.exams__calendarTrigger {
+  min-height: calc(var(--spacing, 0.25rem) * 12);
+  cursor: pointer;
+  align-items: center;
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  border-radius: var(--radius-xl, 0.75rem);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--surface);
+  width: 100%;
+  padding-inline: calc(var(--spacing, 0.25rem) * 4);
+  text-align: left;
+  --tw-leading: calc(var(--spacing, 0.25rem) * 5);
+  font-size: 0.9375rem;
+  line-height: calc(var(--spacing, 0.25rem) * 5);
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text);
+  transition-property: border-color, box-shadow, background-color;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))
+  );
+  transition-duration: var(
+    --tw-duration,
+    var(--default-transition-duration, shared.$transition-fast)
+  );
+  --tw-duration: 0.2s;
+  --tw-outline-style: none;
+  outline-style: none;
+  font-family: inherit;
+  transition-duration: 0.2s;
+  display: flex;
+}
+
+.exams__calendarTrigger:hover {
+  border-color: var(--brand-turquoise);
+}
+
+.exams__calendarTrigger:focus-visible,
+.exams__calendarTrigger[aria-expanded="true"] {
+  border-color: var(--action-blue);
+  --tw-shadow: 0 0 0 3px var(--tw-shadow-color, #2563eb1f);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+.exams__calendarTrigger[data-invalid="true"] {
+  border-color: var(--coral);
+}
+
+.exams__calendarTrigger > svg {
+  color: var(--action-blue);
+  flex-shrink: 0;
+  font-size: 1.25rem !important;
+}
+
+.exams__calendarTrigger [data-placeholder="true"] {
+  color: var(--muted);
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__calendarTrigger [data-placeholder="true"] {
+    color: color-mix(in oklab, var(--muted) 65%, transparent);
+  }
+}
+
+.exams__calendarPopover {
+  border: 1px solid var(--border);
+  width: min(21rem, 100vw - 2rem);
+  margin-top: 0.5rem;
+  overflow: hidden;
+  background: #fffffffa !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 24px 64px #102a4333 !important;
+}
+
+.exams__calendar {
+  padding: calc(var(--spacing, 0.25rem) * 4);
+}
+
+.exams__calendarHeader {
+  align-items: center;
+  gap: calc(var(--spacing, 0.25rem) * 2);
+  grid-template-columns: 2.5rem minmax(0, 1fr) 2.5rem;
+  display: grid;
+}
+
+.exams__calendarSelectors {
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--spacing, 0.25rem) * 1.5);
+  min-width: 0;
+  display: flex;
+}
+
+.exams__calendarSelect {
+  border-radius: var(--radius-xl, 0.75rem);
+  background-color: var(--background);
+  min-width: 0;
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+  --tw-font-weight: var(--font-weight-extrabold, 800);
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--heading);
+  height: 2.5rem;
+  font-family: inherit !important;
+}
+
+.exams__calendarSelect:first-child {
+  flex: 1;
+}
+
+.exams__calendarSelect:last-child {
+  width: 5.5rem;
+}
+
+.exams__calendarSelect .MuiSelect-select {
+  height: calc(var(--spacing, 0.25rem) * 10);
+  min-height: calc(var(--spacing, 0.25rem) * 10);
+  padding-block: 0;
+  padding-right: calc(var(--spacing, 0.25rem) * 7);
+  padding-left: calc(var(--spacing, 0.25rem) * 3);
+  align-items: center;
+  display: flex;
+}
+
+.exams__calendarSelect .MuiOutlinedInput-notchedOutline {
+  border-color: var(--border) !important;
+}
+
+:is(
+  .exams__calendarSelect:hover .MuiOutlinedInput-notchedOutline,
+  .exams__calendarSelect.Mui-focused .MuiOutlinedInput-notchedOutline
+) {
+  border-color: var(--brand-turquoise) !important;
+  border-width: 1px !important;
+}
+
+.exams__calendarSelect > .MuiSelect-icon {
+  color: var(--heading);
+  right: 0.375rem;
+  font-size: 1.125rem !important;
+}
+
+.exams__calendarSelectMenu .MuiPaper-root {
+  border: 1px solid var(--border);
+  max-height: 18rem;
+  margin-top: 0.375rem;
+  padding: 0.375rem;
+  background: #fffffffa !important;
+  border-radius: 0.875rem !important;
+  box-shadow: 0 16px 42px #102a432e !important;
+}
+
+.exams__calendarSelectMenu .MuiList-root {
+  padding: 0 !important;
+}
+
+.exams__calendarSelectOption {
+  min-height: 2.5rem !important;
+  color: var(--text) !important;
+  border-radius: 0.625rem !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  font-weight: 700 !important;
+}
+
+.exams__calendarSelectOption:hover {
+  background: var(--brand-turquoise) !important;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__calendarSelectOption:hover {
+    background: color-mix(in srgb, var(--brand-turquoise) 12%, var(--surface)) !important;
+  }
+}
+
+.exams__calendarSelectOption.Mui-selected {
+  color: var(--action-blue) !important;
+  background: var(--action-blue) !important;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__calendarSelectOption.Mui-selected {
+    background: color-mix(in srgb, var(--action-blue) 10%, var(--surface)) !important;
+  }
+}
+
+.exams__calendarWeekdays,
+.exams__calendarDays {
+  margin-top: calc(var(--spacing, 0.25rem) * 4);
+  gap: var(--spacing, 0.25rem);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  display: grid;
+}
+
+.exams__calendarWeekdays span {
+  height: calc(var(--spacing, 0.25rem) * 7);
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-size: 0.6875rem;
+  font-weight: var(--font-weight-black, 900);
+  --tw-tracking: 0.05em;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  text-transform: uppercase;
+  place-items: center;
+  display: grid;
+}
+
+.exams__calendarDays {
+  margin-top: var(--spacing, 0.25rem);
+}
+
+.exams__calendarDay {
+  aspect-ratio: 1;
+  cursor: pointer;
+  border-radius: var(--radius-xl, 0.75rem);
+  border-style: var(--tw-border-style);
+  min-width: 0;
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+  --tw-font-weight: var(--font-weight-bold, 700);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--muted);
+  background-color: #0000;
+  border-width: 1px;
+  border-color: #0000;
+  place-items: center;
+  display: grid;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__calendarDay {
+    color: color-mix(in oklab, var(--muted) 55%, transparent);
+  }
+}
+
+.exams__calendarDay {
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))
+  );
+  transition-duration: var(
+    --tw-duration,
+    var(--default-transition-duration, shared.$transition-fast)
+  );
+  --tw-duration: shared.$transition-fast;
+  --tw-outline-style: none;
+  outline-style: none;
+  font-family: inherit;
+  transition-duration: shared.$transition-fast;
+}
+
+.exams__calendarDay[data-current-month="true"] {
+  color: var(--heading);
+}
+
+.exams__calendarDay:hover {
+  border-color: var(--brand-turquoise);
+  background-color: var(--brand-turquoise);
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__calendarDay:hover {
+    background-color: color-mix(in srgb, var(--brand-turquoise) 10%, var(--surface));
+  }
+}
+
+.exams__calendarDay:hover {
+  color: var(--heading);
+}
+
+.exams__calendarDay:focus-visible {
+  outline-style: var(--tw-outline-style);
+  outline-offset: 1px;
+  outline-width: 2px;
+  outline-color: var(--action-blue);
+}
+
+.exams__calendarDay[data-selected="true"] {
+  background-image: var(--gradient-cta);
+  color: var(--color-white, #fff);
+  --tw-shadow: 0 8px 18px var(--tw-shadow-color, #2563eb40);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  border-color: #0000;
+}
+
+.exams__field small,
+.exams__dateError {
+  font-size: var(--text-xs, 0.75rem);
+  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+  --tw-font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--coral);
+}
+
+.exams__dateFieldset {
+  margin-top: calc(var(--spacing, 0.25rem) * 6);
+  border-style: var(--tw-border-style);
+  border-width: 0;
+  padding: 0;
+}
+
+.exams__dateFieldset legend {
+  --tw-leading: 1.125rem;
+  --tw-font-weight: var(--font-weight-extrabold, 800);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--heading);
+}
+
+.exams__dateFieldset > p {
+  margin-top: var(--spacing, 0.25rem);
+  --tw-leading: 1.125rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+}
+
+.exams__dateOptions {
+  margin-top: calc(var(--spacing, 0.25rem) * 3);
+  gap: calc(var(--spacing, 0.25rem) * 2);
+  display: grid;
+}
+
+@media (min-width: breakpoints.$mobile) {
+  .exams__dateOptions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.exams__dateOptions label {
+  cursor: pointer;
+}
+
+.exams__dateOptions input {
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  overflow: hidden;
+}
+
+.exams__dateOptions label > span {
+  min-height: calc(var(--spacing, 0.25rem) * 20);
+  border-radius: var(--radius-xl, 0.75rem);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--background);
+  padding-inline: calc(var(--spacing, 0.25rem) * 3);
+  transition-property: border-color, background-color, box-shadow;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))
+  );
+  transition-duration: var(
+    --tw-duration,
+    var(--default-transition-duration, shared.$transition-fast)
+  );
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+}
+
+.exams__dateOptions input:checked + span {
+  border-color: var(--action-blue);
+  background-color: var(--action-blue);
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__dateOptions input:checked + span {
+    background-color: color-mix(in srgb, var(--action-blue) 6%, var(--surface));
+  }
+}
+
+.exams__dateOptions input:checked + span {
+  --tw-shadow: 0 0 0 2px var(--tw-shadow-color, #2563eb1a);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+.exams__dateOptions input:focus-visible + span {
+  outline-style: var(--tw-outline-style);
+  outline-offset: 2px;
+  outline-width: 2px;
+  outline-color: var(--action-blue);
+}
+
+.exams__dateOptions strong {
+  --tw-leading: 1.125rem;
+  --tw-font-weight: var(--font-weight-extrabold, 800);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--heading);
+}
+
+.exams__dateOptions small {
+  margin-top: var(--spacing, 0.25rem);
+  --tw-leading: 1.125rem;
+  --tw-font-weight: var(--font-weight-bold, 700);
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--action-blue);
+}
+
+.exams__dialogActions {
+  margin-top: calc(var(--spacing, 0.25rem) * 7);
+  justify-content: flex-end;
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.exams__resultsPanel {
+  margin-top: calc(var(--spacing, 0.25rem) * 10);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--border);
+  background-color: var(--background);
+  --tw-shadow: 0 18px 48px var(--tw-shadow-color, #102a4312);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  border-radius: 2rem;
+  display: grid;
+  overflow: hidden;
+}
+
+@media (min-width: breakpoints.$tablet) {
+  .exams__resultsPanel {
+    grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr);
+  }
+}
+
+.exams__resultsVisual {
+  min-height: calc(var(--spacing, 0.25rem) * 72);
+  padding: calc(var(--spacing, 0.25rem) * 8);
+  background-image: linear-gradient(145deg, #102a43 0%, #0e7490 100%);
+  place-items: center;
+  display: grid;
+  position: relative;
+  overflow: hidden;
+}
+
+.exams__resultsVisual:before {
+  width: calc(var(--spacing, 0.25rem) * 64);
+  height: calc(var(--spacing, 0.25rem) * 64);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: #ffffff1a;
+  border-radius: 3.40282e38px;
+  position: absolute;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__resultsVisual:before {
+    border-color: color-mix(in oklab, var(--color-white, #fff) 10%, transparent);
+  }
+}
+
+.exams__resultsVisual:before {
+  content: "";
+}
+
+.exams__resultsVisualIcon {
+  top: calc(var(--spacing, 0.25rem) * 7);
+  left: calc(var(--spacing, 0.25rem) * 7);
+  width: calc(var(--spacing, 0.25rem) * 12);
+  height: calc(var(--spacing, 0.25rem) * 12);
+  border-radius: var(--radius-2xl, 1rem);
+  background-color: #ffffff1a;
+  place-items: center;
+  display: grid;
+  position: absolute;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__resultsVisualIcon {
+    background-color: color-mix(in oklab, var(--color-white, #fff) 10%, transparent);
+  }
+}
+
+.exams__resultsVisualIcon {
+  color: var(--brand-turquoise);
+}
+
+.exams__resultsVisualCard {
+  z-index: 10;
+  width: calc(var(--spacing, 0.25rem) * 52);
+  gap: calc(var(--spacing, 0.25rem) * 3);
+  border-radius: var(--radius-2xl, 1rem);
+  background-color: var(--surface);
+  padding: calc(var(--spacing, 0.25rem) * 6);
+  --tw-shadow: 0 24px 60px var(--tw-shadow-color, #0000003d);
+  box-shadow:
+    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+    var(--tw-ring-shadow), var(--tw-shadow);
+  flex-direction: column;
+  display: flex;
+  position: relative;
+  rotate: -3deg;
+}
+
+.exams__resultsVisualCard i {
+  height: calc(var(--spacing, 0.25rem) * 2);
+  background-color: var(--border);
+  border-radius: 3.40282e38px;
+}
+
+.exams__resultsVisualCard i:nth-child(2) {
+  width: 80%;
+}
+
+.exams__resultsVisualCard i:nth-child(3) {
+  width: 60%;
+}
+
+.exams__resultsVisualCard strong {
+  margin-top: calc(var(--spacing, 0.25rem) * 4);
+  width: calc(var(--spacing, 0.25rem) * 16);
+  height: calc(var(--spacing, 0.25rem) * 16);
+  background-color: var(--sunny-yellow);
+  font-size: var(--text-3xl, 1.875rem);
+  line-height: var(--tw-leading, var(--text-3xl--line-height, calc(2.25 / 1.875)));
+  --tw-font-weight: var(--font-weight-black, 900);
+  font-weight: var(--font-weight-black, 900);
+  color: var(--heading);
+  border-radius: 3.40282e38px;
+  align-self: flex-end;
+  place-items: center;
+  display: grid;
+}
+
+.exams__resultsForm {
+  align-content: center;
+  gap: calc(var(--spacing, 0.25rem) * 5);
+  background-color: var(--surface);
+  padding: calc(var(--spacing, 0.25rem) * 6);
+  display: grid;
+}
+
+@media (min-width: breakpoints.$mobile) {
+  .exams__resultsForm {
+    padding: calc(var(--spacing, 0.25rem) * 9);
+  }
+}
+
+@media (min-width: breakpoints.$tablet) {
+  .exams__resultsForm {
+    padding: calc(var(--spacing, 0.25rem) * 12);
+  }
+}
+
+.exams__resultsLock {
+  width: calc(var(--spacing, 0.25rem) * 11);
+  height: calc(var(--spacing, 0.25rem) * 11);
+  border-radius: var(--radius-xl, 0.75rem);
+  background-color: var(--brand-turquoise);
+  place-items: center;
+  display: grid;
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .exams__resultsLock {
+    background-color: color-mix(in srgb, var(--brand-turquoise) 17%, var(--surface));
+  }
+}
+
+.exams__resultsLock {
+  color: var(--heading);
+}
+
+@media (max-width: 767px) {
+  .exams__instructionArrow {
+    display: none;
+  }
+
+  .exams__dialogLayout {
+    display: block;
+  }
+
+  .exams__dialogSummary {
+    min-height: 0;
+  }
+
+  .exams__dialogSummary ul {
+    margin-top: calc(var(--spacing, 0.25rem) * 6);
+    padding-top: 0;
+  }
+}
+
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+
+@property --tw-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+
+@property --tw-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+
+@property --tw-inset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+
+@property --tw-inset-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-inset-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+
+@property --tw-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+
+@property --tw-inset-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-inset-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+
+@property --tw-ring-inset {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-ring-offset-width {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --tw-ring-offset-color {
+  syntax: "*";
+  inherits: false;
+  initial-value: #fff;
+}
+
+@property --tw-ring-offset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --tw-tracking {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-divide-y-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --tw-backdrop-blur {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-brightness {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-contrast {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-invert {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-opacity {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-saturate {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}

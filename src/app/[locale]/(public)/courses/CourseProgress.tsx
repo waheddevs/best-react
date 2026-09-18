@@ -2,8 +2,6 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/courses.module.css";
-
 const progressDuration = 5.2;
 const progressTimes = [0, 0.23, 0.62, 0.85, 1];
 const middleNodeTimes = [0, 0.1, 0.125, 0.155, 0.19, 1];
@@ -19,10 +17,10 @@ export function CourseProgress() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <div aria-hidden="true" className={styles.courses__heroProgress}>
-      <span className={styles.courses__heroProgressTrack} />
+    <div aria-hidden="true" className="courses__heroProgress">
+      <span className="courses__heroProgressTrack" />
       <motion.span
-        className={styles.courses__heroProgressFill}
+        className="courses__heroProgressFill"
         initial={false}
         animate={reduceMotion ? { scaleX: 1 } : { scaleX: [0, 1, 1, 0, 0] }}
         transition={{
@@ -32,9 +30,9 @@ export function CourseProgress() {
           times: progressTimes,
         }}
       />
-      <span className={styles.courses__heroProgressNode} />
+      <span className="courses__heroProgressNode" />
       <motion.span
-        className={styles.courses__heroProgressNode}
+        className="courses__heroProgressNode"
         initial={false}
         animate={reduceMotion ? undefined : nodeReaction}
         transition={{
@@ -45,7 +43,7 @@ export function CourseProgress() {
         }}
       />
       <motion.span
-        className={styles.courses__heroProgressNode}
+        className="courses__heroProgressNode"
         initial={false}
         animate={reduceMotion ? undefined : nodeReaction}
         transition={{

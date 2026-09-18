@@ -7,7 +7,6 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { PublicCourse } from "@/types/PublicCourse";
 
@@ -22,19 +21,19 @@ type CourseHeroProps = {
 export function CourseHero({ course, locale, copy }: CourseHeroProps) {
   if (course.heroVariant === "immersive" && course.image && course.imageAlt) {
     return (
-      <section className={styles.courses__immersiveHero}>
+      <section className="courses__immersiveHero">
         <Image
           alt={course.imageAlt[locale]}
-          className={styles.courses__immersiveHeroImage}
+          className="courses__immersiveHeroImage"
           fill
           priority
           sizes="100vw"
           src={course.image}
         />
-        <span aria-hidden="true" className={styles.courses__immersiveHeroOverlay} />
-        <Container className={styles.courses__immersiveHeroContainer}>
+        <span aria-hidden="true" className="courses__immersiveHeroOverlay" />
+        <Container className="courses__immersiveHeroContainer">
           <ButtonLink
-            className={styles.courses__immersiveHeroBack}
+            className="courses__immersiveHeroBack"
             href={`/${locale}/courses`}
             shape="pill"
             size="small"
@@ -43,14 +42,14 @@ export function CourseHero({ course, locale, copy }: CourseHeroProps) {
           >
             {copy.courses.backToCourses}
           </ButtonLink>
-          <Reveal className={styles.courses__immersiveHeroCopy} direction="left">
-            <p className={styles.courses__immersiveHeroEyebrow}>
+          <Reveal className="courses__immersiveHeroCopy" direction="left">
+            <p className="courses__immersiveHeroEyebrow">
               <AutoAwesomeRounded aria-hidden="true" />
               {copy.courses.categories[course.category]}
             </p>
-            <h1 className={styles.courses__immersiveHeroTitle}>{course.title[locale]}</h1>
-            <p className={styles.courses__immersiveHeroDescription}>{course.summary[locale]}</p>
-            <dl className={styles.courses__immersiveHeroMeta}>
+            <h1 className="courses__immersiveHeroTitle">{course.title[locale]}</h1>
+            <p className="courses__immersiveHeroDescription">{course.summary[locale]}</p>
+            <dl className="courses__immersiveHeroMeta">
               <div>
                 <dt>{copy.courses.level}</dt>
                 <dd>{course.level[locale]}</dd>

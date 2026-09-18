@@ -2,7 +2,6 @@ import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type CourseBackActionProps = {
@@ -12,7 +11,7 @@ type CourseBackActionProps = {
 
 export function CourseBackAction({ locale, copy }: CourseBackActionProps) {
   return (
-    <div className={styles.courses__backAction}>
+    <div className="courses__backAction">
       <ButtonLink
         href={`/${locale}/courses`}
         shape="pill"

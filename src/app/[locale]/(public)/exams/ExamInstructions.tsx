@@ -3,7 +3,6 @@ import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import styles from "@/css/public/exams.module.css";
 import type { ExamPreviewCopy } from "@/types/ExamPreview";
 
 type ExamInstructionsProps = {
@@ -22,19 +21,16 @@ export function ExamInstructions({ copy }: ExamInstructionsProps) {
         />
       </Reveal>
       <Reveal delay={0.08}>
-        <ol className={styles.exams__instructionList}>
+        <ol className="exams__instructionList">
           {copy.instructionSteps.map((step, index) => (
-            <li className={styles.exams__instructionItem} key={step.title}>
-              <span className={styles.exams__instructionNumber}>0{index + 1}</span>
+            <li className="exams__instructionItem" key={step.title}>
+              <span className="exams__instructionNumber">0{index + 1}</span>
               <div>
                 <h3>{step.title}</h3>
                 <p>{step.description}</p>
               </div>
               {index < copy.instructionSteps.length - 1 ? (
-                <ArrowForwardRounded
-                  aria-hidden="true"
-                  className={styles.exams__instructionArrow}
-                />
+                <ArrowForwardRounded aria-hidden="true" className="exams__instructionArrow" />
               ) : null}
             </li>
           ))}

@@ -3,7 +3,6 @@
 import SearchOffRounded from "@mui/icons-material/SearchOffRounded";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
-import styles from "@/css/public/shared.module.css";
 import { useCurrentLocale } from "@/hooks/useCurrentLocale";
 
 const copy = {
@@ -30,15 +29,15 @@ export default function NotFound() {
   const labels = copy[locale];
 
   return (
-    <main className={styles.publicShared__notFound}>
+    <main className="publicShared__notFound">
       <div>
-        <span className={styles.publicShared__notFoundIcon}>
-          <SearchOffRounded aria-hidden="true" className={styles.publicShared__notFoundIconSvg} />
+        <span className="publicShared__notFoundIcon">
+          <SearchOffRounded aria-hidden="true" className="publicShared__notFoundIconSvg" />
         </span>
-        <p className={styles.publicShared__notFoundCode}>404</p>
-        <h1 className={styles.publicShared__notFoundTitle}>{labels.title}</h1>
-        <p className={styles.publicShared__notFoundDescription}>{labels.description}</p>
-        <ScrollToTopLink href={`/${locale}`} className={styles.publicShared__notFoundLink}>
+        <p className="publicShared__notFoundCode">404</p>
+        <h1 className="publicShared__notFoundTitle">{labels.title}</h1>
+        <p className="publicShared__notFoundDescription">{labels.description}</p>
+        <ScrollToTopLink href={`/${locale}`} className="publicShared__notFoundLink">
           {labels.link}
         </ScrollToTopLink>
       </div>

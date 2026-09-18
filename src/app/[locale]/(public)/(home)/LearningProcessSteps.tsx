@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/home.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type LearningProcessStepsProps = {
@@ -15,7 +14,7 @@ export function LearningProcessSteps({ items }: LearningProcessStepsProps) {
 
   return (
     <motion.ol
-      className={styles.home__processList}
+      className="home__processList"
       initial="hidden"
       variants={{
         hidden: {},
@@ -31,7 +30,7 @@ export function LearningProcessSteps({ items }: LearningProcessStepsProps) {
     >
       {items.map((item, index) => (
         <motion.li
-          className={styles.home__processItem}
+          className="home__processItem"
           key={item.title}
           variants={{
             hidden: {
@@ -50,9 +49,9 @@ export function LearningProcessSteps({ items }: LearningProcessStepsProps) {
             },
           }}
         >
-          <span className={styles.home__processNumber}>{String(index + 1).padStart(2, "0")}</span>
-          <h3 className={styles.home__processTitle}>{item.title}</h3>
-          <p className={styles.home__processDescription}>{item.description}</p>
+          <span className="home__processNumber">{String(index + 1).padStart(2, "0")}</span>
+          <h3 className="home__processTitle">{item.title}</h3>
+          <p className="home__processDescription">{item.description}</p>
         </motion.li>
       ))}
     </motion.ol>

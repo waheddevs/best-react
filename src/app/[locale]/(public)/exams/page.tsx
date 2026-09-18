@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
-import styles from "@/css/public/exams.module.css";
 import { getExamPreviewCopy } from "@/dictionaries/public/ExamPreview";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { createPageMetadata } from "@/lib/Metadata";
@@ -31,7 +30,7 @@ export default async function ExamsPage({ params }: ExamsPageProps) {
   const examData = await getPublicExamData(locale);
 
   return (
-    <main className={styles.exams}>
+    <main className={"exams"}>
       <ExamsHero eyebrow={dictionary.navigation.exams} copy={copy} />
       <ExamInstructions copy={copy} />
       <ExamOptions copy={copy} dates={examData.dates} locale={locale} options={examData.options} />

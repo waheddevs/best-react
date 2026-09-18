@@ -15,7 +15,6 @@ import { useId, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/exams.module.css";
 import { useExamRegistration } from "@/hooks/public/exams/useExamRegistration";
 import type {
   ExamKind,
@@ -62,16 +61,16 @@ export function ExamRegistrationCatalog({
 
   return (
     <>
-      <div className={styles.exams__catalogGrid}>
+      <div className="exams__catalogGrid">
         {options.map((exam, index) => (
-          <article className={styles.exams__optionCard} data-exam={exam.key} key={exam.key}>
-            <div className={styles.exams__optionTopline}>
-              <span className={styles.exams__optionIcon}>{examIcons[exam.key]}</span>
-              <span className={styles.exams__optionNumber}>0{index + 1}</span>
+          <article className="exams__optionCard" data-exam={exam.key} key={exam.key}>
+            <div className="exams__optionTopline">
+              <span className="exams__optionIcon">{examIcons[exam.key]}</span>
+              <span className="exams__optionNumber">0{index + 1}</span>
             </div>
-            <h3 className={styles.exams__optionTitle}>{exam.title[locale]}</h3>
-            <p className={styles.exams__optionDescription}>{exam.description[locale]}</p>
-            <dl className={styles.exams__optionMeta}>
+            <h3 className="exams__optionTitle">{exam.title[locale]}</h3>
+            <p className="exams__optionDescription">{exam.description[locale]}</p>
+            <dl className="exams__optionMeta">
               <div>
                 <dt>{copy.formatLabel}</dt>
                 <dd>{exam.format[locale]}</dd>
@@ -85,7 +84,7 @@ export function ExamRegistrationCatalog({
                 <dd>{exam.level[locale]}</dd>
               </div>
             </dl>
-            <ul className={styles.exams__optionHighlights}>
+            <ul className="exams__optionHighlights">
               {exam.highlights.map((highlight) => (
                 <li key={highlight[locale]}>
                   <CheckRounded aria-hidden="true" />
@@ -94,7 +93,7 @@ export function ExamRegistrationCatalog({
               ))}
             </ul>
             <Button
-              className={styles.exams__optionAction}
+              className="exams__optionAction"
               endIcon={<ArrowForwardRounded />}
               hoverEffect="jump"
               onClick={() => handleRegistrationOpen(exam)}
@@ -117,14 +116,14 @@ export function ExamRegistrationCatalog({
           onClose={handleRegistrationClose}
           open={isOpen}
           slotProps={{
-            backdrop: { className: styles.exams__dialogBackdrop },
-            paper: { className: styles.exams__dialog },
+            backdrop: { className: "exams__dialogBackdrop" },
+            paper: { className: "exams__dialog" },
             transition: { onExited: handleDialogExited },
           }}
         >
-          <div className={styles.exams__dialogLayout}>
-            <aside className={styles.exams__dialogSummary} data-exam={selectedExam.key}>
-              <span className={styles.exams__dialogSummaryIcon}>{examIcons[selectedExam.key]}</span>
+          <div className="exams__dialogLayout">
+            <aside className="exams__dialogSummary" data-exam={selectedExam.key}>
+              <span className="exams__dialogSummaryIcon">{examIcons[selectedExam.key]}</span>
               <p>{copy.selectedExam}</p>
               <h3>{selectedExam.title[locale]}</h3>
               <span>{selectedExam.format[locale]}</span>
@@ -138,25 +137,25 @@ export function ExamRegistrationCatalog({
               </ul>
             </aside>
 
-            <form className={styles.exams__dialogForm} noValidate onSubmit={handleSubmit}>
+            <form className="exams__dialogForm" noValidate onSubmit={handleSubmit}>
               <IconButton
-                className={styles.exams__dialogClose}
+                className="exams__dialogClose"
                 label={copy.cancel}
                 onClick={handleRegistrationClose}
                 variant="soft"
               >
                 <CloseRounded aria-hidden="true" />
               </IconButton>
-              <p className={styles.exams__dialogEyebrow}>{copy.formEyebrow}</p>
-              <h2 className={styles.exams__dialogTitle} id={titleId}>
+              <p className="exams__dialogEyebrow">{copy.formEyebrow}</p>
+              <h2 className="exams__dialogTitle" id={titleId}>
                 {copy.formTitle}
               </h2>
-              <p className={styles.exams__dialogDescription} id={descriptionId}>
+              <p className="exams__dialogDescription" id={descriptionId}>
                 {copy.formDescription}
               </p>
 
-              <div className={styles.exams__formGrid}>
-                <label className={styles.exams__field}>
+              <div className="exams__formGrid">
+                <label className="exams__field">
                   <span>{copy.fullName}</span>
                   <input
                     aria-errormessage={errors.fullName ? `${titleId}-full-name-error` : undefined}
@@ -172,7 +171,7 @@ export function ExamRegistrationCatalog({
                     <small id={`${titleId}-full-name-error`}>{errors.fullName}</small>
                   ) : null}
                 </label>
-                <label className={styles.exams__field}>
+                <label className="exams__field">
                   <span>{copy.phone}</span>
                   <input
                     aria-errormessage={errors.phone ? `${titleId}-phone-error` : undefined}
@@ -189,7 +188,7 @@ export function ExamRegistrationCatalog({
                     <small id={`${titleId}-phone-error`}>{errors.phone}</small>
                   ) : null}
                 </label>
-                <label className={styles.exams__field}>
+                <label className="exams__field">
                   <span>{copy.email}</span>
                   <input
                     aria-errormessage={errors.email ? `${titleId}-email-error` : undefined}
@@ -206,10 +205,10 @@ export function ExamRegistrationCatalog({
                     <small id={`${titleId}-email-error`}>{errors.email}</small>
                   ) : null}
                 </label>
-                <div className={styles.exams__field}>
+                <div className="exams__field">
                   <span id={`${titleId}-current-level-label`}>{copy.currentLevel}</span>
                   <Select
-                    className={styles.exams__levelSelect}
+                    className="exams__levelSelect"
                     displayEmpty
                     error={Boolean(errors.currentLevel)}
                     IconComponent={KeyboardArrowDownRounded}
@@ -220,17 +219,17 @@ export function ExamRegistrationCatalog({
                       "aria-invalid": Boolean(errors.currentLevel),
                     }}
                     labelId={`${titleId}-current-level-label`}
-                    MenuProps={{ className: styles.exams__levelSelectMenu }}
+                    MenuProps={{ className: "exams__levelSelectMenu" }}
                     name="currentLevel"
                     onChange={handleLevelChange}
                     renderValue={(selected) => selected || "—"}
                     value={values.currentLevel}
                   >
-                    <MenuItem className={styles.exams__levelOption} value="">
+                    <MenuItem className="exams__levelOption" value="">
                       —
                     </MenuItem>
                     {copy.levelOptions.map((level) => (
-                      <MenuItem className={styles.exams__levelOption} key={level} value={level}>
+                      <MenuItem className="exams__levelOption" key={level} value={level}>
                         {level}
                       </MenuItem>
                     ))}
@@ -242,10 +241,10 @@ export function ExamRegistrationCatalog({
               </div>
 
               {selectedExam.key === "mock" ? (
-                <fieldset className={styles.exams__dateFieldset}>
+                <fieldset className="exams__dateFieldset">
                   <legend>{copy.preferredDate}</legend>
                   <p>{copy.preferredDateDescription}</p>
-                  <div className={styles.exams__dateOptions}>
+                  <div className="exams__dateOptions">
                     {dates.map((slot) => (
                       <label key={slot.value}>
                         <input
@@ -263,7 +262,7 @@ export function ExamRegistrationCatalog({
                     ))}
                   </div>
                   {errors.mockDate ? (
-                    <small className={styles.exams__dateError} role="alert">
+                    <small className="exams__dateError" role="alert">
                       {errors.mockDate}
                     </small>
                   ) : null}
@@ -271,7 +270,7 @@ export function ExamRegistrationCatalog({
               ) : null}
 
               <div>
-                <label className={styles.exams__consent}>
+                <label className="exams__consent">
                   <input
                     aria-invalid={Boolean(errors.consent)}
                     checked={values.consent}
@@ -281,13 +280,13 @@ export function ExamRegistrationCatalog({
                   <span>{copy.consentLabel}</span>
                 </label>
                 {errors.consent ? (
-                  <small className={styles.exams__consentError} role="alert">
+                  <small className="exams__consentError" role="alert">
                     {errors.consent}
                   </small>
                 ) : null}
               </div>
 
-              <div className={styles.exams__dialogActions}>
+              <div className="exams__dialogActions">
                 <Button onClick={handleRegistrationClose} variant="outline">
                   {copy.cancel}
                 </Button>

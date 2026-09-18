@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
-import styles from "@/css/public/results.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 import { getPublicResultVideos } from "@/lib/PublicContentApi";
 
@@ -32,7 +31,7 @@ export default async function ResultsPage({ params }: ResultsPageProps) {
   const videos = await getPublicResultVideos(locale);
 
   return (
-    <main className={styles.results}>
+    <main className={"results"}>
       <ResultsHero eyebrow={dictionary.navigation.results} copy={copy} />
       <ResultStories copy={copy} locale={locale} videos={videos} />
       <LearningJourney copy={copy} />

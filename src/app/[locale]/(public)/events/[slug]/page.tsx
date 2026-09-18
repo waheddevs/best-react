@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 
 import { Section } from "@/components/ui/Section";
 import { isLocale, locales } from "@/config/Locales";
-import styles from "@/css/public/events.module.css";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
 import { getPublicEvent, getPublicEvents } from "@/lib/PublicContentApi";
@@ -57,10 +56,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   const relatedEvents = events.filter((item) => item.slug !== event.slug).slice(0, 3);
 
   return (
-    <main className={styles.events}>
+    <main className="events">
       <EventHero event={event} locale={locale} copy={copy} />
       <Section tone="surface">
-        <div className={styles.events__detailLayout}>
+        <div className="events__detailLayout">
           <EventOverview copy={copy} paragraphs={detailContent.overview} />
           <EventDetails event={event} locale={locale} copy={copy} />
         </div>

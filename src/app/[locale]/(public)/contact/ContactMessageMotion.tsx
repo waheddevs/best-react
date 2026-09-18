@@ -5,7 +5,6 @@ import SendRounded from "@mui/icons-material/SendRounded";
 import { useEffect } from "react";
 import { useAnimate, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/contact.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type ContactMessageMotionProps = {
@@ -88,28 +87,28 @@ export function ContactMessageMotion({ copy }: ContactMessageMotionProps) {
   }, [animate, reduceMotion, scope]);
 
   return (
-    <div ref={scope} className={styles.contact__heroMessageMotion}>
-      <span className={styles.contact__heroMessageIcon}>
+    <div ref={scope} className="contact__heroMessageMotion">
+      <span className="contact__heroMessageIcon">
         <MailRounded />
       </span>
-      <strong className={styles.contact__heroMessageTitle}>{copy.formTitle}</strong>
-      <span className={styles.contact__heroMessageMeta}>{copy.message}</span>
-      <span className={styles.contact__heroMessageComposer}>
-        <span className={styles.contact__heroMessageInputShell}>
+      <strong className="contact__heroMessageTitle">{copy.formTitle}</strong>
+      <span className="contact__heroMessageMeta">{copy.message}</span>
+      <span className="contact__heroMessageComposer">
+        <span className="contact__heroMessageInputShell">
           <input
             aria-label={exampleMessage}
-            className={styles.contact__heroMessageInput}
+            className="contact__heroMessageInput"
             data-contact-input
             readOnly
             tabIndex={-1}
             type="text"
           />
-          <span className={styles.contact__heroMessageTypingLayer}>
-            <span className={styles.contact__heroMessageInputMirror} data-contact-input-mirror />
-            <i className={styles.contact__heroMessageCaret} />
+          <span className="contact__heroMessageTypingLayer">
+            <span className="contact__heroMessageInputMirror" data-contact-input-mirror />
+            <i className="contact__heroMessageCaret" />
           </span>
         </span>
-        <span className={styles.contact__heroMessageAction} data-contact-action>
+        <span className="contact__heroMessageAction" data-contact-action>
           <SendRounded />
         </span>
       </span>

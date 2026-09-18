@@ -4,7 +4,6 @@ import { StaggerItem } from "@/components/motion/StaggerItem";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Section } from "@/components/ui/Section";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/home.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type FinalCtaProps = {
@@ -16,15 +15,15 @@ export function FinalCta({ locale, copy }: FinalCtaProps) {
   return (
     <Section tone="background">
       <Reveal direction="scale">
-        <StaggerGroup className={styles.home__finalCta} delay={0.08}>
-          <div aria-hidden="true" className={styles.home__finalCtaDecoration} />
+        <StaggerGroup className="home__finalCta" delay={0.08}>
+          <div aria-hidden="true" className="home__finalCtaDecoration" />
           <StaggerItem initialScale={0.99}>
-            <h2 className={styles.home__finalCtaTitle}>{copy.home.finalTitle}</h2>
+            <h2 className="home__finalCtaTitle">{copy.home.finalTitle}</h2>
           </StaggerItem>
           <StaggerItem initialScale={0.99}>
-            <p className={styles.home__finalCtaDescription}>{copy.home.finalDescription}</p>
+            <p className="home__finalCtaDescription">{copy.home.finalDescription}</p>
           </StaggerItem>
-          <StaggerItem className={styles.home__finalCtaActions} initialScale={0.99}>
+          <StaggerItem className="home__finalCtaActions" initialScale={0.99}>
             <ButtonLink
               hoverEffect="jump"
               href={`/${locale}/courses`}

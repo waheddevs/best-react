@@ -12,7 +12,6 @@ import {
 import Snackbar from "@mui/material/Snackbar";
 import Slide, { type SlideProps } from "@mui/material/Slide";
 
-import styles from "@/css/public/shared.module.css";
 import { NotificationContext } from "@/features/notifications/NotificationContext";
 import type {
   CenterAlertInput,
@@ -227,7 +226,7 @@ export function NotificationProvider({ children, copy }: NotificationProviderPro
         <Snackbar
           anchorOrigin={{ horizontal: "right", vertical: "top" }}
           autoHideDuration={currentToast.duration}
-          className={styles.publicShared__notificationSnackbar}
+          className="publicShared__notificationSnackbar"
           key={currentToast.renderKey}
           onClose={handleToastClose}
           open={isToastOpen}

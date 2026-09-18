@@ -10,7 +10,6 @@ import VolunteerActivismRounded from "@mui/icons-material/VolunteerActivismRound
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import styles from "@/css/public/about.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 const valueIcons = [
@@ -30,17 +29,17 @@ type ValuesProps = {
 
 export function Values({ copy }: ValuesProps) {
   return (
-    <Section className={styles.about__values} tone="surface">
+    <Section className="about__values" tone="surface">
       <Reveal>
         <SectionHeading title={copy.about.approachTitle} align="center" />
       </Reveal>
 
-      <div className={styles.about__valuesViewport}>
-        <div className={styles.about__valuesTrack}>
+      <div className="about__valuesViewport">
+        <div className="about__valuesTrack">
           {[false, true].map((isDuplicate) => (
             <div
               key={isDuplicate ? "duplicate" : "primary"}
-              className={styles.about__valuesGroup}
+              className="about__valuesGroup"
               aria-hidden={isDuplicate}
             >
               {copy.about.values.map((value, index) => {
@@ -49,14 +48,14 @@ export function Values({ copy }: ValuesProps) {
                 return (
                   <article
                     key={`${isDuplicate ? "duplicate" : "primary"}-${value.title}`}
-                    className={styles.about__valueCard}
+                    className="about__valueCard"
                   >
-                    <span className={styles.about__valueIcon}>
+                    <span className="about__valueIcon">
                       <Icon aria-hidden="true" />
                     </span>
-                    <h2 className={styles.about__valueTitle}>{value.title}</h2>
-                    <p className={styles.about__valueDescription}>{value.description}</p>
-                    <span className={styles.about__valueDecoration} aria-hidden="true" />
+                    <h2 className="about__valueTitle">{value.title}</h2>
+                    <p className="about__valueDescription">{value.description}</p>
+                    <span className="about__valueDecoration" aria-hidden="true" />
                   </article>
                 );
               })}

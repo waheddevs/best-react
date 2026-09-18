@@ -1,5 +1,3 @@
-import styles from "@/css/public/shared.module.css";
-
 type SectionHeadingProps = {
   eyebrow?: string;
   title: string;
@@ -17,16 +15,14 @@ export function SectionHeading({
   descriptionClassName = "",
   align = "left",
 }: SectionHeadingProps) {
-  const alignment = align === "center" ? styles.publicShared__sectionHeadingCenter : "";
+  const alignment = align === "center" ? "publicShared__sectionHeadingCenter" : "";
 
   return (
-    <div className={`${styles.publicShared__sectionHeading} ${alignment}`}>
-      {eyebrow ? <p className={styles.publicShared__sectionEyebrow}>{eyebrow}</p> : null}
-      <h2 className={`${styles.publicShared__sectionTitle} ${titleClassName}`}>{title}</h2>
+    <div className={`publicShared__sectionHeading ${alignment}`}>
+      {eyebrow ? <p className="publicShared__sectionEyebrow">{eyebrow}</p> : null}
+      <h2 className={`publicShared__sectionTitle ${titleClassName}`}>{title}</h2>
       {description ? (
-        <p className={`${styles.publicShared__sectionDescription} ${descriptionClassName}`}>
-          {description}
-        </p>
+        <p className={`publicShared__sectionDescription ${descriptionClassName}`}>{description}</p>
       ) : null}
     </div>
   );

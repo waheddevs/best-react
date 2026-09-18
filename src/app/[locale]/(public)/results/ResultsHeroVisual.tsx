@@ -3,7 +3,6 @@ import WorkspacePremiumRounded from "@mui/icons-material/WorkspacePremiumRounded
 
 import { HeroVisualFrame } from "@/components/motion/HeroVisualFrame";
 import { LiveIllustration } from "@/components/motion/LiveIllustration";
-import styles from "@/css/public/results.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 import { ResultsPlusMotion } from "./ResultsPlusMotion";
@@ -15,21 +14,21 @@ type ResultsHeroVisualProps = {
 
 export function ResultsHeroVisual({ copy }: ResultsHeroVisualProps) {
   return (
-    <HeroVisualFrame className={styles.results__heroVisual}>
-      <div className={styles.results__heroGrid} />
+    <HeroVisualFrame className="results__heroVisual">
+      <div className="results__heroGrid" />
       <ResultsProgressMotion />
-      <span className={`${styles.results__heroMilestone} ${styles.results__heroMilestoneStart}`}>
+      <span className="results__heroMilestone results__heroMilestoneStart">
         <SchoolRounded />
       </span>
-      <span className={`${styles.results__heroMilestone} ${styles.results__heroMilestoneEnd}`}>
+      <span className="results__heroMilestone results__heroMilestoneEnd">
         <WorkspacePremiumRounded />
       </span>
       <ResultsPlusMotion />
-      <LiveIllustration className={styles.results__heroCaption} delay={0.3} variant="tilt">
+      <LiveIllustration className="results__heroCaption" delay={0.3} variant="tilt">
         <strong>{copy.journeyTitle}</strong>
         <span>{copy.journeySteps[1].title}</span>
       </LiveIllustration>
-      <span className={styles.results__heroAccent} />
+      <span className="results__heroAccent" />
     </HeroVisualFrame>
   );
 }

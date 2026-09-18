@@ -14,7 +14,6 @@ import { useId } from "react";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/events.module.css";
 import { useEventRegistrationForm } from "@/hooks/public/events/useEventRegistrationForm";
 import type { EventRegistrationCopy, EventRegistrationValues } from "@/types/EventRegistration";
 import type { PublicEvent } from "@/types/PublicContent";
@@ -65,9 +64,9 @@ export function EventRegistrationDialog({
       onClose={handleClose}
       open={open}
       slotProps={{
-        backdrop: { className: styles.events__registrationBackdrop },
+        backdrop: { className: "events__registrationBackdrop" },
         paper: {
-          className: `${styles.events__registrationDialog} ${open ? styles.events__registrationDialogOpen : styles.events__registrationDialogClosed}`,
+          className: `events__registrationDialog ${open ? "events__registrationDialogOpen" : "events__registrationDialogClosed"}`,
         },
         transition: {
           easing: {
@@ -80,20 +79,20 @@ export function EventRegistrationDialog({
       }}
       transitionDuration={{ enter: 360, exit: 260 }}
     >
-      <div className={styles.events__registrationLayout}>
-        <aside className={styles.events__registrationPreview}>
+      <div className="events__registrationLayout">
+        <aside className="events__registrationPreview">
           <Image
             alt={event.imageAlt[locale]}
-            className={styles.events__registrationImage}
+            className="events__registrationImage"
             fill
             sizes="(min-width: 768px) 340px, 100vw"
             src={event.image}
           />
-          <span aria-hidden="true" className={styles.events__registrationScrim} />
-          <div className={styles.events__registrationEvent}>
-            <span className={styles.events__registrationEventLabel}>{copy.selectedEvent}</span>
+          <span aria-hidden="true" className="events__registrationScrim" />
+          <div className="events__registrationEvent">
+            <span className="events__registrationEventLabel">{copy.selectedEvent}</span>
             <h3>{event.title[locale]}</h3>
-            <div className={styles.events__registrationEventMeta}>
+            <div className="events__registrationEventMeta">
               <span>
                 <CalendarMonthRounded aria-hidden="true" />
                 {event.dateLabel[locale]}
@@ -107,13 +106,13 @@ export function EventRegistrationDialog({
         </aside>
 
         <form
-          className={styles.events__registrationForm}
+          className="events__registrationForm"
           key={event.slug}
           noValidate
           onSubmit={handleSubmit}
         >
           <IconButton
-            className={styles.events__registrationClose}
+            className="events__registrationClose"
             label={copy.cancel}
             onClick={handleClose}
             variant="soft"
@@ -121,16 +120,16 @@ export function EventRegistrationDialog({
             <CloseRounded aria-hidden="true" />
           </IconButton>
 
-          <p className={styles.events__registrationEyebrow}>{copy.eyebrow}</p>
-          <h2 className={styles.events__registrationTitle} id={titleId}>
+          <p className="events__registrationEyebrow">{copy.eyebrow}</p>
+          <h2 className="events__registrationTitle" id={titleId}>
             {copy.title}
           </h2>
-          <p className={styles.events__registrationDescription} id={descriptionId}>
+          <p className="events__registrationDescription" id={descriptionId}>
             {copy.description}
           </p>
 
-          <div className={styles.events__registrationFields}>
-            <label className={styles.events__registrationField}>
+          <div className="events__registrationFields">
+            <label className="events__registrationField">
               <span>{copy.fullName}</span>
               <input
                 autoComplete="name"
@@ -143,7 +142,7 @@ export function EventRegistrationDialog({
               />
               {errors.fullName ? <small>{errors.fullName}</small> : null}
             </label>
-            <label className={styles.events__registrationField}>
+            <label className="events__registrationField">
               <span>{copy.phone}</span>
               <input
                 autoComplete="tel"
@@ -157,7 +156,7 @@ export function EventRegistrationDialog({
               />
               {errors.phone ? <small>{errors.phone}</small> : null}
             </label>
-            <label className={styles.events__registrationField}>
+            <label className="events__registrationField">
               <span>{copy.email}</span>
               <input
                 autoComplete="email"
@@ -171,22 +170,22 @@ export function EventRegistrationDialog({
               />
               {errors.email ? <small>{errors.email}</small> : null}
             </label>
-            <label className={styles.events__registrationField}>
+            <label className="events__registrationField">
               <span>{copy.participants}</span>
-              <span className={styles.events__registrationSelectWrap}>
+              <span className="events__registrationSelectWrap">
                 <GroupsRounded aria-hidden="true" />
                 <Select
-                  className={styles.events__registrationSelect}
+                  className="events__registrationSelect"
                   value={values.participantCount}
                   IconComponent={KeyboardArrowDownRounded}
                   inputProps={{ "aria-label": copy.participants }}
-                  MenuProps={{ className: styles.events__registrationSelectMenu }}
+                  MenuProps={{ className: "events__registrationSelectMenu" }}
                   name="participants"
                   onChange={handleParticipantChange}
                 >
                   {[1, 2, 3, 4].map((participantCount) => (
                     <MenuItem
-                      className={styles.events__registrationSelectOption}
+                      className="events__registrationSelectOption"
                       key={participantCount}
                       value={participantCount}
                     >
@@ -199,7 +198,7 @@ export function EventRegistrationDialog({
           </div>
 
           <div>
-            <label className={styles.events__registrationConsent}>
+            <label className="events__registrationConsent">
               <input
                 aria-invalid={Boolean(errors.consent)}
                 checked={values.consent}
@@ -209,13 +208,13 @@ export function EventRegistrationDialog({
               <span>{copy.consentLabel}</span>
             </label>
             {errors.consent ? (
-              <small className={styles.events__registrationConsentError} role="alert">
+              <small className="events__registrationConsentError" role="alert">
                 {errors.consent}
               </small>
             ) : null}
           </div>
 
-          <div className={styles.events__registrationActions}>
+          <div className="events__registrationActions">
             <Button onClick={handleClose} variant="outline">
               {copy.cancel}
             </Button>

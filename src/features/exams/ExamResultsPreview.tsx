@@ -5,8 +5,6 @@ import SearchRounded from "@mui/icons-material/SearchRounded";
 import { useId } from "react";
 
 import { Button } from "@/components/ui/Button";
-import styles from "@/css/public/exams.module.css";
-import sharedStyles from "@/css/public/shared.module.css";
 import { useExamResultsPreview } from "@/hooks/public/exams/useExamResultsPreview";
 import type { ExamPreviewCopy } from "@/types/ExamPreview";
 
@@ -26,23 +24,23 @@ export function ExamResultsPreview({ copy }: ExamResultsPreviewProps) {
   const { handleBirthDateChange, handleFieldChange, handleSubmit } = results;
 
   return (
-    <div className={styles.exams__resultsPanel}>
-      <div className={styles.exams__resultsVisual} aria-hidden="true">
-        <span className={styles.exams__resultsVisualIcon}>
+    <div className="exams__resultsPanel">
+      <div className="exams__resultsVisual" aria-hidden="true">
+        <span className="exams__resultsVisualIcon">
           <SearchRounded />
         </span>
-        <span className={styles.exams__resultsVisualCard}>
+        <span className="exams__resultsVisualCard">
           <i />
           <i />
           <i />
           <strong>A</strong>
         </span>
       </div>
-      <form className={styles.exams__resultsForm} noValidate onSubmit={handleSubmit}>
-        <span className={styles.exams__resultsLock}>
+      <form className="exams__resultsForm" noValidate onSubmit={handleSubmit}>
+        <span className="exams__resultsLock">
           <LockRounded aria-hidden="true" />
         </span>
-        <label className={styles.exams__field}>
+        <label className="exams__field">
           <span>{copy.candidateId}</span>
           <input
             aria-errormessage={errors.candidateId ? `${formId}-candidate-error` : undefined}
@@ -58,7 +56,7 @@ export function ExamResultsPreview({ copy }: ExamResultsPreviewProps) {
             <small id={`${formId}-candidate-error`}>{errors.candidateId}</small>
           ) : null}
         </label>
-        <div className={styles.exams__field}>
+        <div className="exams__field">
           <span id={`${formId}-birth-date-label`}>{copy.birthDate}</span>
           <BrandDatePicker
             copy={copy.calendar}
@@ -73,7 +71,7 @@ export function ExamResultsPreview({ copy }: ExamResultsPreviewProps) {
           ) : null}
         </div>
         <Button
-          className={sharedStyles.publicShared__formAction}
+          className="publicShared__formAction"
           hoverEffect="jump"
           startIcon={<SearchRounded />}
           type="submit"

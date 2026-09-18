@@ -4,7 +4,6 @@ import { Reveal } from "@/components/motion/Reveal";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Section } from "@/components/ui/Section";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type CoursesCtaProps = {
@@ -15,8 +14,8 @@ type CoursesCtaProps = {
 export function CoursesCta({ locale, copy }: CoursesCtaProps) {
   return (
     <Section tone="surface">
-      <Reveal className={styles.courses__cta} direction="scale">
-        <span className={styles.courses__ctaIcon}>
+      <Reveal className="courses__cta" direction="scale">
+        <span className="courses__ctaIcon">
           <ChatBubbleOutlineRounded aria-hidden="true" />
         </span>
         <h2>{copy.courses.ctaTitle}</h2>

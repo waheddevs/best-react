@@ -3,8 +3,6 @@
 import AutoAwesomeRounded from "@mui/icons-material/AutoAwesomeRounded";
 import { motion, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/shared.module.css";
-
 type PageHeroCopyProps = {
   animate: boolean;
   description: string;
@@ -22,7 +20,7 @@ export function PageHeroCopy({ animate, description, eyebrow, title }: PageHeroC
 
   return (
     <motion.div
-      className={styles.publicShared__pageHeroContent}
+      className="publicShared__pageHeroContent"
       initial={animate ? { opacity: 0, x: shouldAnimate ? -36 : 0 } : false}
       animate={{ opacity: 1, x: 0 }}
       transition={{
@@ -30,12 +28,12 @@ export function PageHeroCopy({ animate, description, eyebrow, title }: PageHeroC
         ease: copyEase,
       }}
     >
-      <p className={styles.publicShared__pageHeroEyebrow}>
-        <AutoAwesomeRounded aria-hidden="true" className={styles.publicShared__pageHeroIcon} />
+      <p className="publicShared__pageHeroEyebrow">
+        <AutoAwesomeRounded aria-hidden="true" className="publicShared__pageHeroIcon" />
         {eyebrow}
       </p>
-      <h1 className={styles.publicShared__pageHeroTitle}>{title}</h1>
-      <p className={styles.publicShared__pageHeroDescription}>{description}</p>
+      <h1 className="publicShared__pageHeroTitle">{title}</h1>
+      <p className="publicShared__pageHeroDescription">{description}</p>
     </motion.div>
   );
 }

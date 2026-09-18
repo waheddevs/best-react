@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
-import styles from "@/css/public/courses.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 import { getPublicCourses } from "@/lib/PublicContentApi";
 
@@ -33,7 +32,7 @@ export default async function CoursesPage({ params }: CoursesPageProps) {
   const courses = await getPublicCourses(locale);
 
   return (
-    <main className={styles.courses}>
+    <main className={"courses"}>
       <CoursesHero eyebrow={dictionary.navigation.courses} copy={copy} />
       <CoursesCatalog locale={locale} copy={copy} courses={courses} />
       <LanguageCourses locale={locale} copy={copy} courses={courses} />

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
-import styles from "@/css/public/contact.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 
 import { ContactContent } from "./ContactContent";
@@ -27,7 +26,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
   const dictionary = getDictionary(locale);
 
   return (
-    <main className={styles.contact}>
+    <main className={"contact"}>
       <ContactHero eyebrow={dictionary.navigation.contact} copy={copy} />
       <ContactContent copy={copy} locale={locale} />
     </main>

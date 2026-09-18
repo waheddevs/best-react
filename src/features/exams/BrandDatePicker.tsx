@@ -10,7 +10,6 @@ import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import { useId, type MouseEvent } from "react";
 
 import { IconButton } from "@/components/ui/IconButton";
-import styles from "@/css/public/exams.module.css";
 import { useBrandDatePicker } from "@/hooks/public/exams/useBrandDatePicker";
 import type { ExamPreviewCopy } from "@/types/ExamPreview";
 
@@ -68,7 +67,7 @@ export function BrandDatePicker({
         aria-expanded={isOpen}
         aria-haspopup="dialog"
         aria-labelledby={labelId}
-        className={styles.exams__calendarTrigger}
+        className="exams__calendarTrigger"
         data-invalid={invalid ? "true" : undefined}
         onClick={handleOpen}
         type="button"
@@ -84,16 +83,16 @@ export function BrandDatePicker({
         anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
         onClose={handleClose}
         open={isOpen}
-        slotProps={{ paper: { className: styles.exams__calendarPopover } }}
+        slotProps={{ paper: { className: "exams__calendarPopover" } }}
         transformOrigin={{ horizontal: "left", vertical: "top" }}
       >
         <div
           aria-label={copy.dialogLabel}
-          className={styles.exams__calendar}
+          className="exams__calendar"
           id={calendarId}
           role="dialog"
         >
-          <div className={styles.exams__calendarHeader}>
+          <div className="exams__calendarHeader">
             <IconButton
               controlSize="small"
               label={copy.previousMonth}
@@ -103,35 +102,31 @@ export function BrandDatePicker({
               <ChevronLeftRounded aria-hidden="true" />
             </IconButton>
 
-            <div className={styles.exams__calendarSelectors}>
+            <div className="exams__calendarSelectors">
               <Select<number>
-                className={styles.exams__calendarSelect}
+                className="exams__calendarSelect"
                 IconComponent={KeyboardArrowDownRounded}
                 inputProps={{ "aria-label": copy.monthLabel }}
-                MenuProps={{ className: styles.exams__calendarSelectMenu }}
+                MenuProps={{ className: "exams__calendarSelectMenu" }}
                 onChange={handleMonthSelect}
                 value={visibleMonth}
               >
                 {copy.months.map((month, index) => (
-                  <MenuItem
-                    className={styles.exams__calendarSelectOption}
-                    key={month}
-                    value={index}
-                  >
+                  <MenuItem className="exams__calendarSelectOption" key={month} value={index}>
                     {month}
                   </MenuItem>
                 ))}
               </Select>
               <Select<number>
-                className={styles.exams__calendarSelect}
+                className="exams__calendarSelect"
                 IconComponent={KeyboardArrowDownRounded}
                 inputProps={{ "aria-label": copy.yearLabel }}
-                MenuProps={{ className: styles.exams__calendarSelectMenu }}
+                MenuProps={{ className: "exams__calendarSelectMenu" }}
                 onChange={handleYearSelect}
                 value={visibleYear}
               >
                 {years.map((year) => (
-                  <MenuItem className={styles.exams__calendarSelectOption} key={year} value={year}>
+                  <MenuItem className="exams__calendarSelectOption" key={year} value={year}>
                     {year}
                   </MenuItem>
                 ))}
@@ -148,18 +143,18 @@ export function BrandDatePicker({
             </IconButton>
           </div>
 
-          <div aria-hidden="true" className={styles.exams__calendarWeekdays}>
+          <div aria-hidden="true" className="exams__calendarWeekdays">
             {copy.weekdays.map((weekday) => (
               <span key={weekday}>{weekday}</span>
             ))}
           </div>
 
-          <div className={styles.exams__calendarDays}>
+          <div className="exams__calendarDays">
             {calendarDays.map((calendarDay) => (
               <button
                 aria-label={`${calendarDay.day} ${copy.months[calendarDay.month]} ${calendarDay.year}`}
                 aria-pressed={calendarDay.isSelected}
-                className={styles.exams__calendarDay}
+                className="exams__calendarDay"
                 data-current-month={calendarDay.isCurrentMonth ? "true" : undefined}
                 data-selected={calendarDay.isSelected ? "true" : undefined}
                 key={calendarDay.value}

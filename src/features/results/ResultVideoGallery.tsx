@@ -7,7 +7,6 @@ import Image from "next/image";
 
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/results.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import { useResultVideoGallery } from "@/hooks/public/results/useResultVideoGallery";
 import type { PublicResultVideo } from "@/types/PublicResult";
@@ -27,27 +26,27 @@ export function ResultVideoGallery({ copy, locale, videos }: ResultVideoGalleryP
 
   return (
     <>
-      <div className={styles.results__storiesGrid}>
+      <div className="results__storiesGrid">
         {videos.map((story) => {
           const title = story.title[locale];
 
           return (
-            <article className={styles.results__storyCard} key={story.key}>
+            <article className="results__storyCard" key={story.key}>
               <button
                 aria-label={copy.playLabel.replace("{title}", title)}
-                className={styles.results__storyMedia}
+                className="results__storyMedia"
                 onClick={() => handleOpen(story)}
                 type="button"
               >
                 <Image
                   alt=""
-                  className={styles.results__storyPoster}
+                  className="results__storyPoster"
                   fill
                   sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                   src={story.posterSrc}
                 />
-                <span className={styles.results__storyShade} />
-                <span aria-hidden="true" className={styles.results__storyPlay}>
+                <span className="results__storyShade" />
+                <span aria-hidden="true" className="results__storyPlay">
                   <PlayArrowRounded />
                 </span>
               </button>
@@ -62,14 +61,14 @@ export function ResultVideoGallery({ copy, locale, videos }: ResultVideoGalleryP
         onClose={handleClose}
         open={activeStory !== null}
         slotProps={{
-          backdrop: { className: styles.results__videoBackdrop },
-          paper: { className: styles.results__videoDialog },
+          backdrop: { className: "results__videoBackdrop" },
+          paper: { className: "results__videoDialog" },
         }}
       >
         {activeStory ? (
-          <div className={styles.results__videoDialogContent}>
+          <div className="results__videoDialogContent">
             <IconButton
-              className={styles.results__videoClose}
+              className="results__videoClose"
               label={copy.closeLabel}
               onClick={handleClose}
               variant="soft"
@@ -78,7 +77,7 @@ export function ResultVideoGallery({ copy, locale, videos }: ResultVideoGalleryP
             </IconButton>
             <video
               autoPlay
-              className={styles.results__videoPlayer}
+              className="results__videoPlayer"
               controls
               key={activeStory.key}
               playsInline

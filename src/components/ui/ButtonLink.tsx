@@ -3,7 +3,6 @@ import type { ComponentProps, ReactNode } from "react";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { getButtonClassName } from "@/components/ui/ButtonStyles";
-import styles from "@/css/public/shared.module.css";
 import type { ButtonStyleProps } from "@/types/Button";
 
 type ButtonLinkProps = Omit<ComponentProps<typeof ScrollToTopLink>, "children"> &
@@ -41,13 +40,13 @@ export function ButtonLink({
       })}
     >
       {startIcon ? (
-        <span aria-hidden="true" className={styles.publicShared__buttonIcon}>
+        <span aria-hidden="true" className="publicShared__buttonIcon">
           {startIcon}
         </span>
       ) : null}
       <span>{children}</span>
       {resolvedEndIcon ? (
-        <span aria-hidden="true" className={styles.publicShared__buttonIcon}>
+        <span aria-hidden="true" className="publicShared__buttonIcon">
           {resolvedEndIcon}
         </span>
       ) : null}

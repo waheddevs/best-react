@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import styles from "@/css/public/about.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 import { TestimonialGroup } from "./TestimonialGroup";
@@ -34,8 +33,8 @@ export function Testimonials({ copy }: TestimonialsProps) {
   const activeTestimonials = groups[activeGroupIndex] ?? groups[0];
 
   return (
-    <section ref={sectionRef} className={styles.about__testimonials}>
-      <Container className={styles.about__testimonialsSticky}>
+    <section ref={sectionRef} className="about__testimonials">
+      <Container className="about__testimonialsSticky">
         <Reveal>
           <SectionHeading
             align="center"
@@ -44,7 +43,7 @@ export function Testimonials({ copy }: TestimonialsProps) {
           />
         </Reveal>
 
-        <div className={styles.about__testimonialStage}>
+        <div className="about__testimonialStage">
           <AnimatePresence initial={false} mode="wait">
             <TestimonialGroup key={activeGroupIndex} testimonials={activeTestimonials} />
           </AnimatePresence>

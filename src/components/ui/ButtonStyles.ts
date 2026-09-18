@@ -1,4 +1,3 @@
-import styles from "@/css/public/shared.module.css";
 import type {
   ButtonHoverEffect,
   ButtonShape,
@@ -8,32 +7,32 @@ import type {
 } from "@/types/Button";
 
 const variantClassNames: Record<ButtonVariant, string> = {
-  primary: styles.publicShared__buttonPrimary,
-  secondary: styles.publicShared__buttonSecondary,
-  outline: styles.publicShared__buttonOutline,
-  ghost: styles.publicShared__buttonGhost,
-  filter: styles.publicShared__buttonFilter,
-  inverseOutline: styles.publicShared__buttonInverseOutline,
-  surface: styles.publicShared__buttonSurface,
-  danger: styles.publicShared__buttonDanger,
+  primary: "publicShared__buttonPrimary",
+  secondary: "publicShared__buttonSecondary",
+  outline: "publicShared__buttonOutline",
+  ghost: "publicShared__buttonGhost",
+  filter: "publicShared__buttonFilter",
+  inverseOutline: "publicShared__buttonInverseOutline",
+  surface: "publicShared__buttonSurface",
+  danger: "publicShared__buttonDanger",
 };
 
 const sizeClassNames: Record<ButtonSize, string> = {
-  small: styles.publicShared__buttonSmall,
-  medium: styles.publicShared__buttonMedium,
-  large: styles.publicShared__buttonLarge,
+  small: "publicShared__buttonSmall",
+  medium: "publicShared__buttonMedium",
+  large: "publicShared__buttonLarge",
 };
 
 const shapeClassNames: Record<ButtonShape, string> = {
-  rounded: styles.publicShared__buttonRounded,
-  soft: styles.publicShared__buttonSoft,
-  pill: styles.publicShared__buttonPill,
+  rounded: "publicShared__buttonRounded",
+  soft: "publicShared__buttonSoft",
+  pill: "publicShared__buttonPill",
 };
 
 const hoverEffectClassNames: Record<ButtonHoverEffect, string> = {
   none: "",
-  grow: styles.publicShared__buttonGrow,
-  jump: styles.publicShared__buttonJump,
+  grow: "publicShared__buttonGrow",
+  jump: "publicShared__buttonJump",
 };
 
 type GetButtonClassNameOptions = ButtonStyleProps & {
@@ -49,12 +48,12 @@ export function getButtonClassName({
   variant = "primary",
 }: GetButtonClassNameOptions = {}) {
   return [
-    styles.publicShared__button,
+    "publicShared__button",
     variantClassNames[variant],
     sizeClassNames[size],
     shapeClassNames[shape],
     hoverEffectClassNames[hoverEffect],
-    fullWidth ? styles.publicShared__buttonFullWidth : "",
+    fullWidth ? "publicShared__buttonFullWidth" : "",
     className,
   ]
     .filter(Boolean)

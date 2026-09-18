@@ -10,7 +10,6 @@ import { forwardRef, type CSSProperties } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
-import styles from "@/css/public/shared.module.css";
 import type { NotificationAction, NotificationTone } from "@/types/Notification";
 
 type LiquidToastProps = {
@@ -24,11 +23,11 @@ type LiquidToastProps = {
 };
 
 const toneClassNames: Record<NotificationTone, string> = {
-  success: styles.publicShared__notificationToastSuccess,
-  error: styles.publicShared__notificationToastError,
-  warning: styles.publicShared__notificationToastWarning,
-  info: styles.publicShared__notificationToastInfo,
-  loading: styles.publicShared__notificationToastLoading,
+  success: "publicShared__notificationToastSuccess",
+  error: "publicShared__notificationToastError",
+  warning: "publicShared__notificationToastWarning",
+  info: "publicShared__notificationToastInfo",
+  loading: "publicShared__notificationToastLoading",
 };
 
 function renderIcon(tone: NotificationTone) {
@@ -36,9 +35,7 @@ function renderIcon(tone: NotificationTone) {
   if (tone === "error") return <ErrorOutlineRounded aria-hidden="true" />;
   if (tone === "warning") return <WarningAmberRounded aria-hidden="true" />;
   if (tone === "loading") {
-    return (
-      <CircularProgress aria-hidden="true" className={styles.publicShared__notificationSpinner} />
-    );
+    return <CircularProgress aria-hidden="true" className="publicShared__notificationSpinner" />;
   }
   return <InfoOutlined aria-hidden="true" />;
 }
@@ -57,18 +54,18 @@ export const LiquidToast = forwardRef<HTMLDivElement, LiquidToastProps>(function
     <div
       aria-atomic="true"
       aria-live={tone === "error" ? "assertive" : "polite"}
-      className={`${styles.publicShared__notificationToast} ${toneClassNames[tone]}`}
+      className={`publicShared__notificationToast ${toneClassNames[tone]}`}
       ref={ref}
       role={tone === "error" ? "alert" : "status"}
       style={style}
     >
-      <span className={styles.publicShared__notificationIcon}>{renderIcon(tone)}</span>
-      <div className={styles.publicShared__notificationContent}>
-        <p className={styles.publicShared__notificationTitle}>{title}</p>
-        <p className={styles.publicShared__notificationMessage}>{message}</p>
+      <span className="publicShared__notificationIcon">{renderIcon(tone)}</span>
+      <div className="publicShared__notificationContent">
+        <p className="publicShared__notificationTitle">{title}</p>
+        <p className="publicShared__notificationMessage">{message}</p>
         {action ? (
           <Button
-            className={styles.publicShared__notificationAction}
+            className="publicShared__notificationAction"
             onClick={handleActionClick}
             shape="soft"
             size="small"
@@ -79,7 +76,7 @@ export const LiquidToast = forwardRef<HTMLDivElement, LiquidToastProps>(function
         ) : null}
       </div>
       <IconButton
-        className={styles.publicShared__notificationClose}
+        className="publicShared__notificationClose"
         label={closeAriaLabel}
         onClick={onDismiss}
       >

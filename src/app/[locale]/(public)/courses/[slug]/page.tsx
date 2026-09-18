@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/motion/Reveal";
 import { isLocale, locales } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
 import { getPublicCourse, getPublicCourses } from "@/lib/PublicContentApi";
@@ -56,11 +55,11 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   const copy = getPageCopy(locale);
 
   return (
-    <main className={styles.courses}>
+    <main className="courses">
       <CourseHero course={course} locale={locale} copy={copy} />
       <Section tone="surface">
-        <div className={styles.courses__detailLayout}>
-          <div className={styles.courses__detailContent}>
+        <div className="courses__detailLayout">
+          <div className="courses__detailContent">
             <Reveal>
               <CourseOverview course={course} locale={locale} copy={copy} />
             </Reveal>
@@ -85,7 +84,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
               <CourseBackAction locale={locale} copy={copy} />
             </Reveal>
           </div>
-          <Reveal className={styles.courses__sidebarReveal}>
+          <Reveal className="courses__sidebarReveal">
             <CourseSidebar course={course} locale={locale} copy={copy} />
           </Reveal>
         </div>

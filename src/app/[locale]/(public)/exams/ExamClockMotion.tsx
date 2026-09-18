@@ -2,16 +2,14 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/exams.module.css";
-
 export function ExamClockMotion() {
   /* HOOKS */
   const reduceMotion = useReducedMotion();
 
   return (
-    <span aria-hidden="true" className={styles.exams__heroClock}>
+    <span aria-hidden="true" className="exams__heroClock">
       <motion.i
-        className={styles.exams__heroClockHour}
+        className="exams__heroClockHour"
         initial={false}
         animate={{ rotate: reduceMotion ? 35 : [35, 395] }}
         transition={{
@@ -21,7 +19,7 @@ export function ExamClockMotion() {
         }}
       />
       <motion.i
-        className={styles.exams__heroClockMinute}
+        className="exams__heroClockMinute"
         initial={false}
         animate={{ rotate: reduceMotion ? 125 : [125, 485] }}
         transition={{
@@ -30,7 +28,7 @@ export function ExamClockMotion() {
           repeat: reduceMotion ? 0 : Number.POSITIVE_INFINITY,
         }}
       />
-      <i className={styles.exams__heroClockHub} />
+      <i className="exams__heroClockHub" />
     </span>
   );
 }

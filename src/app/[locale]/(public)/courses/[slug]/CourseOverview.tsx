@@ -1,6 +1,5 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/courses.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { PublicCourse } from "@/types/PublicCourse";
 
@@ -14,7 +13,7 @@ export function CourseOverview({ course, locale, copy }: CourseOverviewProps) {
   return (
     <section>
       <SectionHeading title={copy.courses.overview} />
-      <div className={styles.courses__overviewCopy}>
+      <div className="courses__overviewCopy">
         {course.overview[locale].map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}

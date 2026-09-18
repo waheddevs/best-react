@@ -6,7 +6,6 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/home.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 import type { PublicEvent } from "@/types/PublicContent";
 
@@ -21,7 +20,7 @@ export function UpcomingEvents({ locale, copy, events }: UpcomingEventsProps) {
 
   return (
     <Section tone="surface">
-      <Reveal className={styles.home__eventsHeader}>
+      <Reveal className="home__eventsHeader">
         <SectionHeading
           align="center"
           eyebrow={copy.home.eventsEyebrow}
@@ -31,9 +30,9 @@ export function UpcomingEvents({ locale, copy, events }: UpcomingEventsProps) {
           {copy.common.learnMore}
         </ButtonLink>
       </Reveal>
-      <StaggerGroup className={styles.home__eventsGrid} delay={0.08}>
+      <StaggerGroup className="home__eventsGrid" delay={0.08}>
         {upcomingEvents.map((event) => (
-          <StaggerItem className={styles.home__eventsItem} initialScale={0.99} key={event.slug}>
+          <StaggerItem className="home__eventsItem" initialScale={0.99} key={event.slug}>
             <EventCard event={event} locale={locale} copy={copy} variant="catalog" />
           </StaggerItem>
         ))}

@@ -1,0 +1,13 @@
+@use "../variables" as shared;
+@use "variables" as public;
+@use "layout/footer";
+@use "layout/navbar";
+@use "pages/about";
+@use "pages/contact";
+@use "pages/courses";
+@use "pages/events";
+@use "pages/exams";
+@use "pages/home";
+@use "pages/results";
+
+/* Public-surface rules shared by more than one Public route belong here. */

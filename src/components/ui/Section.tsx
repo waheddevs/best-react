@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import { Container } from "@/components/ui/Container";
-import styles from "@/css/public/shared.module.css";
 
 type SectionProps = {
   children: ReactNode;
@@ -20,13 +19,13 @@ export function Section({
 }: SectionProps) {
   const toneClassName =
     tone === "surface"
-      ? styles.publicShared__sectionSurface
+      ? "publicShared__sectionSurface"
       : tone === "background"
-        ? styles.publicShared__sectionBackground
+        ? "publicShared__sectionBackground"
         : "";
 
   return (
-    <section id={id} className={`${styles.publicShared__section} ${toneClassName} ${className}`}>
+    <section id={id} className={`publicShared__section ${toneClassName} ${className}`}>
       <Container className={containerClassName}>{children}</Container>
     </section>
   );

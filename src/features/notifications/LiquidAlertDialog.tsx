@@ -9,7 +9,6 @@ import DialogContent from "@mui/material/DialogContent";
 import { useId } from "react";
 
 import { Button } from "@/components/ui/Button";
-import styles from "@/css/public/shared.module.css";
 import type { ConfirmDialogTone, ResolvedConfirmDialogOptions } from "@/types/Notification";
 
 type LiquidAlertDialogProps = {
@@ -19,9 +18,9 @@ type LiquidAlertDialogProps = {
 };
 
 const toneClassNames: Record<ConfirmDialogTone, string> = {
-  default: styles.publicShared__notificationDialogDefault,
-  warning: styles.publicShared__notificationDialogWarning,
-  danger: styles.publicShared__notificationDialogDanger,
+  default: "publicShared__notificationDialogDefault",
+  warning: "publicShared__notificationDialogWarning",
+  danger: "publicShared__notificationDialogDanger",
 };
 
 function renderDialogIcon(tone: ConfirmDialogTone) {
@@ -50,28 +49,28 @@ export function LiquidAlertDialog({ options, onCancel, onConfirm }: LiquidAlertD
       open
       role="alertdialog"
       slotProps={{
-        backdrop: { className: styles.publicShared__notificationDialogBackdrop },
+        backdrop: { className: "publicShared__notificationDialogBackdrop" },
         paper: {
-          className: `${styles.publicShared__notificationDialog} ${toneClassNames[options.tone]}`,
+          className: `publicShared__notificationDialog ${toneClassNames[options.tone]}`,
         },
       }}
     >
-      <DialogContent className={styles.publicShared__notificationDialogContent}>
-        <span className={styles.publicShared__notificationDialogIcon}>
+      <DialogContent className="publicShared__notificationDialogContent">
+        <span className="publicShared__notificationDialogIcon">
           {renderDialogIcon(options.tone)}
         </span>
         <div>
-          <h2 className={styles.publicShared__notificationDialogTitle} id={titleId}>
+          <h2 className="publicShared__notificationDialogTitle" id={titleId}>
             {options.title}
           </h2>
-          <p className={styles.publicShared__notificationDialogMessage} id={messageId}>
+          <p className="publicShared__notificationDialogMessage" id={messageId}>
             {options.message}
           </p>
         </div>
       </DialogContent>
-      <DialogActions className={styles.publicShared__notificationDialogActions}>
+      <DialogActions className="publicShared__notificationDialogActions">
         <Button
-          className={styles.publicShared__notificationDialogCancel}
+          className="publicShared__notificationDialogCancel"
           onClick={onCancel}
           shape="soft"
           size="small"
@@ -80,7 +79,7 @@ export function LiquidAlertDialog({ options, onCancel, onConfirm }: LiquidAlertD
           {options.cancelLabel}
         </Button>
         <Button
-          className={styles.publicShared__notificationDialogConfirm}
+          className="publicShared__notificationDialogConfirm"
           hoverEffect="jump"
           onClick={onConfirm}
           shape="soft"

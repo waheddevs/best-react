@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
-import styles from "@/css/public/events.module.css";
 import { createPageMetadata } from "@/lib/Metadata";
 import { getPublicEvents } from "@/lib/PublicContentApi";
 
@@ -29,7 +28,7 @@ export default async function EventsPage({ params }: EventsPageProps) {
   const events = await getPublicEvents(locale);
 
   return (
-    <main className={styles.events}>
+    <main className={"events"}>
       <EventsHero eyebrow={dictionary.navigation.events} copy={copy} />
       <EventsCatalog locale={locale} copy={copy} events={events} />
     </main>

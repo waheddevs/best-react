@@ -7,7 +7,6 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { Button } from "@/components/ui/Button";
 import { locales, type Locale } from "@/config/Locales";
-import styles from "@/css/layout/navbar.module.css";
 import { useLocaleSwitcher } from "@/hooks/navigation/useLocaleSwitcher";
 
 const localeNames: Record<Locale, string> = {
@@ -39,7 +38,7 @@ export function LocaleSwitcher({ locale, label }: LocaleSwitcherProps) {
         onClick={handleMenuOpen}
         startIcon={<LanguageRounded />}
         endIcon={<ExpandMoreRounded />}
-        className={styles.navbar__localeButton}
+        className="navbar__localeButton"
         size="small"
         variant="ghost"
       >
@@ -50,7 +49,7 @@ export function LocaleSwitcher({ locale, label }: LocaleSwitcherProps) {
         anchorEl={anchorElement}
         open={Boolean(anchorElement)}
         onClose={handleMenuClose}
-        slotProps={{ paper: { className: styles.navbar__localeMenu } }}
+        slotProps={{ paper: { className: "navbar__localeMenu" } }}
       >
         {locales.map((item) => (
           <MenuItem key={item} selected={item === locale} onClick={() => handleLocaleSelect(item)}>

@@ -9,7 +9,6 @@ import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { IconButton } from "@/components/ui/IconButton";
 import { navbarNavigationItems } from "@/config/Navigation";
 import { locales, type Locale } from "@/config/Locales";
-import styles from "@/css/layout/navbar.module.css";
 import type { Dictionary } from "@/dictionaries/public/Types";
 import { useMobileNavigation } from "@/hooks/navigation/useMobileNavigation";
 
@@ -27,7 +26,7 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
   const { handleOpenNavigation, handleCloseNavigation } = navigation;
 
   return (
-    <div className={styles.navbar__mobile}>
+    <div className="navbar__mobile">
       <Tooltip title={labels.menu} arrow>
         <IconButton
           aria-expanded={isOpen}
@@ -43,15 +42,15 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
         anchor="right"
         open={isOpen}
         onClose={handleCloseNavigation}
-        slotProps={{ paper: { className: styles.navbar__mobileDrawer } }}
+        slotProps={{ paper: { className: "navbar__mobileDrawer" } }}
       >
-        <div className={styles.navbar__mobileHeader}>
-          <span className={styles.navbar__mobileBrand}>BEST LC</span>
+        <div className="navbar__mobileHeader">
+          <span className="navbar__mobileBrand">BEST LC</span>
           <IconButton label={labels.closeMenu} onClick={handleCloseNavigation}>
             <CloseRounded />
           </IconButton>
         </div>
-        <nav aria-label={labels.menu} className={styles.navbar__mobileNav}>
+        <nav aria-label={labels.menu} className="navbar__mobileNav">
           {navbarNavigationItems.map((item) => {
             const href = `/${locale}${item.href}`;
             const isActive =
@@ -64,16 +63,16 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
                 href={href}
                 onClick={handleCloseNavigation}
                 aria-current={isActive ? "page" : undefined}
-                className={`${styles.navbar__mobileLink} ${isActive ? styles.navbar__mobileLinkActive : ""}`}
+                className={`navbar__mobileLink ${isActive ? "navbar__mobileLinkActive" : ""}`}
               >
                 {labels[item.key]}
               </ScrollToTopLink>
             );
           })}
         </nav>
-        <div className={styles.navbar__mobileLocale}>
-          <p className={styles.navbar__mobileLocaleLabel}>{labels.language}</p>
-          <div className={styles.navbar__mobileLocaleList}>
+        <div className="navbar__mobileLocale">
+          <p className="navbar__mobileLocaleLabel">{labels.language}</p>
+          <div className="navbar__mobileLocaleList">
             {locales.map((item) => {
               return (
                 <ScrollToTopLink
@@ -81,7 +80,7 @@ export function MobileNavigation({ locale, labels }: MobileNavigationProps) {
                   href={getLocaleHref(item)}
                   onClick={handleCloseNavigation}
                   aria-current={item === locale ? "page" : undefined}
-                  className={`${styles.navbar__mobileLocaleLink} ${item === locale ? styles.navbar__mobileLocaleLinkActive : ""}`}
+                  className={`navbar__mobileLocaleLink ${item === locale ? "navbar__mobileLocaleLinkActive" : ""}`}
                 >
                   {item.toUpperCase()}
                 </ScrollToTopLink>

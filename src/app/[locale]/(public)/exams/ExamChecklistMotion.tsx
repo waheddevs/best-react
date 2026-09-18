@@ -4,8 +4,6 @@ import CheckRounded from "@mui/icons-material/CheckRounded";
 import { useEffect } from "react";
 import { useAnimate, useReducedMotion } from "motion/react";
 
-import styles from "@/css/public/exams.module.css";
-
 const checklistRows = [0, 1, 2] as const;
 const checklistEase = [0.22, 1, 0.36, 1] as const;
 
@@ -123,15 +121,15 @@ export function ExamChecklistMotion() {
   }, [animate, reduceMotion, scope]);
 
   return (
-    <div ref={scope} aria-hidden="true" className={styles.exams__heroChecklist}>
+    <div ref={scope} aria-hidden="true" className="exams__heroChecklist">
       {checklistRows.map((row) => (
-        <div className={styles.exams__heroChecklistRow} key={row}>
-          <span className={styles.exams__heroChecklistCheck} data-exam-check={row}>
-            <i className={styles.exams__heroChecklistCheckFill} data-exam-check-fill={row} />
+        <div className="exams__heroChecklistRow" key={row}>
+          <span className="exams__heroChecklistCheck" data-exam-check={row}>
+            <i className="exams__heroChecklistCheckFill" data-exam-check-fill={row} />
             <CheckRounded />
           </span>
-          <span className={styles.exams__heroChecklistTrack}>
-            <i className={styles.exams__heroChecklistFill} data-exam-bar={row} />
+          <span className="exams__heroChecklistTrack">
+            <i className="exams__heroChecklistFill" data-exam-bar={row} />
           </span>
         </div>
       ))}

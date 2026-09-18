@@ -6,7 +6,6 @@ import TrackChangesRounded from "@mui/icons-material/TrackChangesRounded";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-import styles from "@/css/public/home.module.css";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
 
 type ResultsJourneyProps = {
@@ -34,12 +33,12 @@ export function ResultsJourney({ items }: ResultsJourneyProps) {
   }, [isInView, items, reduceMotion]);
 
   return (
-    <div className={styles.home__resultsPanel} ref={panelRef}>
-      <div aria-hidden="true" className={styles.home__resultsTrack}>
-        <span className={styles.home__resultsTrackBase} />
+    <div className="home__resultsPanel" ref={panelRef}>
+      <div aria-hidden="true" className="home__resultsTrack">
+        <span className="home__resultsTrackBase" />
         <motion.span
           animate={{ scaleX: isInView ? 1 : 0 }}
-          className={styles.home__resultsTrackProgress}
+          className="home__resultsTrackProgress"
           initial={{ scaleX: reduceMotion ? 1 : 0 }}
           transition={{ duration: reduceMotion ? 0 : 1.75, ease: [0.22, 1, 0.36, 1] }}
         />
@@ -48,7 +47,7 @@ export function ResultsJourney({ items }: ResultsJourneyProps) {
 
           return (
             <span
-              className={styles.home__resultsTrackNode}
+              className="home__resultsTrackNode"
               data-active={index <= visibleActiveIndex}
               key={item.title}
             >
@@ -60,7 +59,7 @@ export function ResultsJourney({ items }: ResultsJourneyProps) {
 
       <motion.ol
         animate={isInView ? "visible" : "hidden"}
-        className={styles.home__resultsGrid}
+        className="home__resultsGrid"
         initial="hidden"
         variants={{
           hidden: {},
@@ -74,7 +73,7 @@ export function ResultsJourney({ items }: ResultsJourneyProps) {
       >
         {items.map((item, index) => (
           <motion.li
-            className={styles.home__resultsCard}
+            className="home__resultsCard"
             data-active={index === visibleActiveIndex}
             key={item.title}
             variants={{
@@ -90,9 +89,9 @@ export function ResultsJourney({ items }: ResultsJourneyProps) {
               },
             }}
           >
-            <span className={styles.home__resultsMeta}>{item.meta}</span>
-            <h3 className={styles.home__resultsTitle}>{item.title}</h3>
-            <p className={styles.home__resultsDescription}>{item.description}</p>
+            <span className="home__resultsMeta">{item.meta}</span>
+            <h3 className="home__resultsTitle">{item.title}</h3>
+            <p className="home__resultsDescription">{item.description}</p>
           </motion.li>
         ))}
       </motion.ol>

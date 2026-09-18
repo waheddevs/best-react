@@ -5,7 +5,6 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/public/home.module.css";
 import type { Dictionary } from "@/dictionaries/public/Types";
 
 type HeroCopyProps = {
@@ -42,31 +41,31 @@ export function HeroCopy({ locale, content }: HeroCopyProps) {
   };
   return (
     <motion.div
-      className={styles.home__heroCopy}
+      className="home__heroCopy"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <motion.p className={styles.home__heroEyebrow} variants={itemVariants}>
-        <AutoAwesomeRounded aria-hidden="true" className={styles.home__heroEyebrowIcon} />
+      <motion.p className="home__heroEyebrow" variants={itemVariants}>
+        <AutoAwesomeRounded aria-hidden="true" className="home__heroEyebrowIcon" />
         {content.eyebrow}
       </motion.p>
-      <h1 className={styles.home__heroTitle}>
-        <span className={styles.home__heroTitleLine}>
-          <motion.span className={styles.home__heroTitleLineInner} variants={itemVariants}>
+      <h1 className="home__heroTitle">
+        <span className="home__heroTitleLine">
+          <motion.span className="home__heroTitleLineInner" variants={itemVariants}>
             {content.titleLead}
           </motion.span>
         </span>
-        <span className={`${styles.home__heroTitleLine} ${styles.home__heroTitleAccent}`}>
-          <motion.span className={styles.home__heroTitleLineInner} variants={itemVariants}>
+        <span className="home__heroTitleLine home__heroTitleAccent">
+          <motion.span className="home__heroTitleLineInner" variants={itemVariants}>
             {content.titleAccent}
           </motion.span>
         </span>
       </h1>
-      <motion.p className={styles.home__heroDescription} variants={itemVariants}>
+      <motion.p className="home__heroDescription" variants={itemVariants}>
         {content.description}
       </motion.p>
-      <motion.div className={styles.home__heroActions} variants={itemVariants}>
+      <motion.div className="home__heroActions" variants={itemVariants}>
         <ButtonLink href={`/${locale}/courses`} hoverEffect="jump">
           {content.primaryCta}
         </ButtonLink>

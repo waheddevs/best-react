@@ -3,8 +3,6 @@
 import { animate, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import styles from "@/css/public/home.module.css";
-
 type AnimatedTrustValueProps = {
   delay?: number;
   value: string;
@@ -71,7 +69,7 @@ export function AnimatedTrustValue({ delay = 0, value }: AnimatedTrustValueProps
       <span aria-hidden="true" ref={valueRef}>
         {visibleValue}
       </span>
-      <span className={styles.home__trustAccessibleValue}>{value}</span>
+      <span className="home__trustAccessibleValue">{value}</span>
     </>
   );
 }
