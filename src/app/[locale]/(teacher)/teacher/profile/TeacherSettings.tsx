@@ -24,7 +24,6 @@ import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
 import { locales } from "@/config/Locales";
-import styles from "@/css/teacher/profile.module.css";
 import { getTeacherProfileMessages } from "@/dictionaries/teacher/TeacherProfileMessages";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
 import { updateTeacherProfile } from "@/features/teacher/profile/TeacherProfileActions";
@@ -221,12 +220,12 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
   ];
 
   return (
-    <main className={styles.teacherProfile__page}>
+    <main className="teacherProfile__page">
       <TeacherPageHeader eyebrow={copy.profile.eyebrow} title={copy.profile.pageTitle} />
-      <div className={styles.teacherProfile__layout}>
-        <aside className={styles.teacherProfile__summary}>
-          <div className={styles.teacherProfile__identity}>
-            <span className={styles.teacherProfile__avatar}>
+      <div className="teacherProfile__layout">
+        <aside className="teacherProfile__summary">
+          <div className="teacherProfile__identity">
+            <span className="teacherProfile__avatar">
               {profileState.avatarUrl && !avatarFailed ? (
                 <Image
                   alt={profileState.displayName}
@@ -256,20 +255,20 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
           </div>
           {photoName ? (
             <button
-              className={styles.teacherProfile__file}
+              className="teacherProfile__file"
               onClick={() => setPhotoName(null)}
               type="button"
             >
               {copy.common.reset}: {photoName}
             </button>
           ) : null}
-          <div className={styles.teacherProfile__summaryActions}>
+          <div className="teacherProfile__summaryActions">
             <button
-              className={styles.teacherProfile__summaryAction}
+              className="teacherProfile__summaryAction"
               onClick={handlePhotoOpen}
               type="button"
             >
-              <span className={styles.teacherProfile__summaryActionIcon}>
+              <span className="teacherProfile__summaryActionIcon">
                 <CameraAltRounded />
               </span>
               <span>
@@ -278,12 +277,12 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
               </span>
             </button>
             <button
-              className={styles.teacherProfile__summaryAction}
+              className="teacherProfile__summaryAction"
               data-danger="true"
               onClick={handleLogout}
               type="button"
             >
-              <span className={styles.teacherProfile__summaryActionIcon}>
+              <span className="teacherProfile__summaryActionIcon">
                 <LogoutRounded />
               </span>
               <span>
@@ -294,22 +293,22 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
           </div>
         </aside>
 
-        <div className={styles.teacherProfile__settings}>
-          <section className={styles.teacherProfile__settingsGroup}>
-            <header className={styles.teacherProfile__settingsGroupHeader}>
+        <div className="teacherProfile__settings">
+          <section className="teacherProfile__settingsGroup">
+            <header className="teacherProfile__settingsGroupHeader">
               <h2>{copy.profile.accountSettings}</h2>
             </header>
-            <div className={styles.teacherProfile__settingsList}>
+            <div className="teacherProfile__settingsList">
               {accountSettings.map((setting) => {
                 const SettingIcon = setting.icon;
                 return (
                   <button
-                    className={styles.teacherProfile__setting}
+                    className="teacherProfile__setting"
                     key={setting.id}
                     onClick={() => handleSettingSelect(setting.id)}
                     type="button"
                   >
-                    <span className={styles.teacherProfile__settingIcon}>
+                    <span className="teacherProfile__settingIcon">
                       <SettingIcon />
                     </span>
                     <div>
@@ -323,21 +322,21 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
             </div>
           </section>
 
-          <section className={styles.teacherProfile__settingsGroup}>
-            <header className={styles.teacherProfile__settingsGroupHeader}>
+          <section className="teacherProfile__settingsGroup">
+            <header className="teacherProfile__settingsGroupHeader">
               <h2>{copy.profile.accessSecurity}</h2>
             </header>
-            <div className={styles.teacherProfile__settingsList}>
+            <div className="teacherProfile__settingsList">
               {accessSettings.map((setting) => {
                 const SettingIcon = setting.icon;
                 return (
                   <button
-                    className={styles.teacherProfile__setting}
+                    className="teacherProfile__setting"
                     key={setting.id}
                     onClick={() => handleSettingSelect(setting.id)}
                     type="button"
                   >
-                    <span className={styles.teacherProfile__settingIcon}>
+                    <span className="teacherProfile__settingIcon">
                       <SettingIcon />
                     </span>
                     <div>
@@ -351,17 +350,17 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
             </div>
           </section>
 
-          <section className={styles.teacherProfile__settingsGroup}>
-            <header className={styles.teacherProfile__settingsGroupHeader}>
+          <section className="teacherProfile__settingsGroup">
+            <header className="teacherProfile__settingsGroupHeader">
               <h2>{copy.profile.preferences}</h2>
             </header>
-            <div className={styles.teacherProfile__settingsList}>
+            <div className="teacherProfile__settingsList">
               <button
-                className={styles.teacherProfile__setting}
+                className="teacherProfile__setting"
                 onClick={() => handleSettingSelect("language")}
                 type="button"
               >
-                <span className={styles.teacherProfile__settingIcon}>
+                <span className="teacherProfile__settingIcon">
                   <LanguageRounded />
                 </span>
                 <div>
@@ -370,8 +369,8 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
                 </div>
                 <ChevronRightRounded />
               </button>
-              <div className={styles.teacherProfile__setting}>
-                <span className={styles.teacherProfile__settingIcon}>
+              <div className="teacherProfile__setting">
+                <span className="teacherProfile__settingIcon">
                   <DarkModeRounded />
                 </span>
                 <div>
@@ -387,18 +386,18 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
             </div>
           </section>
 
-          <section className={styles.teacherProfile__settingsGroup} data-danger="true">
-            <header className={styles.teacherProfile__settingsGroupHeader}>
+          <section className="teacherProfile__settingsGroup" data-danger="true">
+            <header className="teacherProfile__settingsGroupHeader">
               <h2>{copy.profile.dangerZone}</h2>
             </header>
-            <div className={styles.teacherProfile__settingsList}>
+            <div className="teacherProfile__settingsList">
               <button
-                className={styles.teacherProfile__setting}
+                className="teacherProfile__setting"
                 data-danger="true"
                 onClick={handleDelete}
                 type="button"
               >
-                <span className={styles.teacherProfile__settingIcon}>
+                <span className="teacherProfile__settingIcon">
                   <DeleteOutlineRounded />
                 </span>
                 <div>
@@ -414,7 +413,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
 
       <input
         accept="image/*"
-        className={styles.teacherProfile__fileInput}
+        className="teacherProfile__fileInput"
         onChange={handlePhotoChange}
         ref={photoInputRef}
         type="file"
@@ -428,7 +427,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
       >
         <form onSubmit={handleInformationSubmit}>
           <DialogTitle>{copy.profile.profileInformation}</DialogTitle>
-          <DialogContent className={styles.teacherProfile__form}>
+          <DialogContent className="teacherProfile__form">
             <label>
               {copy.profile.displayName}
               <input
@@ -474,7 +473,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
       >
         <form onSubmit={handlePasswordSubmit}>
           <DialogTitle>{copy.profile.changePassword}</DialogTitle>
-          <DialogContent className={styles.teacherProfile__form}>
+          <DialogContent className="teacherProfile__form">
             <label>
               {copy.profile.currentPassword}
               <input autoComplete="current-password" required type="password" />
@@ -497,8 +496,8 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
 
       <Dialog maxWidth="xs" onClose={handleDialogClose} open={activeDialog === "qr"}>
         <DialogTitle>{copy.profile.qrTitle}</DialogTitle>
-        <DialogContent className={styles.teacherProfile__dialogCenter}>
-          <span className={styles.teacherProfile__qr}>
+        <DialogContent className="teacherProfile__dialogCenter">
+          <span className="teacherProfile__qr">
             <QrCode2Rounded />
           </span>
           <p>{copy.profile.qrMessage}</p>
@@ -518,14 +517,14 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
       >
         <DialogTitle>{copy.profile.activeSessions}</DialogTitle>
         <DialogContent>
-          <div className={styles.teacherProfile__session}>
+          <div className="teacherProfile__session">
             <DevicesRounded />
             <div>
               <strong>{copy.profile.sessionDevice}</strong>
               <small>{copy.profile.sessionLocation}</small>
             </div>
           </div>
-          <p className={styles.teacherProfile__dialogCopy}>{copy.profile.sessionPreview}</p>
+          <p className="teacherProfile__dialogCopy">{copy.profile.sessionPreview}</p>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} variant="primary">
@@ -541,7 +540,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
         open={activeDialog === "language"}
       >
         <DialogTitle>{copy.profile.language}</DialogTitle>
-        <DialogContent className={styles.teacherProfile__languages}>
+        <DialogContent className="teacherProfile__languages">
           {locales.map((item) => (
             <button
               data-active={item === locale}

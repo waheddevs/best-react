@@ -6,8 +6,6 @@ import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
-import sharedStyles from "@/css/teacher/shared.module.css";
 import type {
   TeacherCopy,
   TeacherLessonAssignment,
@@ -64,25 +62,25 @@ export function GroupLessons({
       />
 
       {lessons.length > 0 ? (
-        <div className={styles.teacherGroups__lessonList}>
+        <div className="teacherGroups__lessonList">
           {lessons.map((lesson) => (
             <article
-              className={styles.teacherGroups__lessonCard}
+              className="teacherGroups__lessonCard"
               data-status={lesson.status}
               key={lesson.id}
             >
-              <div className={styles.teacherGroups__lessonCardTopline}>
+              <div className="teacherGroups__lessonCardTopline">
                 <span>
                   <CalendarMonthRounded aria-hidden="true" />
                   {formatGroupWorkspaceDate(lesson.date, locale, copy.dashboard.scheduleMonths)}
                 </span>
-                <span className={styles.teacherGroups__statusPill} data-status={lesson.status}>
+                <span className="teacherGroups__statusPill" data-status={lesson.status}>
                   {statusLabels[lesson.status]}
                 </span>
               </div>
               <h3>{lesson.topic[locale]}</h3>
               <p>{lesson.objective[locale]}</p>
-              <div className={styles.teacherGroups__lessonMeta}>
+              <div className="teacherGroups__lessonMeta">
                 <span>
                   <ScheduleRounded aria-hidden="true" />
                   {lesson.startsAt}–{lesson.endsAt}
@@ -101,7 +99,7 @@ export function GroupLessons({
                 </span>
               </div>
               <ScrollToTopLink
-                className={sharedStyles.teacherShared__sectionLink}
+                className="teacherShared__sectionLink"
                 href={`/${locale}/teacher/groups/${slug}/lessons/${lesson.id}`}
               >
                 {copy.groupWorkspace.openLesson}
@@ -110,10 +108,8 @@ export function GroupLessons({
           ))}
         </div>
       ) : (
-        <div className={sharedStyles.teacherShared__emptyState}>
-          <h3 className={sharedStyles.teacherShared__emptyTitle}>
-            {copy.groupWorkspace.noLessons}
-          </h3>
+        <div className="teacherShared__emptyState">
+          <h3 className="teacherShared__emptyTitle">{copy.groupWorkspace.noLessons}</h3>
         </div>
       )}
     </section>

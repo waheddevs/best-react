@@ -2,7 +2,6 @@ import type { CSSProperties } from "react";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/dashboard.module.css";
 import {
   formatTeacherCompactCurrency,
   formatTeacherCurrency,
@@ -36,23 +35,23 @@ export function DashboardFinance({
     change === null ? "—" : `${change >= 0 ? "+" : ""}${formatTeacherOneDecimal(change)}%`;
 
   return (
-    <section aria-labelledby="dashboard-finance-title" className={styles.teacherDashboard__finance}>
-      <div className={styles.teacherDashboard__financeCard}>
-        <header className={styles.teacherDashboard__financeHeader}>
+    <section aria-labelledby="dashboard-finance-title" className="teacherDashboard__finance">
+      <div className="teacherDashboard__financeCard">
+        <header className="teacherDashboard__financeHeader">
           <div>
             <h2 id="dashboard-finance-title">{copy.finance.pageTitle}</h2>
           </div>
           <ScrollToTopLink
-            className={styles.teacherDashboard__sectionAction}
+            className="teacherDashboard__sectionAction"
             href={`/${locale}/teacher/finance`}
           >
             {copy.dashboard.financeViewMore}
           </ScrollToTopLink>
         </header>
 
-        <span aria-hidden="true" className={styles.teacherDashboard__financeDivider} />
+        <span aria-hidden="true" className="teacherDashboard__financeDivider" />
 
-        <div className={styles.teacherDashboard__financeSummary}>
+        <div className="teacherDashboard__financeSummary">
           <div>
             <span>{snapshot.label[locale]}</span>
             <strong title={formatTeacherCurrency(snapshot.income)}>
@@ -73,26 +72,26 @@ export function DashboardFinance({
           </div>
         </div>
 
-        <span aria-hidden="true" className={styles.teacherDashboard__financeDivider} />
+        <span aria-hidden="true" className="teacherDashboard__financeDivider" />
 
-        <div className={styles.teacherDashboard__financeChartRow}>
+        <div className="teacherDashboard__financeChartRow">
           <div
             aria-label={`${copy.finance.labels.paid}: ${formatTeacherCurrency(paid)}; ${copy.finance.labels.debt}: ${formatTeacherCurrency(remaining)}`}
-            className={styles.teacherDashboard__financeChart}
+            className="teacherDashboard__financeChart"
             role="img"
             style={{ "--teacher-finance-paid": `${paidPercent}%` } as CSSProperties}
           >
-            <div className={styles.teacherDashboard__financeChartCenter}>
+            <div className="teacherDashboard__financeChartCenter">
               <strong>{percent}%</strong>
               <span>{copy.finance.labels.rate}</span>
             </div>
           </div>
-          <div className={styles.teacherDashboard__financeDetails}>
+          <div className="teacherDashboard__financeDetails">
             <span>{copy.finance.labels.expected}</span>
             <strong title={formatTeacherCurrency(snapshot.expectedAmount)}>
               {formatTeacherCompactCurrency(snapshot.expectedAmount)}
             </strong>
-            <ul className={styles.teacherDashboard__financeLegend}>
+            <ul className="teacherDashboard__financeLegend">
               <li data-tone="paid">
                 <span>{copy.finance.labels.paid}</span>
                 <b title={formatTeacherCurrency(paid)}>{formatTeacherCompactCurrency(paid)}</b>

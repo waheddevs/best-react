@@ -15,7 +15,6 @@ import { useState } from "react";
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import type {
@@ -97,11 +96,11 @@ export function LessonDetail({
   };
 
   return (
-    <article className={styles.teacherGroups__lessonDetail}>
-      <div className={styles.teacherGroups__lessonDetailHeader}>
+    <article className="teacherGroups__lessonDetail">
+      <div className="teacherGroups__lessonDetailHeader">
         <ScrollToTopLink
           aria-label={copy.common.back}
-          className={styles.teacherGroups__backLink}
+          className="teacherGroups__backLink"
           href={`/${locale}/teacher/groups/${slug}/lessons`}
         >
           <ArrowBackRounded />
@@ -110,8 +109,8 @@ export function LessonDetail({
           <p>{copy.groupWorkspace.lessonDetailEyebrow}</p>
           <h2>{previewLesson.topic[locale]}</h2>
         </div>
-        <div className={styles.teacherGroups__lessonDetailControls}>
-          <span className={styles.teacherGroups__statusPill} data-status={previewLesson.status}>
+        <div className="teacherGroups__lessonDetailControls">
+          <span className="teacherGroups__statusPill" data-status={previewLesson.status}>
             {statusLabels[previewLesson.status]}
           </span>
           <GroupLessonEditorAction
@@ -125,7 +124,7 @@ export function LessonDetail({
             tests={tests}
           />
           <Button
-            className={styles.teacherGroups__lessonDeleteButton}
+            className="teacherGroups__lessonDeleteButton"
             hoverEffect="jump"
             onClick={handleDelete}
             shape="soft"
@@ -138,12 +137,12 @@ export function LessonDetail({
         </div>
       </div>
 
-      <p className={styles.teacherGroups__lessonObjective}>
+      <p className="teacherGroups__lessonObjective">
         <strong>{copy.groupWorkspace.objective}</strong>
         {previewLesson.objective[locale]}
       </p>
 
-      <dl className={styles.teacherGroups__lessonFacts}>
+      <dl className="teacherGroups__lessonFacts">
         <div>
           <dt>
             <CalendarMonthRounded aria-hidden="true" />
@@ -180,13 +179,13 @@ export function LessonDetail({
         </div>
       </dl>
 
-      <div className={styles.teacherGroups__linkedSections}>
+      <div className="teacherGroups__linkedSections">
         <section>
           <h3>
             <DescriptionRounded aria-hidden="true" />
             {copy.groupWorkspace.linkedMaterials}
           </h3>
-          <div className={styles.teacherGroups__linkedList}>
+          <div className="teacherGroups__linkedList">
             {linkedMaterials.map((material) => (
               <article key={material.id}>
                 <span>
@@ -204,7 +203,7 @@ export function LessonDetail({
             <AssignmentRounded aria-hidden="true" />
             {copy.groupWorkspace.linkedAssignments}
           </h3>
-          <div className={styles.teacherGroups__linkedList}>
+          <div className="teacherGroups__linkedList">
             {linkedAssignments.map((assignment) => (
               <article key={assignment.id}>
                 <span>
@@ -223,7 +222,7 @@ export function LessonDetail({
             <QuizRounded aria-hidden="true" />
             {copy.groupWorkspace.linkedTests}
           </h3>
-          <div className={styles.teacherGroups__linkedList}>
+          <div className="teacherGroups__linkedList">
             {linkedTests.map((test) => (
               <article key={test.id}>
                 <span>

@@ -9,8 +9,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/tasks.module.css";
-import sharedStyles from "@/css/teacher/shared.module.css";
 import { getTeacherNotificationsCopy } from "@/dictionaries/teacher/TeacherNotifications";
 import { completeConnectedTeacherTask } from "@/features/teacher/notifications/TeacherNotificationActions";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
@@ -97,7 +95,7 @@ export function TeacherConnectedTasks({ copy, locale, tasks }: TeacherConnectedT
         title={copy.tasks.pageTitle}
       />
       {tasks === null ? (
-        <section className={sharedStyles.teacherShared__emptyState}>
+        <section className="teacherShared__emptyState">
           <div>
             <h2>{localized.taskLoadError}</h2>
             <button onClick={() => router.refresh()} type="button">
@@ -107,7 +105,7 @@ export function TeacherConnectedTasks({ copy, locale, tasks }: TeacherConnectedT
         </section>
       ) : (
         <>
-          <div aria-label={copy.tasks.filterLabel} className={styles.teacherTasks__filters} role="group">
+          <div aria-label={copy.tasks.filterLabel} className="teacherTasks__filters" role="group">
             {(["pending", "completed", "all"] as const).map((option) => (
               <button
                 aria-pressed={activeFilter === option}
@@ -126,27 +124,27 @@ export function TeacherConnectedTasks({ copy, locale, tasks }: TeacherConnectedT
           </div>
           {error ? <p role="alert">{localized.tryAgain}</p> : null}
           {visible.length ? (
-            <section className={styles.teacherTasks__list}>
+            <section className="teacherTasks__list">
               {visible.map((task) => (
                 <article
-                  className={styles.teacherTasks__card}
+                  className="teacherTasks__card"
                   data-completed={task.status === "COMPLETED"}
                   data-target={task.id === targetId}
                   id={`teacher-task-${task.id}`}
                   key={task.id}
                   tabIndex={-1}
                 >
-                  <span className={styles.teacherTasks__icon} data-tone="warning">
+                  <span className="teacherTasks__icon" data-tone="warning">
                     <TaskAltRounded />
                   </span>
-                  <div className={styles.teacherTasks__content}>
-                    <div className={styles.teacherTasks__heading}>
+                  <div className="teacherTasks__content">
+                    <div className="teacherTasks__heading">
                       <div>
                         <h2>{task.title}</h2>
                         <p>{localized.taskKind[task.kind]}</p>
                       </div>
                     </div>
-                    <dl className={styles.teacherTasks__details}>
+                    <dl className="teacherTasks__details">
                       <div>
                         <dt>{localized.createdAt}</dt>
                         <dd>{formatTaskDate(task.createdAt, locale)}</dd>
@@ -160,7 +158,7 @@ export function TeacherConnectedTasks({ copy, locale, tasks }: TeacherConnectedT
                     </dl>
                   </div>
                   {task.status === "OPEN" ? (
-                    <div className={styles.teacherTasks__actions}>
+                    <div className="teacherTasks__actions">
                       <Button
                         disabled={pendingId === task.id}
                         onClick={() => void handleTaskComplete(task.id)}
@@ -173,7 +171,7 @@ export function TeacherConnectedTasks({ copy, locale, tasks }: TeacherConnectedT
                       </Button>
                     </div>
                   ) : (
-                    <span className={styles.teacherTasks__completeState}>
+                    <span className="teacherTasks__completeState">
                       <CheckCircleRounded /> {copy.common.completed}
                     </span>
                   )}
@@ -181,8 +179,8 @@ export function TeacherConnectedTasks({ copy, locale, tasks }: TeacherConnectedT
               ))}
             </section>
           ) : (
-            <section className={sharedStyles.teacherShared__emptyState}>
-              <h2 className={sharedStyles.teacherShared__emptyTitle}>{copy.tasks.empty}</h2>
+            <section className="teacherShared__emptyState">
+              <h2 className="teacherShared__emptyTitle">{copy.tasks.empty}</h2>
             </section>
           )}
         </>

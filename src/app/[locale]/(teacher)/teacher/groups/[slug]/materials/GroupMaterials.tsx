@@ -3,8 +3,6 @@ import AutoStoriesRounded from "@mui/icons-material/AutoStoriesRounded";
 import DescriptionRounded from "@mui/icons-material/DescriptionRounded";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
-import sharedStyles from "@/css/teacher/shared.module.css";
 import type {
   TeacherCopy,
   TeacherLessonMaterial,
@@ -29,7 +27,7 @@ const materialIcons = {
 
 export function GroupMaterials({ copy, lessons, locale, materials }: GroupMaterialsProps) {
   return (
-    <section aria-labelledby="group-materials-title">
+    <section aria-labelledby="group-materials-title" className="teacherGroups__workspaceSection">
       <GroupWorkspaceSectionHeader
         action={<GroupWorkspaceCreateAction copy={copy} kind="material" />}
         description={copy.groupWorkspace.materialsDescription}
@@ -38,16 +36,16 @@ export function GroupMaterials({ copy, lessons, locale, materials }: GroupMateri
       />
 
       {materials.length > 0 ? (
-        <div className={styles.teacherGroups__resourceGrid}>
+        <div className="teacherGroups__resourceGrid">
           {materials.map((material) => {
             const Icon = materialIcons[material.type];
             const lesson = lessons.find((item) => item.id === material.lessonId);
             return (
-              <article className={styles.teacherGroups__resourceCard} key={material.id}>
-                <span className={styles.teacherGroups__resourceIcon}>
+              <article className="teacherGroups__resourceCard" key={material.id}>
+                <span className="teacherGroups__resourceIcon">
                   <Icon aria-hidden="true" />
                 </span>
-                <span className={styles.teacherGroups__typePill}>
+                <span className="teacherGroups__typePill">
                   {copy.groupWorkspace.materialTypes[material.type]}
                 </span>
                 <h3>{material.title[locale]}</h3>
@@ -67,10 +65,8 @@ export function GroupMaterials({ copy, lessons, locale, materials }: GroupMateri
           })}
         </div>
       ) : (
-        <div className={sharedStyles.teacherShared__emptyState}>
-          <h3 className={sharedStyles.teacherShared__emptyTitle}>
-            {copy.groupWorkspace.noMaterials}
-          </h3>
+        <div className="teacherShared__emptyState">
+          <h3 className="teacherShared__emptyTitle">{copy.groupWorkspace.noMaterials}</h3>
         </div>
       )}
     </section>

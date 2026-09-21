@@ -8,7 +8,6 @@ import TrendingUpRounded from "@mui/icons-material/TrendingUpRounded";
 import { useState } from "react";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/finance.module.css";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
 import { formatTeacherCurrency, formatTeacherNumber } from "@/lib/teacher/TeacherNumberFormat";
 import type {
@@ -51,11 +50,7 @@ export function FinanceDashboard({ copy, locale, snapshots }: FinanceDashboardPr
     <main>
       <TeacherPageHeader eyebrow={copy.finance.eyebrow} title={copy.finance.pageTitle} />
 
-      <div
-        aria-label={copy.finance.pageTitle}
-        className={styles.teacherFinance__monthTabs}
-        role="tablist"
-      >
+      <div aria-label={copy.finance.pageTitle} className="teacherFinance__monthTabs" role="tablist">
         {snapshots.map((item) => (
           <button
             aria-selected={selectedMonth === item.month}
@@ -70,24 +65,24 @@ export function FinanceDashboard({ copy, locale, snapshots }: FinanceDashboardPr
         ))}
       </div>
 
-      <section className={styles.teacherFinance__summary}>
-        <article className={styles.teacherFinance__heroCard}>
+      <section className="teacherFinance__summary">
+        <article className="teacherFinance__heroCard">
           <span>{copy.finance.income}</span>
           <strong>{formatTeacherCurrency(snapshot.income)}</strong>
           <div>
             <span>{copy.finance.expectedAmount}</span>
             <b>{formatTeacherCurrency(snapshot.expectedAmount)}</b>
           </div>
-          <div className={styles.teacherFinance__bar}>
+          <div className="teacherFinance__bar">
             <span style={{ width: `${snapshot.paymentRate}%` }} />
           </div>
           <small>{snapshot.paymentRate}%</small>
         </article>
-        <article className={styles.teacherFinance__rateCard}>
+        <article className="teacherFinance__rateCard">
           <span>{copy.finance.attendanceRate}</span>
           <strong>{snapshot.attendanceRate}%</strong>
           <span
-            className={styles.teacherFinance__ring}
+            className="teacherFinance__ring"
             style={
               { "--finance-progress": `${snapshot.attendanceRate * 3.6}deg` } as React.CSSProperties
             }
@@ -97,16 +92,12 @@ export function FinanceDashboard({ copy, locale, snapshots }: FinanceDashboardPr
         </article>
       </section>
 
-      <section className={styles.teacherFinance__metrics}>
+      <section className="teacherFinance__metrics">
         {snapshot.metrics.map((metric) => {
           const MetricIcon = financeIcons[metric.id];
           return (
-            <article
-              className={styles.teacherFinance__metric}
-              data-tone={metric.tone}
-              key={metric.id}
-            >
-              <span className={styles.teacherFinance__metricIcon}>
+            <article className="teacherFinance__metric" data-tone={metric.tone} key={metric.id}>
+              <span className="teacherFinance__metricIcon">
                 <MetricIcon />
               </span>
               <div>

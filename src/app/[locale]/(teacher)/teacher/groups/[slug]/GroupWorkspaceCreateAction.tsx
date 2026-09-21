@@ -10,7 +10,6 @@ import TextField from "@mui/material/TextField";
 import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
-import styles from "@/css/teacher/groups.module.css";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import type { TeacherCopy, TeacherGroupCreateKind } from "@/types/teacher/Teacher";
 
@@ -52,12 +51,12 @@ export function GroupWorkspaceCreateAction({ copy, kind }: GroupWorkspaceCreateA
       <Dialog fullWidth maxWidth="sm" onClose={handleClose} open={isOpen}>
         <form onSubmit={handleSubmit}>
           <DialogTitle>{copy.groupWorkspace.createActions[kind]}</DialogTitle>
-          <DialogContent className={styles.teacherGroups__createDialogContent}>
+          <DialogContent className="teacherGroups__createDialogContent">
             <p>{copy.groupWorkspace.createDescriptions[kind]}</p>
             <TextField autoFocus fullWidth label={copy.groupWorkspace.titleLabel} required />
 
             {kind === "material" ? (
-              <div className={styles.teacherGroups__createFieldGrid}>
+              <div className="teacherGroups__createFieldGrid">
                 <TextField
                   defaultValue="article"
                   fullWidth
@@ -99,7 +98,7 @@ export function GroupWorkspaceCreateAction({ copy, kind }: GroupWorkspaceCreateA
                   slotProps={{ inputLabel: { shrink: true } }}
                   type="date"
                 />
-                <div className={styles.teacherGroups__createFieldGrid}>
+                <div className="teacherGroups__createFieldGrid">
                   <TextField
                     fullWidth
                     label={copy.groupWorkspace.questions}
@@ -118,7 +117,7 @@ export function GroupWorkspaceCreateAction({ copy, kind }: GroupWorkspaceCreateA
               </>
             ) : null}
           </DialogContent>
-          <DialogActions className={styles.teacherGroups__createDialogActions}>
+          <DialogActions className="teacherGroups__createDialogActions">
             <Button onClick={handleClose} variant="ghost">
               {copy.common.cancel}
             </Button>

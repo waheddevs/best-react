@@ -1,0 +1,730 @@
+/* DASHBOARD */
+
+.teacherDashboard {
+  min-width: 0px;
+  & .teacherDashboard__sectionTitle {
+    font-size: 1.25rem;
+  }
+}
+
+.teacherDashboard__sr {
+  &Only {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
+
+.teacherDashboard__today,
+.teacherDashboard__groupSection,
+.teacherDashboard__financeCard {
+  min-width: 0px;
+  padding: 1.1rem;
+  padding-bottom: 1.6rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.1rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 8px 22px rgb(16 42 67 / 4%);
+}
+
+/* TODAY'S CLASSES */
+
+.teacherDashboard__today {
+  margin-top: 0.8rem;
+  &Header {
+    margin-bottom: 0.75rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+  }
+  &Header .teacherDashboard__sectionAction {
+    justify-self: flex-end;
+  }
+  &Header h2 {
+    margin: 0px;
+    font-size: 1.25rem;
+    font-weight: 820;
+    letter-spacing: -0.025em;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherDashboard__schedule {
+  &Scroller {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+  &Card {
+    position: relative;
+    display: grid;
+    min-height: 9rem;
+    min-width: 0px;
+    align-content: space-between;
+    gap: 0.65rem;
+    overflow: hidden;
+    padding: 0.85rem;
+    color: var(--teacher-text);
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.75rem;
+    background: var(--teacher-surface);
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  &Card::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0.22rem;
+    content: "";
+    background: var(--teacher-border);
+  }
+  &Card[data-status="active"] {
+    border-color: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in srgb, var(--teacher-primary) 42%, var(--teacher-border));
+    }
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 6%, var(--teacher-surface));
+    }
+  }
+  &Card[data-status="active"]::before {
+    background: var(--teacher-primary);
+  }
+  &Card[data-status="next"]::before {
+    background: var(--teacher-brand);
+  }
+  &Card[data-status="completed"] {
+    opacity: 0.72;
+  }
+}
+
+.teacherDashboard__scheduleCard:focus-visible,
+.teacherDashboard__groupCard:focus-visible {
+  outline: 3px solid var(--teacher-primary);
+  @supports (color: color-mix(in lab, red, red)) {
+    outline: 3px solid color-mix(in srgb, var(--teacher-primary) 55%, transparent);
+  }
+  outline-offset: 3px;
+}
+
+.teacherDashboard__schedule {
+  &Topline,
+  &Time,
+  &Meta,
+  &Meta > span {
+    display: flex;
+    align-items: center;
+  }
+  &Topline {
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  &Time {
+    gap: 0.35rem;
+    font-size: 0.77rem;
+    font-weight: 800;
+    color: var(--teacher-heading);
+  }
+  &Time svg {
+    font-size: 1rem;
+    color: var(--teacher-primary);
+  }
+  &Status {
+    border-radius: 999px;
+    padding: 0.28rem 0.55rem;
+    color: var(--teacher-muted);
+    background: var(--teacher-surface-subtle);
+    font-size: 0.64rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  &Card[data-status="active"] .teacherDashboard__scheduleStatus {
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 12%, transparent);
+    }
+  }
+  &Card[data-status="next"] .teacherDashboard__scheduleStatus {
+    color: #0e7490;
+    background: var(--teacher-brand);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-brand) 16%, transparent);
+    }
+  }
+  &Identity {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.5rem;
+  }
+  &Identity > span {
+    display: grid;
+    height: 1.85rem;
+    width: 1.85rem;
+    place-items: center;
+    border-radius: 0.7rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+  }
+  &Identity svg {
+    font-size: 1rem;
+  }
+  &Identity strong {
+    overflow: hidden;
+    font-size: 0.8rem;
+    font-weight: 820;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--teacher-heading);
+  }
+  &Meta {
+    flex-wrap: wrap;
+    gap: 0.45rem 0.8rem;
+    font-size: 0.68rem;
+    color: var(--teacher-muted);
+  }
+  &Meta > span {
+    gap: 0.25rem;
+  }
+  &Meta svg {
+    font-size: 0.9rem;
+  }
+  &Progress {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--teacher-primary);
+  }
+  &Empty {
+    margin: 0px;
+    padding: 1.25rem 0.5rem;
+    text-align: center;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherDashboard__content {
+  &Grid {
+    margin-top: 0.8rem;
+    display: grid;
+    min-width: 0px;
+    grid-template-columns: minmax(0, 1.8fr) minmax(22rem, 1fr);
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+}
+
+/* GROUP SNAPSHOT */
+
+.teacherDashboard__group {
+  &Section {
+    display: flex;
+    flex-direction: column;
+  }
+  &Section > :first-child {
+    margin-bottom: 0.75rem;
+  }
+  &Grid {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+  &Card {
+    position: relative;
+    display: flex;
+    min-height: 6.5rem;
+    flex-direction: column;
+    padding: 0.85rem;
+    color: var(--teacher-text);
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.75rem;
+    background: var(--teacher-surface);
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  &Topline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  &Topline strong {
+    font-size: 0.9rem;
+    color: var(--teacher-heading);
+  }
+  &Topline > span {
+    min-width: 1.8rem;
+    border-radius: 999px;
+    padding: 0.25rem 0.4rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+  &Meta {
+    margin-top: 0.55rem;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherDashboard__progress {
+  &Row {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.7rem;
+    padding-top: 0.7rem;
+  }
+  &Track {
+    display: block;
+    height: 0.35rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--teacher-border);
+  }
+  &Track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--teacher-brand), var(--teacher-primary));
+  }
+}
+
+.teacherDashboard__attendance {
+  font-size: 0.7rem;
+  font-weight: 800;
+  white-space: nowrap;
+  color: var(--teacher-primary);
+}
+
+.teacherDashboard__finance {
+  display: flex;
+  min-width: 0px;
+  &Card {
+    display: flex;
+    min-height: 20.5rem;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  &Header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  &Header h2 {
+    margin: 0px;
+    font-size: 1.25rem;
+    font-weight: 850;
+    color: var(--teacher-heading);
+  }
+  &Divider {
+    height: 1px;
+    flex: 0 0 1px;
+    background: var(--teacher-border);
+  }
+}
+
+.teacherDashboard__section {
+  &Action {
+    margin-left: auto;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 9px 15px;
+    color: var(--teacher-primary);
+    background: transparent;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 180ms ease;
+  }
+  &Action:hover {
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, var(--teacher-surface));
+    }
+  }
+  &Action:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+  }
+}
+
+.teacherDashboard__finance {
+  &Summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  &Summary > div {
+    display: grid;
+    min-width: 0px;
+    align-content: flex-start;
+    justify-items: center;
+    gap: 0.35rem;
+    padding-inline: 0.55rem;
+    border-right: 1px solid var(--teacher-border);
+    text-align: center;
+  }
+  &Summary > div:first-child {
+    padding-left: 0px;
+  }
+  &Summary > div:last-child {
+    padding-right: 0px;
+    border-right: 0;
+  }
+  &Summary span {
+    font-size: 0.64rem;
+    line-height: 1.3;
+    color: var(--teacher-muted);
+  }
+  &Summary strong {
+    overflow-wrap: anywhere;
+    font-size: 0.9rem;
+    line-height: 1.15;
+    font-weight: 850;
+    color: var(--teacher-heading);
+  }
+  &Summary [data-direction="up"] strong {
+    color: var(--teacher-success);
+  }
+  &Summary [data-direction="down"] strong {
+    color: var(--teacher-danger);
+  }
+  &ChartRow {
+    display: grid;
+    grid-template-columns: 7.75rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.85rem;
+  }
+  &Chart {
+    position: relative;
+    display: grid;
+    aspect-ratio: 1;
+    width: 7.75rem;
+    place-items: center;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--teacher-primary) 0 var(--teacher-finance-paid),
+      var(--teacher-danger) var(--teacher-finance-paid) 100%
+    );
+  }
+  &ChartCenter {
+    position: absolute;
+    inset: 0.8rem;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    border-radius: 50%;
+    padding: 0.5rem;
+    background: var(--teacher-surface);
+    text-align: center;
+  }
+  &ChartCenter strong {
+    font-size: 1.3rem;
+    line-height: 1;
+    font-weight: 880;
+    letter-spacing: -0.05em;
+    color: var(--teacher-heading);
+  }
+  &ChartCenter span {
+    margin-top: 0.35rem;
+    font-size: 0.55rem;
+    line-height: 1.2;
+    font-weight: 700;
+    color: var(--teacher-muted);
+  }
+  &Details {
+    display: grid;
+    min-width: 0px;
+    gap: 0.3rem;
+  }
+  &Details > span {
+    font-size: 0.72rem;
+    color: var(--teacher-muted);
+  }
+  &Details > strong {
+    font-size: 0.92rem;
+    font-weight: 850;
+    color: var(--teacher-heading);
+  }
+  &Legend {
+    margin: 0.7rem 0 0;
+    display: grid;
+    list-style-type: none;
+    gap: 0.6rem;
+    padding: 0px;
+  }
+  &Legend li {
+    display: grid;
+    min-width: 0px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0.3rem;
+    padding-left: 0.55rem;
+    border-left: 0.2rem solid var(--teacher-primary);
+  }
+  &Legend li[data-tone="remaining"] {
+    border-color: var(--teacher-danger);
+  }
+  &Legend span {
+    font-size: 0.63rem;
+    line-height: 1.3;
+    color: var(--teacher-muted);
+  }
+  &Legend b {
+    overflow-wrap: anywhere;
+    text-align: right;
+    font-size: 0.67rem;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherDashboard__metric {
+  &Rail {
+    display: grid;
+    min-width: 0px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 0.4rem 0;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1.25rem;
+    background: var(--teacher-surface);
+    box-shadow: var(--teacher-shadow);
+  }
+  &Card {
+    position: relative;
+    display: flex;
+    min-height: 5.25rem;
+    min-width: 0px;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.5rem clamp(0.9rem, 1.5vw, 1.5rem);
+  }
+  &Card:not(:last-child)::after {
+    position: absolute;
+    top: 0.8rem;
+    right: 0px;
+    bottom: 0.8rem;
+    width: 1px;
+    background: var(--teacher-border);
+    content: "";
+  }
+  &Card[data-tone="blue"] {
+    --metric-accent: var(--teacher-primary);
+  }
+  &Card[data-tone="turquoise"] {
+    --metric-accent: #0e7490;
+  }
+  &Card[data-tone="red"] {
+    --metric-accent: var(--teacher-danger);
+  }
+  &Card[data-tone="navy"] {
+    --metric-accent: var(--teacher-heading);
+  }
+  &Icon {
+    display: grid;
+    height: 2.75rem;
+    width: 2.75rem;
+    flex: 0 0 2.75rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    color: var(--metric-accent);
+    background: var(--metric-accent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--metric-accent) 10%, var(--teacher-surface));
+    }
+  }
+  &Icon svg {
+    font-size: 1.3rem;
+  }
+  &Copy {
+    display: grid;
+    min-width: 0px;
+    gap: 0.35rem;
+  }
+  &Card p {
+    margin: 0px;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--teacher-muted);
+  }
+  &Card strong {
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1;
+    font-weight: 880;
+    letter-spacing: -0.04em;
+    color: var(--metric-accent);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherDashboard__scheduleCard:hover,
+  .teacherDashboard__groupCard:hover {
+    transform: translateY(-2px);
+    border-color: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in srgb, var(--teacher-primary) 45%, var(--teacher-border));
+    }
+    box-shadow: 0 16px 36px rgb(16 42 67 / 8%);
+  }
+}
+
+@media (max-width: 1399px) {
+  .teacherDashboard__metric {
+    &Card {
+      gap: 0.65rem;
+    }
+  }
+}
+
+@media (max-width: 1199px) {
+  .teacherDashboard__schedule {
+    &Scroller {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .teacherDashboard__content {
+    &Grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 899px) {
+  .teacherDashboard__metric {
+    &Rail {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 0.35rem 0;
+    }
+    &Card {
+      min-height: 5.25rem;
+    }
+    &Card:nth-child(2)::after {
+      display: none;
+    }
+    &Card:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--teacher-border);
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .teacherDashboard__today {
+    margin-top: 1rem;
+  }
+
+  .teacherDashboard__content {
+    &Grid {
+      margin-top: 1rem;
+      gap: 1rem;
+    }
+  }
+
+  .teacherDashboard__schedule {
+    &Scroller {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    &Card {
+      min-width: 0px;
+    }
+  }
+
+  .teacherDashboard__group {
+    &Grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    &Card {
+      min-width: 0px;
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .teacherDashboard__today {
+    &Header {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+
+  .teacherDashboard__schedule {
+    &Scroller {
+      grid-auto-columns: min(80vw, 18rem);
+      grid-auto-flow: column;
+      grid-template-columns: none;
+      overflow-x: auto;
+      padding-bottom: 0.35rem;
+      scroll-snap-type: x proximity;
+    }
+    &Card {
+      scroll-snap-align: start;
+    }
+  }
+
+  .teacherDashboard__group {
+    &Grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 479px) {
+  .teacherDashboard__metric {
+    &Rail {
+      grid-template-columns: 1fr;
+    }
+    &Card {
+      border-bottom: 1px solid var(--teacher-border);
+    }
+    &Card::after {
+      display: none;
+    }
+    &Card:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+@media (max-width: 359px) {
+  .teacherDashboard__finance {
+    &ChartRow {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+    &Details {
+      width: 100%;
+    }
+  }
+}

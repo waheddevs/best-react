@@ -8,7 +8,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
 import { teacherNavigationItems } from "@/config/TeacherNavigation";
-import styles from "@/css/teacher/shell.module.css";
 import { TeacherNavigationIcon } from "@/features/teacher/layout/TeacherNavigationIcon";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import type { TeacherCopy } from "@/types/teacher/Teacher";
@@ -54,29 +53,29 @@ export function TeacherSidebar({ copy, locale, onNavigate }: TeacherSidebarProps
   };
 
   return (
-    <div className={styles.teacherShell__sidebarContent}>
-      <div className={styles.teacherShell__brandRow}>
-        <span className={styles.teacherShell__brandMark}>
+    <div className="teacherShell__sidebarContent">
+      <div className="teacherShell__brandRow">
+        <span className="teacherShell__brandMark">
           <Image alt="" aria-hidden="true" height={40} src="/icons/logo.svg" width={40} />
         </span>
-        <strong className={styles.teacherShell__brandName}>BEST LC</strong>
+        <strong className="teacherShell__brandName">BEST LC</strong>
       </div>
-      <div aria-hidden="true" className={styles.teacherShell__brandDivider} />
+      <div aria-hidden="true" className="teacherShell__brandDivider" />
 
-      <nav aria-label={copy.navigation.panelLabel} className={styles.teacherShell__navigation}>
+      <nav aria-label={copy.navigation.panelLabel} className="teacherShell__navigation">
         {teacherNavigationItems
           .filter((item) => item.sidebarVisible)
           .map((item) => {
             const itemIsActive = isActive(item.href);
             return (
               <span
-                className={styles.teacherShell__navigationItem}
+                className="teacherShell__navigationItem"
                 data-active={itemIsActive}
                 key={item.key}
               >
                 <ScrollToTopLink
                   aria-current={itemIsActive ? "page" : undefined}
-                  className={styles.teacherShell__navigationLink}
+                  className="teacherShell__navigationLink"
                   data-active={itemIsActive}
                   href={`/${locale}${item.href}`}
                   onClick={onNavigate}
@@ -88,7 +87,7 @@ export function TeacherSidebar({ copy, locale, onNavigate }: TeacherSidebarProps
             );
           })}
       </nav>
-      <button className={styles.teacherShell__logout} onClick={handleLogout} type="button">
+      <button className="teacherShell__logout" onClick={handleLogout} type="button">
         <LogoutRoundedIcon aria-hidden="true" />
         <span>{copy.navigation.logout}</span>
       </button>

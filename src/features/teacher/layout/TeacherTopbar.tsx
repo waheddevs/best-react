@@ -11,7 +11,6 @@ import { useState, type MouseEvent } from "react";
 
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/shell.module.css";
 import { getTeacherNotificationsCopy } from "@/dictionaries/teacher/TeacherNotifications";
 import { TeacherLocaleMenu } from "@/features/teacher/layout/TeacherLocaleMenu";
 import { useTeacherNotifications } from "@/hooks/teacher/notifications/useTeacherNotifications";
@@ -68,10 +67,10 @@ export function TeacherTopbar({
   };
 
   return (
-    <header className={styles.teacherShell__topbar}>
-      <div className={styles.teacherShell__topbarLeading}>
+    <header className="teacherShell__topbar">
+      <div className="teacherShell__topbarLeading">
         <IconButton
-          className={styles.teacherShell__mobileMenuButton}
+          className="teacherShell__mobileMenuButton"
           label={copy.common.menu}
           onClick={onMenuOpen}
           variant="soft"
@@ -79,15 +78,15 @@ export function TeacherTopbar({
           <MenuRounded />
         </IconButton>
         <div>
-          <strong className={styles.teacherShell__topbarTitle}>{pageTitle}</strong>
+          <strong className="teacherShell__topbarTitle">{pageTitle}</strong>
         </div>
       </div>
 
-      <div className={styles.teacherShell__topbarActions}>
+      <div className="teacherShell__topbarActions">
         <TeacherLocaleMenu label={copy.profile.language} locale={locale} />
-        <span className={styles.teacherShell__notificationTrigger}>
+        <span className="teacherShell__notificationTrigger">
           <IconButton
-            className={styles.teacherShell__topbarIconButton}
+            className="teacherShell__topbarIconButton"
             label={
               notificationState.state.unreadCount > 0
                 ? `${copy.common.notifications}: ${notificationState.state.unreadCount}`
@@ -99,15 +98,15 @@ export function TeacherTopbar({
             <NotificationsNoneRounded />
           </IconButton>
           {notificationState.state.unreadCount > 0 ? (
-            <span className={styles.teacherShell__unreadDot} aria-hidden="true" />
+            <span className="teacherShell__unreadDot" aria-hidden="true" />
           ) : null}
         </span>
         <Link
           aria-label={`${notificationCopy.settings}: ${profile.displayName}`}
-          className={styles.teacherShell__topbarProfile}
+          className="teacherShell__topbarProfile"
           href={`/${locale}/teacher/profile`}
         >
-          <span className={styles.teacherShell__topbarAvatar}>
+          <span className="teacherShell__topbarAvatar">
             {profile.avatarUrl && !avatarFailed ? (
               <Image
                 alt=""
@@ -121,7 +120,7 @@ export function TeacherTopbar({
               profile.initials
             )}
           </span>
-          <span className={styles.teacherShell__topbarProfileCopy}>
+          <span className="teacherShell__topbarProfileCopy">
             <strong>{profile.shortName}</strong>
             <small>{copy.common.teacherRole}</small>
           </span>
@@ -132,11 +131,11 @@ export function TeacherTopbar({
         anchorEl={notificationAnchor}
         onClose={handleNotificationsClose}
         open={Boolean(notificationAnchor)}
-        slotProps={{ paper: { className: styles.teacherShell__notificationMenu } }}
+        slotProps={{ paper: { className: "teacherShell__notificationMenu" } }}
       >
-        <li className={styles.teacherShell__notificationHeading}>{copy.common.notifications}</li>
+        <li className="teacherShell__notificationHeading">{copy.common.notifications}</li>
         {notificationState.error ? (
-          <li className={styles.teacherShell__notificationMessage}>
+          <li className="teacherShell__notificationMessage">
             {notificationCopy.loadError}{" "}
             <button onClick={() => void notificationState.refresh()} type="button">
               {notificationCopy.retry}
@@ -144,11 +143,11 @@ export function TeacherTopbar({
           </li>
         ) : null}
         {!notificationState.error && notificationState.state.notifications.length === 0 ? (
-          <li className={styles.teacherShell__notificationMessage}>{notificationCopy.empty}</li>
+          <li className="teacherShell__notificationMessage">{notificationCopy.empty}</li>
         ) : null}
         {notificationState.state.notifications.map((notification) => (
           <MenuItem
-            className={styles.teacherShell__notificationItem}
+            className="teacherShell__notificationItem"
             data-unread={notification.readAt === null}
             key={notification.id}
             onClick={() => {
@@ -156,7 +155,7 @@ export function TeacherTopbar({
               void notificationState.handleNotificationSelect(notification);
             }}
           >
-            <span className={styles.teacherShell__notificationIcon}>
+            <span className="teacherShell__notificationIcon">
               <TaskAltRounded />
             </span>
             <span>

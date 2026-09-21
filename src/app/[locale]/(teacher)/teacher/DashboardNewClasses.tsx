@@ -9,7 +9,6 @@ import {
   teacherGroupCapacityPercentage,
 } from "@/config/teacher/TeacherGroupCapacity";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/dashboard.module.css";
 import type { TeacherCopy, TeacherGroup } from "@/types/teacher/Teacher";
 
 type DashboardNewClassesProps = {
@@ -22,42 +21,42 @@ export function DashboardNewClasses({ copy, groups, locale }: DashboardNewClasse
   const newGroups = groups.slice(0, 4);
 
   return (
-    <section aria-labelledby="new-classes-title" className={styles.teacherDashboard__today}>
-      <div className={styles.teacherDashboard__todayHeader}>
+    <section aria-labelledby="new-classes-title" className="teacherDashboard__today">
+      <div className="teacherDashboard__todayHeader">
         <h2 id="new-classes-title">{copy.dashboard.newClassesTitle}</h2>
         <ScrollToTopLink
-          className={styles.teacherDashboard__sectionAction}
+          className="teacherDashboard__sectionAction"
           href={`/${locale}/teacher/groups`}
         >
           {copy.dashboard.viewAll}
         </ScrollToTopLink>
       </div>
       {newGroups.length ? (
-        <div className={styles.teacherDashboard__scheduleScroller}>
+        <div className="teacherDashboard__scheduleScroller">
           {newGroups.map((group) => {
             const capacityPercentage = teacherGroupCapacityPercentage(group.learnerCount);
             return (
               <ScrollToTopLink
-                className={styles.teacherDashboard__scheduleCard}
+                className="teacherDashboard__scheduleCard"
                 href={`/${locale}/teacher/groups/${group.slug}`}
                 key={group.id}
               >
-                <span className={styles.teacherDashboard__scheduleTopline}>
-                  <span className={styles.teacherDashboard__scheduleTime}>
+                <span className="teacherDashboard__scheduleTopline">
+                  <span className="teacherDashboard__scheduleTime">
                     <AccessTimeRounded aria-hidden="true" />
                     <span>{group.time}</span>
                   </span>
-                  <span className={styles.teacherDashboard__scheduleStatus}>
+                  <span className="teacherDashboard__scheduleStatus">
                     {copy.dashboard.newClassStatus}
                   </span>
                 </span>
-                <span className={styles.teacherDashboard__scheduleIdentity}>
+                <span className="teacherDashboard__scheduleIdentity">
                   <span>
                     <SchoolRounded aria-hidden="true" />
                   </span>
                   <strong>{group.name}</strong>
                 </span>
-                <span className={styles.teacherDashboard__scheduleMeta}>
+                <span className="teacherDashboard__scheduleMeta">
                   <span>
                     <MeetingRoomRounded aria-hidden="true" />
                     {copy.reception.room} {group.room}
@@ -67,8 +66,8 @@ export function DashboardNewClasses({ copy, groups, locale }: DashboardNewClasse
                     {group.learnerCount}/{teacherGroupCapacity} {copy.reception.learnerCount}
                   </span>
                 </span>
-                <span className={styles.teacherDashboard__scheduleProgress}>
-                  <span className={styles.teacherDashboard__progressTrack}>
+                <span className="teacherDashboard__scheduleProgress">
+                  <span className="teacherDashboard__progressTrack">
                     <span style={{ width: `${capacityPercentage}%` }} />
                   </span>
                   <strong>{capacityPercentage}%</strong>
@@ -78,7 +77,7 @@ export function DashboardNewClasses({ copy, groups, locale }: DashboardNewClasse
           })}
         </div>
       ) : (
-        <p className={styles.teacherDashboard__scheduleEmpty}>{copy.dashboard.newClassesEmpty}</p>
+        <p className="teacherDashboard__scheduleEmpty">{copy.dashboard.newClassesEmpty}</p>
       )}
     </section>
   );

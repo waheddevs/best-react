@@ -1,10 +1,8 @@
 import Skeleton from "@mui/material/Skeleton";
 
-import styles from "@/css/teacher/loading.module.css";
-
 export default function TeacherLoading() {
   return (
-    <main aria-busy="true" className={styles.teacherLoading}>
+    <main aria-busy="true" className="teacherLoading">
       <div>
         <Skeleton height={22} width={110} />
         <Skeleton height={52} width="42%" />

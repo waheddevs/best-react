@@ -5,7 +5,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 
-import styles from "@/css/teacher/groups.module.css";
 import {
   formatTeacherTimeInput,
   hasTeacherTimeRangeError,
@@ -76,9 +75,9 @@ export function CreateGroupTimeField({
   };
 
   return (
-    <div className={styles.teacherGroups__createField}>
+    <div className="teacherGroups__createField">
       <label htmlFor={fieldId}>{label}</label>
-      <div className={styles.teacherGroups__createTimeControl}>
+      <div className="teacherGroups__createTimeControl">
         <input
           autoComplete="off"
           aria-describedby={error ? errorId : undefined}
@@ -100,7 +99,7 @@ export function CreateGroupTimeField({
           aria-expanded={Boolean(anchor)}
           aria-haspopup="menu"
           aria-label={label}
-          className={styles.teacherGroups__createTimeButton}
+          className="teacherGroups__createTimeButton"
           onClick={handleMenuOpen}
           type="button"
         >
@@ -108,7 +107,7 @@ export function CreateGroupTimeField({
         </button>
       </div>
       <span
-        className={`${styles.teacherGroups__createFieldError} ${styles.teacherGroups__createTimeFieldError}`}
+        className={`teacherGroups__createFieldError teacherGroups__createTimeFieldError`}
         data-visible={Boolean(error)}
         id={errorId}
         role={error ? "alert" : undefined}
@@ -122,14 +121,14 @@ export function CreateGroupTimeField({
         open={Boolean(anchor)}
         slotProps={{
           paper: {
-            className: styles.teacherGroups__createTimeMenu,
+            className: "teacherGroups__createTimeMenu",
             style: { width: anchor?.parentElement?.offsetWidth },
           },
         }}
       >
         {suggestedTimes.map((time) => (
           <MenuItem
-            className={styles.teacherGroups__createMenuItem}
+            className="teacherGroups__createMenuItem"
             key={time}
             onClick={() => handleTimeSelect(time)}
             selected={value === time}

@@ -3,8 +3,6 @@
 import CompareArrowsRounded from "@mui/icons-material/CompareArrowsRounded";
 import { useMemo, useState } from "react";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
-import sharedStyles from "@/css/teacher/shared.module.css";
-import styles from "@/css/teacher/transferRequests.module.css";
 import type {
   TeacherCopy,
   TeacherTransferRequest,
@@ -29,7 +27,7 @@ export function TransferRequestList({ copy, requests }: TransferRequestListProps
         eyebrow={copy.transferRequests.eyebrow}
         title={copy.transferRequests.pageTitle}
       />
-      <div className={styles.teacherTransfers__filters} role="group">
+      <div className="teacherTransfers__filters" role="group">
         {(["pending", "approved", "declined"] as const).map((status) => (
           <button
             aria-pressed={filter === status}
@@ -43,7 +41,7 @@ export function TransferRequestList({ copy, requests }: TransferRequestListProps
         ))}
       </div>
       {visibleRequests.length ? (
-        <section className={styles.teacherTransfers__list}>
+        <section className="teacherTransfers__list">
           {visibleRequests.map((request) => (
             <article key={request.id}>
               <strong>{request.learnerName}</strong>
@@ -54,15 +52,13 @@ export function TransferRequestList({ copy, requests }: TransferRequestListProps
           ))}
         </section>
       ) : (
-        <section className={sharedStyles.teacherShared__emptyState}>
+        <section className="teacherShared__emptyState">
           <div>
-            <span className={sharedStyles.teacherShared__emptyIcon}>
+            <span className="teacherShared__emptyIcon">
               <CompareArrowsRounded />
             </span>
-            <h2 className={sharedStyles.teacherShared__emptyTitle}>
-              {copy.transferRequests.emptyTitle}
-            </h2>
-            <p className={sharedStyles.teacherShared__emptyDescription}>
+            <h2 className="teacherShared__emptyTitle">{copy.transferRequests.emptyTitle}</h2>
+            <p className="teacherShared__emptyDescription">
               {copy.transferRequests.emptyDescription}
             </p>
           </div>

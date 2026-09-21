@@ -6,7 +6,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
 import { locales, type Locale } from "@/config/Locales";
-import styles from "@/css/teacher/shell.module.css";
 import { useLocaleSwitcher } from "@/hooks/navigation/useLocaleSwitcher";
 
 type TeacherLocaleMenuProps = {
@@ -36,7 +35,7 @@ export function TeacherLocaleMenu({ label, locale }: TeacherLocaleMenuProps) {
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-label={`${label}: ${locale.toUpperCase()}`}
-        className={styles.teacherShell__localeTrigger}
+        className="teacherShell__localeTrigger"
         onClick={localeSwitcher.handleMenuOpen}
         type="button"
       >
@@ -52,7 +51,7 @@ export function TeacherLocaleMenu({ label, locale }: TeacherLocaleMenuProps) {
         open={isOpen}
         slotProps={{
           paper: {
-            className: styles.teacherShell__localeMenu,
+            className: "teacherShell__localeMenu",
             style: { width: localeSwitcher.anchorElement?.offsetWidth },
           },
         }}
@@ -60,7 +59,7 @@ export function TeacherLocaleMenu({ label, locale }: TeacherLocaleMenuProps) {
       >
         {locales.map((item) => (
           <MenuItem
-            className={styles.teacherShell__localeMenuItem}
+            className="teacherShell__localeMenuItem"
             data-active={item === locale}
             key={item}
             onClick={() => handleLocaleSelect(item)}

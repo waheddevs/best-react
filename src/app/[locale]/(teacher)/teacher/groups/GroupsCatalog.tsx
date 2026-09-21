@@ -18,7 +18,6 @@ import {
   teacherGroupCapacityPercentage,
 } from "@/config/teacher/TeacherGroupCapacity";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
 import { deleteConnectedTeacherGroup } from "@/features/teacher/groups/TeacherGroupActions";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
@@ -106,10 +105,10 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
   return (
     <main>
       <TeacherPageHeader eyebrow={copy.groups.eyebrow} title={copy.groups.pageTitle} />
-      <div className={styles.teacherGroups__catalogToolbar}>
+      <div className="teacherGroups__catalogToolbar">
         <Tabs
           aria-label={copy.groups.categoryFilter}
-          className={styles.teacherGroups__categoryTabs}
+          className="teacherGroups__categoryTabs"
           onChange={handleCategoryChange}
           scrollButtons={false}
           value={selectedCategory}
@@ -118,15 +117,15 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
           {categoryFilters.map((category) => (
             <Tab
               aria-controls="teacher-groups-panel"
-              className={styles.teacherGroups__categoryTab}
+              className="teacherGroups__categoryTab"
               id={`teacher-groups-tab-${category}`}
               key={category}
               label={
-                <span className={styles.teacherGroups__categoryTabLabel}>
-                  <span className={styles.teacherGroups__categoryName}>
+                <span className="teacherGroups__categoryTabLabel">
+                  <span className="teacherGroups__categoryName">
                     {copy.groups.categories[category]}
                   </span>
-                  <span className={styles.teacherGroups__categoryCount}>
+                  <span className="teacherGroups__categoryCount">
                     {category === "all"
                       ? displayedGroups.length
                       : displayedGroups.filter((group) => group.category === category).length}
@@ -142,7 +141,7 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
       <AnimatePresence initial={false} mode="wait">
         <motion.section
           aria-labelledby={`teacher-groups-tab-${selectedCategory}`}
-          className={styles.teacherGroups__catalog}
+          className="teacherGroups__catalog"
           id="teacher-groups-panel"
           key={selectedCategory}
           role="tabpanel"
@@ -152,24 +151,24 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
           transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: "easeOut" }}
         >
           {visibleGroups.map((group) => (
-            <article className={styles.teacherGroups__catalogCard} key={group.id}>
-              <div className={styles.teacherGroups__catalogCardHeader}>
-                <span className={styles.teacherGroups__catalogIcon}>
+            <article className="teacherGroups__catalogCard" key={group.id}>
+              <div className="teacherGroups__catalogCardHeader">
+                <span className="teacherGroups__catalogIcon">
                   <GroupsRounded aria-hidden="true" />
                 </span>
-                <span className={styles.teacherGroups__learnerCount}>
+                <span className="teacherGroups__learnerCount">
                   {group.learnerCount}/{teacherGroupCapacity} {copy.groups.learners}
                 </span>
               </div>
-              <div className={styles.teacherGroups__catalogTitleRow}>
+              <div className="teacherGroups__catalogTitleRow">
                 <h2>{group.name}</h2>
                 {group.category ? (
-                  <span className={styles.teacherGroups__categoryBadge}>
+                  <span className="teacherGroups__categoryBadge">
                     {copy.groups.categories[group.category]}
                   </span>
                 ) : null}
               </div>
-              <dl className={styles.teacherGroups__catalogMeta}>
+              <dl className="teacherGroups__catalogMeta">
                 <div>
                   <dt>
                     <MeetingRoomRounded aria-hidden="true" /> {copy.reception.room}
@@ -189,7 +188,7 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
                   <dd>{group.time}</dd>
                 </div>
               </dl>
-              <div className={styles.teacherGroups__catalogProgress}>
+              <div className="teacherGroups__catalogProgress">
                 <span>
                   <span
                     style={{ width: `${teacherGroupCapacityPercentage(group.learnerCount)}%` }}
@@ -197,10 +196,10 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
                 </span>
                 <strong>{teacherGroupCapacityPercentage(group.learnerCount)}%</strong>
               </div>
-              <div className={styles.teacherGroups__cardActions}>
+              <div className="teacherGroups__cardActions">
                 <button
                   aria-label={`${copy.groups.deleteGroup}: ${group.name}`}
-                  className={styles.teacherGroups__deleteButton}
+                  className="teacherGroups__deleteButton"
                   disabled={Boolean(deletingGroupId)}
                   onClick={() => void handleDeleteClick(group)}
                   type="button"
@@ -210,7 +209,7 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
                 </button>
                 <ScrollToTopLink
                   aria-label={`${copy.groups.detail}: ${group.name}`}
-                  className={styles.teacherGroups__catalogLink}
+                  className="teacherGroups__catalogLink"
                   href={`/${locale}/teacher/groups/${group.slug}`}
                 >
                   <span>{copy.groups.detail}</span>
@@ -220,7 +219,7 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
             </article>
           ))}
           {visibleGroups.length === 0 ? (
-            <p className={styles.teacherGroups__categoryEmpty}>
+            <p className="teacherGroups__categoryEmpty">
               {selectedCategory === "all" ? copy.groups.noGroups : copy.groups.noGroupsInCategory}
             </p>
           ) : null}

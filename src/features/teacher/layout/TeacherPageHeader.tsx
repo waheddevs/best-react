@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 
-import styles from "@/css/teacher/shared.module.css";
-
 type TeacherPageHeaderProps = {
   actions?: ReactNode;
   eyebrow: string;
@@ -10,12 +8,12 @@ type TeacherPageHeaderProps = {
 
 export function TeacherPageHeader({ actions, eyebrow, title }: TeacherPageHeaderProps) {
   return (
-    <header className={styles.teacherShared__pageHeader}>
+    <header className="teacherShared__pageHeader">
       <div>
-        <p className={styles.teacherShared__eyebrow}>{eyebrow}</p>
-        <h1 className={styles.teacherShared__pageTitle}>{title}</h1>
+        <p className="teacherShared__eyebrow">{eyebrow}</p>
+        <h1 className="teacherShared__pageTitle">{title}</h1>
       </div>
-      {actions ? <div className={styles.teacherShared__pageActions}>{actions}</div> : null}
+      {actions ? <div className="teacherShared__pageActions">{actions}</div> : null}
     </header>
   );
 }

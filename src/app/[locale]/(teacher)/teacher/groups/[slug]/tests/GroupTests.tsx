@@ -3,8 +3,6 @@ import QuizRounded from "@mui/icons-material/QuizRounded";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
-import sharedStyles from "@/css/teacher/shared.module.css";
 import type { TeacherCopy, TeacherLessonSession, TeacherLessonTest } from "@/types/teacher/Teacher";
 
 import { formatGroupWorkspaceDate } from "@/lib/teacher/TeacherGroupDate";
@@ -35,23 +33,23 @@ export function GroupTests({ copy, lessons, locale, tests }: GroupTestsProps) {
       />
 
       {tests.length > 0 ? (
-        <div className={styles.teacherGroups__testGrid}>
+        <div className="teacherGroups__testGrid">
           {tests.map((test) => {
             const lesson = lessons.find((item) => item.id === test.lessonId);
             return (
-              <article className={styles.teacherGroups__testCard} key={test.id}>
-                <div className={styles.teacherGroups__testTopline}>
-                  <span className={styles.teacherGroups__resourceIcon}>
+              <article className="teacherGroups__testCard" key={test.id}>
+                <div className="teacherGroups__testTopline">
+                  <span className="teacherGroups__resourceIcon">
                     <QuizRounded aria-hidden="true" />
                   </span>
-                  <span className={styles.teacherGroups__statusPill} data-status={test.status}>
+                  <span className="teacherGroups__statusPill" data-status={test.status}>
                     {statusLabels[test.status]}
                   </span>
                 </div>
                 <small>{copy.groupWorkspace.testKinds[test.kind]}</small>
                 <h3>{test.title[locale]}</h3>
                 <p>{lesson?.topic[locale] ?? "—"}</p>
-                <div className={styles.teacherGroups__testMeta}>
+                <div className="teacherGroups__testMeta">
                   <span>
                     <CalendarMonthRounded aria-hidden="true" />
                     {formatGroupWorkspaceDate(
@@ -74,8 +72,8 @@ export function GroupTests({ copy, lessons, locale, tests }: GroupTestsProps) {
           })}
         </div>
       ) : (
-        <div className={sharedStyles.teacherShared__emptyState}>
-          <h3 className={sharedStyles.teacherShared__emptyTitle}>{copy.groupWorkspace.noTests}</h3>
+        <div className="teacherShared__emptyState">
+          <h3 className="teacherShared__emptyTitle">{copy.groupWorkspace.noTests}</h3>
         </div>
       )}
     </section>

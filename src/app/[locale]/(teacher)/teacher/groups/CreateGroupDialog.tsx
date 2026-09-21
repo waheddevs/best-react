@@ -4,7 +4,6 @@ import AddRounded from "@mui/icons-material/AddRounded";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
-import styles from "@/css/teacher/groups.module.css";
 import type { TeacherCopy } from "@/types/teacher/Teacher";
 
 import { GroupFormDialog } from "./GroupFormDialog";
@@ -22,7 +21,7 @@ export function CreateGroupDialog({ connected, copy }: CreateGroupDialogProps) {
   return (
     <>
       <Button
-        className={styles.teacherGroups__createButton}
+        className="teacherGroups__createButton"
         hoverEffect="jump"
         onClick={handleOpen}
         shape="soft"

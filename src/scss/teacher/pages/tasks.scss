@@ -1,0 +1,201 @@
+/* TASKS */
+
+.teacherTasks__filters {
+  margin-bottom: 18px;
+  display: flex;
+  width: fit-content;
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 14px;
+  background: var(--teacher-surface);
+  & button {
+    min-height: 38px;
+    padding: 0 15px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 720;
+    color: var(--teacher-muted);
+  }
+  & button[data-active="true"] {
+    background: var(--teacher-primary);
+    color: #fff;
+  }
+}
+
+.teacherTasks__list {
+  display: grid;
+  gap: 12px;
+}
+
+.teacherTasks__card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid var(--teacher-border);
+  border-radius: 18px;
+  background: var(--teacher-surface);
+  box-shadow: var(--teacher-shadow);
+  &[data-completed="true"] {
+    opacity: 0.72;
+  }
+  &[data-target="true"] {
+    border-color: var(--teacher-primary);
+    box-shadow: 0 0 0 3px var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 16%, transparent);
+    }
+  }
+}
+
+.teacherTasks__icon {
+  display: grid;
+  height: 48px;
+  width: 48px;
+  place-items: center;
+  border-radius: 15px;
+  &[data-tone="warning"] {
+    background: var(--teacher-warning);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-warning) 18%, transparent);
+    }
+    color: var(--teacher-warning);
+  }
+  &[data-tone="danger"] {
+    background: var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 12%, transparent);
+    }
+    color: var(--teacher-danger);
+  }
+}
+
+.teacherTasks__content,
+.teacherTasks__heading {
+  min-width: 0px;
+}
+
+.teacherTasks__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  & h2 {
+    font-size: 15px;
+    font-weight: 790;
+    color: var(--teacher-heading);
+  }
+  & p {
+    margin-top: 4px;
+    max-width: 68ch;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherTasks__details {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  & div {
+    display: flex;
+    gap: 6px;
+  }
+  & dt {
+    font-size: 11px;
+    color: var(--teacher-muted);
+  }
+  & dd {
+    font-size: 11px;
+    font-weight: 720;
+    color: var(--teacher-text);
+  }
+}
+
+.teacherTasks__complete {
+  &State {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 760;
+    color: var(--teacher-success);
+  }
+}
+
+.teacherTasks__actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  & details {
+    position: relative;
+  }
+  & summary {
+    display: grid;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    list-style-type: none;
+    place-items: center;
+    border-radius: 11px;
+    color: var(--teacher-muted);
+  }
+  & summary::-webkit-details-marker {
+    display: none;
+  }
+  & details[open] summary {
+    background: var(--teacher-surface-subtle);
+    color: var(--teacher-primary);
+  }
+  & details button {
+    position: absolute;
+    top: 44px;
+    right: 0px;
+    z-index: 2;
+    min-height: 40px;
+    min-width: 110px;
+    padding: 0 12px;
+    border: 1px solid var(--teacher-border);
+    border-radius: 10px;
+    background: var(--teacher-surface);
+    color: var(--teacher-text);
+    box-shadow: var(--teacher-shadow);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 730;
+  }
+}
+
+@media (width <= 760px) {
+  .teacherTasks__filters {
+    width: 100%;
+    & button {
+      flex: 1;
+      padding-inline: 8px;
+    }
+  }
+
+  .teacherTasks__card {
+    grid-template-columns: auto 1fr;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .teacherTasks__actions,
+  .teacherTasks__completeState {
+    grid-column: 1 / -1;
+    justify-content: center;
+    justify-self: stretch;
+  }
+
+  .teacherTasks__heading {
+    display: grid;
+  }
+}

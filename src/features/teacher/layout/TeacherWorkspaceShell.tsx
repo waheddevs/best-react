@@ -6,7 +6,6 @@ import { useMemo, useState, type ReactNode } from "react";
 
 import type { Locale } from "@/config/Locales";
 import { teacherNavigationItems } from "@/config/TeacherNavigation";
-import styles from "@/css/teacher/shell.module.css";
 import { TeacherMobileNavigation } from "@/features/teacher/layout/TeacherMobileNavigation";
 import { TeacherSidebar } from "@/features/teacher/layout/TeacherSidebar";
 import { TeacherThemeProvider } from "@/features/teacher/layout/TeacherThemeProvider";
@@ -75,8 +74,8 @@ export function TeacherWorkspaceShell({
 
   return (
     <TeacherThemeProvider>
-      <div className={styles.teacherShell}>
-        <aside className={styles.teacherShell__desktopSidebar}>
+      <div className="teacherShell">
+        <aside className="teacherShell__desktopSidebar">
           <TeacherSidebar copy={copy} locale={locale} />
         </aside>
 
@@ -84,13 +83,13 @@ export function TeacherWorkspaceShell({
           ModalProps={{ keepMounted: true }}
           onClose={handleDrawerClose}
           open={isDrawerOpen}
-          slotProps={{ paper: { className: styles.teacherShell__drawerPaper } }}
+          slotProps={{ paper: { className: "teacherShell__drawerPaper" } }}
         >
           <TeacherSidebar copy={copy} locale={locale} onNavigate={handleDrawerClose} />
         </Drawer>
 
         <div
-          className={styles.teacherShell__workspace}
+          className="teacherShell__workspace"
           data-dashboard={isDashboard}
           data-top-aligned={hasTopAlignedHeader}
         >
@@ -104,7 +103,7 @@ export function TeacherWorkspaceShell({
             pageTitle={pageTitle}
             profile={profile}
           />
-          <div className={styles.teacherShell__content}>{children}</div>
+          <div className="teacherShell__content">{children}</div>
         </div>
 
         <TeacherMobileNavigation copy={copy} locale={locale} />

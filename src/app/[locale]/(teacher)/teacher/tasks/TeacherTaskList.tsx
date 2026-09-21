@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/Button";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import type { Locale } from "@/config/Locales";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
-import styles from "@/css/teacher/tasks.module.css";
-import sharedStyles from "@/css/teacher/shared.module.css";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import { useTeacherTasks } from "@/hooks/teacher/tasks/useTeacherTasks";
 import type { TeacherCopy, TeacherTask } from "@/types/teacher/Teacher";
@@ -52,11 +50,7 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
         title={copy.tasks.pageTitle}
       />
 
-      <div
-        aria-label={copy.tasks.filterLabel}
-        className={styles.teacherTasks__filters}
-        role="group"
-      >
+      <div aria-label={copy.tasks.filterLabel} className="teacherTasks__filters" role="group">
         {(["pending", "completed", "all"] as const).map((filter) => (
           <button
             aria-pressed={taskState.filter === filter}
@@ -75,23 +69,23 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
       </div>
 
       {taskState.visibleTasks.length ? (
-        <section className={styles.teacherTasks__list}>
+        <section className="teacherTasks__list">
           {taskState.visibleTasks.map((task) => {
             const isAttendance = task.kind === "attendance";
             return (
               <article
-                className={styles.teacherTasks__card}
+                className="teacherTasks__card"
                 data-completed={task.status === "completed"}
                 key={task.id}
               >
                 <span
-                  className={styles.teacherTasks__icon}
+                  className="teacherTasks__icon"
                   data-tone={isAttendance ? "danger" : "warning"}
                 >
                   {isAttendance ? <EventBusyRounded /> : <PhoneInTalkRounded />}
                 </span>
-                <div className={styles.teacherTasks__content}>
-                  <div className={styles.teacherTasks__heading}>
+                <div className="teacherTasks__content">
+                  <div className="teacherTasks__heading">
                     <div>
                       <h2>{isAttendance ? copy.tasks.attendanceTitle : copy.tasks.pauseTitle}</h2>
                       <p>
@@ -100,9 +94,9 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
                           : copy.tasks.pauseDescription}
                       </p>
                     </div>
-                    <span className={sharedStyles.teacherShared__badge}>{task.groupName}</span>
+                    <span className="teacherShared__badge">{task.groupName}</span>
                   </div>
-                  <dl className={styles.teacherTasks__details}>
+                  <dl className="teacherTasks__details">
                     <div>
                       <dt>{copy.groups.learnerName}</dt>
                       <dd>{task.learnerName}</dd>
@@ -126,7 +120,7 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
                   </dl>
                 </div>
                 {task.status === "pending" ? (
-                  <div className={styles.teacherTasks__actions}>
+                  <div className="teacherTasks__actions">
                     <details>
                       <summary aria-label={copy.common.menu}>
                         <MoreVertRounded />
@@ -146,7 +140,7 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
                     </Button>
                   </div>
                 ) : (
-                  <span className={styles.teacherTasks__completeState}>
+                  <span className="teacherTasks__completeState">
                     <CheckCircleRounded /> {copy.common.completed}
                   </span>
                 )}
@@ -155,12 +149,12 @@ export function TeacherTaskList({ copy, locale, tasks }: TeacherTaskListProps) {
           })}
         </section>
       ) : (
-        <section className={sharedStyles.teacherShared__emptyState}>
+        <section className="teacherShared__emptyState">
           <div>
-            <span className={sharedStyles.teacherShared__emptyIcon}>
+            <span className="teacherShared__emptyIcon">
               <TaskAltRounded />
             </span>
-            <h2 className={sharedStyles.teacherShared__emptyTitle}>{copy.tasks.empty}</h2>
+            <h2 className="teacherShared__emptyTitle">{copy.tasks.empty}</h2>
           </div>
         </section>
       )}

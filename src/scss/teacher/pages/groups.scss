@@ -1,0 +1,2172 @@
+/* CATALOG FILTERS */
+
+.teacherGroups__catalog {
+  &Toolbar {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+.teacherGroups__category {
+  &Tabs {
+    min-height: 0px !important;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.25rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.95rem;
+    background: var(--teacher-surface-subtle);
+  }
+}
+
+/* CREATE GROUP FORM */
+
+.teacherGroups__create {
+  &Button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+  &Backdrop {
+    background: rgb(16 42 67 / 30%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    backdrop-filter: blur(8px) saturate(120%);
+  }
+  &Paper {
+    margin: 1rem !important;
+    width: min(35rem, calc(100% - 2rem));
+    max-width: none !important;
+    border: 1px solid rgb(255 255 255 / 85%);
+    border-radius: 2rem !important;
+    background: linear-gradient(145deg, rgb(255 255 255 / 97%), rgb(234 251 253 / 94%)) !important;
+    box-shadow: 0 32px 90px rgb(16 42 67 / 24%) !important;
+  }
+  &Form {
+    display: grid;
+    gap: 1.1rem;
+    padding: 2rem;
+  }
+  &Form h2 {
+    margin: 0 0 0.3rem;
+    font-size: clamp(1.4rem, 3vw, 1.75rem);
+    font-weight: 800;
+    color: var(--teacher-text);
+  }
+  &Grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  &Field {
+    display: grid;
+    min-width: 0px;
+    align-content: flex-start;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--teacher-text);
+  }
+  &Field input,
+  &PickerTrigger {
+    height: 3.2rem;
+    width: 100%;
+    padding: 0 0.9rem;
+    color: var(--teacher-text);
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.85rem;
+    background: rgb(255 255 255 / 76%);
+    outline: none;
+    font: inherit;
+    font-weight: 500;
+  }
+  &Field input[type="hidden"] {
+    display: none;
+  }
+  &PickerTrigger {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    text-align: left;
+  }
+  &PickerTrigger svg {
+    height: 1.25rem;
+    width: 1.25rem;
+    flex: 0 0 auto;
+    color: var(--teacher-primary);
+    transition: transform 160ms ease;
+  }
+  &PickerTrigger[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+  &PickerTrigger:hover,
+  &TimeControl:hover input {
+    border-color: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in srgb, var(--teacher-primary) 45%, var(--teacher-border));
+    }
+  }
+  &Menu,
+  &TimeMenu {
+    margin-top: 0.35rem;
+    min-width: 0px !important;
+    padding: 0.25rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.9rem !important;
+    background: var(--teacher-surface) !important;
+    box-shadow: 0 18px 45px rgb(16 42 67 / 16%) !important;
+  }
+  &TimeMenu {
+    max-height: min(16rem, 45dvh) !important;
+  }
+  &Menu .MuiMenu-list,
+  &TimeMenu .MuiMenu-list {
+    padding: 0px !important;
+  }
+  &MenuItem {
+    min-height: 2.8rem !important;
+    border-radius: 0.65rem !important;
+    padding: 0.6rem 0.85rem !important;
+    color: var(--teacher-text) !important;
+    font: inherit !important;
+    font-size: 0.86rem !important;
+    font-weight: 650 !important;
+  }
+  &MenuItem:hover,
+  &MenuItem:focus-visible,
+  &MenuItem.Mui-selected,
+  &MenuItem.Mui-selected:hover {
+    color: var(--teacher-primary) !important;
+    background: var(--teacher-primary) !important;
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 10%, var(--teacher-surface)) !important;
+    }
+  }
+  &TimeControl {
+    position: relative;
+  }
+  &TimeControl input {
+    padding-right: 3.1rem;
+    font-variant-numeric: tabular-nums;
+  }
+  &TimeControl input[aria-invalid="true"],
+  &TimeControl:hover input[aria-invalid="true"] {
+    border-color: var(--teacher-danger);
+    background: var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 4%, var(--teacher-surface));
+    }
+  }
+  &FieldError {
+    display: block;
+    min-height: 1.1rem;
+    font-size: 0.76rem;
+    line-height: 1.35;
+    font-weight: 600;
+    color: var(--teacher-danger);
+  }
+  &TimeFieldError {
+    min-height: 2.1rem;
+  }
+  &FieldError[data-visible="false"] {
+    visibility: hidden;
+  }
+  &TimeButton {
+    position: absolute;
+    top: 0.35rem;
+    right: 0.35rem;
+    display: grid;
+    height: 2.5rem;
+    width: 2.5rem;
+    place-items: center;
+    color: var(--teacher-primary);
+    border: 0;
+    border-radius: 0.65rem;
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 8%, var(--teacher-surface));
+    }
+    cursor: pointer;
+    transition: background 160ms ease;
+  }
+  &TimeButton:hover,
+  &TimeButton[aria-expanded="true"] {
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 15%, var(--teacher-surface));
+    }
+  }
+  &TimeButton:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+  }
+  &TimeButton svg {
+    height: 1.2rem;
+    width: 1.2rem;
+  }
+  &Field input:focus-visible,
+  &PickerTrigger:focus-visible,
+  &PickerTrigger[aria-expanded="true"] {
+    border-color: var(--teacher-primary);
+    box-shadow: 0 0 0 3px rgb(37 99 235 / 15%);
+  }
+  &Field input[aria-invalid="true"],
+  &PickerTrigger[data-invalid="true"],
+  &Field input[aria-invalid="true"]:focus-visible,
+  &PickerTrigger[data-invalid="true"]:focus-visible {
+    border-color: var(--teacher-danger);
+    background: var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 4%, var(--teacher-surface));
+    }
+  }
+}
+
+body[data-teacher-theme="dark"] .teacherGroups__createPaper {
+  background: linear-gradient(145deg, #17243a, #203854) !important;
+}
+
+body[data-teacher-theme="dark"] .teacherGroups__createField input,
+body[data-teacher-theme="dark"] .teacherGroups__createPickerTrigger {
+  background: var(--teacher-surface-elevated);
+}
+
+body[data-teacher-theme="dark"] .teacherGroups__createField input[aria-invalid="true"],
+body[data-teacher-theme="dark"] .teacherGroups__createPickerTrigger[data-invalid="true"] {
+  background: var(--teacher-danger);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--teacher-danger) 8%, var(--teacher-surface-elevated));
+  }
+}
+
+body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-invalid="true"] {
+  background: var(--teacher-danger);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--teacher-danger) 8%, var(--teacher-surface-elevated));
+  }
+}
+
+.teacherGroups__create {
+  &Days {
+    margin: 0px;
+    min-width: 0px;
+    padding: 0px;
+    border: 0;
+  }
+  &Days legend {
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--teacher-text);
+  }
+  &Days > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  &Days label {
+    position: relative;
+    cursor: pointer;
+  }
+  &Days input {
+    position: absolute;
+    opacity: 0;
+  }
+  &Days label span {
+    display: grid;
+    height: 2.7rem;
+    min-width: 3rem;
+    place-items: center;
+    padding: 0 0.4rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.8rem;
+    background: rgb(255 255 255 / 75%);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--teacher-muted);
+    transition:
+      background 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease;
+  }
+  &Days input:checked + span {
+    border-color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    color: #fff;
+  }
+  &Days input:focus-visible + span {
+    outline: 3px solid rgb(37 99 235 / 35%);
+    outline-offset: 2px;
+  }
+  &Days > .teacherGroups__createFieldError {
+    margin-top: 0.45rem;
+  }
+  &Error {
+    margin: 0px;
+    font-size: 0.84rem;
+    color: var(--teacher-danger, #c92a2a);
+  }
+  &Actions {
+    margin-top: 0.35rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.7rem;
+  }
+}
+
+.teacherGroups__category {
+  &Tabs .MuiTabs-list {
+    position: relative;
+    z-index: 1;
+    gap: 0.25rem;
+  }
+  &Tabs .MuiTabs-indicator {
+    top: 0px;
+    bottom: auto;
+    height: 100%;
+    border-radius: 0.7rem;
+    background: var(--teacher-sidebar);
+    pointer-events: none;
+    transition:
+      left 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      right 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &Tab {
+    position: relative;
+    isolation: isolate;
+    min-height: 2.5rem !important;
+    min-width: 0px !important;
+    border-radius: 0.7rem !important;
+    padding: 0.55rem 0.85rem !important;
+    color: var(--teacher-muted) !important;
+    font: inherit !important;
+    font-size: 0.78rem !important;
+    font-weight: 750 !important;
+    white-space: nowrap;
+    text-transform: none !important;
+  }
+  &Tab.Mui-selected {
+    color: #ffffff !important;
+  }
+  &Tab:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: -2px;
+  }
+  &TabLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  &Name {
+    position: relative;
+    z-index: 1;
+  }
+  &Count {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    height: 1.3rem;
+    min-width: 1.3rem;
+    place-items: center;
+    border-radius: 999px;
+    padding-inline: 0.25rem;
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+    font-size: 0.67rem;
+    font-weight: 800;
+  }
+  &Tab.Mui-selected .teacherGroups__categoryCount {
+    background: rgb(255 255 255 / 20%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherGroups__category {
+    &Tabs .MuiTabs-indicator {
+      transition: none;
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherGroups__category {
+    &Tab:hover {
+      color: #1955eb !important;
+    }
+    &Tab.Mui-selected:hover {
+      color: #ffffff !important;
+    }
+  }
+
+  body[data-teacher-theme="dark"] .teacherGroups__categoryTab:hover {
+    color: #bfdbfe !important;
+  }
+
+  body[data-teacher-theme="dark"] .teacherGroups__categoryTab.Mui-selected:hover {
+    color: #ffffff !important;
+  }
+}
+
+/* GROUP CARDS */
+
+.teacherGroups__catalog {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  &Card {
+    display: flex;
+    min-height: 18.5rem;
+    flex-direction: column;
+    padding: 1.25rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1.25rem;
+    background: var(--teacher-surface);
+    box-shadow: 0 8px 24px rgb(16 42 67 / 4%);
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  &CardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+.teacherGroups__catalogIcon,
+.teacherGroups__detailIcon {
+  display: grid;
+  place-items: center;
+  color: var(--teacher-primary);
+  background: var(--teacher-primary);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+  }
+}
+
+.teacherGroups__catalog {
+  &Icon {
+    height: 2.75rem;
+    width: 2.75rem;
+    border-radius: 0.9rem;
+  }
+}
+
+.teacherGroups__learner {
+  &Count {
+    border-radius: 999px;
+    padding: 0.35rem 0.65rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+    }
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+}
+
+.teacherGroups__catalog {
+  &TitleRow {
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  &Card h2 {
+    margin: 0px;
+    min-width: 0px;
+    font-size: 1.08rem;
+    line-height: 1.2;
+    font-weight: 850;
+    letter-spacing: -0.025em;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherGroups__category {
+  &Badge {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    padding: 0.3rem 0.55rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+    }
+    font-size: 0.64rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  &Empty {
+    grid-column: 1 / -1;
+    margin: 0px;
+    padding: 2rem;
+    color: var(--teacher-muted);
+    border: 1px solid var(--teacher-border);
+    border-radius: 1.25rem;
+    background: var(--teacher-surface);
+    text-align: center;
+  }
+}
+
+.teacherGroups__catalog {
+  &Meta {
+    margin: 1.1rem 0 0;
+    display: grid;
+    gap: 0.65rem;
+  }
+  &Meta div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  &Meta dt,
+  &Meta dd {
+    margin: 0px;
+    font-size: 0.76rem;
+  }
+  &Meta dt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--teacher-muted);
+  }
+  &Meta dt svg {
+    font-size: 1rem;
+  }
+  &Meta dd {
+    text-align: right;
+    font-weight: 750;
+    color: var(--teacher-heading);
+  }
+  &Progress {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.65rem;
+    padding-top: 1.25rem;
+  }
+  &Progress > span {
+    height: 0.4rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--teacher-border);
+  }
+  &Progress > span span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--teacher-brand), var(--teacher-primary));
+  }
+  &Progress strong {
+    font-size: 0.72rem;
+    color: var(--teacher-primary);
+  }
+  &Link {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding-inline: 0.9rem;
+    color: var(--teacher-primary);
+    border: 0;
+    border-radius: 0.85rem;
+    background: transparent;
+    font-size: 0.78rem;
+    font-weight: 800;
+    transition: background 160ms ease;
+  }
+  &Link svg {
+    font-size: 1.1rem;
+  }
+}
+
+.teacherGroups__card {
+  &Actions {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+}
+
+.teacherGroups__delete {
+  &Button {
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 0px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0 0.5rem;
+    color: var(--teacher-danger);
+    border: 0;
+    border-radius: 0.85rem;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    transition: background 160ms ease;
+  }
+  &Button svg {
+    font-size: 1.05rem;
+  }
+}
+
+.teacherGroups__catalog {
+  &Link:hover {
+    color: var(--teacher-primary);
+    background: var(--teacher-surface-subtle);
+  }
+}
+
+.teacherGroups__delete {
+  &Button:hover {
+    color: var(--teacher-danger);
+    background: var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 7%, var(--teacher-surface));
+    }
+  }
+}
+
+.teacherGroups__catalogLink:focus-visible,
+.teacherGroups__deleteButton:focus-visible {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: 2px;
+}
+
+.teacherGroups__delete {
+  &Button:focus-visible {
+    outline-color: var(--teacher-danger);
+  }
+}
+
+/* GROUP HEADER */
+
+.teacherGroups__detail {
+  &Header {
+    margin-bottom: 1.25rem;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1.25rem;
+    background: var(--teacher-surface);
+    box-shadow: 0 8px 24px rgb(16 42 67 / 4%);
+  }
+}
+
+.teacherGroups__back {
+  &Link {
+    display: grid;
+    height: 2.75rem;
+    width: 2.75rem;
+    place-items: center;
+    color: var(--teacher-muted);
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.85rem;
+    background: var(--teacher-canvas);
+    transition:
+      color 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherGroups__back {
+    &Link:hover {
+      color: var(--teacher-primary);
+      border-color: var(--teacher-primary);
+      @supports (color: color-mix(in lab, red, red)) {
+        border-color: color-mix(in srgb, var(--teacher-primary) 38%, var(--teacher-border));
+      }
+      background: var(--teacher-primary);
+      @supports (color: color-mix(in lab, red, red)) {
+        background: color-mix(in srgb, var(--teacher-primary) 9%, var(--teacher-surface));
+      }
+      box-shadow: 0 10px 24px var(--teacher-primary);
+      @supports (color: color-mix(in lab, red, red)) {
+        box-shadow: 0 10px 24px color-mix(in srgb, var(--teacher-primary) 14%, transparent);
+      }
+      transform: translateX(-2px);
+    }
+  }
+}
+
+.teacherGroups__back {
+  &Link:focus-visible {
+    outline: 3px solid var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      outline: 3px solid color-mix(in srgb, var(--teacher-primary) 38%, transparent);
+    }
+    outline-offset: 2px;
+  }
+}
+
+.teacherGroups__detail {
+  &Icon {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 1rem;
+  }
+  &Copy {
+    min-width: 0px;
+  }
+  &Copy p,
+  &Copy h1,
+  &Copy span {
+    margin: 0px;
+  }
+  &Copy p {
+    font-size: 0.65rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+    color: var(--teacher-primary);
+    text-transform: uppercase;
+  }
+  &Copy h1 {
+    margin-top: 0.25rem;
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    font-weight: 850;
+    letter-spacing: -0.035em;
+    color: var(--teacher-heading);
+  }
+  &Copy span {
+    margin-top: 0.25rem;
+    display: block;
+    font-size: 0.75rem;
+    color: var(--teacher-muted);
+  }
+  &Actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+}
+
+.teacherGroups__edit {
+  &Button {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding-inline: 0.9rem;
+    color: var(--teacher-danger);
+    border: 1px solid var(--teacher-danger);
+    border-radius: 0.8rem;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 800;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
+  }
+  &Button svg {
+    font-size: 1rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherGroups__edit {
+    &Button:hover {
+      color: #ffffff;
+      background: var(--teacher-danger);
+      box-shadow: 0 10px 24px var(--teacher-danger);
+      @supports (color: color-mix(in lab, red, red)) {
+        box-shadow: 0 10px 24px color-mix(in srgb, var(--teacher-danger) 22%, transparent);
+      }
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.teacherGroups__edit {
+  &Button:focus-visible {
+    color: #ffffff;
+    outline: 3px solid var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      outline: 3px solid color-mix(in srgb, var(--teacher-danger) 32%, transparent);
+    }
+    outline-offset: 2px;
+    background: var(--teacher-danger);
+  }
+}
+
+/* WORKSPACE NAVIGATION */
+
+.teacherGroups__workspace {
+  &,
+  &Content {
+    min-width: 0px;
+  }
+  &NavSection {
+    margin-bottom: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--teacher-border);
+  }
+  &Nav {
+    width: fit-content;
+    max-width: 100%;
+  }
+  &Section > .teacherGroups__sectionIntro {
+    padding-top: 0.5rem;
+    margin-bottom: 1.75rem;
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 820;
+    }
+  }
+}
+
+.teacherGroups__section {
+  &Intro {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  &Intro h2,
+  &Intro p {
+    margin: 0px;
+  }
+  &Intro h2 {
+    font-size: 1.1rem;
+    font-weight: 850;
+    letter-spacing: -0.025em;
+    color: var(--teacher-heading);
+  }
+  &Intro p {
+    margin-top: 0.3rem;
+    max-width: 68ch;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--teacher-muted);
+  }
+}
+
+/* OVERVIEW */
+
+.teacherGroups__overview {
+  &Metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+  &Metrics article {
+    position: relative;
+    display: grid;
+    min-height: 7.75rem;
+    align-content: flex-end;
+    padding: 1rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-surface);
+  }
+  &Metrics article > span {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+    }
+  }
+  &Metrics svg {
+    font-size: 1.15rem;
+  }
+  &Metrics strong {
+    font-size: 1.55rem;
+    line-height: 1;
+    font-weight: 880;
+    color: var(--teacher-heading);
+  }
+  &Metrics small {
+    margin-top: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 720;
+    color: var(--teacher-muted);
+  }
+  &Hub {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 1rem;
+  }
+  &Next,
+  &Pulse {
+    min-width: 0;
+    min-height: 12rem;
+    padding: 1.2rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-surface);
+  }
+  &Next {
+    background: linear-gradient(
+      115deg,
+      var(--teacher-surface-subtle),
+      var(--teacher-surface) 52%,
+      var(--teacher-surface-subtle)
+    );
+    @supports (color: color-mix(in lab, red, red)) {
+      background: linear-gradient(
+        115deg,
+        color-mix(in srgb, var(--teacher-primary) 12%, var(--teacher-surface)),
+        var(--teacher-surface) 52%,
+        color-mix(in srgb, var(--teacher-brand) 18%, var(--teacher-surface))
+      );
+    }
+  }
+  &PanelHeading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 1.15rem;
+  }
+  &PanelHeading h3 {
+    margin: 0;
+    color: var(--teacher-heading);
+    font-size: 1rem;
+    font-weight: 820;
+  }
+  &PanelHeading small {
+    color: var(--teacher-muted);
+    font-size: 0.72rem;
+  }
+  &PanelHeading a {
+    color: var(--teacher-primary);
+    font-size: 0.74rem;
+    font-weight: 750;
+    text-decoration: none;
+  }
+  &PanelHeading a:hover {
+    text-decoration: underline;
+  }
+  &ClassFacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  &ClassFacts span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.7rem;
+    background: var(--teacher-surface);
+    color: var(--teacher-heading);
+    font-size: 0.75rem;
+    font-weight: 680;
+  }
+  &ClassFacts svg {
+    color: var(--teacher-primary);
+    font-size: 1rem;
+  }
+  &ComingSoon {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 1rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--teacher-border);
+    color: var(--teacher-muted);
+    font-size: 0.76rem;
+  }
+  &ComingSoon svg {
+    flex: none;
+    color: var(--teacher-primary);
+    font-size: 1.1rem;
+  }
+  &Empty {
+    margin: 0.3rem 0 1rem;
+    color: var(--teacher-muted);
+    font-size: 0.76rem;
+  }
+  &PulseBody {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+  }
+  &PulseRing {
+    display: grid;
+    width: clamp(5.8rem, 22vw, 7rem);
+    aspect-ratio: 1;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--teacher-border);
+    box-shadow: 0 8px 20px rgb(16 42 67 / 8%);
+  }
+  &PulseRingCenter {
+    display: flex;
+    width: calc(100% - 1.1rem);
+    aspect-ratio: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--teacher-surface);
+  }
+  &PulseRingCenter strong {
+    color: var(--teacher-heading);
+    font-size: 1.55rem;
+    line-height: 1;
+  }
+  &PulseRingCenter span {
+    margin-top: 0.2rem;
+    color: var(--teacher-muted);
+    font-size: 0.64rem;
+    font-weight: 700;
+  }
+  &PulseStats {
+    display: grid;
+    gap: 0.4rem;
+  }
+  &PulseStats > div {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.6rem;
+    background: var(--teacher-surface);
+  }
+  &PulseStats i {
+    width: 0.48rem;
+    height: 0.48rem;
+    flex: none;
+    border-radius: 50%;
+  }
+  &PulseStats [data-status="active"] i {
+    background: var(--teacher-success);
+  }
+  &PulseStats [data-status="paused"] i {
+    background: var(--teacher-warning);
+  }
+  &PulseStats [data-status="debtor"] i {
+    background: var(--teacher-danger);
+  }
+  &PulseStats strong {
+    margin-left: auto;
+    color: var(--teacher-heading);
+    font-size: 0.93rem;
+    line-height: 1;
+  }
+  &PulseStats span {
+    color: var(--teacher-muted);
+    font-size: 0.72rem;
+  }
+}
+
+.teacherGroups__resourceIcon,
+.teacherGroups__activityIcon {
+  display: grid;
+  place-items: center;
+  color: var(--teacher-primary);
+  background: var(--teacher-primary);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+  }
+}
+
+.teacherGroups__lessonList,
+.teacherGroups__resourceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.teacherGroups__lessonCard,
+.teacherGroups__resourceCard,
+.teacherGroups__testCard {
+  display: flex;
+  min-width: 0px;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 7px 20px rgb(16 42 67 / 4%);
+}
+
+/* LESSONS */
+
+.teacherGroups__lesson {
+  &Card {
+    min-height: 13rem;
+  }
+  &Card[data-status="completed"] {
+    border-color: var(--teacher-success);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in srgb, var(--teacher-success) 24%, var(--teacher-border));
+    }
+  }
+}
+
+.teacherGroups__lessonCardTopline,
+.teacherGroups__lessonCardTopline > span:first-child,
+.teacherGroups__lessonMeta,
+.teacherGroups__lessonMeta span,
+.teacherGroups__testMeta span {
+  display: flex;
+  align-items: center;
+}
+
+.teacherGroups__lesson {
+  &CardTopline {
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  &CardTopline > span:first-child {
+    gap: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 720;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherGroups__lessonCardTopline svg,
+.teacherGroups__lessonMeta svg,
+.teacherGroups__testMeta svg {
+  font-size: 1rem;
+}
+
+.teacherGroups__statusPill,
+.teacherGroups__typePill {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.27rem 0.55rem;
+  color: var(--teacher-primary);
+  background: var(--teacher-primary);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+  }
+  font-size: 0.62rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.teacherGroups__status {
+  &Pill[data-status="completed"],
+  &Pill[data-status="closed"] {
+    color: var(--teacher-success);
+    background: var(--teacher-success);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-success) 10%, transparent);
+    }
+  }
+  &Pill[data-status="cancelled"] {
+    color: var(--teacher-danger);
+    background: var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 10%, transparent);
+    }
+  }
+  &Pill[data-status="draft"] {
+    color: var(--teacher-warning);
+    background: var(--teacher-yellow);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-yellow) 18%, transparent);
+    }
+  }
+}
+
+.teacherGroups__lessonCard h3,
+.teacherGroups__resourceCard h3,
+.teacherGroups__testCard h3 {
+  margin: 0.85rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 830;
+  color: var(--teacher-heading);
+}
+
+.teacherGroups__lessonCard > p,
+.teacherGroups__resourceCard > p,
+.teacherGroups__testCard > p {
+  margin: 0.45rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--teacher-muted);
+}
+
+.teacherGroups__lesson {
+  &Meta {
+    margin-top: auto;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.8rem;
+    padding: 1rem 0 0.75rem;
+    font-size: 0.65rem;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherGroups__lessonMeta span,
+.teacherGroups__testMeta span {
+  gap: 0.25rem;
+}
+
+.teacherGroups__lesson {
+  &Card > a {
+    align-self: flex-start;
+  }
+}
+
+/* MATERIALS AND ASSIGNMENTS */
+
+.teacherGroups__resource {
+  &Card {
+    position: relative;
+    min-height: 15rem;
+  }
+}
+
+.teacherGroups__resourceIcon,
+.teacherGroups__activityIcon {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 0.8rem;
+}
+
+.teacherGroups__resource {
+  &Card > .teacherGroups__typePill {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  &Card dl {
+    margin: auto 0 0;
+    display: grid;
+    gap: 0.45rem;
+    padding-top: 1rem;
+  }
+  &Card dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  &Card dt,
+  &Card dd {
+    margin: 0px;
+    font-size: 0.66rem;
+  }
+  &Card dt {
+    color: var(--teacher-muted);
+  }
+  &Card dd {
+    overflow: hidden;
+    text-align: right;
+    font-weight: 750;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherGroups__activity {
+  &List {
+    display: grid;
+    gap: 0.75rem;
+  }
+  &Card {
+    display: grid;
+    min-width: 0px;
+    grid-template-columns: auto minmax(0, 1fr) minmax(15rem, 0.55fr);
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-surface);
+  }
+  &Copy,
+  &Meta {
+    display: grid;
+    min-width: 0px;
+  }
+  &Copy {
+    gap: 0.25rem;
+  }
+  &Copy h3,
+  &Copy p {
+    margin: 0px;
+  }
+  &Copy h3 {
+    font-size: 0.85rem;
+    font-weight: 820;
+    color: var(--teacher-heading);
+  }
+  &Copy p,
+  &Meta span {
+    font-size: 0.68rem;
+    color: var(--teacher-muted);
+  }
+  &Meta {
+    gap: 0.45rem;
+  }
+  &Meta > span:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  &Meta svg {
+    font-size: 1rem;
+  }
+  &Meta strong {
+    font-size: 0.72rem;
+    color: var(--teacher-heading);
+  }
+  &Progress {
+    height: 0.4rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--teacher-border);
+  }
+  &Progress span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--teacher-brand), var(--teacher-primary));
+  }
+}
+
+.teacherGroups__test {
+  &Grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  &Card {
+    min-height: 13rem;
+  }
+  &Topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  &Card > small {
+    margin-top: 0.85rem;
+    font-size: 0.65rem;
+    font-weight: 780;
+    color: var(--teacher-primary);
+  }
+  &Card h3 {
+    margin-top: 0.2rem;
+  }
+  &Meta {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.85rem;
+    padding-top: 1rem;
+    font-size: 0.66rem;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherGroups__lesson {
+  &Detail {
+    padding: 1.15rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1.1rem;
+    background: var(--teacher-surface);
+  }
+  &DetailHeader {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  &DetailHeader p,
+  &DetailHeader h2 {
+    margin: 0px;
+  }
+  &DetailHeader p {
+    font-size: 0.63rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    color: var(--teacher-primary);
+    text-transform: uppercase;
+  }
+  &DetailHeader h2 {
+    margin-top: 0.2rem;
+    font-size: 1.25rem;
+    font-weight: 860;
+    color: var(--teacher-heading);
+  }
+  &DetailControls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.55rem;
+  }
+}
+
+button.teacherGroups__lessonDeleteButton {
+  color: var(--teacher-danger);
+  border-color: var(--teacher-danger);
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button.teacherGroups__lessonDeleteButton:hover {
+    color: #ffffff;
+    border-color: var(--teacher-danger);
+    background: var(--teacher-danger);
+    box-shadow: 0 12px 28px var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      box-shadow: 0 12px 28px color-mix(in srgb, var(--teacher-danger) 24%, transparent);
+    }
+  }
+}
+
+.teacherGroups__lesson {
+  &Objective {
+    margin: 1.1rem 0 0;
+    display: grid;
+    gap: 0.35rem;
+    border-radius: 0.85rem;
+    padding: 0.9rem;
+    color: var(--teacher-muted);
+    background: var(--teacher-surface-subtle);
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+  &Objective strong {
+    font-size: 0.7rem;
+    color: var(--teacher-heading);
+  }
+  &Facts {
+    margin: 1rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  &Facts div {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.8rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.85rem;
+  }
+  &Facts dt,
+  &Facts dd {
+    margin: 0px;
+  }
+  &Facts dt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.65rem;
+    color: var(--teacher-muted);
+  }
+  &Facts dt svg {
+    font-size: 1rem;
+    color: var(--teacher-primary);
+  }
+  &Facts dd {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherGroups__linked {
+  &Sections {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  &Sections > section {
+    min-width: 0px;
+    padding: 0.9rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.9rem;
+  }
+  &Sections h3 {
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--teacher-heading);
+  }
+  &Sections h3 svg {
+    font-size: 1rem;
+    color: var(--teacher-primary);
+  }
+  &List {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+  &List article {
+    display: grid;
+    gap: 0.2rem;
+    border-radius: 0.7rem;
+    padding: 0.65rem;
+    background: var(--teacher-surface-subtle);
+  }
+  &List span,
+  &List p {
+    margin: 0px;
+    font-size: 0.62rem;
+    color: var(--teacher-muted);
+  }
+  &List strong {
+    font-size: 0.7rem;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherGroups__lesson {
+  &EditorContent {
+    display: grid;
+    gap: 1.15rem;
+    padding-top: 0.5rem !important;
+  }
+  &EditorContent > p {
+    margin: 0px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--teacher-muted);
+  }
+  &EditorGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+  &EditorWideField {
+    grid-column: 1 / -1;
+  }
+  &LinkPickerGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+  &LinkPicker {
+    margin: 0px;
+    min-width: 0px;
+    padding: 0.75rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.9rem;
+  }
+  &LinkPicker legend {
+    padding-inline: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--teacher-heading);
+  }
+  &LinkPicker > div {
+    display: grid;
+    max-height: 9rem;
+    gap: 0.35rem;
+    overflow-y: auto;
+  }
+  &LinkPicker label {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.65rem;
+    padding: 0.5rem;
+    color: var(--teacher-text);
+    background: var(--teacher-surface-subtle);
+    cursor: pointer;
+    font-size: 0.7rem;
+    line-height: 1.35;
+  }
+  &LinkPicker input {
+    margin: 0px;
+    height: 1rem;
+    width: 1rem;
+    accent-color: var(--teacher-primary);
+    cursor: pointer;
+  }
+  &LinkPicker p {
+    margin: 0px;
+    font-size: 0.68rem;
+    line-height: 1.5;
+    color: var(--teacher-muted);
+  }
+}
+
+/* STUDENT ROSTER */
+
+.teacherGroups__roster {
+  &Section {
+    min-width: 0px;
+  }
+}
+
+.teacherGroups__summary {
+  &Grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  &Card {
+    display: grid;
+    min-height: 5.5rem;
+    width: 100%;
+    place-items: center;
+    align-content: center;
+    gap: 0.3rem;
+    padding: 0.9rem;
+    color: var(--teacher-primary);
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-surface);
+    font: inherit;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+  }
+  &Card:hover {
+    border-color: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in srgb, var(--teacher-primary) 40%, var(--teacher-border));
+    }
+    transform: translateY(-1px);
+  }
+  &Card:focus-visible {
+    outline: 3px solid var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      outline: 3px solid color-mix(in srgb, var(--teacher-primary) 24%, transparent);
+    }
+    outline-offset: 2px;
+  }
+  &Card[data-active="true"] {
+    border-color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 7%, var(--teacher-surface));
+    }
+    box-shadow: 0 8px 22px var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      box-shadow: 0 8px 22px color-mix(in srgb, var(--teacher-primary) 12%, transparent);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherGroups__summary {
+    &Card {
+      transition: none;
+    }
+    &Card:hover {
+      transform: none;
+    }
+  }
+}
+
+.teacherGroups__summary {
+  &Card[data-tone="active"] {
+    color: var(--teacher-success);
+  }
+  &Card[data-tone="paused"] {
+    color: var(--teacher-warning);
+  }
+  &Card[data-tone="debtor"],
+  &Card[data-tone="departed"] {
+    color: var(--teacher-danger);
+  }
+  &Card strong {
+    font-size: 1.35rem;
+    line-height: 1;
+    font-weight: 880;
+  }
+  &Card span {
+    font-size: 0.7rem;
+    font-weight: 750;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherGroups__roster {
+  &Header {
+    margin-block: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  &Header > div:first-child {
+    display: grid;
+    gap: 0.25rem;
+  }
+  &Header h2 {
+    font-size: 1.25rem;
+  }
+}
+
+.teacherGroups__result {
+  &Count {
+    font-size: 0.72rem;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherGroups__learner {
+  &List {
+    overflow-x: auto;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-surface);
+    box-shadow: var(--teacher-shadow);
+    scrollbar-color: var(--teacher-primary) transparent;
+  }
+  &List:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+  }
+  &Table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  &Table th,
+  &Table td {
+    padding: 0.85rem;
+    text-align: left;
+    vertical-align: middle;
+  }
+  &Table th {
+    width: 25%;
+    color: var(--teacher-heading);
+    font-size: 0.72rem;
+    font-weight: 800;
+    background: var(--teacher-surface-subtle);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--teacher-primary) 8%, var(--teacher-surface)),
+        color-mix(in srgb, var(--teacher-brand) 10%, var(--teacher-surface))
+      );
+    }
+  }
+  &Table td {
+    height: 4.25rem;
+    border-top: 1px solid var(--teacher-border);
+    color: var(--teacher-heading);
+    font-size: 0.78rem;
+  }
+  &Table th:last-child {
+    text-align: right;
+  }
+  &Table tbody tr[data-alert="true"] {
+    background: var(--teacher-surface);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 4%, var(--teacher-surface));
+    }
+  }
+  &Table tbody tr:hover {
+    background: var(--teacher-surface-subtle);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 5%, var(--teacher-surface));
+    }
+  }
+  &Index {
+    flex: none;
+    font-size: 0.68rem;
+    font-weight: 750;
+    color: var(--teacher-muted);
+  }
+  &Avatar {
+    display: grid;
+    height: 2.4rem;
+    width: 2.4rem;
+    flex: none;
+    place-items: center;
+    border-radius: 0.8rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+    font-size: 0.72rem;
+    font-weight: 850;
+  }
+  &Identity {
+    display: flex;
+    min-width: 0px;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  &Identity strong {
+    min-width: 0px;
+  }
+  &Identity strong,
+  &Finance strong {
+    display: block;
+    overflow: hidden;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--teacher-heading);
+  }
+  &Table tr[data-alert="true"] &Finance strong {
+    color: var(--teacher-danger);
+  }
+  &Finance small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--teacher-muted);
+    font-size: 0.67rem;
+    white-space: nowrap;
+  }
+}
+
+.teacherGroups__status {
+  &Badge {
+    width: fit-content;
+    border-radius: 999px;
+    padding: 0.2rem 0.45rem;
+    color: var(--teacher-success);
+    background: var(--teacher-success);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-success) 10%, transparent);
+    }
+    font-size: 0.6rem;
+    font-weight: 800;
+  }
+  &Badge[data-status="paused"] {
+    color: var(--teacher-warning);
+    background: var(--teacher-yellow);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-yellow) 18%, transparent);
+    }
+  }
+  &Badge[data-status="debtor"],
+  &Badge[data-status="departed"] {
+    color: var(--teacher-danger);
+    background: var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 9%, transparent);
+    }
+  }
+}
+
+.teacherGroups__learner {
+  &Actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &Actions button {
+    display: grid;
+    height: 2rem;
+    width: 2rem;
+    place-items: center;
+    color: var(--teacher-primary);
+    border: 0;
+    border-radius: 0.65rem;
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+    }
+    cursor: pointer;
+  }
+  &Actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+  &Actions button {
+    color: var(--teacher-muted);
+    background: var(--teacher-muted);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-muted) 9%, transparent);
+    }
+  }
+  &Actions svg {
+    font-size: 1rem;
+  }
+}
+
+.teacherGroups__dialogContent,
+.teacherGroups__createDialogContent {
+  display: grid;
+  gap: 1rem;
+  padding-top: 0.5rem !important;
+}
+
+.teacherGroups__dialogContent p,
+.teacherGroups__createDialogContent p {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--teacher-muted);
+}
+
+.teacherGroups__create {
+  &FieldGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+.teacherGroups__dialogActions,
+.teacherGroups__createDialogActions {
+  padding: 0.5rem 1.5rem 1.5rem !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherGroups__catalog {
+    &Card:hover {
+      transform: translateY(-2px);
+      border-color: var(--teacher-primary);
+      @supports (color: color-mix(in lab, red, red)) {
+        border-color: color-mix(in srgb, var(--teacher-primary) 35%, var(--teacher-border));
+      }
+      box-shadow: 0 18px 42px rgb(16 42 67 / 8%);
+    }
+  }
+}
+
+@media (max-width: 1199px) {
+  .teacherGroups__catalog {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .teacherGroups__lessonList,
+  .teacherGroups__resourceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .teacherGroups__overview {
+    &Metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .teacherGroups__catalog {
+    &Toolbar {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+  }
+
+  .teacherGroups__create {
+    &Button {
+      align-self: flex-end;
+    }
+  }
+
+  .teacherGroups__section {
+    &Intro {
+      align-items: flex-start;
+    }
+    &Intro > button {
+      flex: 0 0 auto;
+    }
+  }
+
+  .teacherGroups__catalog {
+    grid-template-columns: 1fr;
+    &Card {
+      min-height: 18rem;
+    }
+  }
+
+  .teacherGroups__detail {
+    &Header {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 0.7rem;
+      padding: 0.9rem;
+    }
+  }
+
+  .teacherGroups__workspace {
+    &Nav {
+      justify-content: flex-start;
+    }
+  }
+
+  .teacherGroups__lesson {
+    &DetailHeader {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: flex-start;
+    }
+    &DetailControls {
+      grid-column: 2;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    &EditorGrid,
+    &LinkPickerGrid {
+      grid-template-columns: 1fr;
+    }
+    &EditorWideField {
+      grid-column: auto;
+    }
+  }
+
+  .teacherGroups__overviewHub,
+  .teacherGroups__lessonList,
+  .teacherGroups__resourceGrid,
+  .teacherGroups__testGrid,
+  .teacherGroups__linkedSections {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherGroups__activity {
+    &Card {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    &Meta {
+      grid-column: 2;
+    }
+  }
+
+  .teacherGroups__lesson {
+    &Facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .teacherGroups__detail {
+    &Icon {
+      display: none;
+    }
+    &Actions {
+      gap: 0.45rem;
+    }
+  }
+
+  .teacherGroups__edit {
+    &Button {
+      width: 2.5rem;
+      padding: 0px;
+    }
+    &Button span {
+      position: absolute;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+  }
+
+  .teacherGroups__summary {
+    &Grid {
+      display: flex;
+      gap: 0.6rem;
+      overflow-x: auto;
+      padding-bottom: 0.45rem;
+    }
+    &Card {
+      min-width: 5.5rem;
+      flex: 0 0 5.5rem;
+    }
+  }
+
+  .teacherGroups__roster {
+    &Header {
+      align-items: flex-end;
+    }
+    &Header > div:first-child {
+      display: grid;
+      gap: 0.25rem;
+    }
+    &Header button {
+      min-width: 2.75rem;
+      padding-inline: 0.7rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .teacherGroups__create {
+    &Paper {
+      margin: 0.5rem !important;
+      width: calc(100% - 1rem);
+      border-radius: 1.4rem !important;
+    }
+    &Form {
+      gap: 0.85rem;
+      padding: 1.25rem;
+    }
+    &Grid {
+      grid-template-columns: 1fr;
+    }
+    &Actions > button {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .teacherGroups__section {
+    &Intro {
+      display: grid;
+    }
+  }
+
+  .teacherGroups__create {
+    &FieldGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .teacherGroups__overview {
+    &Metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .teacherGroups__lesson {
+    &Facts {
+      grid-template-columns: 1fr;
+    }
+  }
+}

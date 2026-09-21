@@ -1,0 +1,229 @@
+/* FINANCE */
+
+.teacherFinance__month {
+  &Tabs {
+    margin-bottom: 16px;
+    display: flex;
+    max-width: 100%;
+    gap: 7px;
+    overflow-x: auto;
+    padding: 3px 2px 7px;
+    scrollbar-width: thin;
+  }
+  &Tabs button {
+    min-height: 42px;
+    min-width: max-content;
+    padding: 0 15px;
+    border: 1px solid var(--teacher-border);
+    border-radius: 12px;
+    background: var(--teacher-surface);
+    cursor: pointer;
+    color: var(--teacher-muted);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 730;
+  }
+  &Tabs button[data-active="true"] {
+    border-color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    color: #fff;
+  }
+}
+
+.teacherFinance__summary {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+  gap: 16px;
+}
+
+.teacherFinance__heroCard,
+.teacherFinance__rateCard,
+.teacherFinance__metric {
+  border: 1px solid var(--teacher-border);
+  border-radius: 20px;
+  background: var(--teacher-surface);
+  box-shadow: var(--teacher-shadow);
+}
+
+.teacherFinance__hero {
+  &Card {
+    padding: 26px;
+    background: linear-gradient(135deg, var(--teacher-primary), #0e7490);
+    color: #fff;
+  }
+}
+
+.teacherFinance__heroCard > span,
+.teacherFinance__rateCard > span {
+  font-size: 12px;
+  font-weight: 720;
+  opacity: 0.78;
+}
+
+.teacherFinance__hero {
+  &Card > strong {
+    margin-top: 7px;
+    display: block;
+    font-size: clamp(24px, 4vw, 34px);
+  }
+  &Card > div:not(.teacherFinance__bar) {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+}
+
+.teacherFinance__bar {
+  margin-top: 9px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgb(255 255 255 / 24%);
+  & span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--teacher-warning);
+  }
+}
+
+.teacherFinance__hero {
+  &Card small {
+    margin-top: 7px;
+    display: block;
+    text-align: right;
+  }
+}
+
+.teacherFinance__rate {
+  &Card {
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    text-align: center;
+  }
+  &Card > span:first-child {
+    color: var(--teacher-muted);
+  }
+  &Card > strong {
+    margin-top: 3px;
+    font-size: 29px;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherFinance__ring {
+  position: relative;
+  margin-top: 10px;
+  display: grid;
+  height: 82px;
+  width: 82px;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(var(--teacher-brand) var(--finance-progress), var(--teacher-border) 0);
+  color: var(--teacher-primary);
+  &::before {
+    content: "";
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background: var(--teacher-surface);
+  }
+  & svg {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.teacherFinance__metrics {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.teacherFinance__metric {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  &Icon {
+    display: grid;
+    height: 42px;
+    width: 42px;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 13px;
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+    color: var(--teacher-primary);
+  }
+  &[data-tone="success"] .teacherFinance__metricIcon {
+    background: var(--teacher-success);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-success) 14%, transparent);
+    }
+    color: var(--teacher-success);
+  }
+  &[data-tone="warning"] .teacherFinance__metricIcon {
+    background: var(--teacher-warning);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-warning) 18%, transparent);
+    }
+    color: var(--teacher-warning);
+  }
+  &[data-tone="danger"] .teacherFinance__metricIcon {
+    background: var(--teacher-danger);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 12%, transparent);
+    }
+    color: var(--teacher-danger);
+  }
+  & div {
+    display: grid;
+    min-width: 0px;
+  }
+  & small {
+    font-size: 11px;
+    color: var(--teacher-muted);
+  }
+  & strong {
+    margin-top: 3px;
+    overflow: hidden;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    color: var(--teacher-heading);
+  }
+}
+
+@media (width <= 1050px) {
+  .teacherFinance__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 650px) {
+  .teacherFinance__summary {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherFinance__rate {
+    &Card {
+      grid-template-columns: 1fr auto;
+      text-align: left;
+    }
+  }
+
+  .teacherFinance__ring {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+
+  .teacherFinance__metrics {
+    grid-template-columns: 1fr;
+  }
+}

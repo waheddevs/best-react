@@ -12,7 +12,6 @@ import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import type {
   TeacherCopy,
@@ -155,10 +154,10 @@ export function GroupLessonEditorAction({
           onSubmit={handleSubmit}
         >
           <DialogTitle>{actionLabel}</DialogTitle>
-          <DialogContent className={styles.teacherGroups__lessonEditorContent}>
+          <DialogContent className="teacherGroups__lessonEditorContent">
             <p>{description}</p>
 
-            <div className={styles.teacherGroups__lessonEditorGrid}>
+            <div className="teacherGroups__lessonEditorGrid">
               <TextField
                 autoFocus
                 defaultValue={lesson?.topic[locale] ?? ""}
@@ -181,7 +180,7 @@ export function GroupLessonEditorAction({
                 ))}
               </TextField>
               <TextField
-                className={styles.teacherGroups__lessonEditorWideField}
+                className="teacherGroups__lessonEditorWideField"
                 defaultValue={lesson?.objective[locale] ?? ""}
                 fullWidth
                 label={copy.groupWorkspace.objective}
@@ -244,9 +243,9 @@ export function GroupLessonEditorAction({
               />
             </div>
 
-            <div className={styles.teacherGroups__lessonLinkPickerGrid}>
+            <div className="teacherGroups__lessonLinkPickerGrid">
               {linkGroups.map((group) => (
-                <fieldset className={styles.teacherGroups__lessonLinkPicker} key={group.name}>
+                <fieldset className="teacherGroups__lessonLinkPicker" key={group.name}>
                   <legend>{group.label}</legend>
                   {group.options.length > 0 ? (
                     <div>
@@ -269,7 +268,7 @@ export function GroupLessonEditorAction({
               ))}
             </div>
           </DialogContent>
-          <DialogActions className={styles.teacherGroups__createDialogActions}>
+          <DialogActions className="teacherGroups__createDialogActions">
             <Button onClick={handleClose} variant="ghost">
               {copy.common.cancel}
             </Button>

@@ -1,4 +1,12 @@
 @use "../variables" as shared;
 @use "variables" as teacher;
-
-/* Teacher-shell rules shared by multiple Teacher routes belong here. */
+@use "layout/shell";
+@use "shared" as teacherShared;
+@use "pages/dashboard";
+@use "pages/groups";
+@use "pages/tasks";
+@use "pages/finance";
+@use "pages/reception";
+@use "pages/transferRequests";
+@use "pages/profile";
+@use "pages/loading";

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
 import type { TeacherCopy, TeacherGroupWorkspaceTab } from "@/types/teacher/Teacher";
 
 type GroupWorkspaceNavigationProps = {
@@ -37,10 +36,10 @@ export function GroupWorkspaceNavigation({ copy, locale, slug }: GroupWorkspaceN
     })?.key ?? false;
 
   return (
-    <div className={styles.teacherGroups__workspaceNavSection}>
+    <div className="teacherGroups__workspaceNavSection">
       <Tabs
         aria-label={copy.groups.detailEyebrow}
-        className={`${styles.teacherGroups__categoryTabs} ${styles.teacherGroups__workspaceNav}`}
+        className={`teacherGroups__categoryTabs teacherGroups__workspaceNav`}
         component="nav"
         scrollButtons={false}
         value={activeTab}
@@ -49,7 +48,7 @@ export function GroupWorkspaceNavigation({ copy, locale, slug }: GroupWorkspaceN
         {tabItems.map(({ key, segment }) => (
           <Tab
             aria-controls="teacher-group-workspace-panel"
-            className={styles.teacherGroups__categoryTab}
+            className="teacherGroups__categoryTab"
             component={Link}
             href={segment ? `${baseHref}/${segment}` : baseHref}
             id={`teacher-group-workspace-tab-${key}`}

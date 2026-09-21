@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
 import { teacherNavigationItems } from "@/config/TeacherNavigation";
-import styles from "@/css/teacher/shell.module.css";
 import { TeacherNavigationIcon } from "@/features/teacher/layout/TeacherNavigationIcon";
 import type { TeacherCopy } from "@/types/teacher/Teacher";
 
@@ -19,7 +18,7 @@ export function TeacherMobileNavigation({ copy, locale }: TeacherMobileNavigatio
   const pathname = usePathname();
 
   return (
-    <nav aria-label={copy.navigation.panelLabel} className={styles.teacherShell__bottomNavigation}>
+    <nav aria-label={copy.navigation.panelLabel} className="teacherShell__bottomNavigation">
       {teacherNavigationItems
         .filter((item) => item.mobilePrimary)
         .map((item) => {
@@ -32,7 +31,7 @@ export function TeacherMobileNavigation({ copy, locale }: TeacherMobileNavigatio
           return (
             <ScrollToTopLink
               aria-current={isActive ? "page" : undefined}
-              className={styles.teacherShell__bottomNavigationLink}
+              className="teacherShell__bottomNavigationLink"
               data-active={isActive}
               href={localizedHref}
               key={item.key}

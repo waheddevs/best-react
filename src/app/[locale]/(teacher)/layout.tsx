@@ -11,6 +11,8 @@ import { getDashboardAccessState, isDashboardPreviewEnabled } from "@/lib/Dashbo
 import { teacherShortName } from "@/lib/teacher/TeacherDisplayName";
 import { loadTeacherHeader } from "@/lib/teacher/TeacherWorkspaceData";
 
+import "@/scss/teacher/main.scss";
+
 export const metadata: Metadata = {
   robots: { follow: false, index: false },
 };

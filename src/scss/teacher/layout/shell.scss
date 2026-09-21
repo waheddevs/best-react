@@ -1,0 +1,759 @@
+/* SHELL */
+
+.teacherShell {
+  --teacher-canvas: #f4fbfd;
+  --teacher-surface: #ffffff;
+  --teacher-surface-elevated: #ffffff;
+  --teacher-surface-subtle: #eff8fb;
+  --teacher-text: #172033;
+  --teacher-heading: #102a43;
+  --teacher-muted: #64748b;
+  --teacher-border: #d9edf1;
+  --teacher-primary: #2563eb;
+  --teacher-brand: #49bfd1;
+  --teacher-yellow: #ffc857;
+  --teacher-success: #15803d;
+  --teacher-warning: #b45309;
+  --teacher-danger: #d32f2f;
+  --teacher-shadow: 0 10px 30px rgb(16 42 67 / 6%);
+  --teacher-sidebar: #1955eb;
+  --teacher-sidebar-text: #ffffff;
+  position: relative;
+  display: grid;
+  min-height: 100dvh;
+  width: 100%;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  align-items: flex-start;
+  color: var(--teacher-text);
+  background: var(--teacher-surface);
+}
+
+body[data-teacher-theme="light"] {
+  --teacher-canvas: #f4fbfd;
+  --teacher-surface: #ffffff;
+  --teacher-surface-elevated: #ffffff;
+  --teacher-surface-subtle: #eff8fb;
+  --teacher-text: #172033;
+  --teacher-heading: #102a43;
+  --teacher-muted: #64748b;
+  --teacher-border: #d9edf1;
+  --teacher-primary: #2563eb;
+  --teacher-brand: #49bfd1;
+  --teacher-yellow: #ffc857;
+  --teacher-success: #15803d;
+  --teacher-warning: #b45309;
+  --teacher-danger: #d32f2f;
+  --teacher-shadow: 0 10px 30px rgb(16 42 67 / 6%);
+  --teacher-sidebar: #1955eb;
+  --teacher-sidebar-text: #ffffff;
+  background: #f4fbfd;
+}
+
+body[data-teacher-theme="dark"] {
+  --background: #0b1220;
+  --surface: #111c2e;
+  --surface-elevated: #17243a;
+  --text: #f3f7fc;
+  --heading: #f3f7fc;
+  --muted: #a7b4c7;
+  --border: #263750;
+  --brand-turquoise: #67d8e8;
+  --action-blue: #60a5fa;
+  --teacher-canvas: #0b1220;
+  --teacher-surface: #111c2e;
+  --teacher-surface-elevated: #17243a;
+  --teacher-surface-subtle: #17243a;
+  --teacher-text: #f3f7fc;
+  --teacher-heading: #f3f7fc;
+  --teacher-muted: #a7b4c7;
+  --teacher-border: #263750;
+  --teacher-primary: #60a5fa;
+  --teacher-brand: #67d8e8;
+  --teacher-yellow: #ffc857;
+  --teacher-success: #4ade80;
+  --teacher-warning: #fbbf24;
+  --teacher-danger: #f05454;
+  --teacher-shadow: 0 12px 34px rgb(0 0 0 / 22%);
+  --teacher-sidebar: #173f91;
+  --teacher-sidebar-text: #ffffff;
+  color-scheme: dark;
+  background: #0b1220;
+}
+
+body[data-teacher-theme="dark"] .teacherShell {
+  --teacher-canvas: #0b1220;
+  --teacher-surface: #111c2e;
+  --teacher-surface-elevated: #17243a;
+  --teacher-surface-subtle: #17243a;
+  --teacher-text: #f3f7fc;
+  --teacher-heading: #f3f7fc;
+  --teacher-muted: #a7b4c7;
+  --teacher-border: #263750;
+  --teacher-primary: #60a5fa;
+  --teacher-brand: #67d8e8;
+  --teacher-danger: #f05454;
+  --teacher-shadow: 0 12px 34px rgb(0 0 0 / 22%);
+  --teacher-sidebar: #173f91;
+  --teacher-sidebar-text: #ffffff;
+}
+
+.teacherShell__desktop {
+  &Sidebar {
+    position: sticky;
+    top: 0px;
+    z-index: 30;
+    height: 100dvh;
+    width: 16rem;
+    overflow: visible;
+    background: var(--teacher-sidebar);
+  }
+}
+
+.teacherShell__workspace {
+  min-height: 100dvh;
+  min-width: 0px;
+  overflow: clip;
+  background: var(--teacher-surface);
+}
+
+.teacherShell__content {
+  margin-right: auto;
+  margin-left: 0px;
+  min-height: calc(100dvh - 4rem);
+  width: 100%;
+  max-width: 100rem;
+  padding: 1.65rem clamp(1.75rem, 2.5vw, 2.5rem) 3rem;
+}
+
+.teacherShell__sidebar {
+  &Content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    padding: 2.5rem 1rem;
+    color: var(--teacher-sidebar-text);
+    background: transparent;
+  }
+}
+
+.teacherShell__brand {
+  &Row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 0.95rem;
+  }
+  &Divider {
+    margin: 1.35rem 0.35rem 0;
+    height: 1px;
+    background: rgb(255 255 255 / 22%);
+  }
+}
+
+.teacherShell__topbar {
+  &Avatar {
+    position: relative;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    overflow: hidden;
+    font-weight: 850;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0e7490, var(--teacher-primary));
+  }
+}
+
+.teacherShell__brand {
+  &Mark {
+    display: grid;
+    height: 3.25rem;
+    width: 3.25rem;
+    flex: 0 0 auto;
+    place-items: center;
+  }
+  &Mark img {
+    filter: brightness(0) invert(1);
+  }
+  &Name {
+    font-size: 1.3rem;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+  }
+}
+
+.teacherShell__navigation {
+  margin-top: 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+  &Item {
+    position: relative;
+    z-index: 1;
+    display: block;
+    border-radius: 0.9rem;
+  }
+  &Item[data-active="true"] {
+    z-index: 2;
+    margin-inline: 0.5rem;
+    background: var(--teacher-surface-elevated);
+    box-shadow: 0 8px 22px rgb(8 47 138 / 18%);
+  }
+  &Item[data-active="true"]::before {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    z-index: 2;
+    height: 1.6rem;
+    width: 0.2rem;
+    border-radius: 0 999px 999px 0;
+    background: var(--teacher-brand);
+    transform: translateY(-50%);
+    pointer-events: none;
+    content: "";
+  }
+  &Link {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 3rem;
+    align-items: center;
+    gap: 0.8rem;
+    border-radius: 0.9rem;
+    padding: 0.72rem 0.95rem;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: rgb(255 255 255 / 88%);
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      transform 180ms ease;
+  }
+  &Link svg {
+    flex: 0 0 auto;
+    font-size: 1.25rem;
+  }
+  &Link:hover {
+    color: #ffffff;
+    background: rgb(255 255 255 / 10%);
+  }
+  &Link:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+  &Link[data-active="true"] {
+    width: 100%;
+    gap: 0.65rem;
+    border-radius: inherit;
+    padding: 0.5rem 0.75rem 0.5rem 0.65rem;
+    color: var(--teacher-primary);
+    background: transparent;
+  }
+  &Link[data-active="true"] svg {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.65rem;
+    padding: 0.38rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-brand);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-brand) 18%, transparent);
+    }
+  }
+}
+
+.teacherShell__logout {
+  margin-top: auto;
+  display: flex;
+  min-height: 2.75rem;
+  width: fit-content;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 0.85rem;
+  color: #ffffff;
+  border: 0;
+  border-radius: 0.9rem;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+  & svg {
+    flex: 0 0 auto;
+    font-size: 1.25rem;
+    color: inherit;
+  }
+  &:hover {
+    color: var(--teacher-danger);
+    background: #ffffff;
+  }
+  &:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+}
+
+.teacherShell__topbar {
+  position: sticky;
+  top: 0px;
+  z-index: 20;
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-inline: clamp(1.75rem, 2.5vw, 2.5rem);
+  border-bottom: 1px solid var(--teacher-border);
+  background: var(--teacher-surface);
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--teacher-surface) 96%, transparent);
+  }
+  backdrop-filter: blur(20px) saturate(145%);
+  &Leading,
+  &Actions {
+    display: flex;
+    min-width: 0px;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  &Leading {
+    display: none;
+  }
+  &Leading > div:last-child {
+    display: grid;
+    min-width: 0px;
+    gap: 0.1rem;
+  }
+  &Title {
+    overflow: hidden;
+    font-size: 1.1rem;
+    font-weight: 850;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--teacher-heading);
+  }
+}
+
+.teacherShell__locale {
+  &Trigger {
+    display: inline-flex;
+    height: 2.75rem;
+    min-width: 6.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    padding: 0 0.7rem;
+    color: var(--teacher-heading);
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-surface-subtle);
+    font: inherit;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+  &Trigger svg:first-child {
+    font-size: 1.1rem;
+    color: var(--teacher-brand);
+  }
+  &Trigger svg:last-child {
+    font-size: 1.15rem;
+    transition: transform 180ms ease;
+  }
+  &Trigger[aria-expanded="true"] svg:last-child {
+    transform: rotate(180deg);
+  }
+  &Trigger:hover,
+  &Trigger:focus-visible {
+    border-color: var(--teacher-brand);
+  }
+  &Trigger:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+  }
+  &Menu {
+    margin-top: 0.4rem;
+    min-width: 0px;
+    padding: 0.35rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem !important;
+    background: var(--teacher-surface) !important;
+    box-shadow: var(--teacher-shadow) !important;
+  }
+  &MenuItem {
+    min-height: 2.75rem !important;
+    border-radius: 0.75rem !important;
+    padding: 0.6rem 0.8rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 750 !important;
+    color: var(--teacher-text) !important;
+  }
+  &MenuItem[data-active="true"],
+  &MenuItem:hover {
+    color: var(--teacher-primary) !important;
+    background: var(--teacher-primary) !important;
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, var(--teacher-surface)) !important;
+    }
+  }
+}
+
+.teacherShell__mobile {
+  &MenuButton {
+    display: none !important;
+  }
+}
+
+.teacherShell__topbar {
+  &IconButton {
+    height: 2.75rem !important;
+    width: 2.75rem !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    color: var(--teacher-muted) !important;
+  }
+  &IconButton:hover {
+    background: var(--teacher-surface-subtle) !important;
+    color: var(--teacher-primary) !important;
+  }
+  &Avatar {
+    height: 2.75rem;
+    width: 2.75rem;
+    border: 3px solid var(--teacher-brand);
+    @supports (color: color-mix(in lab, red, red)) {
+      border: 3px solid color-mix(in srgb, var(--teacher-brand) 18%, var(--teacher-surface));
+    }
+    border-radius: 50%;
+    font-size: 0.78rem;
+  }
+  &Avatar img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  &Profile {
+    display: inline-flex;
+    min-width: 0px;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--teacher-heading);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  &Profile:hover .teacherShell__topbarProfileCopy strong,
+  &Profile:focus-visible .teacherShell__topbarProfileCopy strong {
+    color: var(--teacher-primary);
+  }
+  &Profile:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 4px;
+    border-radius: 0.4rem;
+  }
+  &ProfileCopy {
+    display: grid;
+    gap: 0.08rem;
+    text-align: left;
+  }
+  &ProfileCopy strong {
+    font-size: 0.82rem;
+    line-height: 1.2;
+  }
+  &ProfileCopy small {
+    font-size: 0.7rem;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherShell__notification {
+  &Trigger {
+    position: relative;
+    display: inline-flex;
+  }
+}
+
+.teacherShell__unread {
+  &Dot {
+    position: absolute;
+    top: 0.28rem;
+    right: 0.28rem;
+    height: 0.56rem;
+    width: 0.56rem;
+    border: 2px solid var(--teacher-surface);
+    border-radius: 50%;
+    background: var(--teacher-primary);
+    pointer-events: none;
+  }
+}
+
+.teacherShell__workspace {
+  &[data-top-aligned="true"] .teacherShell__topbar {
+    border-bottom: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .teacherShell__workspace {
+    &[data-top-aligned="true"] {
+      position: relative;
+    }
+    &[data-top-aligned="true"] .teacherShell__topbar {
+      position: absolute;
+      top: 2.5rem;
+      right: 0px;
+      left: 0px;
+      min-height: 2.75rem;
+      background: transparent;
+      backdrop-filter: none;
+      pointer-events: none;
+    }
+    &[data-top-aligned="true"] .teacherShell__topbarActions {
+      pointer-events: auto;
+    }
+    &[data-top-aligned="true"] .teacherShell__content {
+      padding-top: 2.5rem;
+    }
+    &[data-dashboard="true"] .teacherShell__content {
+      padding-bottom: 0.75rem;
+    }
+  }
+}
+
+.teacherShell__notification {
+  &Menu {
+    margin-top: 0.5rem;
+    width: min(23rem, calc(100vw - 2rem));
+    color: var(--teacher-text) !important;
+    background: var(--teacher-surface) !important;
+  }
+  &Heading {
+    list-style-type: none;
+    padding: 1rem 1rem 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--teacher-heading);
+  }
+  &Item {
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    padding: 0.85rem 1rem !important;
+    white-space: normal !important;
+  }
+  &Item[data-unread="true"] {
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 7%, var(--teacher-surface));
+    }
+  }
+  &Message {
+    list-style-type: none;
+    padding: 0.8rem 1rem 1rem;
+    font-size: 0.82rem;
+    color: var(--teacher-muted);
+  }
+  &Message button {
+    margin-left: 0.4rem;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--teacher-primary);
+  }
+  &Icon {
+    display: grid;
+    height: 2.25rem;
+    width: 2.25rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 0.75rem;
+    color: var(--teacher-primary);
+    background: var(--teacher-primary);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 12%, transparent);
+    }
+  }
+  &Icon[data-tone="warning"] {
+    color: var(--teacher-warning);
+    background: var(--teacher-yellow);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-yellow) 20%, transparent);
+    }
+  }
+  &Icon svg {
+    font-size: 1.1rem;
+  }
+  &Item > span:last-child {
+    display: grid;
+    gap: 0.2rem;
+  }
+  &Item strong {
+    font-size: 0.82rem;
+    color: var(--teacher-heading);
+  }
+  &Item small {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--teacher-muted);
+  }
+  &Item time {
+    font-size: 0.67rem;
+    color: var(--teacher-muted);
+  }
+}
+
+.teacherShell__drawer {
+  &Paper {
+    width: min(19rem, 88vw);
+    color: #ffffff !important;
+    background: var(--teacher-sidebar) !important;
+  }
+}
+
+.teacherShell__bottom {
+  &Navigation {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .teacherShell {
+    display: block;
+    min-height: 100dvh;
+    width: 100%;
+  }
+
+  .teacherShell__desktop {
+    &Sidebar {
+      display: none;
+    }
+  }
+
+  .teacherShell__workspace {
+    min-height: 100dvh;
+  }
+
+  .teacherShell__mobile {
+    &MenuButton {
+      display: inline-flex !important;
+    }
+  }
+
+  .teacherShell__topbar {
+    justify-content: space-between;
+    &Leading {
+      display: flex;
+    }
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 760px) {
+  .teacherShell__navigation {
+    min-height: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-color: rgb(255 255 255 / 32%) transparent;
+  }
+}
+
+@media (max-width: 767px) {
+  .teacherShell {
+    min-height: 100dvh;
+    width: 100%;
+  }
+
+  .teacherShell__workspace {
+    min-height: 100dvh;
+  }
+
+  .teacherShell__content {
+    min-height: calc(100dvh - 8.75rem);
+    padding: 1.25rem 1rem 6.5rem;
+  }
+
+  .teacherShell__topbar {
+    min-height: 4rem;
+    padding-inline: 1rem;
+    border-bottom-color: var(--teacher-border);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-bottom-color: color-mix(in srgb, var(--teacher-border) 75%, transparent);
+    }
+    &ProfileCopy {
+      display: none;
+    }
+    &Actions {
+      gap: 0.4rem;
+    }
+  }
+
+  .teacherShell__locale {
+    &Trigger {
+      min-width: 3.6rem;
+      gap: 0.15rem;
+      padding: 0 0.45rem;
+    }
+    &Trigger svg:first-child {
+      display: none;
+    }
+  }
+
+  .teacherShell__bottom {
+    &Navigation {
+      position: fixed;
+      inset: auto 0 0;
+      z-index: 25;
+      display: grid;
+      min-height: 4.75rem;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 0.45rem max(0.65rem, env(safe-area-inset-right))
+        max(0.45rem, env(safe-area-inset-bottom)) max(0.65rem, env(safe-area-inset-left));
+      border-top: 1px solid var(--teacher-border);
+      background: var(--teacher-surface);
+      @supports (color: color-mix(in lab, red, red)) {
+        background: color-mix(in srgb, var(--teacher-surface) 96%, transparent);
+      }
+      box-shadow: 0 -12px 32px rgb(16 42 67 / 7%);
+      backdrop-filter: blur(18px) saturate(150%);
+    }
+    &NavigationLink {
+      display: grid;
+      min-width: 0px;
+      place-items: center;
+      align-content: center;
+      gap: 0.2rem;
+      border-radius: 0.8rem;
+      font-size: 0.64rem;
+      font-weight: 750;
+      color: var(--teacher-muted);
+    }
+    &NavigationLink svg {
+      font-size: 1.3rem;
+    }
+    &NavigationLink[data-active="true"] {
+      color: #ffffff;
+      background: var(--teacher-primary);
+      box-shadow: 0 8px 18px rgb(37 99 235 / 18%);
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherShell__navigation {
+    &Link:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherShell {
+    & *,
+    & *::before,
+    & *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}

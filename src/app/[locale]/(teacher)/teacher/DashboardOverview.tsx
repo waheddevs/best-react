@@ -11,8 +11,6 @@ import {
   teacherGroupCapacityPercentage,
 } from "@/config/teacher/TeacherGroupCapacity";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/dashboard.module.css";
-import sharedStyles from "@/css/teacher/shared.module.css";
 import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
 import { formatTeacherNumber } from "@/lib/teacher/TeacherNumberFormat";
 import type { TeacherCopy, TeacherPreviewData } from "@/types/teacher/Teacher";
@@ -35,26 +33,23 @@ type DashboardOverviewProps = {
 
 export function DashboardOverview({ copy, data, locale }: DashboardOverviewProps) {
   return (
-    <main className={styles.teacherDashboard}>
+    <main className="teacherDashboard">
       <TeacherPageHeader eyebrow={copy.dashboard.eyebrow} title={copy.dashboard.pageTitle} />
 
-      <section
-        aria-label={copy.dashboard.pageTitle}
-        className={styles.teacherDashboard__metricRail}
-      >
+      <section aria-label={copy.dashboard.pageTitle} className="teacherDashboard__metricRail">
         {data.dashboardMetrics.map((metric) => {
           const MetricIcon = metricIcons[metric.id];
 
           return (
             <article
-              className={styles.teacherDashboard__metricCard}
+              className="teacherDashboard__metricCard"
               data-tone={metric.tone}
               key={metric.id}
             >
-              <span className={styles.teacherDashboard__metricIcon}>
+              <span className="teacherDashboard__metricIcon">
                 <MetricIcon aria-hidden="true" />
               </span>
-              <div className={styles.teacherDashboard__metricCopy}>
+              <div className="teacherDashboard__metricCopy">
                 <p>{metric.label[locale]}</p>
                 <strong>{formatTeacherNumber(metric.value)}</strong>
               </div>
@@ -65,45 +60,43 @@ export function DashboardOverview({ copy, data, locale }: DashboardOverviewProps
 
       <DashboardNewClasses copy={copy} groups={data.groups} locale={locale} />
 
-      <div className={styles.teacherDashboard__contentGrid}>
-        <section className={styles.teacherDashboard__groupSection}>
-          <div className={sharedStyles.teacherShared__sectionHeader}>
-            <h2
-              className={`${sharedStyles.teacherShared__sectionTitle} ${styles.teacherDashboard__sectionTitle}`}
-            >
+      <div className="teacherDashboard__contentGrid">
+        <section className="teacherDashboard__groupSection">
+          <div className="teacherShared__sectionHeader">
+            <h2 className={`teacherShared__sectionTitle teacherDashboard__sectionTitle`}>
               {copy.dashboard.groupsTitle}
             </h2>
             <ScrollToTopLink
-              className={styles.teacherDashboard__sectionAction}
+              className="teacherDashboard__sectionAction"
               href={`/${locale}/teacher/groups`}
             >
               {copy.dashboard.viewAll}
             </ScrollToTopLink>
           </div>
-          <div className={styles.teacherDashboard__groupGrid}>
+          <div className="teacherDashboard__groupGrid">
             {data.groups.slice(0, 4).map((group) => (
               <ScrollToTopLink
                 aria-label={`${group.name}: ${group.learnerCount}/${teacherGroupCapacity} ${copy.reception.learnerCount}; ${group.lessonDays[locale]}, ${group.time}; ${teacherGroupCapacityPercentage(group.learnerCount)}%`}
-                className={styles.teacherDashboard__groupCard}
+                className="teacherDashboard__groupCard"
                 href={`/${locale}/teacher/groups/${group.slug}`}
                 key={group.id}
               >
-                <span className={styles.teacherDashboard__groupTopline}>
+                <span className="teacherDashboard__groupTopline">
                   <strong>{group.name}</strong>
                   <span>
                     {group.learnerCount}/{teacherGroupCapacity}
                   </span>
                 </span>
-                <span className={styles.teacherDashboard__groupMeta}>
+                <span className="teacherDashboard__groupMeta">
                   {group.lessonDays[locale]} · {group.time}
                 </span>
-                <span className={styles.teacherDashboard__progressRow}>
-                  <span className={styles.teacherDashboard__progressTrack}>
+                <span className="teacherDashboard__progressRow">
+                  <span className="teacherDashboard__progressTrack">
                     <span
                       style={{ width: `${teacherGroupCapacityPercentage(group.learnerCount)}%` }}
                     />
                   </span>
-                  <span className={styles.teacherDashboard__attendance}>
+                  <span className="teacherDashboard__attendance">
                     {teacherGroupCapacityPercentage(group.learnerCount)}%
                   </span>
                 </span>
