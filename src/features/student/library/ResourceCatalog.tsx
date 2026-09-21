@@ -7,7 +7,6 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/student/library.module.css";
 import type { StudentLibraryCopy } from "@/dictionaries/student/Library";
 import { useResourceCatalog } from "@/hooks/student/library/useResourceCatalog";
 import type { LibraryResource } from "@/types/student/Library";
@@ -30,7 +29,7 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
 
   return (
     <div>
-      <div className={styles.library__catalogFilters}>
+      <div className="library__catalogFilters">
         <TextField
           fullWidth
           label={copy.searchLabel}
@@ -47,7 +46,7 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
             },
           }}
         />
-        <div className={styles.library__catalogTypes} aria-label={copy.title}>
+        <div className="library__catalogTypes" aria-label={copy.title}>
           {resourceTypes.map((item) => {
             const selected = type === item;
             return (
@@ -65,7 +64,7 @@ export function ResourceCatalog({ resources, locale, copy }: ResourceCatalogProp
           })}
         </div>
       </div>
-      <div className={styles.library__catalogGrid}>
+      <div className="library__catalogGrid">
         {filteredResources.length > 0 ? (
           filteredResources.map((resource) => (
             <ResourceCard key={resource.slug} resource={resource} locale={locale} copy={copy} />

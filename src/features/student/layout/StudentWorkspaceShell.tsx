@@ -12,7 +12,6 @@ import type { ReactNode } from "react";
 import { WorkspaceLocaleNavigation } from "@/components/navigation/WorkspaceLocaleNavigation";
 import type { Locale } from "@/config/Locales";
 import { studentNavigationItems } from "@/config/StudentNavigation";
-import styles from "@/css/student/shell.module.css";
 import { useWorkspaceShellNavigation } from "@/hooks/navigation/useWorkspaceShellNavigation";
 import { useBestApiConnection } from "@/hooks/useBestApiConnection";
 import { getWorkspaceInitials } from "@/lib/WorkspaceIdentity";
@@ -38,12 +37,12 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
   const studentInitials = getWorkspaceInitials(copy.common.studentName, locale);
 
   return (
-    <div className={styles.studentShell}>
-      <aside className={styles.studentShell__sidebar}>
-        <Link className={styles.studentShell__brand} href={`/${locale}/student`}>
+    <div className="studentShell">
+      <aside className="studentShell__sidebar">
+        <Link className="studentShell__brand" href={`/${locale}/student`}>
           <Image
             alt="BEST LC"
-            className={styles.studentShell__logo}
+            className="studentShell__logo"
             height={42}
             src="/icons/logo.svg"
             width={42}
@@ -53,14 +52,14 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
             <small>{copy.common.workspaceLabel}</small>
           </span>
         </Link>
-        <nav aria-label={copy.common.workspaceLabel} className={styles.studentShell__navigation}>
+        <nav aria-label={copy.common.workspaceLabel} className="studentShell__navigation">
           <StudentWorkspaceNavigation
             copy={copy.navigation}
             items={navigationItems}
             onNavigate={handleNavigation}
           />
         </nav>
-        <div className={styles.studentShell__profile}>
+        <div className="studentShell__profile">
           <span aria-hidden="true">{studentInitials}</span>
           <div>
             <strong>{copy.common.studentName}</strong>
@@ -69,58 +68,58 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
         </div>
       </aside>
 
-      <div className={styles.studentShell__workspace}>
-        <header className={styles.studentShell__topbar}>
+      <div className="studentShell__workspace">
+        <header className="studentShell__topbar">
           <button
             aria-expanded={menuOpen}
             aria-label={menuOpen ? copy.common.menuClose : copy.common.menuOpen}
-            className={styles.studentShell__menuButton}
+            className="studentShell__menuButton"
             onClick={handleMenuToggle}
             type="button"
           >
             {menuOpen ? <CloseRounded /> : <MenuRounded />}
           </button>
-          <div className={styles.studentShell__mobileBrand}>
+          <div className="studentShell__mobileBrand">
             <strong>BEST LC</strong>
             <span>{copy.common.workspaceLabel}</span>
           </div>
-          <div className={styles.studentShell__topActions}>
+          <div className="studentShell__topActions">
             <WorkspaceLocaleNavigation
-              className={styles.studentShell__locales}
+              className="studentShell__locales"
               label={copy.common.languageLabel}
               onNavigate={handleNavigation}
               options={localeOptions}
             />
-            <span className={styles.studentShell__secure}>
+            <span className="studentShell__secure">
               {connectionState === "connected"
                 ? copy.common.connectedNotice
                 : copy.common.previewNotice}
             </span>
             <Link
               aria-label={copy.navigation.notifications}
-              className={styles.studentShell__bell}
+              className="studentShell__bell"
               href={`/${locale}/student/notifications`}
             >
               <NotificationsNoneRounded />
             </Link>
             <button
               aria-label={copy.common.logoutLabel}
-              className={styles.studentShell__signOut}
+              className="studentShell__signOut"
               onClick={() => void signOut({ redirectTo: `/${locale}/login` })}
               title={copy.common.logoutLabel}
               type="button"
             >
               <LogoutRounded />
             </button>
-            <div aria-label={copy.common.accountLabel} className={styles.studentShell__avatar}>
+            <div aria-label={copy.common.accountLabel} className="studentShell__avatar">
               {studentInitials}
             </div>
           </div>
         </header>
         {menuOpen ? (
-          <div className={styles.studentShell__mobilePanel}>
+          <div className="studentShell__mobilePanel">
             <WorkspaceLocaleNavigation
-              className={styles.studentShell__mobileLocales}
+              className="studentShell__mobileLocales"
               label={copy.common.languageLabel}
               onNavigate={handleNavigation}
               options={localeOptions}
@@ -134,10 +133,10 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
             </nav>
           </div>
         ) : null}
-        <main className={styles.studentShell__main}>{children}</main>
+        <main className="studentShell__main">{children}</main>
       </div>
 
-      <nav aria-label={copy.common.workspaceLabel} className={styles.studentShell__dock}>
+      <nav aria-label={copy.common.workspaceLabel} className="studentShell__dock">
         <StudentWorkspaceNavigation
           copy={copy.navigation}
           items={navigationItems.slice(0, 5)}

@@ -1,7 +1,6 @@
 import ArrowDownwardRounded from "@mui/icons-material/ArrowDownwardRounded";
 import ArrowUpwardRounded from "@mui/icons-material/ArrowUpwardRounded";
 
-import styles from "@/css/student/testRunner.module.css";
 import type { StudentTestRunnerState } from "@/hooks/student/tests/useStudentTestRunner";
 import type {
   StudentPreviewQuestion,
@@ -23,7 +22,7 @@ export function StudentQuestionInput({ copy, question, runner }: StudentQuestion
     question.kind === "mediaPrompt"
   ) {
     return (
-      <div className={styles.testRunner__textAnswer}>
+      <div className="testRunner__textAnswer">
         {question.kind === "mediaPrompt" ? <p>{copy.mediaUnavailableLabel}</p> : null}
         <textarea
           aria-label={copy.textPlaceholder}
@@ -38,7 +37,7 @@ export function StudentQuestionInput({ copy, question, runner }: StudentQuestion
 
   if (question.kind === "matching") {
     return (
-      <div className={styles.testRunner__matching}>
+      <div className="testRunner__matching">
         {question.pairs?.map((pair) => (
           <label key={pair.id}>
             <span>{pair.left}</span>
@@ -59,7 +58,7 @@ export function StudentQuestionInput({ copy, question, runner }: StudentQuestion
 
   if (question.kind === "ordering") {
     return (
-      <ol className={styles.testRunner__ordering}>
+      <ol className="testRunner__ordering">
         {(runner.orders[question.id] ?? []).map((option, index) => (
           <li key={option}>
             <span>{option}</span>
@@ -93,7 +92,7 @@ export function StudentQuestionInput({ copy, question, runner }: StudentQuestion
   const selected = Array.isArray(answer) ? answer : [answer];
 
   return (
-    <div className={styles.testRunner__choices}>
+    <div className="testRunner__choices">
       {options.map((option) => (
         <label key={option}>
           <input

@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import styles from "@/css/student/shell.module.css";
 import type { WorkspaceNavigationItem } from "@/hooks/navigation/useWorkspaceShellNavigation";
 import type { StudentNavigationKey, StudentWorkspaceCopy } from "@/types/student/StudentWorkspace";
 
@@ -25,18 +24,18 @@ export function StudentWorkspaceNavigation({
       className={
         mode === "dock"
           ? item.active
-            ? styles.studentShell__dockLinkActive
-            : styles.studentShell__dockLink
+            ? "studentShell__dockLinkActive"
+            : "studentShell__dockLink"
           : item.active
-            ? styles.studentShell__navLinkActive
-            : styles.studentShell__navLink
+            ? "studentShell__navLinkActive"
+            : "studentShell__navLink"
       }
       href={item.localizedHref}
       key={item.key}
       onClick={onNavigate}
     >
       {mode === "rail" ? (
-        <span className={styles.studentShell__navIcon}>
+        <span className="studentShell__navIcon">
           <StudentNavigationIcon navigationKey={item.key} />
         </span>
       ) : (

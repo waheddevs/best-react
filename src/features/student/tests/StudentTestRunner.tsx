@@ -5,7 +5,6 @@ import FlagOutlined from "@mui/icons-material/FlagOutlined";
 import TimerOutlined from "@mui/icons-material/TimerOutlined";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/student/testRunner.module.css";
 import { useStudentTestRunner } from "@/hooks/student/tests/useStudentTestRunner";
 import type {
   StudentPreviewQuestion,
@@ -33,8 +32,8 @@ export function StudentTestRunner({ copy, locale, questions, test }: StudentTest
   const isReviewed = runner.reviewIds.includes(question.id);
 
   return (
-    <article className={styles.testRunner}>
-      <header className={styles.testRunner__header}>
+    <article className="testRunner">
+      <header className="testRunner__header">
         <button onClick={runner.handleExitRequest} type="button">
           <ArrowBackRounded aria-hidden="true" />
           {copy.exitLabel}
@@ -43,20 +42,20 @@ export function StudentTestRunner({ copy, locale, questions, test }: StudentTest
           <span>{test.detail}</span>
           <h1>{test.title}</h1>
         </div>
-        <div className={styles.testRunner__timer}>
+        <div className="testRunner__timer">
           <TimerOutlined aria-hidden="true" />
           <span>{copy.timerLabel}</span>
           <strong>24:18</strong>
         </div>
       </header>
 
-      <p className={styles.testRunner__notice}>{copy.previewNotice}</p>
+      <p className="testRunner__notice">{copy.previewNotice}</p>
 
-      <div className={styles.testRunner__layout}>
+      <div className="testRunner__layout">
         <StudentTestNavigator copy={copy} questions={questions} runner={runner} />
 
-        <section className={styles.testRunner__question}>
-          <div className={styles.testRunner__questionTop}>
+        <section className="testRunner__question">
+          <div className="testRunner__questionTop">
             <span>
               {copy.questionLabel} {runner.currentIndex + 1} / {questions.length}
             </span>

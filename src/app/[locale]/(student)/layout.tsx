@@ -8,6 +8,8 @@ import { StudentWorkspaceShell } from "@/features/student/layout/StudentWorkspac
 import { getDashboardAccessState } from "@/lib/DashboardAccess";
 import { StudentThemeProvider } from "@/theme/StudentThemeProvider";
 
+import "@/scss/student/main.scss";
+
 export const metadata = { robots: { follow: false, index: false } };
 
 type StudentLayoutProps = {
