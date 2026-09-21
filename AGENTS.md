@@ -122,8 +122,11 @@ credentials-preview instruction:
   inputs. Keep role, account-status, and unexpected failures generic; preserve
   throttling. Mask the email on the code screen and provide Verify, Resend code,
   and Back to login actions.
-- Only operational Admin can provision Student or Teacher accounts and issue a
-  temporary credential/reset. There is no public registration, self-service
+- Operational Admin may provision Student or Teacher accounts. A verified
+  Teacher may also create a Student account only while enrolling that Student
+  into one of their own active groups through the approved atomic mutation.
+  This does not grant unrelated Admin rights or Teacher-account provisioning.
+  There is no public registration, self-service
   password reset, provider linking, or account creation. Permanent plaintext
   passwords must never be stored, logged, redisplayed, or recoverable.
 - Passwords use the backend's approved adaptive password hashing. Temporary
@@ -135,6 +138,10 @@ credentials-preview instruction:
   SameSite-appropriate, and contain the short-lived backend access token needed
   by server-side dashboard authorization. Never persist access tokens in local
   storage, URLs, or user-editable role state.
+- Open the public Login route in the current tab. After code verification and
+  successful session creation, open the authorized dashboard in a separate tab;
+  keep a localized manual link available if the browser blocks automatic opening.
+  Do not navigate the original Login tab to the dashboard on success.
 - Resolve Student, Teacher, and operational Admin authorization from PostgreSQL
   on every protected backend request. Protect all three workspace layouts and
   redirect unauthenticated or mismatched roles to their localized login route.
@@ -187,7 +194,11 @@ explicit adapters only when an authenticated backend contract is available.
 Teacher group creation is now explicitly approved as a connected exception to
 the frontend preview boundary: a verified Teacher may create an owned group
 through the sibling GraphQL API with a persisted category (IELTS, CEFR, or
-General English), name, room, lesson days, and daily time range. Keep the
+General English), name, room, lesson days, daily time range, and a monthly
+tuition rate in whole UZS (300,000 UZS initial value). Connected group edits
+may change that rate through the existing effective-dated backend table. The
+Teacher roster shows ledger-derived overdue balance and current-month paid
+allocations; a rate alone must never fabricate a debt or payment. Keep the
 Teacher role and ownership checks on the backend, show success only after the
 database accepts the mutation, and load the catalog from the API in connected
 mode. Preview mode must clearly identify that it does not persist groups.
@@ -209,6 +220,10 @@ record stays in PostgreSQL while Teacher lists and details hide it. Reject
 deletion if active student memberships remain. Show a confirmation dialog and
 remove the card only after the API succeeds. Connected group detail links load
 from the API. Preview mode must not claim that deletion persisted.
+The Add student form reuses the group-edit modal styling. It accepts first name,
+last name, phone, email, and password; the current group is implicit and the
+membership starts active. The backend enforces Teacher ownership, capacity,
+unique email, password hashing, and atomic persistence with an audit event.
 Connected Teacher queries and mutations use the shared Apollo Client
 integration described in section 7E. Keep backend role and ownership checks
 authoritative; an Apollo context flag, cached object, route, or client session
@@ -244,8 +259,8 @@ the teacher-owned frontend preview:
   saved server data.
 - Search, filters, tabs, drawers, dialogs, menus, accordions, language routing,
   theme switching, and local message/task state may work fully in the browser.
-  Except for the approved connected group creation, soft deletion, and group
-  data reads above,
+  Except for the approved connected group creation, soft deletion, atomic
+  Student enrollment, and group data reads above,
   no teacher action may call an API, send a message, place a phone call, upload
   a file, change a password, create or delete an account, alter a real session,
   modify a payment, or persist business data.
@@ -777,10 +792,15 @@ locales with the intention of translating it later.
 ### Approved full-Sass styling architecture and migration
 
 The user approved replacing Tailwind CSS completely with Dart Sass. This is a
-staged, visual-parity migration: Public is migrated page by page, then Teacher
-is migrated section by section. Keep the application buildable after every
-slice. Do not start Student or Admin styling migration until its separately
-approved development phase begins.
+staged, visual-parity migration: Public is migrated page by page, then Teacher,
+Student, and Admin are migrated by owned surface. Student and Admin styling
+migration is now explicitly approved. Keep the application buildable after
+every slice.
+
+Public, Teacher, Student, and Admin route-group styles now use their owned
+Sass entrypoints. The separate Auth surface still consumes its legacy CSS
+Module; do not remove the Tailwind pipeline or root compatibility stylesheet
+until Auth has been migrated and verified too.
 
 All long-term styling belongs under `src/scss/`. Root files have project-wide
 ownership: `app.scss` is the only application entrypoint, `_reset.scss` is the
@@ -795,8 +815,8 @@ Exams, and Results. Teacher and every later dashboard must follow the same
 plain-Sass naming rule under their own `pages/` folder. Do not add `.module` to
 Sass filenames or import Sass files as JavaScript style-map objects. Auth
 remains a separate surface under `scss/auth/`; it must not inherit Public page
-styling merely because login is publicly reachable. Create `scss/student/` and
-`scss/admin/` only when those styling phases begin.
+styling merely because login is publicly reachable. Student and Admin own
+`scss/student/` and `scss/admin/` respectively.
 
 `app.scss` may load only the reset, project-wide variables/base behavior, and
 truly global accessibility or typography rules. Every surface `main.scss`
@@ -810,9 +830,17 @@ more than the Public route group; keep its selectors under `publicShared__`.
 
 Use page-scoped BEM namespaces with camelCase element names, such as
 `.publicHome`, `.publicHome__hero`, and `.publicHome__heroImage`. Separate
-component ownership with exact section comments such as `/* HomeHero */` and
-`/* FeaturedCourses */`. Use native Sass nesting for child, state, pseudo, and
-responsive rules, but avoid nesting deeper than three selector levels.
+component ownership with short uppercase section comments such as `/* HERO */`
+and `/* COURSES */`. Keep each page section or route-local component in its own
+commented block instead of one file-spanning selector. Use the component's BEM
+class as the Sass root when it exists; matching BEM suffixes may nest beneath
+that root. When existing sibling class names share only a page or section
+prefix, group them under that lexical prefix without emitting an unused CSS
+rule. Reserve the bare page class for page-wide declarations only; section
+blocks must use section/component-specific roots. Nest child, state, pseudo,
+and responsive rules under their owner, but do not introduce a descendant
+selector merely to force nesting. Preserve compiled selectors and cascade
+order, and avoid nesting deeper than three selector levels.
 
 Use `@use` and `@forward`, never deprecated Sass `@import`. Prefix reusable
 partial filenames with `_`. Prefer namespaced members; do not use `as *` for
@@ -830,10 +858,11 @@ so the workspaces remain visually distinct.
 During migration, legacy `src/css/**/*.module.css`, `app/globals.css`, Tailwind
 dependencies, PostCSS configuration, and Tailwind editor settings may remain
 only while an unmigrated surface still consumes them. Do not add new Tailwind
-utilities, `@apply`, `@reference`, or `@theme` usage. After Public and Teacher
-reach verified Sass parity, remove the obsolete Tailwind pipeline and remaining
-legacy files in a dedicated cleanup commit. Do not claim the migration complete
-until code search finds no runtime Tailwind dependency or directive.
+utilities, `@apply`, `@reference`, or `@theme` usage. Remove the obsolete
+Tailwind pipeline and remaining legacy files in a dedicated cleanup change only
+after every consuming surface, including Auth, reaches verified Sass parity.
+Do not claim the migration complete until code search finds no runtime Tailwind
+dependency or directive.
 
 For every migration slice, preserve layout, responsive behavior, focus states,
 reduced-motion behavior, all three locales, and Teacher light/dark appearance.
@@ -3141,9 +3170,10 @@ The approved backend identity flow is Admin-provisioned credentials followed by
 a six-digit email login challenge. It replaces the former social-provider
 direction.
 
-- Do not expose public signup, OAuth/social-provider exchange, self-service
-  password reset, or account creation. Only operational Admin can provision and
-  manage Student/Teacher credentials through authorized operations.
+- Do not expose public signup, OAuth/social-provider exchange, or self-service
+  password reset. Operational Admin provisions and manages Student/Teacher
+  credentials; the narrowly approved Teacher-owned Student enrollment mutation
+  is the only Teacher credential-provisioning exception.
 - Verify the adaptive password hash before issuing a short-lived, hashed,
   single-use email-code challenge. A valid challenge is not a session; issue a
   backend access token only after the code succeeds within its expiry and
