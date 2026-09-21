@@ -1,253 +1,247 @@
-﻿@use "../../breakpoints";
+@use "../../breakpoints";
 
+/* PAGE */
 .contact {
   min-height: 100vh;
 }
 
-.contact__heroVisual {
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: #fffc;
-  border-radius: 2.25rem;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
+/* HERO */
+.contact__hero {
+  &Visual {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-color: #fffc;
+    border-radius: 2.25rem;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
 
-@supports (color: color-mix(in lab, red, red)) {
-  .contact__heroVisual {
-    border-color: color-mix(in oklab, var(--color-white, #fff) 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-white, #fff) 80%, transparent);
+    }
   }
-}
 
-.contact__heroVisual {
-  --tw-shadow: 0 24px 70px var(--tw-shadow-color, #102a431a);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
-    var(--tw-ring-shadow), var(--tw-shadow);
-  isolation: isolate;
-  background-image: linear-gradient(145deg, #fff 0%, #edf7ff 100%);
-}
-
-.contact__heroOrbit {
-  border-style: var(--tw-border-style);
-  --tw-border-style: dashed;
-  border-style: dashed;
-  border-width: 2px;
-  border-color: var(--action-blue);
-  border-radius: 3.40282e38px;
-  width: 84%;
-  height: 84%;
-  position: absolute;
-  top: 8%;
-  left: 8%;
-}
-
-@supports (color: color-mix(in lab, red, red)) {
-  .contact__heroOrbit {
-    border-color: color-mix(in oklab, var(--action-blue) 20%, transparent);
+  &Visual {
+    --tw-shadow: 0 24px 70px var(--tw-shadow-color, #102a431a);
+    box-shadow:
+      var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+      var(--tw-ring-shadow), var(--tw-shadow);
+    isolation: isolate;
+    background-image: linear-gradient(145deg, #fff 0%, #edf7ff 100%);
   }
-}
 
-.contact__heroMessage {
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: var(--border);
-  background-color: var(--surface);
-  --tw-shadow: 0 22px 55px var(--tw-shadow-color, #102a4324);
-  width: 68%;
-  height: 72%;
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
-    var(--tw-ring-shadow), var(--tw-shadow);
-  border-radius: 2rem;
-  padding: 8%;
-  position: absolute;
-  top: 13%;
-  left: 16%;
-  rotate: -2deg;
-}
+  &Orbit {
+    border-style: var(--tw-border-style);
+    --tw-border-style: dashed;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: var(--action-blue);
+    border-radius: 3.40282e38px;
+    width: 84%;
+    height: 84%;
+    position: absolute;
+    top: 8%;
+    left: 8%;
 
-.contact__heroMessageMotion {
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  position: relative;
-}
-
-.contact__heroMessageIcon {
-  width: calc(var(--spacing, 0.25rem) * 13);
-  height: calc(var(--spacing, 0.25rem) * 13);
-  border-radius: var(--radius-2xl, 1rem);
-  background-color: var(--brand-turquoise);
-  place-items: center;
-  display: grid;
-}
-
-@supports (color: color-mix(in lab, red, red)) {
-  .contact__heroMessageIcon {
-    background-color: color-mix(in oklab, var(--brand-turquoise) 15%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--action-blue) 20%, transparent);
+    }
   }
-}
 
-.contact__heroMessageIcon {
-  color: var(--heading);
-}
+  &Message {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-color: var(--border);
+    background-color: var(--surface);
+    --tw-shadow: 0 22px 55px var(--tw-shadow-color, #102a4324);
+    width: 68%;
+    height: 72%;
+    box-shadow:
+      var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+      var(--tw-ring-shadow), var(--tw-shadow);
+    border-radius: 2rem;
+    padding: 8%;
+    position: absolute;
+    top: 13%;
+    left: 16%;
+    rotate: -2deg;
+  }
 
-.contact__heroMessageTitle {
-  margin-top: calc(var(--spacing, 0.25rem) * 5);
-  --tw-leading: var(--leading-tight, 1.25);
-  max-width: 18ch;
-  font-size: clamp(0.78rem, 2.2vw, 1rem);
-  line-height: var(--leading-tight, 1.25);
-  --tw-font-weight: var(--font-weight-black, 900);
-  font-weight: var(--font-weight-black, 900);
-  color: var(--heading);
-}
+  &MessageMotion {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: relative;
+  }
 
-.contact__heroMessageMeta {
-  margin-top: calc(var(--spacing, 0.25rem) * 2);
-  --tw-leading: calc(var(--spacing, 0.25rem) * 5);
-  max-width: 24ch;
-  font-size: clamp(0.62rem, 1.7vw, 0.76rem);
-  line-height: calc(var(--spacing, 0.25rem) * 5);
-  --tw-font-weight: var(--font-weight-semibold, 600);
-  font-weight: var(--font-weight-semibold, 600);
-  color: var(--muted);
-}
+  &MessageIcon {
+    width: calc(var(--spacing, 0.25rem) * 13);
+    height: calc(var(--spacing, 0.25rem) * 13);
+    border-radius: var(--radius-2xl, 1rem);
+    background-color: var(--brand-turquoise);
+    place-items: center;
+    display: grid;
 
-.contact__heroMessageComposer {
-  align-items: center;
-  gap: calc(var(--spacing, 0.25rem) * 2.5);
-  min-width: 0;
-  margin-top: auto;
-  display: flex;
-}
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--brand-turquoise) 15%, transparent);
+    }
+  }
 
-.contact__heroMessageInputShell {
-  height: calc(var(--spacing, 0.25rem) * 12);
-  flex: 1;
-  min-width: 0;
-  position: relative;
-}
+  &MessageIcon {
+    color: var(--heading);
+  }
 
-.contact__heroMessageInput {
-  border-radius: var(--radius-2xl, 1rem);
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: var(--border);
-  background-color: var(--background);
-  width: 100%;
-  min-width: 0;
-  height: 100%;
-  padding-inline: calc(var(--spacing, 0.25rem) * 3);
-  --tw-font-weight: var(--font-weight-semibold, 600);
-  font-size: clamp(0.56rem, 1.45vw, 0.72rem);
-  font-weight: var(--font-weight-semibold, 600);
-  color: var(--heading);
-  --tw-outline-style: none;
-  outline-style: none;
-}
+  &MessageTitle {
+    margin-top: calc(var(--spacing, 0.25rem) * 5);
+    --tw-leading: var(--leading-tight, 1.25);
+    max-width: 18ch;
+    font-size: clamp(0.78rem, 2.2vw, 1rem);
+    line-height: var(--leading-tight, 1.25);
+    font-weight: var(--font-weight-black, 900);
+    color: var(--heading);
+  }
 
-.contact__heroMessageTypingLayer {
-  pointer-events: none;
-  inset-block: 0;
-  right: calc(var(--spacing, 0.25rem) * 3);
-  left: calc(var(--spacing, 0.25rem) * 3);
-  align-items: center;
-  min-width: 0;
-  display: flex;
-  position: absolute;
-  overflow: hidden;
-}
+  &MessageMeta {
+    margin-top: calc(var(--spacing, 0.25rem) * 2);
+    --tw-leading: calc(var(--spacing, 0.25rem) * 5);
+    max-width: 24ch;
+    font-size: clamp(0.62rem, 1.7vw, 0.76rem);
+    line-height: calc(var(--spacing, 0.25rem) * 5);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--muted);
+  }
 
-.contact__heroMessageInputMirror {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  --tw-font-weight: var(--font-weight-semibold, 600);
-  max-width: 100%;
-  font-size: clamp(0.56rem, 1.45vw, 0.72rem);
-  font-weight: var(--font-weight-semibold, 600);
-  white-space: pre;
-  color: #0000;
-  flex-shrink: 1;
-  overflow: hidden;
-}
+  &MessageComposer {
+    align-items: center;
+    gap: calc(var(--spacing, 0.25rem) * 2.5);
+    min-width: 0;
+    margin-top: auto;
+    display: flex;
+  }
 
-.contact__heroMessageCaret {
-  height: calc(var(--spacing, 0.25rem) * 4);
-  width: calc(var(--spacing, 0.25rem) * 0.5);
-  background-color: var(--action-blue);
-  border-radius: 3.40282e38px;
-  flex-shrink: 0;
-  margin-left: 1px;
-  animation: 0.8s step-end infinite contact-message-caret;
-  display: block;
-}
+  &MessageInputShell {
+    height: calc(var(--spacing, 0.25rem) * 12);
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
 
-.contact__heroMessageAction {
-  z-index: 20;
-  width: calc(var(--spacing, 0.25rem) * 12);
-  height: calc(var(--spacing, 0.25rem) * 12);
-  border-radius: var(--radius-2xl, 1rem);
-  background-image: var(--gradient-cta);
-  color: var(--color-white, #fff);
-  --tw-shadow: 0 10px 24px var(--tw-shadow-color, #2563eb38);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
-    var(--tw-ring-shadow), var(--tw-shadow);
-  flex-shrink: 0;
-  place-items: center;
-  display: grid;
-  position: relative;
-}
+  &MessageInput {
+    border-radius: var(--radius-2xl, 1rem);
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-color: var(--border);
+    background-color: var(--background);
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding-inline: calc(var(--spacing, 0.25rem) * 3);
+    font-size: clamp(0.56rem, 1.45vw, 0.72rem);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--heading);
+    --tw-outline-style: none;
+    outline-style: none;
+  }
 
-.contact__heroChannel {
-  z-index: 10;
-  width: calc(var(--spacing, 0.25rem) * 14);
-  height: calc(var(--spacing, 0.25rem) * 14);
-  border-radius: var(--radius-2xl, 1rem);
-  border-style: var(--tw-border-style);
-  border-width: 4px;
-  border-color: var(--surface);
-  --tw-shadow: 0 14px 30px var(--tw-shadow-color, #102a4329);
-  box-shadow:
-    var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
-    var(--tw-ring-shadow), var(--tw-shadow);
-  place-items: center;
-  display: grid;
-  position: absolute;
-}
+  &MessageTypingLayer {
+    pointer-events: none;
+    inset-block: 0;
+    right: calc(var(--spacing, 0.25rem) * 3);
+    left: calc(var(--spacing, 0.25rem) * 3);
+    align-items: center;
+    min-width: 0;
+    display: flex;
+    position: absolute;
+    overflow: hidden;
+  }
 
-.contact__heroChannel svg {
-  font-size: 26px !important;
-}
+  &MessageInputMirror {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    font-size: clamp(0.56rem, 1.45vw, 0.72rem);
+    font-weight: var(--font-weight-semibold, 600);
+    white-space: pre;
+    color: #0000;
+    flex-shrink: 1;
+    overflow: hidden;
+  }
 
-.contact__heroChannelChat {
-  background-color: var(--sunny-yellow);
-  color: var(--heading);
-  top: 9%;
-  right: 8%;
-}
+  &MessageCaret {
+    height: calc(var(--spacing, 0.25rem) * 4);
+    width: calc(var(--spacing, 0.25rem) * 0.5);
+    background-color: var(--action-blue);
+    border-radius: 3.40282e38px;
+    flex-shrink: 0;
+    margin-left: 1px;
+    animation: 0.8s step-end infinite contact-message-caret;
+    display: block;
+  }
 
-.contact__heroChannelLocation {
-  background-color: var(--coral);
-  color: var(--color-white, #fff);
-  bottom: 12%;
-  right: 7%;
-}
+  &MessageAction {
+    z-index: 20;
+    width: calc(var(--spacing, 0.25rem) * 12);
+    height: calc(var(--spacing, 0.25rem) * 12);
+    border-radius: var(--radius-2xl, 1rem);
+    background-image: var(--gradient-cta);
+    color: var(--color-white, #fff);
+    --tw-shadow: 0 10px 24px var(--tw-shadow-color, #2563eb38);
+    box-shadow:
+      var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+      var(--tw-ring-shadow), var(--tw-shadow);
+    flex-shrink: 0;
+    place-items: center;
+    display: grid;
+    position: relative;
+  }
 
-.contact__heroAccent {
-  width: calc(var(--spacing, 0.25rem) * 5);
-  height: calc(var(--spacing, 0.25rem) * 5);
-  border-radius: var(--radius-sm, 0.25rem);
-  background-color: var(--brand-turquoise);
-  position: absolute;
-  bottom: 13%;
-  left: 8%;
-  rotate: 45deg;
+  &Channel {
+    z-index: 10;
+    width: calc(var(--spacing, 0.25rem) * 14);
+    height: calc(var(--spacing, 0.25rem) * 14);
+    border-radius: var(--radius-2xl, 1rem);
+    border-style: var(--tw-border-style);
+    border-width: 4px;
+    border-color: var(--surface);
+    --tw-shadow: 0 14px 30px var(--tw-shadow-color, #102a4329);
+    box-shadow:
+      var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
+      var(--tw-ring-shadow), var(--tw-shadow);
+    place-items: center;
+    display: grid;
+    position: absolute;
+  }
+
+  &Channel svg {
+    font-size: 26px !important;
+  }
+
+  &ChannelChat {
+    background-color: var(--sunny-yellow);
+    color: var(--heading);
+    top: 9%;
+    right: 8%;
+  }
+
+  &ChannelLocation {
+    background-color: var(--coral);
+    color: var(--color-white, #fff);
+    bottom: 12%;
+    right: 7%;
+  }
+
+  &Accent {
+    width: calc(var(--spacing, 0.25rem) * 5);
+    height: calc(var(--spacing, 0.25rem) * 5);
+    border-radius: var(--radius-sm, 0.25rem);
+    background-color: var(--brand-turquoise);
+    position: absolute;
+    bottom: 13%;
+    left: 8%;
+    rotate: 45deg;
+  }
 }
 
 @keyframes contact-message-caret {
@@ -261,165 +255,159 @@
     opacity: 0;
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .contact__heroMessageCaret {
     animation: none;
   }
 }
 
-.contact__contentLayout {
-  gap: calc(var(--spacing, 0.25rem) * 8);
-  display: grid;
-}
+/* CONTENT */
+.contact__content {
+  &Layout {
+    gap: calc(var(--spacing, 0.25rem) * 8);
+    display: grid;
 
-@media (min-width: breakpoints.$tablet) {
-  .contact__contentLayout {
-    grid-template-columns: 0.8fr 1.2fr;
+    @media (min-width: breakpoints.$tablet) {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
   }
 }
 
 .contact__details {
-  border-radius: var(--radius-4xl, 2rem);
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: var(--border);
-  background-color: var(--surface);
-  height: fit-content;
-  padding: calc(var(--spacing, 0.25rem) * 7);
-}
+  & {
+    border-radius: var(--radius-4xl, 2rem);
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-color: var(--border);
+    background-color: var(--surface);
+    height: fit-content;
+    padding: calc(var(--spacing, 0.25rem) * 7);
 
-@media (min-width: breakpoints.$mobile) {
-  .contact__details {
-    padding: calc(var(--spacing, 0.25rem) * 9);
+    @media (min-width: breakpoints.$mobile) {
+      padding: calc(var(--spacing, 0.25rem) * 9);
+    }
+  }
+
+  &Brand {
+    align-items: center;
+    gap: calc(var(--spacing, 0.25rem) * 3);
+    display: flex;
+  }
+
+  &Logo {
+    width: calc(var(--spacing, 0.25rem) * 14);
+    height: calc(var(--spacing, 0.25rem) * 14);
+    place-items: center;
+    display: grid;
+  }
+
+  &Logo img {
+    width: calc(var(--spacing, 0.25rem) * 10);
+    height: calc(var(--spacing, 0.25rem) * 10);
+  }
+
+  &BrandName {
+    font-size: var(--text-xl, 1.25rem);
+    line-height: var(--tw-leading, var(--text-xl--line-height, calc(1.75 / 1.25)));
+    font-weight: var(--font-weight-black, 900);
+    letter-spacing: -0.04em;
+    color: var(--heading);
+  }
+
+  &Title {
+    margin-top: calc(var(--spacing, 0.25rem) * 8);
+    font-size: var(--text-2xl, 1.5rem);
+    line-height: var(--tw-leading, var(--text-2xl--line-height, calc(2 / 1.5)));
+    font-weight: var(--font-weight-black, 900);
+    letter-spacing: -0.04em;
+    color: var(--heading);
+  }
+
+  &List {
+    margin-top: calc(var(--spacing, 0.25rem) * 6);
+    gap: calc(var(--spacing, 0.25rem) * 4);
+    display: grid;
+  }
+
+  &Item {
+    align-items: center;
+    gap: calc(var(--spacing, 0.25rem) * 3);
+    font-size: var(--text-sm, 0.875rem);
+    line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+    --tw-leading: calc(var(--spacing, 0.25rem) * 6);
+    line-height: calc(var(--spacing, 0.25rem) * 6);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--muted);
+    display: flex;
+  }
+
+  &ItemIcon {
+    width: calc(var(--spacing, 0.25rem) * 10);
+    height: calc(var(--spacing, 0.25rem) * 10);
+    border-radius: var(--radius-xl, 0.75rem);
+    background-color: var(--brand-turquoise);
+    flex-shrink: 0;
+    place-items: center;
+    display: grid;
+
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--brand-turquoise) 15%, transparent);
+    }
+  }
+
+  &ItemIcon {
+    color: var(--heading);
+  }
+
+  &ItemIcon svg {
+    font-size: 21px !important;
   }
 }
 
-.contact__detailsBrand {
-  align-items: center;
-  gap: calc(var(--spacing, 0.25rem) * 3);
-  display: flex;
-}
-
-.contact__detailsLogo {
-  width: calc(var(--spacing, 0.25rem) * 14);
-  height: calc(var(--spacing, 0.25rem) * 14);
-  place-items: center;
-  display: grid;
-}
-
-.contact__detailsLogo img {
-  width: calc(var(--spacing, 0.25rem) * 10);
-  height: calc(var(--spacing, 0.25rem) * 10);
-}
-
-.contact__detailsBrandName {
-  font-size: var(--text-xl, 1.25rem);
-  line-height: var(--tw-leading, var(--text-xl--line-height, calc(1.75 / 1.25)));
-  --tw-font-weight: var(--font-weight-black, 900);
-  font-weight: var(--font-weight-black, 900);
-  --tw-tracking: -0.04em;
-  letter-spacing: -0.04em;
-  color: var(--heading);
-}
-
-.contact__detailsTitle {
-  margin-top: calc(var(--spacing, 0.25rem) * 8);
-  font-size: var(--text-2xl, 1.5rem);
-  line-height: var(--tw-leading, var(--text-2xl--line-height, calc(2 / 1.5)));
-  --tw-font-weight: var(--font-weight-black, 900);
-  font-weight: var(--font-weight-black, 900);
-  --tw-tracking: -0.04em;
-  letter-spacing: -0.04em;
-  color: var(--heading);
-}
-
-.contact__detailsList {
-  margin-top: calc(var(--spacing, 0.25rem) * 6);
-  gap: calc(var(--spacing, 0.25rem) * 4);
-  display: grid;
-}
-
-.contact__detailsItem {
-  align-items: center;
-  gap: calc(var(--spacing, 0.25rem) * 3);
-  font-size: var(--text-sm, 0.875rem);
-  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
-  --tw-leading: calc(var(--spacing, 0.25rem) * 6);
-  line-height: calc(var(--spacing, 0.25rem) * 6);
-  --tw-font-weight: var(--font-weight-semibold, 600);
-  font-weight: var(--font-weight-semibold, 600);
-  color: var(--muted);
-  display: flex;
-}
-
-.contact__detailsItemIcon {
-  width: calc(var(--spacing, 0.25rem) * 10);
-  height: calc(var(--spacing, 0.25rem) * 10);
-  border-radius: var(--radius-xl, 0.75rem);
-  background-color: var(--brand-turquoise);
-  flex-shrink: 0;
-  place-items: center;
-  display: grid;
-}
-
-@supports (color: color-mix(in lab, red, red)) {
-  .contact__detailsItemIcon {
-    background-color: color-mix(in oklab, var(--brand-turquoise) 15%, transparent);
+.contact__privacy {
+  &Card {
+    margin-top: calc(var(--spacing, 0.25rem) * 8);
+    border-radius: var(--radius-2xl, 1rem);
+    background-color: var(--background);
+    padding: calc(var(--spacing, 0.25rem) * 5);
+    font-size: var(--text-sm, 0.875rem);
+    line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+    --tw-leading: calc(var(--spacing, 0.25rem) * 6);
+    line-height: calc(var(--spacing, 0.25rem) * 6);
+    color: var(--muted);
   }
 }
 
-.contact__detailsItemIcon {
-  color: var(--heading);
-}
+/* FORM */
+.contact__form {
+  &Panel {
+    border-radius: var(--radius-4xl, 2rem);
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-color: var(--border);
+    background-color: var(--surface);
+    padding: calc(var(--spacing, 0.25rem) * 6);
 
-.contact__detailsItemIcon svg {
-  font-size: 21px !important;
-}
-
-.contact__privacyCard {
-  margin-top: calc(var(--spacing, 0.25rem) * 8);
-  border-radius: var(--radius-2xl, 1rem);
-  background-color: var(--background);
-  padding: calc(var(--spacing, 0.25rem) * 5);
-  font-size: var(--text-sm, 0.875rem);
-  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
-  --tw-leading: calc(var(--spacing, 0.25rem) * 6);
-  line-height: calc(var(--spacing, 0.25rem) * 6);
-  color: var(--muted);
-}
-
-.contact__formPanel {
-  border-radius: var(--radius-4xl, 2rem);
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: var(--border);
-  background-color: var(--surface);
-  padding: calc(var(--spacing, 0.25rem) * 6);
-}
-
-@media (min-width: breakpoints.$mobile) {
-  .contact__formPanel {
-    padding: calc(var(--spacing, 0.25rem) * 9);
+    @media (min-width: breakpoints.$mobile) {
+      padding: calc(var(--spacing, 0.25rem) * 9);
+    }
   }
-}
 
-.contact__formTitle {
-  margin-bottom: calc(var(--spacing, 0.25rem) * 7);
-  text-align: center;
-  font-size: var(--text-2xl, 1.5rem);
-  line-height: var(--tw-leading, var(--text-2xl--line-height, calc(2 / 1.5)));
-  --tw-font-weight: var(--font-weight-black, 900);
-  font-weight: var(--font-weight-black, 900);
-  --tw-tracking: -0.04em;
-  letter-spacing: -0.04em;
-  color: var(--heading);
-}
+  &Title {
+    margin-bottom: calc(var(--spacing, 0.25rem) * 7);
+    text-align: center;
+    font-size: var(--text-2xl, 1.5rem);
+    line-height: var(--tw-leading, var(--text-2xl--line-height, calc(2 / 1.5)));
+    font-weight: var(--font-weight-black, 900);
+    letter-spacing: -0.04em;
+    color: var(--heading);
+  }
 
-.contact__form,
-.contact__formNameRow {
-  gap: calc(var(--spacing, 0.25rem) * 4);
-  display: grid;
+  &,
+  &NameRow {
+    gap: calc(var(--spacing, 0.25rem) * 4);
+    display: grid;
+  }
 }
 
 @media (min-width: breakpoints.$mobile) {
@@ -429,68 +417,72 @@
 }
 
 .contact__consent {
-  cursor: pointer;
-  align-items: flex-start;
-  gap: calc(var(--spacing, 0.25rem) * 3);
-  font-size: var(--text-sm, 0.875rem);
-  line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
-  --tw-leading: calc(var(--spacing, 0.25rem) * 6);
-  line-height: calc(var(--spacing, 0.25rem) * 6);
-  color: var(--muted);
-  display: flex;
+  & {
+    cursor: pointer;
+    align-items: flex-start;
+    gap: calc(var(--spacing, 0.25rem) * 3);
+    font-size: var(--text-sm, 0.875rem);
+    line-height: var(--tw-leading, var(--text-sm--line-height, calc(1.25 / 0.875)));
+    --tw-leading: calc(var(--spacing, 0.25rem) * 6);
+    line-height: calc(var(--spacing, 0.25rem) * 6);
+    color: var(--muted);
+    display: flex;
+  }
+
+  & input {
+    margin-top: var(--spacing, 0.25rem);
+    height: calc(var(--spacing, 0.25rem) * 4);
+    width: calc(var(--spacing, 0.25rem) * 4);
+    cursor: pointer;
+    accent-color: var(--action-blue);
+    flex-shrink: 0;
+  }
+
+  &Error {
+    margin-top: var(--spacing, 0.25rem);
+    font-size: var(--text-xs, 0.75rem);
+    line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
+    color: var(--coral);
+    display: block;
+  }
 }
 
-.contact__consent input {
-  margin-top: var(--spacing, 0.25rem);
-  height: calc(var(--spacing, 0.25rem) * 4);
-  width: calc(var(--spacing, 0.25rem) * 4);
-  cursor: pointer;
-  accent-color: var(--action-blue);
-  flex-shrink: 0;
-}
+.contact__form {
+  & .contact__formSingleLineLabel:not(.MuiInputLabel-shrink) {
+    transform: translate(14px, 12px) scale(1);
+  }
 
-.contact__consentError {
-  margin-top: var(--spacing, 0.25rem);
-  font-size: var(--text-xs, 0.75rem);
-  line-height: var(--tw-leading, var(--text-xs--line-height, calc(1 / 0.75)));
-  color: var(--coral);
-  display: block;
-}
+  & .MuiOutlinedInput-root:not(.MuiInputBase-multiline) {
+    min-height: 3rem;
+  }
 
-.contact__form .contact__formSingleLineLabel:not(.MuiInputLabel-shrink) {
-  transform: translate(14px, 12px) scale(1);
-}
+  & .MuiOutlinedInput-root:not(.MuiInputBase-multiline) .MuiInputBase-input {
+    padding-block: 0.75rem;
+  }
 
-.contact__form .MuiOutlinedInput-root:not(.MuiInputBase-multiline) {
-  min-height: 3rem;
-}
+  & .contact__formAction {
+    justify-self: center;
+  }
 
-.contact__form .MuiOutlinedInput-root:not(.MuiInputBase-multiline) .MuiInputBase-input {
-  padding-block: 0.75rem;
-}
+  & .MuiInputBase-input:focus-visible {
+    outline: none;
+  }
 
-.contact__form .contact__formAction {
-  justify-self: center;
-}
+  & .MuiFormHelperText-root {
+    min-height: 1.25rem;
+  }
 
-.contact__form .MuiInputBase-input:focus-visible {
-  outline: none;
-}
+  & .MuiOutlinedInput-root:not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: var(--brand-turquoise);
+  }
 
-.contact__form .MuiFormHelperText-root {
-  min-height: 1.25rem;
-}
+  & .MuiOutlinedInput-root:not(.Mui-error):hover .MuiOutlinedInput-notchedOutline {
+    border-color: var(--brand-turquoise);
+  }
 
-.contact__form .MuiOutlinedInput-root:not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: var(--brand-turquoise);
-}
-
-.contact__form .MuiOutlinedInput-root:not(.Mui-error):hover .MuiOutlinedInput-notchedOutline {
-  border-color: var(--brand-turquoise);
-}
-
-.contact__form .MuiInputLabel-root:not(.Mui-error).Mui-focused {
-  color: var(--brand-turquoise);
+  & .MuiInputLabel-root:not(.Mui-error).Mui-focused {
+    color: var(--brand-turquoise);
+  }
 }
 
 @property --tw-border-style {
@@ -579,16 +571,6 @@
 }
 
 @property --tw-leading {
-  syntax: "*";
-  inherits: false;
-}
-
-@property --tw-font-weight {
-  syntax: "*";
-  inherits: false;
-}
-
-@property --tw-tracking {
   syntax: "*";
   inherits: false;
 }
