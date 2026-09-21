@@ -1,7 +1,6 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import {
   useEffect,
   useRef,
@@ -92,11 +91,29 @@ function focusFirstCredentialError(form: HTMLFormElement, nextErrors: AuthLoginE
   });
 }
 
+function openPendingDashboard(copy: AuthCopy, locale: Locale): Window | null {
+  let pendingWindow: Window | null = null;
+  try {
+    pendingWindow = window.open("", "_blank");
+    if (!pendingWindow) return null;
+    pendingWindow.opener = null;
+    pendingWindow.document.documentElement.lang = locale;
+    pendingWindow.document.title = copy.pending;
+    pendingWindow.document.body.textContent = copy.pending;
+    pendingWindow.document.body.style.cssText =
+      "display:grid;place-items:center;min-height:100vh;margin:0;background:#eaf3fb;color:#102a43;font:700 1.25rem system-ui,sans-serif";
+    return pendingWindow;
+  } catch {
+    pendingWindow?.close();
+    return null;
+  }
+}
+
 export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole: AuthRole) {
   /* HOOKS */
-  const router = useRouter();
   const codeInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const [challenge, setChallenge] = useState<AuthLoginChallenge>();
+  const [dashboardHref, setDashboardHref] = useState<string>();
   const [errors, setErrors] = useState<AuthLoginErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [now, setNow] = useState(() => Date.now());
@@ -230,6 +247,7 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
       setErrors({ code: copy.errors.codeLength });
       return;
     }
+    const pendingWindow = openPendingDashboard(copy, locale);
     setIsSubmitting(true);
     setErrors({});
     try {
@@ -243,6 +261,7 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
       );
       const authenticatedRole = getAuthRoleFromBackend(data.verifyCredentialLogin.user.role);
       if (!authenticatedRole || authenticatedRole !== selectedRole) {
+        pendingWindow?.close();
         setErrors({ form: copy.errors.generic });
         return;
       }
@@ -254,13 +273,23 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
         redirect: false,
       });
       if (result?.error) {
+        pendingWindow?.close();
         setErrors({ form: copy.errors.session });
         return;
       }
+      const href = `/${locale}/${authenticatedRole}`;
       setValues(initialValues);
-      router.replace(`/${locale}/${authenticatedRole}`);
-      router.refresh();
+      setDashboardHref(href);
+      setStep("complete");
+      if (pendingWindow && !pendingWindow.closed) {
+        try {
+          pendingWindow.location.replace(new URL(href, window.location.origin).href);
+        } catch {
+          pendingWindow.close();
+        }
+      }
     } catch (error) {
+      pendingWindow?.close();
       setErrors(
         error instanceof PublicApiError &&
           (error.code === "LOGIN_CODE_INVALID" || error.code === "UNAUTHENTICATED")
@@ -310,6 +339,7 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
   return {
     challenge,
     codeInputRefs,
+    dashboardHref,
     errors,
     expiresInSeconds,
     handleBackToLogin,

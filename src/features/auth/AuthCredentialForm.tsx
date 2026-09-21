@@ -11,6 +11,7 @@ import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion
 import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
 import styles from "@/css/public/auth.module.css";
@@ -35,8 +36,16 @@ export function AuthCredentialForm({
   const reduceMotion = useReducedMotion();
   const login = useCredentialLogin(copy, locale, role);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { challenge, errors, expiresInSeconds, isSubmitting, resendInSeconds, step, values } =
-    login;
+  const {
+    challenge,
+    dashboardHref,
+    errors,
+    expiresInSeconds,
+    isSubmitting,
+    resendInSeconds,
+    step,
+    values,
+  } = login;
 
   const passwordType = isPasswordVisible ? "text" : "password";
   const passwordToggleLabel = isPasswordVisible ? copy.hidePassword : copy.showPassword;
@@ -70,6 +79,34 @@ export function AuthCredentialForm({
   const handlePasswordVisibility = () => {
     setIsPasswordVisible((isVisible) => !isVisible);
   };
+
+  if (step === "complete" && dashboardHref) {
+    return (
+      <div className={styles.auth__step} role="status">
+        <div className={styles.auth__panelHeader}>
+          <span className={styles.auth__eyebrow}>{copy.completed.eyebrow}</span>
+          <h2 className={styles.auth__title} id="auth-title">
+            {copy.completed.title}
+          </h2>
+          <p className={`${styles.auth__description} ${styles.auth__completedDescription}`}>
+            {copy.completed.description}
+          </p>
+        </div>
+        <ButtonLink
+          className={styles.auth__credentialSubmit}
+          fullWidth
+          href={dashboardHref}
+          hoverEffect="jump"
+          rel="noopener noreferrer"
+          shape="soft"
+          size="large"
+          target="_blank"
+        >
+          {copy.completed.openDashboard}
+        </ButtonLink>
+      </div>
+    );
+  }
 
   return (
     <AnimatePresence mode="wait">

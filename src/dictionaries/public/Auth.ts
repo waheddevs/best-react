@@ -9,6 +9,12 @@ type AuthRoleCopy = {
 export type AuthCopy = {
   back: string;
   backToLogin: string;
+  completed: {
+    description: string;
+    eyebrow: string;
+    openDashboard: string;
+    title: string;
+  };
   codeLabel: string;
   emailLabel: string;
   emailPlaceholder: string;
@@ -79,6 +85,13 @@ export type AuthCopy = {
 const uz: AuthCopy = {
   back: "Orqaga",
   backToLogin: "Kirishga qaytish",
+  completed: {
+    description:
+      "Kirish tasdiqlandi. Dashboard yangi oynada ochiladi. Ochilmasa, quyidagi tugmani bosing.",
+    eyebrow: "KIRISH TASDIQLANDI",
+    openDashboard: "Dashboardni ochish",
+    title: "Xush kelibsiz!",
+  },
   codeLabel: "Tasdiqlash kodi",
   emailLabel: "Email manzil",
   emailPlaceholder: "name@example.com",
@@ -162,6 +175,13 @@ const uz: AuthCopy = {
 const ru: AuthCopy = {
   back: "Назад",
   backToLogin: "Вернуться ко входу",
+  completed: {
+    description:
+      "Вход подтверждён. Панель откроется в новой вкладке. Если этого не произошло, нажмите кнопку ниже.",
+    eyebrow: "ВХОД ПОДТВЕРЖДЁН",
+    openDashboard: "Открыть панель",
+    title: "Добро пожаловать!",
+  },
   codeLabel: "Код подтверждения",
   emailLabel: "Email адрес",
   emailPlaceholder: "name@example.com",
@@ -245,6 +265,13 @@ const ru: AuthCopy = {
 const en: AuthCopy = {
   back: "Back",
   backToLogin: "Back to login",
+  completed: {
+    description:
+      "Sign-in is confirmed. Your dashboard opens in a new tab. If it does not, use the button below.",
+    eyebrow: "SIGN-IN CONFIRMED",
+    openDashboard: "Open dashboard",
+    title: "Welcome!",
+  },
   codeLabel: "Verification code",
   emailLabel: "Email address",
   emailPlaceholder: "name@example.com",

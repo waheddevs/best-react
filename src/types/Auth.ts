@@ -2,7 +2,7 @@ export const authRoles = ["student", "teacher", "admin"] as const;
 
 export type AuthRole = (typeof authRoles)[number];
 export type BackendAuthRole = "ADMIN" | "STUDENT" | "TEACHER";
-export type AuthStep = "credentials" | "verification";
+export type AuthStep = "credentials" | "verification" | "complete";
 
 export type AuthLoginValues = {
   code: string;

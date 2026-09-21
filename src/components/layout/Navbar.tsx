@@ -51,10 +51,8 @@ export function Navbar({ locale, labels }: NavbarProps) {
               href={`/${locale}/login`}
               endIcon={null}
               hoverEffect="jump"
-              rel="noopener noreferrer"
               shape="rounded"
               size="small"
-              target="_blank"
             >
               {labels.login}
             </ButtonLink>

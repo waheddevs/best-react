@@ -139,6 +139,11 @@
   @apply m-[0.55rem_auto_0] text-[clamp(0.75rem,_1vw,_0.875rem)] leading-[1.65] whitespace-nowrap text-(--muted);
 }
 
+.auth__completedDescription {
+  white-space: normal;
+  text-wrap: balance;
+}
+
 .auth__rolePanel .auth__description {
   @apply max-w-[27rem] whitespace-normal;
   text-wrap: balance;
