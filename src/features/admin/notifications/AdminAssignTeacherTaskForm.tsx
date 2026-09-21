@@ -3,7 +3,6 @@
 import { useState, type FormEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/admin/notifications.module.css";
 import { getAdminTeacherTaskCopy } from "@/dictionaries/admin/AdminTeacherTasks";
 import { assignTeacherTask } from "@/features/admin/notifications/AdminTeacherTaskActions";
 import type { TeacherTaskKind } from "@/gql/graphql";
@@ -50,7 +49,7 @@ export function AdminAssignTeacherTaskForm({ locale, teachers }: AdminAssignTeac
   };
 
   return (
-    <section className={styles.adminTeacherTasks}>
+    <section className="adminTeacherTasks">
       <h2>{copy.heading}</h2>
       {teachers.length === 0 ? (
         <p>{copy.noTeachers}</p>
@@ -58,7 +57,11 @@ export function AdminAssignTeacherTaskForm({ locale, teachers }: AdminAssignTeac
         <form onSubmit={(event) => void handleSubmit(event)}>
           <label>
             <span>{copy.teacher}</span>
-            <select onChange={(event) => setTeacherId(event.target.value)} required value={teacherId}>
+            <select
+              onChange={(event) => setTeacherId(event.target.value)}
+              required
+              value={teacherId}
+            >
               {teachers.map((teacher) => (
                 <option key={teacher.id} value={teacher.id}>
                   {teacher.name}

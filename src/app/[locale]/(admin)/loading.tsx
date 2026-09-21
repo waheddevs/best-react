@@ -1,10 +1,8 @@
-import styles from "@/css/admin/workspace.module.css";
-
 export default function AdminLoading() {
   return (
-    <div aria-busy="true" className={styles.adminWorkspace}>
-      <div className={styles.adminWorkspace__header} />
-      <div className={styles.adminWorkspace__metrics}>
+    <div aria-busy="true" className="adminWorkspace">
+      <div className="adminWorkspace__header" />
+      <div className="adminWorkspace__metrics">
         <div />
         <div />
         <div />

@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "@/css/admin/workspace.module.css";
 import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import { useCurrentLocale } from "@/hooks/useCurrentLocale";
 
@@ -15,7 +14,7 @@ export function AdminWorkspaceError({ retry }: AdminWorkspaceErrorProps) {
   const handleRetry = () => retry();
 
   return (
-    <div className={styles.adminWorkspace__error} role="alert">
+    <div className="adminWorkspace__error" role="alert">
       <p>{common.errorLabel}</p>
       <button onClick={handleRetry} type="button">
         {common.retryLabel}

@@ -1,4 +1,3 @@
-import styles from "@/css/admin/workspace.module.css";
 import type { AdminSectionCopy } from "@/types/admin/AdminWorkspace";
 
 type AdminDashboardMetricsProps = {
@@ -8,7 +7,7 @@ type AdminDashboardMetricsProps = {
 
 export function AdminDashboardMetrics({ metrics, title }: AdminDashboardMetricsProps) {
   return (
-    <section aria-label={title} className={styles.adminWorkspace__metrics}>
+    <section aria-label={title} className="adminWorkspace__metrics">
       {metrics.map((metric) => (
         <div key={metric.label}>
           <span>{metric.label}</span>

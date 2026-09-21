@@ -1,7 +1,6 @@
 "use client";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/admin/workspace.module.css";
 import { useAdminWorkspaceRecords } from "@/hooks/admin/useAdminWorkspaceRecords";
 import type { AdminSectionCopy, AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
 
@@ -21,14 +20,14 @@ export function AdminDashboard({ common, locale, section }: AdminDashboardProps)
     useAdminWorkspaceRecords(section.records, locale);
 
   return (
-    <article className={styles.adminWorkspace}>
-      <header className={styles.adminWorkspace__header}>
+    <article className="adminWorkspace">
+      <header className="adminWorkspace__header">
         <div>
           <span>{section.eyebrow}</span>
           <h1>{section.title}</h1>
           <p>{section.description}</p>
         </div>
-        <div className={styles.adminWorkspace__health}>
+        <div className="adminWorkspace__health">
           <i />
           <span>{common.connectedNotice}</span>
         </div>

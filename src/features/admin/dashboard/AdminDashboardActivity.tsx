@@ -2,7 +2,6 @@ import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/admin/workspace.module.css";
 import type { AdminWorkspaceCopy, AdminWorkspaceRecord } from "@/types/admin/AdminWorkspace";
 
 type AdminDashboardActivityProps = {
@@ -19,22 +18,22 @@ export function AdminDashboardActivity({
   title,
 }: AdminDashboardActivityProps) {
   return (
-    <section aria-label={title} className={styles.adminWorkspace__table} role="table">
-      <div className={styles.adminWorkspace__tableHead} role="row">
+    <section aria-label={title} className="adminWorkspace__table" role="table">
+      <div className="adminWorkspace__tableHead" role="row">
         <span role="columnheader">{common.idRecordLabel}</span>
         <span role="columnheader">{common.contextLabel}</span>
         <span role="columnheader">{common.statusLabel}</span>
         <span role="columnheader" />
       </div>
       {records.map((record) => (
-        <div className={styles.adminWorkspace__row} key={record.id} role="row">
+        <div className="adminWorkspace__row" key={record.id} role="row">
           <div role="cell">
             <small>{record.id}</small>
             <strong>{record.title}</strong>
           </div>
           <p role="cell">{record.meta}</p>
           <span
-            className={`${styles.adminWorkspace__status} ${styles[`adminWorkspace__status_${record.status}`]}`}
+            className={`adminWorkspace__status adminWorkspace__status_${record.status}`}
             role="cell"
           >
             {record.detail}
@@ -53,9 +52,7 @@ export function AdminDashboardActivity({
           </div>
         </div>
       ))}
-      {records.length === 0 ? (
-        <p className={styles.adminWorkspace__empty}>{common.emptyLabel}</p>
-      ) : null}
+      {records.length === 0 ? <p className="adminWorkspace__empty">{common.emptyLabel}</p> : null}
     </section>
   );
 }

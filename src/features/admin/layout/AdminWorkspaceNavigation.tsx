@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import styles from "@/css/admin/shell.module.css";
 import type { WorkspaceNavigationItem } from "@/hooks/navigation/useWorkspaceShellNavigation";
 import type { AdminNavigationKey, AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
 
@@ -25,11 +24,11 @@ export function AdminWorkspaceNavigation({
       className={
         mode === "dock"
           ? item.active
-            ? styles.adminShell__dockLinkActive
-            : styles.adminShell__dockLink
+            ? "adminShell__dockLinkActive"
+            : "adminShell__dockLink"
           : item.active
-            ? styles.adminShell__navLinkActive
-            : styles.adminShell__navLink
+            ? "adminShell__navLinkActive"
+            : "adminShell__navLink"
       }
       href={item.localizedHref}
       key={item.key}

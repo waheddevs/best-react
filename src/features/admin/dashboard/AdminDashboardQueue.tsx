@@ -2,7 +2,6 @@ import FilterListRounded from "@mui/icons-material/FilterListRounded";
 import SearchRounded from "@mui/icons-material/SearchRounded";
 import type { ChangeEvent } from "react";
 
-import styles from "@/css/admin/workspace.module.css";
 import type { AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
 
 type AdminDashboardQueueProps = {
@@ -21,10 +20,10 @@ export function AdminDashboardQueue({
   query,
 }: AdminDashboardQueueProps) {
   return (
-    <div className={styles.adminWorkspace__toolbar}>
+    <div className="adminWorkspace__toolbar">
       <label>
         <SearchRounded aria-hidden="true" />
-        <span className={styles.adminWorkspace__srOnly}>{common.searchLabel}</span>
+        <span className="adminWorkspace__srOnly">{common.searchLabel}</span>
         <input
           onChange={onQueryChange}
           placeholder={common.searchPlaceholder}

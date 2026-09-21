@@ -12,7 +12,6 @@ import type { ReactNode } from "react";
 import { WorkspaceLocaleNavigation } from "@/components/navigation/WorkspaceLocaleNavigation";
 import { adminDockNavigationKeys, adminNavigationItems } from "@/config/AdminNavigation";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/admin/shell.module.css";
 import { useWorkspaceShellNavigation } from "@/hooks/navigation/useWorkspaceShellNavigation";
 import { useBestApiConnection } from "@/hooks/useBestApiConnection";
 import { getWorkspaceInitials } from "@/lib/WorkspaceIdentity";
@@ -45,10 +44,10 @@ export function AdminWorkspaceShell({
   const dockItems = navigationItems.filter((item) => adminDockNavigationKeys.includes(item.key));
 
   return (
-    <div className={styles.adminShell}>
-      <aside className={styles.adminShell__sidebar}>
-        <Link className={styles.adminShell__brand} href={`/${locale}/admin`}>
-          <span className={styles.adminShell__logoTile}>
+    <div className="adminShell">
+      <aside className="adminShell__sidebar">
+        <Link className="adminShell__brand" href={`/${locale}/admin`}>
+          <span className="adminShell__logoTile">
             <Image alt="BEST LC" height={34} src="/icons/logo.svg" width={34} />
           </span>
           <span>
@@ -56,14 +55,14 @@ export function AdminWorkspaceShell({
             <small>{copy.common.workspaceLabel}</small>
           </span>
         </Link>
-        <nav aria-label={copy.common.workspaceLabel} className={styles.adminShell__navigation}>
+        <nav aria-label={copy.common.workspaceLabel} className="adminShell__navigation">
           <AdminWorkspaceNavigation
             copy={copy.navigation}
             items={navigationItems}
             onNavigate={handleNavigation}
           />
         </nav>
-        <div className={styles.adminShell__environment}>
+        <div className="adminShell__environment">
           <span />
           <div>
             <strong>
@@ -75,24 +74,24 @@ export function AdminWorkspaceShell({
           </div>
         </div>
       </aside>
-      <div className={styles.adminShell__workspace}>
-        <header className={styles.adminShell__topbar}>
+      <div className="adminShell__workspace">
+        <header className="adminShell__topbar">
           <button
             aria-expanded={menuOpen}
             aria-label={menuOpen ? copy.common.menuClose : copy.common.menuOpen}
-            className={styles.adminShell__menuButton}
+            className="adminShell__menuButton"
             onClick={handleMenuToggle}
             type="button"
           >
             {menuOpen ? <CloseRounded /> : <MenuOpenRounded />}
           </button>
-          <div className={styles.adminShell__breadcrumb}>
+          <div className="adminShell__breadcrumb">
             <span>{copy.common.workspaceLabel}</span>
             <strong>{adminName}</strong>
           </div>
-          <div className={styles.adminShell__topActions}>
+          <div className="adminShell__topActions">
             <WorkspaceLocaleNavigation
-              className={styles.adminShell__locales}
+              className="adminShell__locales"
               label={copy.common.languageLabel}
               onNavigate={handleNavigation}
               options={localeOptions}
@@ -105,7 +104,7 @@ export function AdminWorkspaceShell({
             </Link>
             <button
               aria-label={copy.common.logoutLabel}
-              className={styles.adminShell__signOut}
+              className="adminShell__signOut"
               onClick={() => void signOut({ redirectTo: `/${locale}/login` })}
               title={copy.common.logoutLabel}
               type="button"
@@ -116,9 +115,9 @@ export function AdminWorkspaceShell({
           </div>
         </header>
         {menuOpen ? (
-          <div className={styles.adminShell__mobilePanel}>
+          <div className="adminShell__mobilePanel">
             <WorkspaceLocaleNavigation
-              className={styles.adminShell__mobileLocales}
+              className="adminShell__mobileLocales"
               label={copy.common.languageLabel}
               onNavigate={handleNavigation}
               options={localeOptions}
@@ -132,9 +131,9 @@ export function AdminWorkspaceShell({
             </nav>
           </div>
         ) : null}
-        <main className={styles.adminShell__main}>{children}</main>
+        <main className="adminShell__main">{children}</main>
       </div>
-      <nav aria-label={copy.common.workspaceLabel} className={styles.adminShell__dock}>
+      <nav aria-label={copy.common.workspaceLabel} className="adminShell__dock">
         <AdminWorkspaceNavigation copy={copy.navigation} items={dockItems} mode="dock" />
       </nav>
     </div>

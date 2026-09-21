@@ -6,7 +6,6 @@ import LockRounded from "@mui/icons-material/LockRounded";
 import PersonOutlineRounded from "@mui/icons-material/PersonOutlineRounded";
 
 import { Button } from "@/components/ui/Button";
-import styles from "@/css/admin/workspace.module.css";
 import { useAdminProvisionUser } from "@/hooks/admin/useAdminProvisionUser";
 import type {
   AdminProvisionUserCopy,
@@ -23,8 +22,8 @@ export function AdminProvisionUserForm({ copy, role }: AdminProvisionUserFormPro
   const provision = useAdminProvisionUser(copy, role);
 
   return (
-    <section className={styles.adminWorkspace__provision}>
-      <div className={styles.adminWorkspace__provisionHeader}>
+    <section className="adminWorkspace__provision">
+      <div className="adminWorkspace__provisionHeader">
         <span>
           <AddCircleOutlineRounded aria-hidden="true" />
         </span>
@@ -33,7 +32,7 @@ export function AdminProvisionUserForm({ copy, role }: AdminProvisionUserFormPro
           <p>{copy.description}</p>
         </div>
       </div>
-      <form className={styles.adminWorkspace__provisionForm} onSubmit={provision.handleSubmit}>
+      <form className="adminWorkspace__provisionForm" onSubmit={provision.handleSubmit}>
         <label>
           <span>{copy.nameLabel}</span>
           <div>
@@ -98,8 +97,8 @@ export function AdminProvisionUserForm({ copy, role }: AdminProvisionUserFormPro
         <p
           className={
             provision.message.kind === "success"
-              ? styles.adminWorkspace__provisionSuccess
-              : styles.adminWorkspace__provisionError
+              ? "adminWorkspace__provisionSuccess"
+              : "adminWorkspace__provisionError"
           }
           role={provision.message.kind === "error" ? "alert" : "status"}
         >

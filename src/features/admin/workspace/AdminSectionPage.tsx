@@ -6,7 +6,6 @@ import SearchRounded from "@mui/icons-material/SearchRounded";
 import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/admin/workspace.module.css";
 import { AdminProvisionUserForm } from "@/features/admin/users/AdminProvisionUserForm";
 import { AdminAssignTeacherTaskForm } from "@/features/admin/notifications/AdminAssignTeacherTaskForm";
 import { useAdminWorkspaceRecords } from "@/hooks/admin/useAdminWorkspaceRecords";
@@ -43,19 +42,19 @@ export function AdminSectionPage({
   } = useAdminWorkspaceRecords(section.records, locale);
 
   return (
-    <article className={styles.adminWorkspace}>
-      <header className={styles.adminWorkspace__header}>
+    <article className="adminWorkspace">
+      <header className="adminWorkspace__header">
         <div>
           <span>{section.eyebrow}</span>
           <h1>{section.title}</h1>
           <p>{section.description}</p>
         </div>
-        <div className={styles.adminWorkspace__health}>
+        <div className="adminWorkspace__health">
           <i />
           <span>{common.connectedNotice}</span>
         </div>
       </header>
-      <section className={styles.adminWorkspace__metrics} aria-label={section.title}>
+      <section className="adminWorkspace__metrics" aria-label={section.title}>
         <div>
           <span>{common.all}</span>
           <strong>{section.records.length}</strong>
@@ -83,10 +82,10 @@ export function AdminSectionPage({
       {taskRecipients ? (
         <AdminAssignTeacherTaskForm locale={locale} teachers={taskRecipients} />
       ) : null}
-      <div className={styles.adminWorkspace__toolbar}>
+      <div className="adminWorkspace__toolbar">
         <label>
           <SearchRounded aria-hidden="true" />
-          <span className={styles.adminWorkspace__srOnly}>{common.searchLabel}</span>
+          <span className="adminWorkspace__srOnly">{common.searchLabel}</span>
           <input
             onChange={handleQueryChange}
             placeholder={common.searchPlaceholder}
@@ -99,22 +98,22 @@ export function AdminSectionPage({
           {attentionOnly ? common.all : common.openQueueLabel}
         </button>
       </div>
-      <section className={styles.adminWorkspace__table} role="table" aria-label={section.title}>
-        <div className={styles.adminWorkspace__tableHead} role="row">
+      <section className="adminWorkspace__table" role="table" aria-label={section.title}>
+        <div className="adminWorkspace__tableHead" role="row">
           <span role="columnheader">{common.idRecordLabel}</span>
           <span role="columnheader">{common.contextLabel}</span>
           <span role="columnheader">{common.statusLabel}</span>
           <span role="columnheader" />
         </div>
         {rows.map((record) => (
-          <div className={styles.adminWorkspace__row} key={record.id} role="row">
+          <div className="adminWorkspace__row" key={record.id} role="row">
             <div role="cell">
               <small>{record.id}</small>
               <strong>{record.title}</strong>
             </div>
             <p role="cell">{record.meta}</p>
             <span
-              className={`${styles.adminWorkspace__status} ${styles[`adminWorkspace__status_${record.status}`]}`}
+              className={`adminWorkspace__status adminWorkspace__status_${record.status}`}
               role="cell"
             >
               {record.detail}
@@ -133,9 +132,7 @@ export function AdminSectionPage({
             </div>
           </div>
         ))}
-        {rows.length === 0 ? (
-          <p className={styles.adminWorkspace__empty}>{common.emptyLabel}</p>
-        ) : null}
+        {rows.length === 0 ? <p className="adminWorkspace__empty">{common.emptyLabel}</p> : null}
       </section>
     </article>
   );
