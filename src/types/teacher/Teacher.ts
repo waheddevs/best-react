@@ -31,6 +31,7 @@ export type TeacherGroup = {
   category: TeacherGroupCategory | null;
   id: string;
   learnerCount: number;
+  monthlyTuitionUzs?: number | null;
   lessonDays: LocalizedText;
   scheduleDays: number[];
   startsAtMinutes: number | null;
@@ -51,9 +52,9 @@ export type TeacherLearner = {
   initials: string;
   membershipId: string;
   name: string;
+  paidAmountUzs: number;
   phone: string;
   status: TeacherLearnerStatus;
-  taskProgress: number | null;
 };
 
 export type TeacherGroupRosterSummary = {
@@ -70,16 +71,6 @@ export type TeacherGroupOverviewMetrics = {
   materials: number;
   scheduledTests: number;
   students: number;
-};
-
-export type TeacherGroupOverviewLesson = {
-  date: string;
-  endsAt: string;
-  id: string;
-  room: string;
-  startsAt: string;
-  status: "completed" | "planned";
-  topic: LocalizedText;
 };
 
 export type TeacherTaskKind = "attendance" | "pauseCall";
@@ -283,6 +274,7 @@ export type TeacherCopy = {
     pageTitle: string;
   };
   groupWorkspace: {
+    accordingToSchedule: string;
     activeAssignments: string;
     assignmentsDescription: string;
     assignmentsTitle: string;
@@ -322,8 +314,11 @@ export type TeacherCopy = {
     materialsDescription: string;
     materialsTitle: string;
     materialType: string;
+    materialsTestsComingSoon: string;
     minutes: string;
+    nextClass: string;
     nextLesson: string;
+    noClassSchedule: string;
     noAssignments: string;
     noLessons: string;
     noMaterials: string;
@@ -333,6 +328,7 @@ export type TeacherCopy = {
     overviewDescription: string;
     overviewTitle: string;
     planned: string;
+    previewStudentPulse: string;
     questions: string;
     recentLesson: string;
     room: string;
@@ -340,6 +336,7 @@ export type TeacherCopy = {
     scheduledTests: string;
     startTime: string;
     status: string;
+    studentPulse: string;
     submissions: string;
     tabs: Record<TeacherGroupWorkspaceTab, string>;
     testKinds: Record<TeacherTestKind, string>;
@@ -349,6 +346,7 @@ export type TeacherCopy = {
     titleLabel: string;
     topic: string;
     totalMaterials: string;
+    viewStudents: string;
   };
   groups: {
     active: string;
@@ -369,6 +367,8 @@ export type TeacherCopy = {
     groupNameField: string;
     groupTypeField: string;
     groupRoomField: string;
+    groupTuitionField: string;
+    groupTuitionError: string;
     groupDaysField: string;
     groupStartsField: string;
     groupEndsField: string;
@@ -383,10 +383,24 @@ export type TeacherCopy = {
     groupTimeFormat: string;
     weekdays: string[];
     addLearner: string;
-    addLearnerMessage: string;
-    addLearnerTitle: string;
     addLearnerUnavailable: string;
+    addStudentForm: {
+      firstName: string;
+      lastName: string;
+      phone: string;
+      email: string;
+      password: string;
+      firstNameError: string;
+      lastNameError: string;
+      phoneError: string;
+      emailError: string;
+      passwordError: string;
+      emailConflict: string;
+      saveError: string;
+      saveSuccess: string;
+    };
     balance: string;
+    paid: string;
     contactMessage: string;
     contactTitle: string;
     debtors: string;
@@ -402,6 +416,7 @@ export type TeacherCopy = {
     editGroupSuccess: string;
     editGroupUnavailable: string;
     empty: string;
+    emptyRoster: string;
     eyebrow: string;
     learnerName: string;
     learners: string;
@@ -413,10 +428,10 @@ export type TeacherCopy = {
     paused: string;
     phone: string;
     rosterTitle: string;
+    rosterActions: string;
     searchPlaceholder: string;
     statusUpdateError: string;
     statusUpdateSuccess: string;
-    taskProgress: string;
     total: string;
     unsavedMessage: string;
     unsavedTitle: string;

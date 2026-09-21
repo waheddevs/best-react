@@ -1,26 +1,13 @@
 "use client";
 
-import AccountBalanceWalletRounded from "@mui/icons-material/AccountBalanceWalletRounded";
 import AddRounded from "@mui/icons-material/AddRounded";
-import CallRounded from "@mui/icons-material/CallRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import PauseCircleOutlineRounded from "@mui/icons-material/PauseCircleOutlineRounded";
 import SearchRounded from "@mui/icons-material/SearchRounded";
-import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import TextField from "@mui/material/TextField";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { teacherGroupCapacity } from "@/config/teacher/TeacherGroupCapacity";
 import type { Locale } from "@/config/Locales";
-import styles from "@/css/teacher/groups.module.css";
-import sharedStyles from "@/css/teacher/shared.module.css";
-import { setConnectedGroupMembershipParticipationStatus } from "@/features/teacher/groups/TeacherGroupActions";
+import { TeacherAddStudentDialog } from "@/features/teacher/groups/TeacherAddStudentDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import {
   useTeacherGroupRoster,
@@ -36,6 +23,8 @@ import type {
 type TeacherGroupRosterProps = {
   connected: boolean;
   copy: TeacherCopy;
+  groupId: string;
+  monthlyTuitionUzs: number | null;
   initialLearners: TeacherLearner[];
   initialSummary?: TeacherGroupRosterSummary;
   locale: Locale;
@@ -44,14 +33,14 @@ type TeacherGroupRosterProps = {
 export function TeacherGroupRoster({
   connected,
   copy,
+  groupId,
+  monthlyTuitionUzs,
   initialLearners,
   initialSummary,
 }: TeacherGroupRosterProps) {
   /* HOOKS */
   const notifications = useNotifications();
   const roster = useTeacherGroupRoster({ initialLearners, initialSummary });
-  const router = useRouter();
-  const [isStatusPending, startStatusTransition] = useTransition();
 
   const statusLabels: Record<TeacherLearner["status"], string> = {
     active: copy.groups.active,
@@ -72,52 +61,8 @@ export function TeacherGroupRoster({
   ];
 
   /* HANDLERS */
-  const handleAddLearner = () => {
-    if (!roster.handleAddLearner()) return;
-    notifications.info({
-      title: copy.groups.addLearnerTitle,
-      message: copy.groups.addLearnerMessage,
-    });
-  };
-
   const handleAddDialogOpen = () => {
-    if (!connected) {
-      roster.handleAddDialogOpen();
-      return;
-    }
-    notifications.info({
-      title: copy.groups.addLearner,
-      message: copy.groups.addLearnerUnavailable,
-    });
-  };
-
-  const handleContact = () => {
-    notifications.info({ title: copy.groups.contactTitle, message: copy.groups.contactMessage });
-  };
-
-  const handleStatusToggle = (learner: TeacherLearner) => {
-    if (!connected) {
-      roster.handleStatusToggle(learner.id);
-      notifications.info({ title: copy.groups.unsavedTitle, message: copy.groups.unsavedMessage });
-      return;
-    }
-    if (learner.status === "departed" || isStatusPending) return;
-    startStatusTransition(async () => {
-      const result = await setConnectedGroupMembershipParticipationStatus({
-        membershipId: learner.membershipId,
-        reason: "Teacher updated participation from the group roster.",
-        status: learner.status === "paused" ? "ACTIVE" : "PAUSED",
-      });
-      if (!result.ok) {
-        notifications.error({ title: copy.groups.paused, message: copy.groups.statusUpdateError });
-        return;
-      }
-      notifications.success({
-        title: copy.groups.paused,
-        message: copy.groups.statusUpdateSuccess,
-      });
-      router.refresh();
-    });
+    roster.handleAddDialogOpen();
   };
 
   const handlePreviewAction = () => {
@@ -125,12 +70,12 @@ export function TeacherGroupRoster({
   };
 
   return (
-    <section aria-labelledby="roster-title" className={styles.teacherGroups__rosterSection}>
-      <div className={styles.teacherGroups__summaryGrid}>
+    <section aria-labelledby="roster-title" className="teacherGroups__rosterSection">
+      <div className="teacherGroups__summaryGrid">
         {statusFilters.map(({ label, status, value }) => (
           <button
             aria-pressed={roster.activeStatusFilter === status}
-            className={styles.teacherGroups__summaryCard}
+            className="teacherGroups__summaryCard"
             data-active={roster.activeStatusFilter === status}
             data-tone={status}
             key={status}
@@ -143,12 +88,12 @@ export function TeacherGroupRoster({
         ))}
       </div>
 
-      <div className={styles.teacherGroups__rosterHeader}>
+      <div className="teacherGroups__rosterHeader">
         <div>
-          <h2 className={sharedStyles.teacherShared__sectionTitle} id="roster-title">
+          <h2 className="teacherShared__sectionTitle" id="roster-title">
             {copy.groups.rosterTitle}
           </h2>
-          <span className={styles.teacherGroups__resultCount}>
+          <span className="teacherGroups__resultCount">
             {roster.summary.total}/{teacherGroupCapacity} {copy.groups.learners}
           </span>
         </div>
@@ -164,118 +109,83 @@ export function TeacherGroupRoster({
       </div>
 
       {roster.visibleLearners.length > 0 ? (
-        <div className={styles.teacherGroups__learnerList}>
-          {roster.visibleLearners.map((learner, index) => (
-            <article
-              className={styles.teacherGroups__learnerCard}
-              data-alert={learner.status === "debtor"}
-              key={learner.id}
-            >
-              <span className={styles.teacherGroups__learnerIndex}>{index + 1}</span>
-              <span className={styles.teacherGroups__learnerAvatar}>{learner.initials}</span>
-              <div className={styles.teacherGroups__learnerIdentity}>
-                <strong>{learner.name}</strong>
-                <span className={styles.teacherGroups__statusBadge} data-status={learner.status}>
-                  {statusLabels[learner.status]}
-                </span>
-              </div>
-              <div className={styles.teacherGroups__learnerFinance}>
-                <small>{copy.groups.balance}</small>
-                <strong>{formatTeacherNumber(learner.balance)} UZS</strong>
-              </div>
-              <div className={styles.teacherGroups__learnerProgress}>
-                <small>{copy.groups.taskProgress}</small>
-                <strong>{learner.taskProgress === null ? "—" : `${learner.taskProgress}%`}</strong>
-              </div>
-              <div className={styles.teacherGroups__learnerActions}>
-                <button
-                  aria-label={`${copy.groups.phone}: ${learner.name}`}
-                  onClick={handleContact}
-                  type="button"
-                >
-                  <CallRounded />
-                </button>
-                <button
-                  aria-label={`${copy.groups.paused}: ${learner.name}`}
-                  disabled={isStatusPending || learner.status === "departed"}
-                  onClick={() => handleStatusToggle(learner)}
-                  type="button"
-                >
-                  <PauseCircleOutlineRounded />
-                </button>
-                <button
-                  aria-label={`${copy.groups.balance}: ${learner.name}`}
-                  onClick={handlePreviewAction}
-                  type="button"
-                >
-                  <AccountBalanceWalletRounded />
-                </button>
-                <button
-                  aria-label={`${copy.groups.taskProgress}: ${learner.name}`}
-                  onClick={handlePreviewAction}
-                  type="button"
-                >
-                  <TaskAltRounded />
-                </button>
-                <button
-                  aria-label={`${copy.groups.detail}: ${learner.name}`}
-                  onClick={handlePreviewAction}
-                  type="button"
-                >
-                  <InfoOutlined />
-                </button>
-              </div>
-            </article>
-          ))}
+        <div
+          aria-label={copy.groups.rosterTitle}
+          className="teacherGroups__learnerList"
+          role="region"
+          tabIndex={0}
+        >
+          <table aria-label={copy.groups.rosterTitle} className="teacherGroups__learnerTable">
+            <thead>
+              <tr>
+                <th scope="col">{copy.groups.learnerName}</th>
+                <th scope="col">{copy.groupWorkspace.status}</th>
+                <th scope="col">{copy.groups.balance}</th>
+                <th scope="col">{copy.groups.rosterActions}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {roster.visibleLearners.map((learner, index) => (
+                <tr data-alert={learner.status === "debtor"} key={learner.id}>
+                  <td>
+                    <div className="teacherGroups__learnerIdentity">
+                      <span className="teacherGroups__learnerIndex">{index + 1}</span>
+                      <span className="teacherGroups__learnerAvatar">{learner.initials}</span>
+                      <strong>{learner.name}</strong>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="teacherGroups__statusBadge" data-status={learner.status}>
+                      {statusLabels[learner.status]}
+                    </span>
+                  </td>
+                  <td className="teacherGroups__learnerFinance">
+                    <strong>{formatTeacherNumber(learner.balance)} UZS</strong>
+                    {monthlyTuitionUzs !== null ? (
+                      <small>
+                        {copy.groups.paid}: {formatTeacherNumber(learner.paidAmountUzs)} /{" "}
+                        {formatTeacherNumber(monthlyTuitionUzs)} UZS
+                      </small>
+                    ) : null}
+                  </td>
+                  <td>
+                    <div className="teacherGroups__learnerActions">
+                      <button
+                        aria-label={`${copy.groups.detail}: ${learner.name}`}
+                        onClick={handlePreviewAction}
+                        type="button"
+                      >
+                        <InfoOutlined />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
-        <div className={sharedStyles.teacherShared__emptyState}>
+        <div className="teacherShared__emptyState">
           <div>
-            <span className={sharedStyles.teacherShared__emptyIcon}>
+            <span className="teacherShared__emptyIcon">
               <SearchRounded />
             </span>
-            <h3 className={sharedStyles.teacherShared__emptyTitle}>{copy.groups.empty}</h3>
+            <h3 className="teacherShared__emptyTitle">
+              {roster.summary.historicalTotal === 0 ? copy.groups.emptyRoster : copy.groups.empty}
+            </h3>
           </div>
         </div>
       )}
 
-      <Dialog
-        fullWidth
-        maxWidth="xs"
-        onClose={roster.handleAddDialogClose}
-        open={roster.isAddDialogOpen}
-      >
-        <DialogTitle>{copy.groups.addLearner}</DialogTitle>
-        <DialogContent className={styles.teacherGroups__dialogContent}>
-          <p>{copy.groups.addLearnerMessage}</p>
-          <TextField
-            autoFocus
-            error={roster.atCapacity}
-            fullWidth
-            helperText={roster.atCapacity ? copy.groups.groupCapacityReached : undefined}
-            label={copy.groups.learnerName}
-            onChange={roster.handleNewLearnerNameChange}
-            value={roster.newLearnerName}
-          />
-          <TextField
-            fullWidth
-            label={copy.groups.phone}
-            onChange={roster.handleNewLearnerPhoneChange}
-            value={roster.newLearnerPhone}
-          />
-        </DialogContent>
-        <DialogActions className={styles.teacherGroups__dialogActions}>
-          <Button onClick={roster.handleAddDialogClose} variant="ghost">
-            {copy.common.cancel}
-          </Button>
-          <Button
-            disabled={roster.atCapacity || !roster.newLearnerName.trim()}
-            onClick={handleAddLearner}
-          >
-            {copy.common.add}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {roster.isAddDialogOpen ? (
+        <TeacherAddStudentDialog
+          atCapacity={roster.atCapacity}
+          connected={connected}
+          copy={copy}
+          groupId={groupId}
+          onClose={roster.handleAddDialogClose}
+        />
+      ) : null}
     </section>
   );
 }

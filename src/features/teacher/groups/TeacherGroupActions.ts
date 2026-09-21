@@ -3,14 +3,14 @@
 import { auth } from "@/Auth";
 import {
   TeacherCreateGroupDocument,
+  TeacherCreateStudentInGroupDocument,
   TeacherDeleteGroupDocument,
-  TeacherSetGroupMembershipParticipationStatusDocument,
   TeacherUpdateGroupDocument,
   type CreateTeacherGroupInput,
-  type SetGroupMembershipParticipationStatusInput,
+  type TeacherCreateStudentInGroupInput,
+  type TeacherCreateStudentInGroupMutation,
   type TeacherCreateGroupMutation,
   type TeacherDeleteGroupMutation,
-  type TeacherSetGroupMembershipParticipationStatusMutation,
   type TeacherUpdateGroupMutation,
   type UpdateTeacherGroupInput,
 } from "@/gql/graphql";
@@ -88,30 +88,32 @@ export async function deleteConnectedTeacherGroup(groupId: string) {
   }
 }
 
-export async function setConnectedGroupMembershipParticipationStatus(
-  input: SetGroupMembershipParticipationStatusInput,
-) {
+export async function createConnectedStudentInGroup(input: TeacherCreateStudentInGroupInput) {
   try {
     const session = await auth();
     if (session?.bestApi?.role !== "TEACHER" || !session.bestApi.accessToken) {
       return { ok: false as const, code: "UNAUTHORIZED" };
     }
     const data = await executeApolloMutation<
-      TeacherSetGroupMembershipParticipationStatusMutation,
-      { input: SetGroupMembershipParticipationStatusInput }
+      TeacherCreateStudentInGroupMutation,
+      { input: TeacherCreateStudentInGroupInput }
     >(
-      TeacherSetGroupMembershipParticipationStatusDocument,
+      TeacherCreateStudentInGroupDocument,
       { input },
       { accessToken: session.bestApi.accessToken, cache: "no-store" },
     );
-    return {
-      ok: true as const,
-      membership: data.setGroupMembershipParticipationStatus.membership,
-    };
+    return { ok: true as const, membership: data.teacherCreateStudentInGroup.membership };
   } catch (error) {
     return {
       ok: false as const,
       code: error instanceof PublicApiError ? (error.code ?? "FAILED") : "FAILED",
+      field:
+        error instanceof PublicApiError &&
+        (error.code === "CONFLICT" || error.code === "BAD_USER_INPUT")
+          ? (["firstName", "lastName", "phone", "email", "password"] as const).find((field) =>
+              error.message.includes(field),
+            )
+          : undefined,
     };
   }
 }

@@ -12,6 +12,7 @@ query TeacherGroups($first: Int, $after: String) {
         startsAtMinutes
         endsAtMinutes
         activeStudentCount
+        monthlyTuitionUzs
       }
     }
     pageInfo {
@@ -32,36 +33,24 @@ query TeacherGroup($groupId: ID!) {
     startsAtMinutes
     endsAtMinutes
     activeStudentCount
+    monthlyTuitionUzs
   }
 }
 
-query TeacherGroupOverviewData($groupId: ID!, $first: Int, $after: String) {
+query TeacherGroupOverviewData($groupId: ID!) {
   teacherGroupOverview(groupId: $groupId) {
     activeAssignmentCount
     scheduledTestCount
     materialCount
     currentStudentCount
   }
-  teacherGroupLessons(groupId: $groupId, first: $first, after: $after) {
-    edges {
-      node {
-        id
-        groupId
-        startsAt
-        endsAt
-        room
-        status
-        translations {
-          language
-          title
-          summary
-        }
-      }
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
+  teacherGroupRosterSummary(groupId: $groupId) {
+    currentTotal
+    historicalTotal
+    active
+    paused
+    debtors
+    departed
   }
 }
 
@@ -83,6 +72,7 @@ query TeacherGroupRosterData($groupId: ID!, $first: Int, $after: String) {
         phone
         rosterStatus
         outstandingBalanceUzs
+        paidAmountUzs
         startedAt
         endedAt
       }
@@ -116,6 +106,7 @@ mutation TeacherUpdateGroup($input: UpdateTeacherGroupInput!) {
       startsAtMinutes
       endsAtMinutes
       activeStudentCount
+      monthlyTuitionUzs
     }
   }
 }
@@ -129,16 +120,13 @@ mutation TeacherDeleteGroup($groupId: ID!) {
   }
 }
 
-mutation TeacherSetGroupMembershipParticipationStatus(
-  $input: SetGroupMembershipParticipationStatusInput!
-) {
-  setGroupMembershipParticipationStatus(input: $input) {
+mutation TeacherCreateStudentInGroup($input: TeacherCreateStudentInGroupInput!) {
+  teacherCreateStudentInGroup(input: $input) {
     membership {
       membershipId
       studentId
+      displayName
       rosterStatus
-      outstandingBalanceUzs
-      endedAt
     }
   }
 }

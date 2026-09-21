@@ -9,6 +9,8 @@ import type {
 type GroupStudentListProps = {
   connected: boolean;
   copy: TeacherCopy;
+  groupId: string;
+  monthlyTuitionUzs: number | null;
   initialLearners: TeacherLearner[];
   initialSummary?: TeacherGroupRosterSummary;
   locale: Locale;
@@ -17,6 +19,8 @@ type GroupStudentListProps = {
 export function GroupStudentList({
   connected,
   copy,
+  groupId,
+  monthlyTuitionUzs,
   initialLearners,
   initialSummary,
   locale,
@@ -29,6 +33,8 @@ export function GroupStudentList({
     <TeacherGroupRoster
       connected={connected}
       copy={copy}
+      groupId={groupId}
+      monthlyTuitionUzs={monthlyTuitionUzs}
       initialLearners={initialLearners}
       initialSummary={initialSummary}
       key={rosterVersion}

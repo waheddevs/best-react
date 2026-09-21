@@ -17,15 +17,12 @@ import {
 import { executeApolloQuery } from "@/lib/apollo/ApolloServerClient";
 import type {
   TeacherGroup,
-  TeacherGroupOverviewLesson,
   TeacherGroupOverviewMetrics,
   TeacherGroupRosterSummary,
   TeacherLearner,
 } from "@/types/teacher/Teacher";
 
 type GroupNode = TeacherGroupQuery["teacherGroup"];
-type OverviewLessonNode =
-  TeacherGroupOverviewDataQuery["teacherGroupLessons"]["edges"][number]["node"];
 type RosterNode = TeacherGroupRosterDataQuery["teacherGroupRoster"]["edges"][number]["node"];
 
 async function teacherToken(locale: Locale): Promise<string> {
@@ -62,6 +59,7 @@ function mapGroup(group: GroupNode): TeacherGroup {
             : null,
     id: group.id,
     learnerCount: group.activeStudentCount,
+    monthlyTuitionUzs: group.monthlyTuitionUzs === null ? null : Number(group.monthlyTuitionUzs),
     lessonDays,
     scheduleDays: group.scheduleDays,
     startsAtMinutes: group.startsAtMinutes ?? null,
@@ -98,50 +96,9 @@ function mapRosterMember(groupId: string, member: RosterNode): TeacherLearner {
     initials: learnerInitials(member.displayName),
     membershipId: member.membershipId,
     name: member.displayName,
+    paidAmountUzs: Number(member.paidAmountUzs),
     phone: member.phone ?? "—",
     status: mapRosterStatus(member.rosterStatus),
-    taskProgress: null,
-  };
-}
-
-function tashkentDateTime(value: string): { date: string; time: string } {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    day: "2-digit",
-    hour: "2-digit",
-    hour12: false,
-    minute: "2-digit",
-    month: "2-digit",
-    timeZone: "Asia/Tashkent",
-    year: "numeric",
-  }).formatToParts(new Date(value));
-  const part = (type: Intl.DateTimeFormatPartTypes) =>
-    parts.find((entry) => entry.type === type)?.value ?? "";
-  return {
-    date: `${part("year")}-${part("month")}-${part("day")}`,
-    time: `${part("hour")}:${part("minute")}`,
-  };
-}
-
-function mapOverviewLesson(lesson: OverviewLessonNode): TeacherGroupOverviewLesson | null {
-  if (lesson.status !== "SCHEDULED" && lesson.status !== "COMPLETED") return null;
-  const fallbackTitle = lesson.translations[0]?.title ?? "—";
-  const topic = Object.fromEntries(
-    (["uz", "ru", "en"] as const).map((locale) => {
-      const language = locale.toUpperCase();
-      const translation = lesson.translations.find((entry) => entry.language === language);
-      return [locale, translation?.title ?? fallbackTitle];
-    }),
-  ) as TeacherGroupOverviewLesson["topic"];
-  const startsAt = tashkentDateTime(lesson.startsAt);
-  const endsAt = tashkentDateTime(lesson.endsAt);
-  return {
-    date: startsAt.date,
-    endsAt: endsAt.time,
-    id: lesson.id,
-    room: lesson.room ?? "—",
-    startsAt: startsAt.time,
-    status: lesson.status === "COMPLETED" ? "completed" : "planned",
-    topic,
   };
 }
 
@@ -179,38 +136,28 @@ export async function loadConnectedTeacherGroup(
 export async function loadConnectedTeacherGroupOverview(
   locale: Locale,
   groupId: string,
-): Promise<{ lessons: TeacherGroupOverviewLesson[]; metrics: TeacherGroupOverviewMetrics }> {
+): Promise<{ metrics: TeacherGroupOverviewMetrics; rosterSummary: TeacherGroupRosterSummary }> {
   const accessToken = await teacherToken(locale);
-  const lessons: OverviewLessonNode[] = [];
-  let after: string | null = null;
-  let overview: TeacherGroupOverviewDataQuery["teacherGroupOverview"] | undefined;
-  do {
-    const data: TeacherGroupOverviewDataQuery = await executeApolloQuery<
-      TeacherGroupOverviewDataQuery,
-      { after: string | null; first: number; groupId: string }
-    >(
-      TeacherGroupOverviewDataDocument,
-      { after, first: 100, groupId },
-      { accessToken, cache: "no-store" },
-    );
-    overview ??= data.teacherGroupOverview;
-    lessons.push(...data.teacherGroupLessons.edges.map(({ node }) => node));
-    if (!data.teacherGroupLessons.pageInfo.hasNextPage) break;
-    const next = data.teacherGroupLessons.pageInfo.endCursor;
-    if (!next || next === after) throw new Error("Invalid teacher group lessons cursor");
-    after = next;
-  } while (true);
-  if (!overview) throw new Error("Teacher group overview was not returned");
+  const data: TeacherGroupOverviewDataQuery = await executeApolloQuery<
+    TeacherGroupOverviewDataQuery,
+    { groupId: string }
+  >(TeacherGroupOverviewDataDocument, { groupId }, { accessToken, cache: "no-store" });
+  const overview = data.teacherGroupOverview;
+  const roster = data.teacherGroupRosterSummary;
   return {
-    lessons: lessons
-      .sort((left, right) => left.startsAt.localeCompare(right.startsAt))
-      .map(mapOverviewLesson)
-      .filter((lesson): lesson is TeacherGroupOverviewLesson => lesson !== null),
     metrics: {
       activeAssignments: overview.activeAssignmentCount,
       materials: overview.materialCount,
       scheduledTests: overview.scheduledTestCount,
       students: overview.currentStudentCount,
+    },
+    rosterSummary: {
+      active: roster.active,
+      debtor: roster.debtors,
+      departed: roster.departed,
+      historicalTotal: roster.historicalTotal,
+      paused: roster.paused,
+      total: roster.currentTotal,
     },
   };
 }

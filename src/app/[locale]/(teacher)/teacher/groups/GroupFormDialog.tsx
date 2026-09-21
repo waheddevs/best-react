@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useRef, useState, type ChangeEvent, type FormEvent, type MouseEvent } from "react";
 
 import { Button } from "@/components/ui/Button";
-import styles from "@/css/teacher/groups.module.css";
 import {
   createConnectedTeacherGroup,
   updateConnectedTeacherGroup,
@@ -72,6 +71,8 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
   const [categoryAnchor, setCategoryAnchor] = useState<HTMLElement | null>(null);
   const [room, setRoom] = useState(group?.room === "—" ? "" : (group?.room ?? ""));
   const [roomTouched, setRoomTouched] = useState(false);
+  const [tuition, setTuition] = useState(String(group?.monthlyTuitionUzs ?? 300000));
+  const [tuitionTouched, setTuitionTouched] = useState(false);
   const [scheduleDays, setScheduleDays] = useState<number[]>(group?.scheduleDays ?? []);
   const [daysTouched, setDaysTouched] = useState(false);
   const [start, setStart] = useState(() => minutesToTime(group?.startsAtMinutes));
@@ -83,6 +84,11 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
   const categoryError =
     (submitted || categoryTouched) && !category ? copy.groups.groupTypeRequired : "";
   const roomError = (submitted || roomTouched) && !room.trim() ? copy.groups.groupRoomRequired : "";
+  const tuitionError =
+    (submitted || tuitionTouched) &&
+    (!/^[1-9]\d{0,9}$/.test(tuition) || Number(tuition) > 2000000000)
+      ? copy.groups.groupTuitionError
+      : "";
   const daysError =
     (submitted || daysTouched) && scheduleDays.length === 0 ? copy.groups.groupDaysRequired : "";
   const endBeforeStart =
@@ -151,6 +157,8 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
       !name.trim() ||
       !category ||
       !room.trim() ||
+      !/^[1-9]\d{0,9}$/.test(tuition) ||
+      Number(tuition) > 2000000000 ||
       !scheduleDays.length ||
       !isTeacherTimeValueValid(start) ||
       !isTeacherTimeValueValid(end) ||
@@ -175,6 +183,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
         category,
         endsAtMinutes: timeToMinutes(end),
         name: name.trim(),
+        monthlyTuitionUzs: tuition,
         room: room.trim(),
         scheduleDays,
         startsAtMinutes: timeToMinutes(start),
@@ -217,13 +226,13 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
       onClose={handleClose}
       open
       slotProps={{
-        backdrop: { className: styles.teacherGroups__createBackdrop },
-        paper: { className: styles.teacherGroups__createPaper },
+        backdrop: { className: "teacherGroups__createBackdrop" },
+        paper: { className: "teacherGroups__createPaper" },
       }}
     >
-      <form className={styles.teacherGroups__createForm} noValidate onSubmit={handleSubmit}>
+      <form className="teacherGroups__createForm" noValidate onSubmit={handleSubmit}>
         <h2 id={`${idPrefix}-title`}>{title}</h2>
-        <div className={styles.teacherGroups__createField}>
+        <div className="teacherGroups__createField">
           <label htmlFor={`${idPrefix}-name`}>{copy.groups.groupNameField}</label>
           <input
             aria-describedby={nameError ? `${idPrefix}-name-error` : undefined}
@@ -239,7 +248,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             value={name}
           />
           <span
-            className={styles.teacherGroups__createFieldError}
+            className="teacherGroups__createFieldError"
             data-visible={Boolean(nameError)}
             id={`${idPrefix}-name-error`}
             role={nameError ? "alert" : undefined}
@@ -247,8 +256,8 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             {nameError}
           </span>
         </div>
-        <div className={styles.teacherGroups__createGrid}>
-          <div className={styles.teacherGroups__createField}>
+        <div className="teacherGroups__createGrid">
+          <div className="teacherGroups__createField">
             <span id={`${idPrefix}-type-label`}>{copy.groups.groupTypeField}</span>
             <input name="category" type="hidden" value={category} />
             <button
@@ -257,7 +266,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               aria-expanded={Boolean(categoryAnchor)}
               aria-haspopup="menu"
               aria-labelledby={`${idPrefix}-type-label`}
-              className={styles.teacherGroups__createPickerTrigger}
+              className="teacherGroups__createPickerTrigger"
               data-invalid={Boolean(categoryError)}
               onClick={handleCategoryOpen}
               type="button"
@@ -276,14 +285,14 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               open={Boolean(categoryAnchor)}
               slotProps={{
                 paper: {
-                  className: styles.teacherGroups__createMenu,
+                  className: "teacherGroups__createMenu",
                   style: { width: categoryAnchor?.offsetWidth },
                 },
               }}
             >
               {(["IELTS", "CEFR", "GENERAL_ENGLISH"] as const).map((value) => (
                 <MenuItem
-                  className={styles.teacherGroups__createMenuItem}
+                  className="teacherGroups__createMenuItem"
                   key={value}
                   onClick={() => handleCategorySelect(value)}
                   selected={category === value}
@@ -293,7 +302,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               ))}
             </Menu>
             <span
-              className={styles.teacherGroups__createFieldError}
+              className="teacherGroups__createFieldError"
               data-visible={Boolean(categoryError)}
               id={`${idPrefix}-type-error`}
               role={categoryError ? "alert" : undefined}
@@ -301,7 +310,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               {categoryError}
             </span>
           </div>
-          <div className={styles.teacherGroups__createField}>
+          <div className="teacherGroups__createField">
             <label htmlFor={`${idPrefix}-room`}>{copy.groups.groupRoomField}</label>
             <input
               aria-describedby={roomError ? `${idPrefix}-room-error` : undefined}
@@ -315,7 +324,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               value={room}
             />
             <span
-              className={styles.teacherGroups__createFieldError}
+              className="teacherGroups__createFieldError"
               data-visible={Boolean(roomError)}
               id={`${idPrefix}-room-error`}
               role={roomError ? "alert" : undefined}
@@ -324,11 +333,34 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             </span>
           </div>
         </div>
+        <div className="teacherGroups__createField">
+          <label htmlFor={`${idPrefix}-tuition`}>{copy.groups.groupTuitionField}</label>
+          <input
+            aria-describedby={tuitionError ? `${idPrefix}-tuition-error` : undefined}
+            aria-invalid={Boolean(tuitionError)}
+            id={`${idPrefix}-tuition`}
+            inputMode="numeric"
+            maxLength={10}
+            name="monthlyTuitionUzs"
+            onBlur={() => setTuitionTouched(true)}
+            onChange={(event) => setTuition(event.currentTarget.value)}
+            required
+            value={tuition}
+          />
+          <span
+            className="teacherGroups__createFieldError"
+            data-visible={Boolean(tuitionError)}
+            id={`${idPrefix}-tuition-error`}
+            role={tuitionError ? "alert" : undefined}
+          >
+            {tuitionError}
+          </span>
+        </div>
         <fieldset
           aria-describedby={daysError ? `${idPrefix}-days-error` : undefined}
           aria-invalid={Boolean(daysError)}
           aria-required="true"
-          className={styles.teacherGroups__createDays}
+          className="teacherGroups__createDays"
         >
           <legend>{copy.groups.groupDaysField}</legend>
           <div>
@@ -346,7 +378,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             ))}
           </div>
           <span
-            className={styles.teacherGroups__createFieldError}
+            className="teacherGroups__createFieldError"
             data-visible={Boolean(daysError)}
             id={`${idPrefix}-days-error`}
             role={daysError ? "alert" : undefined}
@@ -354,7 +386,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             {daysError}
           </span>
         </fieldset>
-        <div className={styles.teacherGroups__createGrid}>
+        <div className="teacherGroups__createGrid">
           <CreateGroupTimeField
             formatMessage={copy.groups.groupTimeFormat}
             idPrefix={idPrefix}
@@ -378,11 +410,11 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
           />
         </div>
         {error ? (
-          <p className={styles.teacherGroups__createError} role="alert">
+          <p className="teacherGroups__createError" role="alert">
             {error}
           </p>
         ) : null}
-        <div className={styles.teacherGroups__createActions}>
+        <div className="teacherGroups__createActions">
           <Button
             disabled={pending}
             onClick={handleClose}
