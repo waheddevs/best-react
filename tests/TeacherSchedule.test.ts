@@ -3,7 +3,7 @@ import test from "node:test";
 
 import type { TeacherGroup } from "../src/types/teacher/Teacher";
 
-const { buildTeacherSchedule } = (await import(
+const { buildTeacherSchedule, getNextGroupClassDate } = (await import(
   new URL("../src/lib/teacher/TeacherSchedule.ts", import.meta.url).href
 )) as typeof import("../src/lib/teacher/TeacherSchedule");
 
@@ -71,4 +71,20 @@ test("schedule status follows the live time and a newly fetched group appears", 
     ["morning", "created", "afternoon"],
   );
   assert.equal(buildTeacherSchedule([...groups, newlyCreated], 1, 540)[1]?.status, "planned");
+});
+
+test("next class date follows the Asia/Tashkent clock and skips finished days", () => {
+  const mondayClass = group("monday", [1], 840, 960);
+  assert.equal(
+    getNextGroupClassDate(mondayClass, new Date("2026-09-21T08:00:00.000Z")),
+    "2026-09-21",
+  );
+  assert.equal(
+    getNextGroupClassDate(mondayClass, new Date("2026-09-21T12:00:00.000Z")),
+    "2026-09-28",
+  );
+  assert.equal(
+    getNextGroupClassDate(group("unscheduled", [], null, null), new Date("2026-09-21T08:00:00Z")),
+    null,
+  );
 });
