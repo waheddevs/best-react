@@ -25,8 +25,9 @@ export default async function GroupStudentsPage({ params }: GroupStudentsPagePro
     <GroupStudentList
       connected={connected}
       copy={copy}
+      coursePriceUzs={group.monthlyTuitionUzs ?? null}
       groupId={group.id}
-      monthlyTuitionUzs={group.monthlyTuitionUzs ?? null}
+      groupName={group.name}
       initialLearners={roster.learners}
       initialSummary={roster.summary}
       locale={locale}

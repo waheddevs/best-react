@@ -20,6 +20,7 @@ type TeacherAddStudentDialogProps = {
   copy: TeacherCopy;
   groupId: string;
   onClose: () => void;
+  onStudentCreated: (membershipId: string) => void;
 };
 
 const emptyValues: StudentValues = {
@@ -59,6 +60,7 @@ export function TeacherAddStudentDialog({
   copy,
   groupId,
   onClose,
+  onStudentCreated,
 }: TeacherAddStudentDialogProps) {
   const [values, setValues] = useState<StudentValues>(emptyValues);
   const [errors, setErrors] = useState<StudentErrors>({});
@@ -149,6 +151,7 @@ export function TeacherAddStudentDialog({
         return;
       }
       setValues(emptyValues);
+      onStudentCreated(result.membership.membershipId);
       onClose();
       notifications.success({ title: copy.groups.addLearner, message: labels.saveSuccess });
       router.refresh();
@@ -164,7 +167,9 @@ export function TeacherAddStudentDialog({
     const id = `teacher-add-student-${field.name}`;
     return (
       <div className="teacherGroups__createField" key={field.name}>
-        <label htmlFor={id}>{field.label}</label>
+        <label className="teacherGroups__createFieldLabelHidden" htmlFor={id}>
+          {field.label}
+        </label>
         <input
           aria-describedby={error ? `${id}-error` : undefined}
           aria-invalid={Boolean(error)}
@@ -187,6 +192,7 @@ export function TeacherAddStudentDialog({
               [field.name]: validate({ ...values, [field.name]: value }, copy)[field.name],
             }));
           }}
+          placeholder={field.label}
           required
           type={field.type}
           value={values[field.name]}
@@ -216,8 +222,11 @@ export function TeacherAddStudentDialog({
       <form className="teacherGroups__createForm" noValidate onSubmit={submit}>
         <h2 id="teacher-add-student-title">{copy.groups.addLearner}</h2>
         <div className="teacherGroups__createGrid">{fields.slice(0, 2).map(renderField)}</div>
-        <div className="teacherGroups__createGrid">{fields.slice(2, 4).map(renderField)}</div>
-        {renderField(fields[4])}
+        <div className="teacherGroups__createGrid">
+          {renderField(fields[2])}
+          {renderField(fields[4])}
+        </div>
+        {renderField(fields[3])}
         {formError ? (
           <p className="teacherGroups__createError" role="alert">
             {formError}

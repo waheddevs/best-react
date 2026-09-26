@@ -1006,13 +1006,13 @@ body[data-teacher-theme] .publicShared__buttonDanger:hover {
   }
 
   &__notificationToastWarning {
-    --notification-accent: var(--action-blue);
-    --notification-accent-soft: var(--action-blue);
+    --notification-accent: var(--sunny-yellow);
+    --notification-accent-soft: #ffc85738;
   }
 
   @supports (color: color-mix(in lab, red, red)) {
     &__notificationToastWarning {
-      --notification-accent-soft: color-mix(in srgb, var(--action-blue) 14%, transparent);
+      --notification-accent-soft: color-mix(in srgb, var(--sunny-yellow) 22%, transparent);
     }
   }
 
@@ -1030,6 +1030,11 @@ body[data-teacher-theme] .publicShared__buttonDanger:hover {
   &__notificationToastLoading {
     --notification-accent: var(--action-blue);
     --notification-accent-soft: var(--action-blue);
+  }
+
+  &__notificationToastDelete {
+    --notification-accent: var(--coral);
+    --notification-accent-soft: #ff6b6b26;
   }
 
   @supports (color: color-mix(in lab, red, red)) {
@@ -1180,14 +1185,25 @@ body[data-teacher-theme] .publicShared__buttonDanger:hover {
   }
 }
 
-body[data-teacher-theme] .publicShared__notificationDialogDanger {
+body[data-teacher-theme] .publicShared__notificationDialogDanger,
+body[data-teacher-theme] .publicShared__notificationToastDelete {
   --notification-accent: var(--teacher-danger);
   --notification-accent-soft: var(--teacher-danger);
 }
 
+body[data-teacher-theme] .publicShared__notificationToastWarning {
+  --notification-accent: var(--teacher-warning);
+  --notification-accent-soft: var(--teacher-yellow);
+}
+
 @supports (color: color-mix(in lab, red, red)) {
-  body[data-teacher-theme] .publicShared__notificationDialogDanger {
+  body[data-teacher-theme] .publicShared__notificationDialogDanger,
+  body[data-teacher-theme] .publicShared__notificationToastDelete {
     --notification-accent-soft: color-mix(in srgb, var(--teacher-danger) 15%, transparent);
+  }
+
+  body[data-teacher-theme] .publicShared__notificationToastWarning {
+    --notification-accent-soft: color-mix(in srgb, var(--teacher-yellow) 22%, transparent);
   }
 }
 

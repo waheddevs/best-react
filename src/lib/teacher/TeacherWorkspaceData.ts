@@ -4,12 +4,14 @@ import { auth } from "@/Auth";
 import {
   AdminUsersDocument,
   TeacherAvatarIntentDocument,
+  TeacherDashboardMetricsDocument,
   TeacherHeaderDocument,
   TeacherNotificationUpdatesDocument,
   TeacherProfileDocument,
   TeacherTasksDocument,
   type AdminUsersQuery,
   type TeacherHeaderQuery,
+  type TeacherDashboardMetricsQuery,
   type TeacherNotificationUpdatesQuery,
   type TeacherProfileQuery,
   type TeacherTasksQuery,
@@ -30,6 +32,18 @@ async function tokenFor(role: "TEACHER" | "ADMIN"): Promise<string> {
     throw new Error(`${role} session required`);
   }
   return session.bestApi.accessToken;
+}
+
+export async function loadTeacherDashboardMetrics(): Promise<
+  TeacherDashboardMetricsQuery["teacherDashboard"]
+> {
+  const accessToken = await tokenFor("TEACHER");
+  const data = await executeApolloQuery<TeacherDashboardMetricsQuery, Record<string, never>>(
+    TeacherDashboardMetricsDocument,
+    {},
+    { accessToken, cache: "no-store" },
+  );
+  return data.teacherDashboard;
 }
 
 async function avatarUrlFor(

@@ -38,6 +38,7 @@ type QueuedNotification = {
   action?: NotificationAction;
   duration: number | null;
   id: NotificationId;
+  icon: NonNullable<NotificationInput["icon"]>;
   message: string;
   renderKey: number;
   title: string;
@@ -75,6 +76,7 @@ export function NotificationProvider({ children, copy }: NotificationProviderPro
           message: input.message ?? copy.confirm.message,
           confirmLabel: input.confirmLabel ?? copy.confirm.confirmLabel,
           cancelLabel: input.cancelLabel ?? copy.confirm.cancelLabel,
+          icon: input.icon ?? "tone",
           tone: input.tone ?? "default",
         });
       });
@@ -107,6 +109,7 @@ export function NotificationProvider({ children, copy }: NotificationProviderPro
         action: input.action,
         duration: input.duration ?? (tone === "loading" ? null : defaultToastDuration),
         id: notificationId,
+        icon: input.icon ?? "tone",
         message: input.message ?? fallback.message,
         renderKey: ++notificationSequenceRef.current,
         title: input.title ?? fallback.title,
@@ -241,6 +244,7 @@ export function NotificationProvider({ children, copy }: NotificationProviderPro
           <LiquidToast
             action={currentToast.action}
             closeAriaLabel={copy.closeAriaLabel}
+            icon={currentToast.icon}
             message={currentToast.message}
             onDismiss={() => dismissNotification(currentToast.id)}
             title={currentToast.title}

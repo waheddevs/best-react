@@ -1,19 +1,26 @@
 "use client";
 
 import AddRounded from "@mui/icons-material/AddRounded";
+import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import SearchRounded from "@mui/icons-material/SearchRounded";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { teacherGroupCapacity } from "@/config/teacher/TeacherGroupCapacity";
 import type { Locale } from "@/config/Locales";
 import { TeacherAddStudentDialog } from "@/features/teacher/groups/TeacherAddStudentDialog";
+import { deleteConnectedTeacherStudent } from "@/features/teacher/groups/TeacherGroupActions";
+import { TeacherStudentDetailsDrawer } from "@/features/teacher/groups/TeacherStudentDetailsDrawer";
+import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import {
   useTeacherGroupRoster,
   type TeacherRosterStatusFilter,
 } from "@/hooks/teacher/groups/useTeacherGroupRoster";
-import { formatTeacherNumber } from "@/lib/teacher/TeacherNumberFormat";
+import { formatPhoneNumber } from "@/lib/PhoneNumber";
+import { formatTeacherRosterEmail } from "@/lib/teacher/TeacherRosterEmail";
 import type {
   TeacherCopy,
   TeacherGroupRosterSummary,
@@ -23,8 +30,9 @@ import type {
 type TeacherGroupRosterProps = {
   connected: boolean;
   copy: TeacherCopy;
+  coursePriceUzs: number | null;
   groupId: string;
-  monthlyTuitionUzs: number | null;
+  groupName: string;
   initialLearners: TeacherLearner[];
   initialSummary?: TeacherGroupRosterSummary;
   locale: Locale;
@@ -33,14 +41,20 @@ type TeacherGroupRosterProps = {
 export function TeacherGroupRoster({
   connected,
   copy,
+  coursePriceUzs,
   groupId,
-  monthlyTuitionUzs,
+  groupName,
   initialLearners,
   initialSummary,
+  locale,
 }: TeacherGroupRosterProps) {
   /* HOOKS */
+  const router = useRouter();
+  const confirm = useConfirmDialog();
   const notifications = useNotifications();
   const roster = useTeacherGroupRoster({ initialLearners, initialSummary });
+  const [pendingMembershipId, setPendingMembershipId] = useState<string | null>(null);
+  const [selectedLearner, setSelectedLearner] = useState<TeacherLearner | null>(null);
 
   const statusLabels: Record<TeacherLearner["status"], string> = {
     active: copy.groups.active,
@@ -65,8 +79,73 @@ export function TeacherGroupRoster({
     roster.handleAddDialogOpen();
   };
 
-  const handlePreviewAction = () => {
-    notifications.info({ title: copy.groups.unsavedTitle, message: copy.groups.unsavedMessage });
+  const handleDetailsOpen = (learner: TeacherLearner) => {
+    setSelectedLearner(learner);
+  };
+
+  const handleDetailsClose = () => {
+    setSelectedLearner(null);
+  };
+
+  const handleLearnerStatusChanged = (
+    learner: TeacherLearner,
+    status: TeacherLearner["status"],
+  ) => {
+    roster.handleLearnerStatusChanged(learner.membershipId, status);
+    setSelectedLearner((current) =>
+      current?.membershipId === learner.membershipId ? { ...current, status } : current,
+    );
+  };
+
+  const paymentIsPaid = (learner: TeacherLearner) =>
+    learner.balance <= 0 && !roster.newUnpaidMembershipIds.has(learner.membershipId);
+
+  const handleDeleteAction = async (learner: TeacherLearner) => {
+    if (pendingMembershipId !== null) return;
+    const accepted = await confirm({
+      cancelLabel: copy.groups.deleteLearnerCancel,
+      confirmLabel: copy.groups.deleteLearnerConfirm,
+      icon: "delete",
+      message: copy.groups.deleteLearnerMessage
+        .replace("{name}", learner.name)
+        .replace("{studentName}", learner.name),
+      title: copy.groups.deleteLearnerTitle,
+      tone: "danger",
+    });
+    if (!accepted) return;
+    if (!connected) {
+      notifications.info({
+        title: copy.groups.deleteLearner,
+        message: copy.groups.deleteLearnerUnavailable,
+      });
+      return;
+    }
+
+    setPendingMembershipId(learner.membershipId);
+    try {
+      const result = await deleteConnectedTeacherStudent({ membershipId: learner.membershipId });
+      if (!result.ok || result.membership.status !== "DELETED") {
+        notifications.error({
+          title: copy.groups.deleteLearner,
+          message: copy.groups.deleteLearnerError,
+        });
+        return;
+      }
+      roster.handleLearnerDeleted(learner.membershipId);
+      notifications.success({
+        icon: "delete",
+        title: copy.groups.deleteLearner,
+        message: copy.groups.deleteLearnerSuccess.replace("{name}", learner.name),
+      });
+      router.refresh();
+    } catch {
+      notifications.error({
+        title: copy.groups.deleteLearner,
+        message: copy.groups.deleteLearnerError,
+      });
+    } finally {
+      setPendingMembershipId(null);
+    }
   };
 
   return (
@@ -104,7 +183,7 @@ export function TeacherGroupRoster({
           size="small"
           startIcon={<AddRounded />}
         >
-          {copy.groups.addLearner}
+          {copy.common.add}
         </Button>
       </div>
 
@@ -118,49 +197,69 @@ export function TeacherGroupRoster({
           <table aria-label={copy.groups.rosterTitle} className="teacherGroups__learnerTable">
             <thead>
               <tr>
-                <th scope="col">{copy.groups.learnerName}</th>
+                <th scope="col">{copy.groups.rosterName}</th>
                 <th scope="col">{copy.groupWorkspace.status}</th>
+                <th scope="col">{copy.groups.phone}</th>
+                <th scope="col">{copy.groups.email}</th>
                 <th scope="col">{copy.groups.balance}</th>
                 <th scope="col">{copy.groups.rosterActions}</th>
               </tr>
             </thead>
             <tbody>
-              {roster.visibleLearners.map((learner, index) => (
-                <tr data-alert={learner.status === "debtor"} key={learner.id}>
-                  <td>
-                    <div className="teacherGroups__learnerIdentity">
-                      <span className="teacherGroups__learnerIndex">{index + 1}</span>
-                      <span className="teacherGroups__learnerAvatar">{learner.initials}</span>
-                      <strong>{learner.name}</strong>
-                    </div>
-                  </td>
-                  <td>
-                    <span className="teacherGroups__statusBadge" data-status={learner.status}>
-                      {statusLabels[learner.status]}
-                    </span>
-                  </td>
-                  <td className="teacherGroups__learnerFinance">
-                    <strong>{formatTeacherNumber(learner.balance)} UZS</strong>
-                    {monthlyTuitionUzs !== null ? (
-                      <small>
-                        {copy.groups.paid}: {formatTeacherNumber(learner.paidAmountUzs)} /{" "}
-                        {formatTeacherNumber(monthlyTuitionUzs)} UZS
-                      </small>
-                    ) : null}
-                  </td>
-                  <td>
-                    <div className="teacherGroups__learnerActions">
-                      <button
-                        aria-label={`${copy.groups.detail}: ${learner.name}`}
-                        onClick={handlePreviewAction}
-                        type="button"
+              {roster.visibleLearners.map((learner, index) => {
+                const learnerPaymentIsPaid = paymentIsPaid(learner);
+
+                return (
+                  <tr key={learner.id}>
+                    <td>
+                      <div className="teacherGroups__learnerIdentity">
+                        <span className="teacherGroups__learnerIndex">{index + 1}</span>
+                        <span className="teacherGroups__learnerAvatar">{learner.initials}</span>
+                        <strong>{learner.name}</strong>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="teacherGroups__statusBadge" data-status={learner.status}>
+                        {statusLabels[learner.status]}
+                      </span>
+                    </td>
+                    <td className="teacherGroups__learnerPhone">
+                      {formatPhoneNumber(learner.phone) || learner.phone}
+                    </td>
+                    <td className="teacherGroups__learnerEmail" title={learner.email ?? undefined}>
+                      {formatTeacherRosterEmail(learner.email)}
+                    </td>
+                    <td>
+                      <span
+                        className="teacherGroups__statusBadge"
+                        data-status={learnerPaymentIsPaid ? "paid" : "unpaid"}
                       >
-                        <InfoOutlined />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                        {learnerPaymentIsPaid ? copy.groups.paid : copy.groups.unpaid}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="teacherGroups__learnerActions">
+                        <button
+                          aria-label={`${copy.groups.detail}: ${learner.name}`}
+                          onClick={() => handleDetailsOpen(learner)}
+                          type="button"
+                        >
+                          <InfoOutlined />
+                        </button>
+                        <button
+                          aria-label={`${copy.groups.deleteLearner}: ${learner.name}`}
+                          className="teacherGroups__learnerDeleteButton"
+                          disabled={pendingMembershipId !== null || learner.status === "departed"}
+                          onClick={() => void handleDeleteAction(learner)}
+                          type="button"
+                        >
+                          <DeleteOutlineRounded aria-hidden="true" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -184,6 +283,21 @@ export function TeacherGroupRoster({
           copy={copy}
           groupId={groupId}
           onClose={roster.handleAddDialogClose}
+          onStudentCreated={roster.handleLearnerAdded}
+        />
+      ) : null}
+
+      {selectedLearner ? (
+        <TeacherStudentDetailsDrawer
+          connected={connected}
+          copy={copy}
+          coursePriceUzs={coursePriceUzs}
+          groupName={groupName}
+          learner={selectedLearner}
+          locale={locale}
+          onClose={handleDetailsClose}
+          onStatusChanged={(status) => handleLearnerStatusChanged(selectedLearner, status)}
+          paymentIsPaid={paymentIsPaid(selectedLearner)}
         />
       ) : null}
     </section>

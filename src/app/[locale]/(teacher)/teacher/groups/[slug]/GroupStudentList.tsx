@@ -9,8 +9,9 @@ import type {
 type GroupStudentListProps = {
   connected: boolean;
   copy: TeacherCopy;
+  coursePriceUzs: number | null;
   groupId: string;
-  monthlyTuitionUzs: number | null;
+  groupName: string;
   initialLearners: TeacherLearner[];
   initialSummary?: TeacherGroupRosterSummary;
   locale: Locale;
@@ -19,25 +20,22 @@ type GroupStudentListProps = {
 export function GroupStudentList({
   connected,
   copy,
+  coursePriceUzs,
   groupId,
-  monthlyTuitionUzs,
+  groupName,
   initialLearners,
   initialSummary,
   locale,
 }: GroupStudentListProps) {
-  const rosterVersion = initialLearners
-    .map((learner) => `${learner.membershipId}:${learner.status}:${learner.balance}`)
-    .join("|");
-
   return (
     <TeacherGroupRoster
       connected={connected}
       copy={copy}
+      coursePriceUzs={coursePriceUzs}
       groupId={groupId}
-      monthlyTuitionUzs={monthlyTuitionUzs}
+      groupName={groupName}
       initialLearners={initialLearners}
       initialSummary={initialSummary}
-      key={rosterVersion}
       locale={locale}
     />
   );

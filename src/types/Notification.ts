@@ -1,5 +1,7 @@
 export type NotificationTone = "success" | "error" | "warning" | "info" | "loading";
 
+export type NotificationIcon = "tone" | "delete" | "logout";
+
 export type NotificationId = string | number;
 
 export type NotificationMessage = {
@@ -15,6 +17,7 @@ export type NotificationAction = {
 export type NotificationInput = Partial<NotificationMessage> & {
   action?: NotificationAction;
   duration?: number;
+  icon?: NotificationIcon;
 };
 
 export type PromiseNotificationInput<Data> = {
@@ -40,12 +43,14 @@ export type ResolvedCenterAlertOptions = NotificationMessage & {
 export type ConfirmDialogInput = Partial<NotificationMessage> & {
   confirmLabel?: string;
   cancelLabel?: string;
+  icon?: NotificationIcon;
   tone?: ConfirmDialogTone;
 };
 
 export type ResolvedConfirmDialogOptions = NotificationMessage & {
   confirmLabel: string;
   cancelLabel: string;
+  icon: NotificationIcon;
   tone: ConfirmDialogTone;
 };
 

@@ -5,6 +5,9 @@ import { resolve } from "node:path";
 const { nextTeacherFixtureName } = (await import(
   new URL("./TeacherFixtureNames.ts", import.meta.url).href
 )) as typeof import("./TeacherFixtureNames");
+const { nextTeacherFixtureEmail } = (await import(
+  new URL("./TeacherFixtureEmails.ts", import.meta.url).href
+)) as typeof import("./TeacherFixtureEmails");
 
 type GroupTarget = { current: number; departed: number; paused: number };
 type Group = { id: string; name: string; slug: string };
@@ -238,18 +241,17 @@ async function main(): Promise<void> {
       "adminUsers",
       admin.accessToken,
     );
-    const usersByEmail = new Map(
-      students.filter((student) => student.email).map((student) => [student.email!, student]),
+    const usedEmails = new Set(
+      students.filter((student) => student.email).map((student) => student.email!.toLowerCase()),
     );
     const usedNames = new Set(
       students.map((student) => student.displayName.toLocaleLowerCase("uz")),
     );
     const sequence = { value: 0 };
 
-    async function studentFor(email: string): Promise<Student> {
-      const existing = usersByEmail.get(email);
-      if (existing) return existing;
+    async function studentFor(): Promise<Student> {
       const displayName = nextTeacherFixtureName(usedNames, sequence);
+      const email = nextTeacherFixtureEmail(displayName, usedEmails);
       const created = await graphql<{ adminProvisionUser: { user: Student } }>(
         "mutation Provision($input: AdminProvisionUserInput!) { adminProvisionUser(input: $input) { user { id displayName email } } }",
         {
@@ -263,22 +265,14 @@ async function main(): Promise<void> {
         admin.accessToken,
       );
       const student = created.adminProvisionUser.user;
-      usersByEmail.set(email, student);
       return student;
     }
 
     for (const group of groups) {
       const target = targets.get(group.slug)!;
       const members = [...originalRosters.get(group.slug)!];
-      const fixtureEmail = (kind: string, index: number) =>
-        `best-fixture-${group.slug}-${kind}-${String(index).padStart(2, "0")}@example.com`;
-
-      for (
-        let index = 1;
-        members.filter((member) => member.endedAt).length < target.departed;
-        index++
-      ) {
-        const student = await studentFor(fixtureEmail("departed", index));
+      while (members.filter((member) => member.endedAt).length < target.departed) {
+        const student = await studentFor();
         let member = members.find((item) => item.studentId === student.id);
         if (!member) {
           const added = await graphql<{ addStudentToGroup: { membership: Member } }>(
@@ -304,12 +298,8 @@ async function main(): Promise<void> {
         }
       }
 
-      for (
-        let index = 1;
-        members.filter((member) => !member.endedAt).length < target.current;
-        index++
-      ) {
-        const student = await studentFor(fixtureEmail("current", index));
+      while (members.filter((member) => !member.endedAt).length < target.current) {
+        const student = await studentFor();
         if (members.some((member) => member.studentId === student.id)) continue;
         const added = await graphql<{ addStudentToGroup: { membership: Member } }>(
           "mutation Add($input: AddStudentToGroupInput!) { addStudentToGroup(input: $input) { membership { membershipId studentId displayName email endedAt rosterStatus } } }",

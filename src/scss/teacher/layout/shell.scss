@@ -17,6 +17,9 @@
   --teacher-danger: #d32f2f;
   --teacher-shadow: 0 10px 30px rgb(16 42 67 / 6%);
   --teacher-sidebar: #1955eb;
+  --teacher-sidebar-gradient:
+    radial-gradient(circle at 80% 78%, rgb(73 191 209 / 20%), transparent 54%),
+    linear-gradient(165deg, #2563eb 0%, #1955eb 48%, #102a43 100%);
   --teacher-sidebar-text: #ffffff;
   position: relative;
   display: grid;
@@ -45,6 +48,9 @@ body[data-teacher-theme="light"] {
   --teacher-danger: #d32f2f;
   --teacher-shadow: 0 10px 30px rgb(16 42 67 / 6%);
   --teacher-sidebar: #1955eb;
+  --teacher-sidebar-gradient:
+    radial-gradient(circle at 80% 78%, rgb(73 191 209 / 20%), transparent 54%),
+    linear-gradient(165deg, #2563eb 0%, #1955eb 48%, #102a43 100%);
   --teacher-sidebar-text: #ffffff;
   background: #f4fbfd;
 }
@@ -75,6 +81,9 @@ body[data-teacher-theme="dark"] {
   --teacher-danger: #f05454;
   --teacher-shadow: 0 12px 34px rgb(0 0 0 / 22%);
   --teacher-sidebar: #173f91;
+  --teacher-sidebar-gradient:
+    radial-gradient(circle at 80% 78%, rgb(103 216 232 / 12%), transparent 54%),
+    linear-gradient(165deg, #173f91 0%, #142f67 48%, #111c2e 100%);
   --teacher-sidebar-text: #ffffff;
   color-scheme: dark;
   background: #0b1220;
@@ -94,6 +103,9 @@ body[data-teacher-theme="dark"] .teacherShell {
   --teacher-danger: #f05454;
   --teacher-shadow: 0 12px 34px rgb(0 0 0 / 22%);
   --teacher-sidebar: #173f91;
+  --teacher-sidebar-gradient:
+    radial-gradient(circle at 80% 78%, rgb(103 216 232 / 12%), transparent 54%),
+    linear-gradient(165deg, #173f91 0%, #142f67 48%, #111c2e 100%);
   --teacher-sidebar-text: #ffffff;
 }
 
@@ -105,7 +117,7 @@ body[data-teacher-theme="dark"] .teacherShell {
     height: 100dvh;
     width: 16rem;
     overflow: visible;
-    background: var(--teacher-sidebar);
+    background: var(--teacher-sidebar-gradient);
   }
 }
 
@@ -127,12 +139,31 @@ body[data-teacher-theme="dark"] .teacherShell {
 
 .teacherShell__sidebar {
   &Content {
+    position: relative;
     display: flex;
     height: 100%;
     flex-direction: column;
+    overflow: hidden;
     padding: 2.5rem 1rem;
     color: var(--teacher-sidebar-text);
     background: transparent;
+  }
+  &Content > :not(.teacherShell__sidebarPattern) {
+    position: relative;
+    z-index: 1;
+  }
+  &Pattern {
+    position: absolute;
+    right: -26.5rem;
+    bottom: -16.7rem;
+    width: 59.4rem;
+    aspect-ratio: 1;
+    opacity: 0.09;
+    pointer-events: none;
+  }
+  &Pattern img {
+    object-fit: contain;
+    filter: brightness(0) invert(1);
   }
 }
 
@@ -607,7 +638,7 @@ body[data-teacher-theme="dark"] .teacherShell {
   &Paper {
     width: min(19rem, 88vw);
     color: #ffffff !important;
-    background: var(--teacher-sidebar) !important;
+    background: var(--teacher-sidebar-gradient) !important;
   }
 }
 

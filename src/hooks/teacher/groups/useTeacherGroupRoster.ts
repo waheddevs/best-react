@@ -19,7 +19,23 @@ export function useTeacherGroupRoster({
   /* HOOKS */
   const [activeStatusFilter, setActiveStatusFilter] = useState<TeacherRosterStatusFilter>("total");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const learners = initialLearners;
+  const [newUnpaidMembershipIds, setNewUnpaidMembershipIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const [removedMembershipIds, setRemovedMembershipIds] = useState<Set<string>>(() => new Set());
+  const [statusOverrides, setStatusOverrides] = useState<Map<string, TeacherLearner["status"]>>(
+    () => new Map(),
+  );
+  const learners = useMemo(
+    () =>
+      initialLearners
+        .filter((learner) => !removedMembershipIds.has(learner.membershipId))
+        .map((learner) => ({
+          ...learner,
+          status: statusOverrides.get(learner.membershipId) ?? learner.status,
+        })),
+    [initialLearners, removedMembershipIds, statusOverrides],
+  );
 
   const derivedSummary = useMemo(
     () => ({
@@ -57,14 +73,42 @@ export function useTeacherGroupRoster({
     setActiveStatusFilter(statusFilter);
   };
 
+  const handleLearnerAdded = (membershipId: string) => {
+    setNewUnpaidMembershipIds((current) => new Set(current).add(membershipId));
+  };
+
+  const handleLearnerDeleted = (membershipId: string) => {
+    setRemovedMembershipIds((current) => new Set(current).add(membershipId));
+    setNewUnpaidMembershipIds((current) => {
+      const next = new Set(current);
+      next.delete(membershipId);
+      return next;
+    });
+  };
+
+  const handleLearnerStatusChanged = (membershipId: string, status: TeacherLearner["status"]) => {
+    setStatusOverrides((current) => {
+      const next = new Map(current);
+      next.set(membershipId, status);
+      return next;
+    });
+  };
+
   return {
     handleAddDialogClose,
     handleAddDialogOpen,
+    handleLearnerAdded,
+    handleLearnerStatusChanged,
     handleStatusFilterChange,
+    handleLearnerDeleted,
     activeStatusFilter,
     atCapacity,
     isAddDialogOpen,
-    summary: initialSummary ?? derivedSummary,
+    newUnpaidMembershipIds,
+    summary:
+      removedMembershipIds.size > 0 || statusOverrides.size > 0
+        ? derivedSummary
+        : (initialSummary ?? derivedSummary),
     visibleLearners,
   };
 }

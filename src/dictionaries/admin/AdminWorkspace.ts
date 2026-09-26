@@ -359,6 +359,7 @@ const statusLabels: Record<string, Text3> = {
   CANCELLED: ["Bekor qilingan", "Отменено", "Cancelled"],
   COMPLETED: ["Tugallangan", "Завершено", "Completed"],
   DECLINED: ["Rad etilgan", "Отклонено", "Declined"],
+  DELETED: ["O‘chirilgan", "Удалён", "Deleted"],
   DRAFT: ["Qoralama", "Черновик", "Draft"],
   DUE: ["To'lanishi kerak", "К оплате", "Due"],
   EXCUSED: ["Uzrli", "По уважительной причине", "Excused"],

@@ -7,6 +7,7 @@ import { getTeacherCopy } from "@/dictionaries/teacher/Teacher";
 import { createTeacherMetadata } from "@/features/teacher/layout/TeacherMetadata";
 import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
 import { loadConnectedTeacherGroups } from "@/lib/teacher/TeacherGroupData";
+import { loadTeacherDashboardMetrics } from "@/lib/teacher/TeacherWorkspaceData";
 
 import { DashboardOverview } from "./DashboardOverview";
 
@@ -21,9 +22,27 @@ export default async function TeacherDashboardPage({ params }: TeacherDashboardP
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
-  const preview = isDashboardPreviewEnabled();
-  const groups = preview ? teacherPreviewData.groups : await loadConnectedTeacherGroups(locale);
-  const data = preview ? teacherPreviewData : { ...teacherPreviewData, groups };
+  let data = teacherPreviewData;
+  if (!isDashboardPreviewEnabled()) {
+    const [groups, metrics] = await Promise.all([
+      loadConnectedTeacherGroups(locale),
+      loadTeacherDashboardMetrics(),
+    ]);
+    const values = {
+      new: metrics.newLearnersThisMonth,
+      active: metrics.totalActiveLearners,
+      departed: metrics.departedThisMonth,
+      together: metrics.monthsWithBest,
+    };
+    data = {
+      ...teacherPreviewData,
+      groups,
+      dashboardMetrics: teacherPreviewData.dashboardMetrics.map((metric) => ({
+        ...metric,
+        value: values[metric.id],
+      })),
+    };
+  }
 
   return <DashboardOverview copy={getTeacherCopy(locale)} data={data} locale={locale} />;
 }

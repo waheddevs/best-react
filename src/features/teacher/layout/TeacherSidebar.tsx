@@ -54,6 +54,9 @@ export function TeacherSidebar({ copy, locale, onNavigate }: TeacherSidebarProps
 
   return (
     <div className="teacherShell__sidebarContent">
+      <div aria-hidden="true" className="teacherShell__sidebarPattern">
+        <Image alt="" fill sizes="950px" src="/icons/logo.svg" />
+      </div>
       <div className="teacherShell__brandRow">
         <span className="teacherShell__brandMark">
           <Image alt="" aria-hidden="true" height={40} src="/icons/logo.svg" width={40} />

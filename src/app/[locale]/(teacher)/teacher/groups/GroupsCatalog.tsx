@@ -68,6 +68,7 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
     if (!accepted) return;
     if (!connected) {
       notifications.error({
+        icon: "delete",
         title: copy.groups.deleteGroup,
         message: copy.groups.deleteGroupUnavailable,
       });
@@ -78,6 +79,7 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
       const result = await deleteConnectedTeacherGroup(group.id);
       if (!result.ok || result.group.status !== "DELETED") {
         notifications.error({
+          icon: "delete",
           title: copy.groups.deleteGroup,
           message:
             result.code === "CONFLICT"
@@ -88,12 +90,14 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
       }
       setHiddenGroupIds((current) => new Set(current).add(group.id));
       notifications.success({
+        icon: "delete",
         title: copy.groups.deleteGroup,
         message: copy.groups.deleteGroupSuccess,
       });
       router.refresh();
     } catch {
       notifications.error({
+        icon: "delete",
         title: copy.groups.deleteGroup,
         message: copy.groups.deleteGroupError,
       });

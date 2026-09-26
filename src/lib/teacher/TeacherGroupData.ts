@@ -9,10 +9,12 @@ import {
   TeacherGroupOverviewDataDocument,
   TeacherGroupRosterDataDocument,
   TeacherGroupsDocument,
+  TeacherGroupTestPapersDocument,
   type TeacherGroupQuery,
   type TeacherGroupOverviewDataQuery,
   type TeacherGroupRosterDataQuery,
   type TeacherGroupsQuery,
+  type TeacherGroupTestPapersQuery,
 } from "@/gql/graphql";
 import { executeApolloQuery } from "@/lib/apollo/ApolloServerClient";
 import type {
@@ -91,13 +93,21 @@ function mapRosterMember(groupId: string, member: RosterNode): TeacherLearner {
   const balance = Number(member.outstandingBalanceUzs);
   return {
     balance: Number.isSafeInteger(balance) ? balance : 0,
+    email: member.email,
+    endedAt: member.endedAt,
     groupSlug: groupId,
     id: member.studentId,
     initials: learnerInitials(member.displayName),
     membershipId: member.membershipId,
     name: member.displayName,
     paidAmountUzs: Number(member.paidAmountUzs),
+    paymentHistory: member.recentPayments.map((payment) => ({
+      amountUzs: Number(payment.amountUzs),
+      id: payment.id,
+      paidAt: payment.paidAt,
+    })),
     phone: member.phone ?? "—",
+    startedAt: member.startedAt,
     status: mapRosterStatus(member.rosterStatus),
   };
 }
@@ -198,4 +208,20 @@ export async function loadConnectedTeacherGroupRoster(
       total: rosterSummary.currentTotal,
     },
   };
+}
+
+export async function loadConnectedTeacherGroupTestPapers(
+  locale: Locale,
+  groupId: string,
+): Promise<TeacherGroupTestPapersQuery["teacherTestPapers"]> {
+  const accessToken = await teacherToken(locale);
+  const data = await executeApolloQuery<
+    TeacherGroupTestPapersQuery,
+    { groupId: string }
+  >(
+    TeacherGroupTestPapersDocument,
+    { groupId },
+    { accessToken, cache: "no-store" },
+  );
+  return data.teacherTestPapers;
 }

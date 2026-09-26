@@ -36,7 +36,7 @@
   }
   &Paper {
     margin: 1rem !important;
-    width: min(35rem, calc(100% - 2rem));
+    width: min(31rem, calc(100% - 2rem));
     max-width: none !important;
     border: 1px solid rgb(255 255 255 / 85%);
     border-radius: 2rem !important;
@@ -45,12 +45,12 @@
   }
   &Form {
     display: grid;
-    gap: 1.1rem;
-    padding: 2rem;
+    gap: 1rem;
+    padding: 1.5rem;
   }
   &Form h2 {
-    margin: 0 0 0.3rem;
-    font-size: clamp(1.4rem, 3vw, 1.75rem);
+    margin: 0 0 0.1rem;
+    font-size: clamp(1.35rem, 3vw, 1.6rem);
     font-weight: 800;
     color: var(--teacher-text);
   }
@@ -58,20 +58,23 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: flex-start;
-    gap: 0.85rem;
+    gap: 0.8rem;
+  }
+  &GridThree {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   &Field {
     display: grid;
     min-width: 0px;
     align-content: flex-start;
-    gap: 0.45rem;
+    gap: 0.3rem;
     font-size: 0.82rem;
     font-weight: 700;
     color: var(--teacher-text);
   }
   &Field input,
   &PickerTrigger {
-    height: 3.2rem;
+    height: 2.85rem;
     width: 100%;
     padding: 0 0.9rem;
     color: var(--teacher-text);
@@ -81,6 +84,21 @@
     outline: none;
     font: inherit;
     font-weight: 500;
+  }
+  &Field input::placeholder,
+  &PickerTrigger[data-empty="true"] {
+    color: var(--teacher-muted);
+  }
+  &FieldLabelHidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
   }
   &Field input[type="hidden"] {
     display: none;
@@ -150,7 +168,7 @@
     position: relative;
   }
   &TimeControl input {
-    padding-right: 3.1rem;
+    padding-right: 2.75rem;
     font-variant-numeric: tabular-nums;
   }
   &TimeControl input[aria-invalid="true"],
@@ -163,25 +181,25 @@
   }
   &FieldError {
     display: block;
-    min-height: 1.1rem;
+    min-height: 0;
     font-size: 0.76rem;
     line-height: 1.35;
     font-weight: 600;
     color: var(--teacher-danger);
   }
   &TimeFieldError {
-    min-height: 2.1rem;
+    min-height: 0;
   }
   &FieldError[data-visible="false"] {
-    visibility: hidden;
+    display: none;
   }
   &TimeButton {
     position: absolute;
     top: 0.35rem;
     right: 0.35rem;
     display: grid;
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 2.15rem;
+    width: 2.15rem;
     place-items: center;
     color: var(--teacher-primary);
     border: 0;
@@ -251,22 +269,29 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 }
 
 .teacherGroups__create {
+  &Panel {
+    display: grid;
+    grid-template-columns: 3.4rem minmax(0, 1fr);
+    align-items: start;
+    gap: 0.8rem;
+  }
+  &PanelLabel {
+    padding-top: 0.78rem;
+    color: var(--teacher-text);
+    font-size: 0.78rem;
+    font-weight: 750;
+    line-height: 1;
+  }
   &Days {
     margin: 0px;
     min-width: 0px;
     padding: 0px;
     border: 0;
   }
-  &Days legend {
-    margin-bottom: 0.5rem;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--teacher-text);
-  }
   &Days > div {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
+    gap: 0.4rem;
   }
   &Days label {
     position: relative;
@@ -278,12 +303,12 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
   }
   &Days label span {
     display: grid;
-    height: 2.7rem;
-    min-width: 3rem;
+    height: 2.45rem;
+    min-width: 2.45rem;
     place-items: center;
     padding: 0 0.4rem;
     border: 1px solid var(--teacher-border);
-    border-radius: 0.8rem;
+    border-radius: 0.72rem;
     background: rgb(255 255 255 / 75%);
     font-size: 0.78rem;
     font-weight: 700;
@@ -303,7 +328,7 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
     outline-offset: 2px;
   }
   &Days > .teacherGroups__createFieldError {
-    margin-top: 0.45rem;
+    margin-top: 0.35rem;
   }
   &Error {
     margin: 0px;
@@ -311,7 +336,7 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
     color: var(--teacher-danger, #c92a2a);
   }
   &Actions {
-    margin-top: 0.35rem;
+    margin-top: 0.15rem;
     display: flex;
     justify-content: flex-end;
     gap: 0.7rem;
@@ -768,7 +793,8 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 .teacherGroups__edit {
   &Button {
     display: inline-flex;
-    min-height: 2.5rem;
+    height: 2.25rem;
+    min-height: 2.25rem;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
@@ -1250,6 +1276,451 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 
 /* MATERIALS AND ASSIGNMENTS */
 
+.teacherGroups__lessonPlanWorkspace,
+.teacherGroups__materialsManager {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.teacherGroups__lessonPlanForm,
+.teacherGroups__materialCreatePanel {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1.5fr) minmax(10rem, 0.95fr) minmax(10rem, 0.95fr) auto;
+  align-items: end;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.1rem;
+  background: var(--teacher-surface-subtle);
+}
+
+.teacherGroups__lessonPlanFormHeading {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.teacherGroups__lessonPlanFormHeading h3,
+.teacherGroups__lessonTableSection > h3,
+.teacherGroups__materialListTitle {
+  margin: 0;
+  color: var(--teacher-heading);
+  font-size: 1rem;
+  font-weight: 780;
+}
+
+.teacherGroups__lessonPlanName,
+.teacherGroups__materialCreatePanel > label:first-child {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--teacher-heading);
+  font-size: 0.74rem;
+  font-weight: 720;
+}
+
+.teacherGroups__lessonPlanName input,
+.teacherGroups__materialCreatePanel input[type="text"],
+.teacherGroups__materialCreatePanel > label:first-child input {
+  height: 2.9rem;
+  min-width: 0;
+  padding: 0 0.85rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.8rem;
+  outline: 0;
+  color: var(--teacher-text);
+  background: var(--teacher-surface);
+  font: inherit;
+  font-weight: 400;
+}
+
+.teacherGroups__lessonPlanName input::placeholder {
+  color: var(--teacher-muted);
+  opacity: 1;
+}
+
+.teacherGroups__lessonUploadFields {
+  display: contents;
+}
+
+.teacherGroups__lessonPlanFormActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.teacherGroups__lessonFilePicker {
+  min-width: 0;
+  display: grid;
+  gap: 0.42rem;
+  cursor: pointer;
+}
+
+.teacherGroups__lessonFilePicker input,
+.teacherGroups__materialUploadButton input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.teacherGroups__lessonFileButton,
+.teacherGroups__materialUploadButton {
+  min-height: 2.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px dashed var(--teacher-primary);
+  border-radius: 0.8rem;
+  color: var(--teacher-primary);
+  background: var(--teacher-surface);
+  font-size: 0.76rem;
+  font-weight: 750;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.teacherGroups__lessonFilePicker:hover .teacherGroups__lessonFileButton {
+  border-color: var(--teacher-brand);
+  background: rgb(33 104 242 / 8%);
+  box-shadow: 0 0 0 3px rgb(33 104 242 / 6%);
+
+  @supports (color: color-mix(in lab, red, red)) {
+    background: color-mix(in srgb, var(--teacher-primary) 8%, var(--teacher-surface));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 6%, transparent);
+  }
+}
+
+.teacherGroups__lessonFilePicker:has(input:focus-visible) .teacherGroups__lessonFileButton {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherGroups__lessonFileButton {
+    transition: none;
+  }
+}
+
+.teacherGroups__lessonFileButton > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacherGroups__lessonFileButton svg,
+.teacherGroups__materialUploadButton svg {
+  font-size: 1.1rem;
+}
+
+.teacherGroups__lessonFileButton svg {
+  transform: rotate(45deg);
+}
+
+.teacherGroups__lessonTableSection {
+  display: grid;
+  gap: 0;
+}
+
+.teacherGroups__lessonListHeader {
+  margin-top: 0;
+}
+
+.teacherGroups__lessonTableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface);
+}
+
+.teacherGroups__lessonTable {
+  width: 100%;
+  min-width: 52rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.teacherGroups__lessonTable th,
+.teacherGroups__lessonTable td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--teacher-border);
+}
+
+.teacherGroups__lessonTable td > strong {
+  font-weight: 600;
+}
+
+.teacherGroups__lessonTable th {
+  color: var(--teacher-heading);
+  background: var(--teacher-surface-subtle);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.teacherGroups__lessonTable td {
+  color: var(--teacher-text);
+  font-size: 0.72rem;
+  font-weight: 560;
+  transition: background 160ms ease;
+}
+
+.teacherGroups__lessonTable tbody tr:hover td {
+  background: var(--teacher-surface-subtle);
+}
+
+.teacherGroups__lessonTable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.teacherGroups__lessonTable th:first-child,
+.teacherGroups__lessonTable td:first-child {
+  width: 4rem;
+}
+
+.teacherGroups__lessonTable th:nth-child(2) {
+  width: 22%;
+}
+
+.teacherGroups__lessonTable th:last-child,
+.teacherGroups__lessonTable td:last-child {
+  width: 6.5rem;
+}
+
+.teacherGroups__lessonFileCell,
+.teacherGroups__lessonFileActions,
+.teacherGroups__lessonActions,
+.teacherGroups__materialActions {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.teacherGroups__lessonFileActions {
+  flex: none;
+  justify-content: flex-start;
+  margin-left: auto;
+}
+
+.teacherGroups__lessonFileCell {
+  width: 100%;
+  gap: 0.45rem;
+}
+
+.teacherGroups__lessonFileName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacherGroups__lessonFileCell button,
+.teacherGroups__lessonActions button,
+.teacherGroups__materialActions button {
+  background: transparent;
+}
+
+.teacherGroups__lessonFileCell button:hover,
+.teacherGroups__lessonActions button:hover,
+.teacherGroups__materialActions button:hover {
+  background: rgb(33 104 242 / 8%);
+}
+
+.teacherGroups__lessonActionButton--delete,
+.teacherGroups__lessonActionButton--delete svg {
+  color: var(--teacher-danger) !important;
+}
+
+.teacherGroups__lessonActionButton--delete:hover {
+  background: rgb(231 46 54 / 9%) !important;
+}
+
+.teacherGroups__lessonEmptyFile {
+  color: var(--teacher-muted);
+}
+
+.teacherGroups__materialsToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.teacherGroups__materialListSection {
+  display: grid;
+  min-width: 0;
+}
+
+.teacherGroups__materialListHeader {
+  margin-block: 0 1rem;
+}
+
+.teacherGroups__sortMenu {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.teacherGroups__sortLabel {
+  color: var(--teacher-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.teacherGroups__sortTrigger {
+  min-width: 6rem;
+}
+
+.teacherGroups__sortTrigger svg:first-child {
+  display: block;
+  color: currentColor;
+}
+
+.teacherGroups__materialCreatePanel {
+  grid-template-columns: minmax(14rem, 1fr) minmax(14rem, 1fr) auto;
+}
+
+.teacherGroups__materialList {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.teacherGroups__materialRow {
+  display: grid;
+  grid-template-columns: auto minmax(12rem, 1fr) 4rem 5rem 8rem auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.9rem;
+  background: var(--teacher-surface);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.teacherGroups__materialRow:hover {
+  border-color: rgb(33 104 242 / 22%);
+  background: var(--teacher-surface-subtle);
+}
+
+.teacherGroups__materialFileIcon {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.75rem;
+  color: var(--teacher-primary);
+  background: rgb(33 104 242 / 9%);
+}
+
+.teacherGroups__materialFileIcon svg {
+  font-size: 1.15rem;
+}
+
+.teacherGroups__materialFileCopy {
+  min-width: 0;
+  display: grid;
+  gap: 0.22rem;
+}
+
+.teacherGroups__materialFileCopy strong,
+.teacherGroups__materialFileCopy span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacherGroups__materialFileCopy strong {
+  color: var(--teacher-heading);
+  font-size: 0.77rem;
+}
+
+.teacherGroups__materialFileCopy span,
+.teacherGroups__materialMeta {
+  color: var(--teacher-muted);
+  font-size: 0.65rem;
+}
+
+@media (max-width: 68rem) {
+  .teacherGroups__lessonPlanForm {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .teacherGroups__lessonPlanName,
+  .teacherGroups__lessonPlanFormActions {
+    grid-column: 1 / -1;
+  }
+
+  .teacherGroups__materialRow {
+    grid-template-columns: auto minmax(10rem, 1fr) auto;
+  }
+
+  .teacherGroups__materialMeta {
+    display: none;
+  }
+}
+
+@media (max-width: 42rem) {
+  .teacherGroups__lessonPlanForm,
+  .teacherGroups__materialCreatePanel {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherGroups__lessonUploadFields {
+    display: grid;
+    grid-column: 1 / -1;
+    gap: 0.75rem;
+  }
+
+  .teacherGroups__materialsToolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teacherGroups__materialsToolbar button {
+    width: 100%;
+  }
+
+  .teacherGroups__materialListHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teacherGroups__sortTrigger {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .teacherGroups__sortMenu {
+    width: 100%;
+  }
+
+  .teacherGroups__materialRow {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .teacherGroups__materialActions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    padding-top: 0.3rem;
+    border-top: 1px solid var(--teacher-border);
+  }
+}
+
 .teacherGroups__resource {
   &Card {
     position: relative;
@@ -1398,6 +1869,125 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
     padding-top: 1rem;
     font-size: 0.66rem;
     color: var(--teacher-muted);
+  }
+}
+
+.teacherGroups__academicPapers {
+  display: grid;
+  gap: 1rem;
+}
+
+.teacherGroups__academicPaper {
+  overflow: hidden;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.1rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 10px 28px rgb(16 42 67 / 5%);
+}
+
+.teacherGroups__academicPaperHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem;
+  background: var(--teacher-surface-subtle);
+
+  & div > span {
+    color: var(--teacher-primary);
+    font-size: 0.65rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  & h2 {
+    margin: 0.3rem 0 0;
+    color: var(--teacher-heading);
+    font-size: 1.15rem;
+  }
+
+  & p {
+    max-width: 52rem;
+    margin: 0.45rem 0 0;
+    color: var(--teacher-muted);
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+}
+
+.teacherGroups__academicSkills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.teacherGroups__academicSkill {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.9rem;
+  padding: 0.85rem;
+
+  & h3,
+  & p {
+    margin: 0;
+  }
+
+  & div > span {
+    color: var(--teacher-primary);
+    font-size: 0.58rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+  }
+
+  & h3 {
+    margin-top: 0.15rem;
+    color: var(--teacher-heading);
+    font-size: 0.82rem;
+  }
+
+  & p {
+    margin-top: 0.3rem;
+    color: var(--teacher-muted);
+    font-size: 0.65rem;
+    line-height: 1.45;
+  }
+
+  & small {
+    display: block;
+    margin-top: 0.45rem;
+    color: var(--teacher-muted);
+    font-size: 0.62rem;
+    font-weight: 700;
+  }
+}
+
+.teacherGroups__academicSkillIcon {
+  display: grid;
+  width: 2.65rem;
+  height: 2.65rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+  color: var(--teacher-primary);
+
+  & svg {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .teacherGroups__academicSkills {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherGroups__academicPaperHeader {
+    flex-direction: column;
   }
 }
 
@@ -1764,30 +2354,45 @@ button.teacherGroups__lessonDeleteButton {
   }
   &Table {
     width: 100%;
-    min-width: 760px;
+    min-width: 1100px;
     border-collapse: separate;
     border-spacing: 0;
     table-layout: fixed;
   }
   &Table th,
   &Table td {
-    padding: 0.85rem;
+    padding: 0.85rem 1.35rem;
     text-align: left;
     vertical-align: middle;
   }
+  &Table th:first-child,
+  &Table td:first-child {
+    padding-inline-start: 1.7rem;
+  }
   &Table th {
-    width: 25%;
     color: var(--teacher-heading);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 800;
+    text-transform: uppercase;
     background: var(--teacher-surface-subtle);
-    @supports (color: color-mix(in lab, red, red)) {
-      background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--teacher-primary) 8%, var(--teacher-surface)),
-        color-mix(in srgb, var(--teacher-brand) 10%, var(--teacher-surface))
-      );
-    }
+  }
+  &Table th:nth-child(1) {
+    width: 23%;
+  }
+  &Table th:nth-child(2) {
+    width: 14%;
+  }
+  &Table th:nth-child(3) {
+    width: 18%;
+  }
+  &Table th:nth-child(4) {
+    width: 24%;
+  }
+  &Table th:nth-child(5) {
+    width: 10%;
+  }
+  &Table th:nth-child(6) {
+    width: 11%;
   }
   &Table td {
     height: 4.25rem;
@@ -1795,23 +2400,18 @@ button.teacherGroups__lessonDeleteButton {
     color: var(--teacher-heading);
     font-size: 0.78rem;
   }
-  &Table th:last-child {
-    text-align: right;
+  &Table td:last-child {
+    padding-inline: 1.7rem;
   }
-  &Table tbody tr[data-alert="true"] {
-    background: var(--teacher-surface);
-    @supports (color: color-mix(in lab, red, red)) {
-      background: color-mix(in srgb, var(--teacher-danger) 4%, var(--teacher-surface));
-    }
+  &Table th:last-child {
+    text-align: left;
   }
   &Table tbody tr:hover {
     background: var(--teacher-surface-subtle);
-    @supports (color: color-mix(in lab, red, red)) {
-      background: color-mix(in srgb, var(--teacher-primary) 5%, var(--teacher-surface));
-    }
   }
   &Index {
     flex: none;
+    margin-inline-end: 0.2rem;
     font-size: 0.68rem;
     font-weight: 750;
     color: var(--teacher-muted);
@@ -1840,26 +2440,54 @@ button.teacherGroups__lessonDeleteButton {
   &Identity strong {
     min-width: 0px;
   }
-  &Identity strong,
-  &Finance strong {
+  &Identity strong {
     display: block;
     overflow: hidden;
     font-size: 0.78rem;
-    font-weight: 800;
+    font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--teacher-heading);
   }
-  &Table tr[data-alert="true"] &Finance strong {
-    color: var(--teacher-danger);
-  }
-  &Finance small {
-    display: block;
-    margin-top: 0.25rem;
-    color: var(--teacher-muted);
-    font-size: 0.67rem;
+  &Phone,
+  &Email {
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
+}
+
+.teacherGroups__learnerTable.teacherGroups__lessonTable {
+  td {
+    height: auto;
+    padding-block: 0.65rem;
+  }
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: auto;
+  }
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: auto;
+  }
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: auto;
+  }
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 10.5rem;
+    white-space: nowrap;
+  }
+  th:nth-child(5),
+  td:nth-child(5) {
+    width: 8.25rem;
+  }
+}
+
+.teacherGroups__lessonIdentity {
+  gap: 0.8rem;
 }
 
 .teacherGroups__status {
@@ -1872,8 +2500,8 @@ button.teacherGroups__lessonDeleteButton {
     @supports (color: color-mix(in lab, red, red)) {
       background: color-mix(in srgb, var(--teacher-success) 10%, transparent);
     }
-    font-size: 0.6rem;
-    font-weight: 800;
+    font-size: 0.78rem;
+    font-weight: 600;
   }
   &Badge[data-status="paused"] {
     color: var(--teacher-warning);
@@ -1883,6 +2511,7 @@ button.teacherGroups__lessonDeleteButton {
     }
   }
   &Badge[data-status="debtor"],
+  &Badge[data-status="unpaid"],
   &Badge[data-status="departed"] {
     color: var(--teacher-danger);
     background: var(--teacher-danger);
@@ -1896,35 +2525,359 @@ button.teacherGroups__lessonDeleteButton {
   &Actions {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
   }
   &Actions button {
     display: grid;
     height: 2rem;
     width: 2rem;
+    flex: none;
     place-items: center;
-    color: var(--teacher-primary);
-    border: 0;
+    color: var(--teacher-muted);
+    border: 1px solid transparent;
     border-radius: 0.65rem;
-    background: var(--teacher-primary);
-    @supports (color: color-mix(in lab, red, red)) {
-      background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
-    }
+    background: transparent;
     cursor: pointer;
+    transition: background-color 180ms ease;
+  }
+  &Actions .teacherGroups__learnerDeleteButton {
+    color: var(--teacher-danger);
   }
   &Actions button:disabled {
     cursor: not-allowed;
     opacity: 0.45;
   }
-  &Actions button {
-    color: var(--teacher-muted);
-    background: var(--teacher-muted);
+  &Actions svg {
+    font-size: 1rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherGroups__learnerActions button:hover:not(:disabled) {
+    background: rgb(100 116 139 / 9%);
     @supports (color: color-mix(in lab, red, red)) {
       background: color-mix(in srgb, var(--teacher-muted) 9%, transparent);
     }
   }
-  &Actions svg {
+  .teacherGroups__learnerActions .teacherGroups__learnerDeleteButton:hover:not(:disabled) {
+    color: var(--teacher-danger);
+    background: rgb(211 47 47 / 9%);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-danger) 9%, transparent);
+    }
+  }
+}
+
+.teacherGroups__learnerActions .teacherGroups__learnerDeleteButton:focus-visible {
+  color: #ffffff;
+  outline: 3px solid var(--teacher-danger);
+  @supports (color: color-mix(in lab, red, red)) {
+    outline: 3px solid color-mix(in srgb, var(--teacher-danger) 32%, transparent);
+  }
+  outline-offset: 2px;
+  background: var(--teacher-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherGroups__learnerActions button {
+    transition: none;
+  }
+}
+
+.teacherGroups__studentDetails {
+  min-height: 100%;
+  color: var(--teacher-heading);
+
+  &Backdrop {
+    background: rgb(15 36 61 / 38%) !important;
+    backdrop-filter: blur(5px);
+  }
+  &Paper {
+    --teacher-student-details-fade-duration: 300ms;
+
+    width: min(32rem, 100%);
+    max-width: 100%;
+    border-left: 1px solid var(--teacher-border);
+    background:
+      radial-gradient(circle at 100% 0%, rgb(39 202 221 / 12%), transparent 32%),
+      var(--teacher-surface) !important;
+    box-shadow: -18px 0 50px rgb(15 36 61 / 18%) !important;
+  }
+  &Header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.4rem;
+    border-bottom: 1px solid var(--teacher-border);
+  }
+  &Identity {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  &Identity > div {
+    min-width: 0;
+  }
+  &Identity span:not(.teacherGroups__studentDetailsAvatar) {
+    display: block;
+    margin-bottom: 0.15rem;
+    color: var(--teacher-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  &Identity h2,
+  &Identity p {
+    margin: 0;
+  }
+  &Identity h2 {
+    overflow: hidden;
+    color: var(--teacher-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &Identity p {
+    margin-top: 0.2rem;
+    color: var(--teacher-muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+  &Avatar {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    flex: none;
+    place-items: center;
+    border-radius: 1rem;
+    color: var(--teacher-primary);
+    background: rgb(37 99 235 / 10%);
+    font-size: 0.82rem;
+    font-weight: 850;
+  }
+  &Body {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1rem 1.15rem 1.5rem;
+  }
+  &Body > section {
+    padding: 1rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-surface);
+  }
+  &Body h3 {
+    margin: 0;
+    color: var(--teacher-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  &Facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin: 0.8rem 0 0;
+  }
+  &Facts > div {
+    min-width: 0;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--teacher-surface-subtle);
+  }
+  &Facts dt,
+  &Facts dd {
+    margin: 0;
+  }
+  &Facts dt {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--teacher-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  &Facts dt svg {
+    font-size: 0.9rem;
+  }
+  &Facts dd {
+    margin-top: 0.35rem;
+    overflow: hidden;
+    font-size: 0.82rem;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &SectionTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  &StatusControls {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 0.85rem;
+  }
+  &StatusOptions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+    gap: 0.45rem;
+  }
+  &StatusOptions button {
+    min-height: 2.2rem;
+    padding-inline: 0.75rem;
+    color: var(--teacher-muted);
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.75rem;
+    background: var(--teacher-surface-subtle);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  &StatusOptions button[data-selected="true"] {
+    color: var(--teacher-primary);
+    border-color: var(--teacher-primary);
+    background: rgb(37 99 235 / 9%);
+  }
+  &StatusOptions .teacherGroups__studentDetailsStatusSave {
+    min-width: 4.25rem;
+    color: #ffffff;
+    border-color: var(--teacher-primary);
+    background: var(--teacher-primary);
+  }
+  &StatusOptions button:disabled {
+    cursor: not-allowed;
+  }
+  &StatusOptions button:disabled:not([data-selected="true"]) {
+    opacity: 0.55;
+  }
+  &StatusOptions button:focus-visible {
+    outline: 3px solid rgb(37 99 235 / 20%);
+    outline-offset: 2px;
+  }
+  &StatusControls > p {
+    margin: 0;
+    color: var(--teacher-danger);
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+  &PaymentGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-top: 0.8rem;
+  }
+  &PaymentGrid article {
+    display: grid;
+    min-width: 0;
+    gap: 0.4rem;
+    padding: 0.65rem 0.7rem;
+    border-radius: 0.75rem;
+    background: var(--teacher-surface-subtle);
+  }
+  &PaymentLabel {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  &PaymentGrid svg {
+    flex: none;
+    color: var(--teacher-primary);
     font-size: 1rem;
+  }
+  &PaymentGrid article[data-tone="paid"] svg,
+  &PaymentGrid article[data-tone="settled"] svg {
+    color: var(--teacher-success);
+  }
+  &PaymentGrid article[data-tone="outstanding"] svg {
+    color: var(--teacher-danger);
+  }
+  &PaymentGrid span {
+    overflow: hidden;
+    color: var(--teacher-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &PaymentGrid strong {
+    overflow: hidden;
+    font-size: 0.82rem;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &PaymentHistory {
+    display: grid;
+    max-height: 11.1rem;
+    gap: 0.55rem;
+    margin-top: 0.75rem;
+    overflow-y: auto;
+    padding-right: 0.2rem;
+    scrollbar-color: var(--teacher-primary) transparent;
+    scrollbar-width: thin;
+  }
+  &PaymentHistory article {
+    display: flex;
+    min-height: 3.3rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.8rem;
+    background: var(--teacher-surface-subtle);
+  }
+  &PaymentHistory article > span {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--teacher-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  &PaymentHistory article svg {
+    flex: none;
+    color: var(--teacher-primary);
+    font-size: 1rem;
+  }
+  &PaymentHistory article strong {
+    flex: none;
+    color: var(--teacher-success);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  &Empty {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 0.75rem;
+    padding: 0.8rem;
+    color: var(--teacher-muted);
+    border-radius: 0.75rem;
+    background: var(--teacher-surface-subtle);
+  }
+  &Empty svg {
+    flex: none;
+    font-size: 1.1rem;
+  }
+  &Empty p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherGroups__studentDetailsPaper {
+    --teacher-student-details-fade-duration: 0ms;
   }
 }
 
@@ -2126,6 +3079,16 @@ button.teacherGroups__lessonDeleteButton {
 }
 
 @media (max-width: 480px) {
+  .teacherGroups__studentDetails {
+    &Header {
+      padding: 1.1rem;
+    }
+    &Facts,
+    &PaymentGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .teacherGroups__create {
     &Paper {
       margin: 0.5rem !important;

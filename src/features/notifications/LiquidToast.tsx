@@ -2,18 +2,21 @@
 
 import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
 import CloseRounded from "@mui/icons-material/CloseRounded";
+import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import ErrorOutlineRounded from "@mui/icons-material/ErrorOutlineRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
+import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import WarningAmberRounded from "@mui/icons-material/WarningAmberRounded";
 import CircularProgress from "@mui/material/CircularProgress";
 import { forwardRef, type CSSProperties } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
-import type { NotificationAction, NotificationTone } from "@/types/Notification";
+import type { NotificationAction, NotificationIcon, NotificationTone } from "@/types/Notification";
 
 type LiquidToastProps = {
   tone: NotificationTone;
+  icon: NotificationIcon;
   title: string;
   message: string;
   closeAriaLabel: string;
@@ -30,7 +33,9 @@ const toneClassNames: Record<NotificationTone, string> = {
   loading: "publicShared__notificationToastLoading",
 };
 
-function renderIcon(tone: NotificationTone) {
+function renderIcon(tone: NotificationTone, icon: NotificationIcon) {
+  if (icon === "delete") return <DeleteOutlineRounded aria-hidden="true" />;
+  if (icon === "logout") return <LogoutRounded aria-hidden="true" />;
   if (tone === "success") return <CheckCircleRounded aria-hidden="true" />;
   if (tone === "error") return <ErrorOutlineRounded aria-hidden="true" />;
   if (tone === "warning") return <WarningAmberRounded aria-hidden="true" />;
@@ -41,7 +46,7 @@ function renderIcon(tone: NotificationTone) {
 }
 
 export const LiquidToast = forwardRef<HTMLDivElement, LiquidToastProps>(function LiquidToast(
-  { tone, title, message, closeAriaLabel, action, onDismiss, style },
+  { tone, icon, title, message, closeAriaLabel, action, onDismiss, style },
   ref,
 ) {
   /* HANDLERS */
@@ -54,12 +59,14 @@ export const LiquidToast = forwardRef<HTMLDivElement, LiquidToastProps>(function
     <div
       aria-atomic="true"
       aria-live={tone === "error" ? "assertive" : "polite"}
-      className={`publicShared__notificationToast ${toneClassNames[tone]}`}
+      className={`publicShared__notificationToast ${toneClassNames[tone]} ${
+        icon === "delete" ? "publicShared__notificationToastDelete" : ""
+      }`}
       ref={ref}
       role={tone === "error" ? "alert" : "status"}
       style={style}
     >
-      <span className="publicShared__notificationIcon">{renderIcon(tone)}</span>
+      <span className="publicShared__notificationIcon">{renderIcon(tone, icon)}</span>
       <div className="publicShared__notificationContent">
         <p className="publicShared__notificationTitle">{title}</p>
         <p className="publicShared__notificationMessage">{message}</p>

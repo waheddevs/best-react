@@ -1,6 +1,5 @@
 "use client";
 
-import AddRounded from "@mui/icons-material/AddRounded";
 import KeyboardArrowDownRounded from "@mui/icons-material/KeyboardArrowDownRounded";
 import Dialog from "@mui/material/Dialog";
 import Menu from "@mui/material/Menu";
@@ -198,7 +197,13 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               slug: group?.recordSlug ?? "",
             });
       if (!result.ok) {
-        if (result.code === "CONFLICT") {
+        if (result.code === "SCHEDULE_CONFLICT") {
+          notifications.warning({
+            icon: "logout",
+            title: copy.groups.groupScheduleConflictTitle,
+            message: copy.groups.groupScheduleConflict,
+          });
+        } else if (result.code === "CONFLICT") {
           setServerNameError(
             mode === "create" ? copy.groups.createGroupConflict : copy.groups.editGroupConflict,
           );
@@ -233,7 +238,9 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
       <form className="teacherGroups__createForm" noValidate onSubmit={handleSubmit}>
         <h2 id={`${idPrefix}-title`}>{title}</h2>
         <div className="teacherGroups__createField">
-          <label htmlFor={`${idPrefix}-name`}>{copy.groups.groupNameField}</label>
+          <label className="teacherGroups__createFieldLabelHidden" htmlFor={`${idPrefix}-name`}>
+            {copy.groups.groupNameField}
+          </label>
           <input
             aria-describedby={nameError ? `${idPrefix}-name-error` : undefined}
             aria-invalid={Boolean(nameError)}
@@ -244,6 +251,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             onChange={handleNameChange}
             onKeyDown={handleNameInteraction}
             onPointerDown={handleNameInteraction}
+            placeholder={copy.groups.groupNameField}
             required
             value={name}
           />
@@ -256,9 +264,11 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             {nameError}
           </span>
         </div>
-        <div className="teacherGroups__createGrid">
+        <div className="teacherGroups__createGrid teacherGroups__createGridThree">
           <div className="teacherGroups__createField">
-            <span id={`${idPrefix}-type-label`}>{copy.groups.groupTypeField}</span>
+            <span className="teacherGroups__createFieldLabelHidden" id={`${idPrefix}-type-label`}>
+              {copy.groups.groupTypeField}
+            </span>
             <input name="category" type="hidden" value={category} />
             <button
               aria-controls={categoryAnchor ? `${idPrefix}-type-menu` : undefined}
@@ -267,6 +277,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               aria-haspopup="menu"
               aria-labelledby={`${idPrefix}-type-label`}
               className="teacherGroups__createPickerTrigger"
+              data-empty={!category}
               data-invalid={Boolean(categoryError)}
               onClick={handleCategoryOpen}
               type="button"
@@ -311,7 +322,9 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
             </span>
           </div>
           <div className="teacherGroups__createField">
-            <label htmlFor={`${idPrefix}-room`}>{copy.groups.groupRoomField}</label>
+            <label className="teacherGroups__createFieldLabelHidden" htmlFor={`${idPrefix}-room`}>
+              {copy.groups.groupRoomField}
+            </label>
             <input
               aria-describedby={roomError ? `${idPrefix}-room-error` : undefined}
               aria-invalid={Boolean(roomError)}
@@ -320,6 +333,7 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               name="room"
               onBlur={() => setRoomTouched(true)}
               onChange={handleRoomChange}
+              placeholder={copy.groups.groupRoomField}
               required
               value={room}
             />
@@ -332,82 +346,101 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
               {roomError}
             </span>
           </div>
-        </div>
-        <div className="teacherGroups__createField">
-          <label htmlFor={`${idPrefix}-tuition`}>{copy.groups.groupTuitionField}</label>
-          <input
-            aria-describedby={tuitionError ? `${idPrefix}-tuition-error` : undefined}
-            aria-invalid={Boolean(tuitionError)}
-            id={`${idPrefix}-tuition`}
-            inputMode="numeric"
-            maxLength={10}
-            name="monthlyTuitionUzs"
-            onBlur={() => setTuitionTouched(true)}
-            onChange={(event) => setTuition(event.currentTarget.value)}
-            required
-            value={tuition}
-          />
-          <span
-            className="teacherGroups__createFieldError"
-            data-visible={Boolean(tuitionError)}
-            id={`${idPrefix}-tuition-error`}
-            role={tuitionError ? "alert" : undefined}
-          >
-            {tuitionError}
-          </span>
-        </div>
-        <fieldset
-          aria-describedby={daysError ? `${idPrefix}-days-error` : undefined}
-          aria-invalid={Boolean(daysError)}
-          aria-required="true"
-          className="teacherGroups__createDays"
-        >
-          <legend>{copy.groups.groupDaysField}</legend>
-          <div>
-            {copy.groups.weekdays.map((day, index) => (
-              <label key={index}>
-                <input
-                  checked={scheduleDays.includes(index + 1)}
-                  name="scheduleDays"
-                  onChange={() => handleDayChange(index + 1)}
-                  type="checkbox"
-                  value={index + 1}
-                />
-                <span>{day}</span>
-              </label>
-            ))}
+          <div className="teacherGroups__createField">
+            <label
+              className="teacherGroups__createFieldLabelHidden"
+              htmlFor={`${idPrefix}-tuition`}
+            >
+              {copy.groups.groupTuitionField}
+            </label>
+            <input
+              aria-describedby={tuitionError ? `${idPrefix}-tuition-error` : undefined}
+              aria-invalid={Boolean(tuitionError)}
+              id={`${idPrefix}-tuition`}
+              inputMode="numeric"
+              maxLength={10}
+              name="monthlyTuitionUzs"
+              onBlur={() => setTuitionTouched(true)}
+              onChange={(event) => setTuition(event.currentTarget.value)}
+              placeholder={copy.groups.groupTuitionField}
+              required
+              value={tuition}
+            />
+            <span
+              className="teacherGroups__createFieldError"
+              data-visible={Boolean(tuitionError)}
+              id={`${idPrefix}-tuition-error`}
+              role={tuitionError ? "alert" : undefined}
+            >
+              {tuitionError}
+            </span>
           </div>
-          <span
-            className="teacherGroups__createFieldError"
-            data-visible={Boolean(daysError)}
-            id={`${idPrefix}-days-error`}
-            role={daysError ? "alert" : undefined}
-          >
-            {daysError}
+        </div>
+        <div className="teacherGroups__createPanel">
+          <span className="teacherGroups__createPanelLabel" id={`${idPrefix}-days-label`}>
+            {copy.groups.groupDaysField}
           </span>
-        </fieldset>
-        <div className="teacherGroups__createGrid">
-          <CreateGroupTimeField
-            formatMessage={copy.groups.groupTimeFormat}
-            idPrefix={idPrefix}
-            label={copy.groups.groupStartsField}
-            name="start"
-            onChange={setStart}
-            requiredMessage={copy.groups.groupStartsRequired}
-            submitted={submitted}
-            value={start}
-          />
-          <CreateGroupTimeField
-            formatMessage={copy.groups.groupTimeFormat}
-            idPrefix={idPrefix}
-            label={copy.groups.groupEndsField}
-            name="end"
-            onChange={setEnd}
-            rangeMessage={endBeforeStart ? copy.groups.groupTimeError : undefined}
-            requiredMessage={copy.groups.groupEndsRequired}
-            submitted={submitted}
-            value={end}
-          />
+          <fieldset
+            aria-describedby={daysError ? `${idPrefix}-days-error` : undefined}
+            aria-invalid={Boolean(daysError)}
+            aria-labelledby={`${idPrefix}-days-label`}
+            aria-required="true"
+            className="teacherGroups__createDays"
+          >
+            <legend className="teacherGroups__createFieldLabelHidden">
+              {copy.groups.groupDaysField}
+            </legend>
+            <div>
+              {copy.groups.weekdays.map((day, index) => (
+                <label key={index}>
+                  <input
+                    checked={scheduleDays.includes(index + 1)}
+                    name="scheduleDays"
+                    onChange={() => handleDayChange(index + 1)}
+                    type="checkbox"
+                    value={index + 1}
+                  />
+                  <span>{day}</span>
+                </label>
+              ))}
+            </div>
+            <span
+              className="teacherGroups__createFieldError"
+              data-visible={Boolean(daysError)}
+              id={`${idPrefix}-days-error`}
+              role={daysError ? "alert" : undefined}
+            >
+              {daysError}
+            </span>
+          </fieldset>
+        </div>
+        <div className="teacherGroups__createPanel">
+          <span className="teacherGroups__createPanelLabel" id={`${idPrefix}-time-label`}>
+            {copy.groups.groupTimeField}
+          </span>
+          <div aria-labelledby={`${idPrefix}-time-label`} className="teacherGroups__createGrid">
+            <CreateGroupTimeField
+              formatMessage={copy.groups.groupTimeFormat}
+              idPrefix={idPrefix}
+              label={copy.groups.groupStartsField}
+              name="start"
+              onChange={setStart}
+              requiredMessage={copy.groups.groupStartsRequired}
+              submitted={submitted}
+              value={start}
+            />
+            <CreateGroupTimeField
+              formatMessage={copy.groups.groupTimeFormat}
+              idPrefix={idPrefix}
+              label={copy.groups.groupEndsField}
+              name="end"
+              onChange={setEnd}
+              rangeMessage={endBeforeStart ? copy.groups.groupTimeError : undefined}
+              requiredMessage={copy.groups.groupEndsRequired}
+              submitted={submitted}
+              value={end}
+            />
+          </div>
         </div>
         {error ? (
           <p className="teacherGroups__createError" role="alert">
@@ -426,14 +459,13 @@ export function GroupFormDialog({ connected, copy, group, mode, onClose }: Group
           </Button>
           <Button
             disabled={pending}
-            endIcon={mode === "create" ? <AddRounded /> : undefined}
             hoverEffect="jump"
             shape="soft"
             size="small"
             type="submit"
             variant="primary"
           >
-            {mode === "create" ? title : copy.common.save}
+            {mode === "create" ? copy.common.create : copy.common.save}
           </Button>
         </div>
       </form>

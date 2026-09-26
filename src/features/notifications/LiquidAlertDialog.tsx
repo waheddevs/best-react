@@ -1,5 +1,6 @@
 "use client";
 
+import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import ErrorOutlineRounded from "@mui/icons-material/ErrorOutlineRounded";
 import HelpOutlineRounded from "@mui/icons-material/HelpOutlineRounded";
 import WarningAmberRounded from "@mui/icons-material/WarningAmberRounded";
@@ -9,7 +10,11 @@ import DialogContent from "@mui/material/DialogContent";
 import { useId } from "react";
 
 import { Button } from "@/components/ui/Button";
-import type { ConfirmDialogTone, ResolvedConfirmDialogOptions } from "@/types/Notification";
+import type {
+  ConfirmDialogTone,
+  NotificationIcon,
+  ResolvedConfirmDialogOptions,
+} from "@/types/Notification";
 
 type LiquidAlertDialogProps = {
   options: ResolvedConfirmDialogOptions | null;
@@ -23,7 +28,8 @@ const toneClassNames: Record<ConfirmDialogTone, string> = {
   danger: "publicShared__notificationDialogDanger",
 };
 
-function renderDialogIcon(tone: ConfirmDialogTone) {
+function renderDialogIcon(tone: ConfirmDialogTone, icon: NotificationIcon) {
+  if (icon === "delete") return <DeleteOutlineRounded aria-hidden="true" />;
   if (tone === "danger") return <ErrorOutlineRounded aria-hidden="true" />;
   if (tone === "warning") return <WarningAmberRounded aria-hidden="true" />;
   return <HelpOutlineRounded aria-hidden="true" />;
@@ -57,7 +63,7 @@ export function LiquidAlertDialog({ options, onCancel, onConfirm }: LiquidAlertD
     >
       <DialogContent className="publicShared__notificationDialogContent">
         <span className="publicShared__notificationDialogIcon">
-          {renderDialogIcon(options.tone)}
+          {renderDialogIcon(options.tone, options.icon)}
         </span>
         <div>
           <h2 className="publicShared__notificationDialogTitle" id={titleId}>

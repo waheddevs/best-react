@@ -76,7 +76,9 @@ export function CreateGroupTimeField({
 
   return (
     <div className="teacherGroups__createField">
-      <label htmlFor={fieldId}>{label}</label>
+      <label className="teacherGroups__createFieldLabelHidden" htmlFor={fieldId}>
+        {label}
+      </label>
       <div className="teacherGroups__createTimeControl">
         <input
           autoComplete="off"
@@ -89,7 +91,7 @@ export function CreateGroupTimeField({
           onChange={handleTextChange}
           onBlur={handleTextBlur}
           pattern="([01][0-9]|2[0-3]):[0-5][0-9]"
-          placeholder="HH:MM"
+          placeholder={label}
           required
           type="text"
           value={value}

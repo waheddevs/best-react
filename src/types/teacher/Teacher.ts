@@ -45,8 +45,16 @@ export type TeacherGroup = {
 
 export type TeacherLearnerStatus = "active" | "paused" | "departed" | "debtor";
 
+export type TeacherPaymentHistoryEntry = {
+  amountUzs: number;
+  id: string;
+  paidAt: string;
+};
+
 export type TeacherLearner = {
   balance: number;
+  email: string | null;
+  endedAt: string | null;
   groupSlug: string;
   id: string;
   initials: string;
@@ -54,6 +62,8 @@ export type TeacherLearner = {
   name: string;
   paidAmountUzs: number;
   phone: string;
+  paymentHistory: TeacherPaymentHistoryEntry[];
+  startedAt: string;
   status: TeacherLearnerStatus;
 };
 
@@ -236,6 +246,7 @@ export type TeacherCopy = {
     close: string;
     completed: string;
     countSuffix: string;
+    create: string;
     createdAt: string;
     done: string;
     empty: string;
@@ -357,6 +368,25 @@ export type TeacherCopy = {
     createGroupSuccess: string;
     createGroupError: string;
     createGroupConflict: string;
+    deleteLearner: string;
+    deleteLearnerCancel: string;
+    deleteLearnerConfirm: string;
+    deleteLearnerError: string;
+    deleteLearnerMessage: string;
+    deleteLearnerSuccess: string;
+    deleteLearnerTitle: string;
+    deleteLearnerUnavailable: string;
+    studentDetails: string;
+    groupLabel: string;
+    personalInformation: string;
+    membershipStatus: string;
+    joinedAt: string;
+    paymentSummary: string;
+    coursePrice: string;
+    paidAmount: string;
+    outstandingAmount: string;
+    paymentHistory: string;
+    paymentHistoryUnavailable: string;
     deleteGroup: string;
     deleteGroupTitle: string;
     deleteGroupMessage: string;
@@ -372,12 +402,15 @@ export type TeacherCopy = {
     groupDaysField: string;
     groupStartsField: string;
     groupEndsField: string;
+    groupTimeField: string;
     groupNameRequired: string;
     groupTypeRequired: string;
     groupRoomRequired: string;
     groupDaysRequired: string;
     groupStartsRequired: string;
     groupEndsRequired: string;
+    groupScheduleConflict: string;
+    groupScheduleConflictTitle: string;
     groupCapacityReached: string;
     groupTimeError: string;
     groupTimeFormat: string;
@@ -403,6 +436,7 @@ export type TeacherCopy = {
     paid: string;
     contactMessage: string;
     contactTitle: string;
+    unpaid: string;
     debtors: string;
     departed: string;
     description: string;
@@ -415,10 +449,12 @@ export type TeacherCopy = {
     editGroupError: string;
     editGroupSuccess: string;
     editGroupUnavailable: string;
+    email: string;
     empty: string;
     emptyRoster: string;
     eyebrow: string;
     learnerName: string;
+    rosterName: string;
     learners: string;
     lessonDays: string;
     noGroupsInCategory: string;
