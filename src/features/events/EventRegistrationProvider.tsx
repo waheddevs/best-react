@@ -27,10 +27,12 @@ export function EventRegistrationProvider({
   copy,
   locale,
 }: EventRegistrationProviderProps) {
-  /* HOOKS */
+  /* APOLLO REQUESTS */
   const [registerForEvent] = useMutation(RegisterForEventDocument, {
     fetchPolicy: "no-cache",
   });
+
+  /* HOOKS */
   const openFrameRef = useRef<number | null>(null);
   const pendingAlertRef = useRef<CenterAlertInput | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

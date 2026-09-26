@@ -1,7 +1,14 @@
+"use client";
+
+import { useQuery } from "@apollo/client/react";
+
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
+import { PublicExamOfferingsDocument } from "@/gql/graphql";
+import { getApiLanguage } from "@/lib/ApiLanguage";
+import { mapPublicExamData } from "@/lib/PublicContentMapper";
 import { ExamRegistrationCatalog } from "@/features/exams/ExamRegistrationCatalog";
 import type { ExamPreviewCopy, MockExamDate, PublicExamOption } from "@/types/ExamPreview";
 
@@ -13,6 +20,16 @@ type ExamOptionsProps = {
 };
 
 export function ExamOptions({ copy, locale, dates, options }: ExamOptionsProps) {
+  /* APOLLO REQUESTS */
+  const { data: examOfferingsData } = useQuery(PublicExamOfferingsDocument, {
+    variables: { language: getApiLanguage(locale) },
+    fetchPolicy: "cache-and-network",
+    ssr: false,
+  });
+  const examData = examOfferingsData
+    ? mapPublicExamData(examOfferingsData.publicExamOfferings, locale)
+    : { dates, options };
+
   return (
     <Section className="exams__options" id="exam-options" tone="background">
       <Reveal>
@@ -24,7 +41,12 @@ export function ExamOptions({ copy, locale, dates, options }: ExamOptionsProps) 
         />
       </Reveal>
       <Reveal delay={0.08}>
-        <ExamRegistrationCatalog copy={copy} dates={dates} locale={locale} options={options} />
+        <ExamRegistrationCatalog
+          copy={copy}
+          dates={examData.dates}
+          locale={locale}
+          options={examData.options}
+        />
       </Reveal>
     </Section>
   );

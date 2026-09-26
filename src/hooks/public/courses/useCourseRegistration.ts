@@ -24,10 +24,12 @@ export function useCourseRegistration(
   locale: Locale,
   copy: CourseRegistrationCopy,
 ) {
-  /* HOOKS */
+  /* APOLLO REQUESTS */
   const [registerForCourse] = useMutation(RegisterForCourseDocument, {
     fetchPolicy: "no-cache",
   });
+
+  /* HOOKS */
   const [errors, setErrors] = useState<Errors>({});
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

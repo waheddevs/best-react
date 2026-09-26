@@ -5,10 +5,9 @@ import { isLocale } from "@/config/Locales";
 import { getExamPreviewCopy } from "@/dictionaries/public/ExamPreview";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { createPageMetadata } from "@/lib/Metadata";
-import { getPublicExamData } from "@/lib/PublicContentApi";
 
 import { ExamInstructions } from "./ExamInstructions";
-import { ExamOptions } from "./ExamOptions";
+import { ExamOptionsSection } from "./ExamOptionsSection";
 import { ExamResults } from "./ExamResults";
 import { ExamsHero } from "./ExamsHero";
 
@@ -27,13 +26,11 @@ export default async function ExamsPage({ params }: ExamsPageProps) {
 
   const copy = getExamPreviewCopy(locale);
   const dictionary = getDictionary(locale);
-  const examData = await getPublicExamData(locale);
-
   return (
     <main className={"exams"}>
       <ExamsHero eyebrow={dictionary.navigation.exams} copy={copy} />
       <ExamInstructions copy={copy} />
-      <ExamOptions copy={copy} dates={examData.dates} locale={locale} options={examData.options} />
+      <ExamOptionsSection copy={copy} locale={locale} />
       <ExamResults copy={copy} />
     </main>
   );

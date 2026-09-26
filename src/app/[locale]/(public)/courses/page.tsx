@@ -5,13 +5,10 @@ import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
-import { getPublicCourses } from "@/lib/PublicContentApi";
 
-import { CourseComparison } from "./CourseComparison";
-import { CoursesCatalog } from "./CoursesCatalog";
+import { CoursesSections } from "./CoursesSections";
 import { CoursesCta } from "./CoursesCta";
 import { CoursesHero } from "./CoursesHero";
-import { LanguageCourses } from "./LanguageCourses";
 import { LearningProcess } from "./LearningProcess";
 
 type CoursesPageProps = { params: Promise<{ locale: string }> };
@@ -29,14 +26,10 @@ export default async function CoursesPage({ params }: CoursesPageProps) {
 
   const copy = getPageCopy(locale);
   const dictionary = getDictionary(locale);
-  const courses = await getPublicCourses(locale);
-
   return (
     <main className={"courses"}>
       <CoursesHero eyebrow={dictionary.navigation.courses} copy={copy} />
-      <CoursesCatalog locale={locale} copy={copy} courses={courses} />
-      <LanguageCourses locale={locale} copy={copy} courses={courses} />
-      <CourseComparison locale={locale} copy={copy} courses={courses} />
+      <CoursesSections locale={locale} copy={copy} />
       <LearningProcess copy={copy} />
       <CoursesCta locale={locale} copy={copy} />
     </main>

@@ -28,11 +28,13 @@ const initialValues: FormValues = {
 };
 
 export function useContactForm(copy: PageCopy, locale: Locale) {
-  /* HOOKS */
-  const notify = useNotifications();
+  /* APOLLO REQUESTS */
   const [submitContactRequest] = useMutation(SubmitContactRequestDocument, {
     fetchPolicy: "no-cache",
   });
+
+  /* HOOKS */
+  const notify = useNotifications();
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -1,3 +1,7 @@
+"use client";
+
+import { useQuery } from "@apollo/client/react";
+
 import { EventCard } from "@/components/cards/EventCard";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup } from "@/components/motion/StaggerGroup";
@@ -6,6 +10,9 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/config/Locales";
 import type { PageCopy } from "@/dictionaries/public/PageCopy";
+import { PublicEventsDocument } from "@/gql/graphql";
+import { getApiLanguage } from "@/lib/ApiLanguage";
+import { mapPublicEvent } from "@/lib/PublicContentMapper";
 import type { PublicEvent } from "@/types/PublicContent";
 
 type EventsCatalogProps = {
@@ -15,8 +22,17 @@ type EventsCatalogProps = {
 };
 
 export function EventsCatalog({ locale, copy, events }: EventsCatalogProps) {
-  const upcoming = events.filter((event) => event.status === "upcoming");
-  const past = events.filter((event) => event.status === "past");
+  /* APOLLO REQUESTS */
+  const { data: eventsData } = useQuery(PublicEventsDocument, {
+    variables: { first: 50, language: getApiLanguage(locale) },
+    fetchPolicy: "cache-and-network",
+    ssr: false,
+  });
+  const visibleEvents = eventsData
+    ? eventsData.publicEvents.edges.map(({ node }) => mapPublicEvent(node))
+    : events;
+  const upcoming = visibleEvents.filter((event) => event.status === "upcoming");
+  const past = visibleEvents.filter((event) => event.status === "past");
 
   return (
     <>

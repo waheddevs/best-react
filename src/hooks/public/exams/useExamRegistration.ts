@@ -28,10 +28,12 @@ const initialValues: ExamRegistrationValues = {
 };
 
 export function useExamRegistration(copy: ExamPreviewCopy, locale: Locale) {
-  /* HOOKS */
+  /* APOLLO REQUESTS */
   const [submitExamRegistration] = useMutation(SubmitExamRegistrationDocument, {
     fetchPolicy: "no-cache",
   });
+
+  /* HOOKS */
   const pendingAlertRef = useRef<CenterAlertInput | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedExam, setSelectedExam] = useState<PublicExamOption | null>(null);

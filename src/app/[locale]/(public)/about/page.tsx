@@ -5,9 +5,8 @@ import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
-import { getPublicFaq } from "@/lib/PublicContentApi";
 
-import { AboutFaq } from "./AboutFaq";
+import { AboutFaqSection } from "./AboutFaqSection";
 import { AboutHero } from "./AboutHero";
 import { Mission } from "./Mission";
 import { Testimonials } from "./Testimonials";
@@ -29,8 +28,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
   const copy = getPageCopy(locale);
   const dictionary = getDictionary(locale);
-  const faqItems = await getPublicFaq(locale);
-
   return (
     <main className={"about"}>
       <AboutHero eyebrow={dictionary.navigation.about} copy={copy} />
@@ -38,7 +35,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
       <Mission locale={locale} copy={copy} />
       <Values copy={copy} />
       <Testimonials copy={copy} />
-      <AboutFaq copy={copy} items={faqItems} locale={locale} />
+      <AboutFaqSection copy={copy} locale={locale} />
     </main>
   );
 }

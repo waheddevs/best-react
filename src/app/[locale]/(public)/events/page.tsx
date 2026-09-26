@@ -5,9 +5,8 @@ import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
-import { getPublicEvents } from "@/lib/PublicContentApi";
 
-import { EventsCatalog } from "./EventsCatalog";
+import { EventsCatalogSection } from "./EventsCatalogSection";
 import { EventsHero } from "./EventsHero";
 
 type EventsPageProps = { params: Promise<{ locale: string }> };
@@ -25,12 +24,10 @@ export default async function EventsPage({ params }: EventsPageProps) {
 
   const copy = getPageCopy(locale);
   const dictionary = getDictionary(locale);
-  const events = await getPublicEvents(locale);
-
   return (
     <main className={"events"}>
       <EventsHero eyebrow={dictionary.navigation.events} copy={copy} />
-      <EventsCatalog locale={locale} copy={copy} events={events} />
+      <EventsCatalogSection locale={locale} copy={copy} />
     </main>
   );
 }

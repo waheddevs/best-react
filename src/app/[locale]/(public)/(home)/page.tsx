@@ -5,15 +5,14 @@ import { isLocale } from "@/config/Locales";
 import { getDictionary } from "@/dictionaries/public/GetDictionary";
 import { getPageCopy } from "@/dictionaries/public/PageCopy";
 import { createPageMetadata } from "@/lib/Metadata";
-import { getPublicCourses, getPublicEvents } from "@/lib/PublicContentApi";
 
-import { FeaturedCourses } from "./FeaturedCourses";
+import { FeaturedCoursesSection } from "./FeaturedCoursesSection";
 import { FinalCta } from "./FinalCta";
 import { HomeHero } from "./HomeHero";
 import { LearningProcess } from "./LearningProcess";
 import { ResultsPreview } from "./ResultsPreview";
 import { TrustStrip } from "./TrustStrip";
-import { UpcomingEvents } from "./UpcomingEvents";
+import { UpcomingEventsSection } from "./UpcomingEventsSection";
 
 type HomePageProps = {
   params: Promise<{ locale: string }>;
@@ -35,16 +34,14 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const dictionary = getDictionary(locale);
   const copy = getPageCopy(locale);
-  const [courses, events] = await Promise.all([getPublicCourses(locale), getPublicEvents(locale)]);
-
   return (
     <main className={"home"}>
       <HomeHero locale={locale} content={dictionary.home} />
       <TrustStrip content={dictionary.home} />
-      <FeaturedCourses locale={locale} copy={copy} courses={courses} />
+      <FeaturedCoursesSection locale={locale} copy={copy} />
       <LearningProcess copy={copy} />
       <ResultsPreview locale={locale} copy={copy} />
-      <UpcomingEvents locale={locale} copy={copy} events={events} />
+      <UpcomingEventsSection locale={locale} copy={copy} />
       <FinalCta locale={locale} copy={copy} />
     </main>
   );
