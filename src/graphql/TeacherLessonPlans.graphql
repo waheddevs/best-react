@@ -1,0 +1,173 @@
+query TeacherLessonWorkspace($groupId: ID!, $language: Language!) {
+  teacherGroupLessons(groupId: $groupId, first: 50) {
+    edges {
+      node {
+        id
+        groupId
+        lessonNumber
+        status
+        startsAt
+        endsAt
+        room
+        createdAt
+        translations {
+          language
+          title
+          summary
+        }
+      }
+    }
+  }
+  teacherGroupMaterials(groupId: $groupId, language: $language, first: 100) {
+    edges {
+      node {
+        id
+        groupId
+        lessonId
+        libraryItemId
+        kind
+        title
+        description
+        position
+        createdAt
+        mediaObject {
+          id
+          originalName
+          mimeType
+          sizeBytes
+          status
+          malwareStatus
+        }
+      }
+    }
+  }
+  teacherLibraryCategories {
+    id
+    name
+  }
+}
+
+mutation TeacherCreateLesson($input: CreateLessonInput!) {
+  createLesson(input: $input) {
+    lesson {
+      id
+      groupId
+      lessonNumber
+      status
+      startsAt
+      endsAt
+      room
+      createdAt
+      translations {
+        language
+        title
+        summary
+      }
+    }
+  }
+}
+
+mutation TeacherUpdateLesson($input: UpdateLessonInput!) {
+  updateLesson(input: $input) {
+    lesson {
+      id
+      lessonNumber
+      startsAt
+      endsAt
+      room
+      translations {
+        language
+        title
+        summary
+      }
+    }
+  }
+}
+
+mutation TeacherSetLessonArchived($input: SetLessonArchivedInput!) {
+  setLessonArchived(input: $input) {
+    lesson {
+      id
+      archivedAt
+    }
+  }
+}
+
+mutation TeacherLessonUploadIntent($input: CreateMediaUploadIntentInput!) {
+  createMediaUploadIntent(input: $input) {
+    uploadIntent {
+      mediaObjectId
+      method
+      url
+      sizeBytes
+      expiresAt
+      requiredHeaders {
+        name
+        value
+      }
+    }
+  }
+}
+
+mutation TeacherConfirmLessonUpload($input: MediaObjectReferenceInput!) {
+  confirmMediaUpload(input: $input) {
+    mediaObject {
+      id
+      originalName
+      mimeType
+      sizeBytes
+      status
+      malwareStatus
+    }
+  }
+}
+
+mutation TeacherCreateLessonResourceCategory($input: CreateLibraryCategoryInput!) {
+  createLibraryCategory(input: $input) {
+    category {
+      id
+      name
+    }
+  }
+}
+
+mutation TeacherCreateLessonResourceItem($input: CreateLibraryItemInput!) {
+  createLibraryItem(input: $input) {
+    item {
+      id
+      attachments {
+        mediaObject {
+          id
+        }
+      }
+    }
+  }
+}
+
+mutation TeacherCreateLessonResource($input: CreateLessonMaterialInput!) {
+  createLessonMaterial(input: $input) {
+    material {
+      id
+      lessonId
+      kind
+    }
+  }
+}
+
+mutation TeacherArchiveLessonResource($input: SetLessonMaterialArchivedInput!) {
+  setLessonMaterialArchived(input: $input) {
+    material {
+      id
+      archivedAt
+    }
+  }
+}
+
+mutation TeacherLessonFileDownload($input: MediaObjectReferenceInput!) {
+  createMediaDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+      expiresAt
+    }
+  }
+}

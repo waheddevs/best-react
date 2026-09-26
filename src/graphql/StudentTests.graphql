@@ -1,0 +1,194 @@
+query StudentTestPapers($first: Int, $after: String) {
+  studentTestPapers(first: $first, after: $after) {
+    edges {
+      cursor
+      node {
+        id
+        slug
+        academicYear
+        title
+        sourceLabel
+        skills {
+          testId
+          testVersionId
+          skill
+          title
+          description
+          durationMinutes
+          questionCount
+          attemptId
+          attemptStatus
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query StudentTestPaper($paperId: ID!) {
+  studentTestPaper(paperId: $paperId) {
+    id
+    slug
+    academicYear
+    title
+    sourceLabel
+    skills {
+      testId
+      testVersionId
+      skill
+      title
+      description
+      durationMinutes
+      questionCount
+      attemptId
+      attemptStatus
+    }
+  }
+}
+
+mutation StartStudentTestAttempt($input: StartTestAttemptInput!) {
+  startTestAttempt(input: $input) {
+    attempt {
+      ...StudentAttemptFields
+    }
+  }
+}
+
+query StudentTestAttempt($attemptId: ID!) {
+  studentAttempt(attemptId: $attemptId, language: EN) {
+    ...StudentAttemptFields
+  }
+}
+
+query StudentReleasedAttemptResult($attemptId: ID!) {
+  studentReleasedAttemptResult(attemptId: $attemptId) {
+    attemptId
+    testId
+    title
+    skill
+    correctAnswerCount
+    totalQuestionCount
+    percentage
+    sections {
+      id
+      position
+      title
+      content
+    }
+    answers {
+      questionId
+      sectionId
+      position
+      prompt
+      studentAnswer
+      correctAnswer
+      isCorrect
+      evidenceStartOffset
+      evidenceEndOffset
+    }
+  }
+}
+
+query StudentResults($first: Int, $after: String) {
+  studentResults(first: $first, after: $after, language: EN) {
+    edges {
+      cursor
+      node {
+        attemptId
+        testId
+        title
+        skill
+        attemptNumber
+        correctAnswerCount
+        totalQuestionCount
+        percentage
+        highestPercentage
+        passed
+        submittedAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+mutation SaveStudentTestAnswer($input: SaveAttemptAnswerInput!) {
+  saveAttemptAnswer(input: $input, language: EN) {
+    attempt {
+      id
+      status
+      serverTime
+      answers {
+        questionId
+        selectedOptionId
+        selectedOptionIds
+        textValue
+        responseMediaObjectId
+        savedAt
+      }
+    }
+  }
+}
+
+mutation SubmitStudentTestAttempt($input: SubmitTestAttemptInput!) {
+  submitTestAttempt(input: $input, language: EN) {
+    attempt {
+      ...StudentAttemptFields
+    }
+  }
+}
+
+fragment StudentAttemptFields on StudentAttempt {
+  id
+  testId
+  testVersionId
+  title
+  skill
+  status
+  attemptNumber
+  startedAt
+  expiresAt
+  submittedAt
+  serverTime
+  sections {
+    id
+    position
+    title
+    instructions
+    content
+    mediaObjectId
+  }
+  questions {
+    id
+    sectionId
+    kind
+    position
+    prompt
+    answerLimit
+    maxSelections
+    options {
+      id
+      position
+      text
+    }
+  }
+  answers {
+    questionId
+    selectedOptionId
+    selectedOptionIds
+    textValue
+    responseMediaObjectId
+    savedAt
+  }
+  result {
+    correctAnswerCount
+    totalQuestionCount
+    percentage
+    passed
+  }
+}

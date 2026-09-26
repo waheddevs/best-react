@@ -69,10 +69,16 @@ query TeacherGroupRosterData($groupId: ID!, $first: Int, $after: String) {
         membershipId
         studentId
         displayName
+        email
         phone
         rosterStatus
         outstandingBalanceUzs
         paidAmountUzs
+        recentPayments {
+          id
+          amountUzs
+          paidAt
+        }
         startedAt
         endedAt
       }
@@ -80,6 +86,26 @@ query TeacherGroupRosterData($groupId: ID!, $first: Int, $after: String) {
     pageInfo {
       endCursor
       hasNextPage
+    }
+  }
+}
+
+query TeacherGroupTestPapers($groupId: ID!) {
+  teacherTestPapers(groupId: $groupId) {
+    id
+    slug
+    academicYear
+    title
+    sourceLabel
+    skills {
+      testId
+      testVersionId
+      skill
+      title
+      description
+      durationMinutes
+      questionCount
+      status
     }
   }
 }
@@ -126,6 +152,26 @@ mutation TeacherCreateStudentInGroup($input: TeacherCreateStudentInGroupInput!) 
       membershipId
       studentId
       displayName
+      rosterStatus
+    }
+  }
+}
+
+mutation TeacherDeleteStudent($input: TeacherDeleteStudentInput!) {
+  teacherDeleteStudent(input: $input) {
+    membership {
+      membershipId
+      studentId
+      status
+      endedAt
+    }
+  }
+}
+
+mutation TeacherSetStudentParticipationStatus($input: SetGroupMembershipParticipationStatusInput!) {
+  setGroupMembershipParticipationStatus(input: $input) {
+    membership {
+      membershipId
       rosterStatus
     }
   }
