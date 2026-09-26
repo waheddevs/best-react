@@ -1,31 +1,10 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import {
-  getTeacherGroupLessons,
-  getTeacherGroupMaterials,
-} from "@/data/teacher/TeacherPreviewData";
-
-import {
-  createGroupWorkspaceMetadata,
-  getGroupWorkspaceContext,
-  type GroupWorkspaceParams,
-} from "../GroupWorkspaceRoute";
-import { GroupMaterials } from "./GroupMaterials";
+import { getGroupWorkspaceContext, type GroupWorkspaceParams } from "../GroupWorkspaceRoute";
 
 type GroupMaterialsPageProps = { params: GroupWorkspaceParams };
 
-export function generateMetadata({ params }: GroupMaterialsPageProps): Promise<Metadata> {
-  return createGroupWorkspaceMetadata(params, "materials");
-}
-
 export default async function GroupMaterialsPage({ params }: GroupMaterialsPageProps) {
-  const { copy, locale, slug } = await getGroupWorkspaceContext(params);
-  return (
-    <GroupMaterials
-      copy={copy}
-      lessons={getTeacherGroupLessons(slug)}
-      locale={locale}
-      materials={getTeacherGroupMaterials(slug)}
-    />
-  );
+  const { locale, slug } = await getGroupWorkspaceContext(params);
+  redirect(`/${locale}/teacher/groups/${slug}/lessons`);
 }

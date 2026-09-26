@@ -20,8 +20,8 @@ const tabItems: Array<{
 }> = [
   { key: "overview", segment: "" },
   { key: "students", segment: "students" },
-  { key: "materials", segment: "materials" },
-  { key: "assignments", segment: "assignments" },
+  { key: "lessons", segment: "lessons" },
+  { key: "tests", segment: "tests" },
 ];
 
 export function GroupWorkspaceNavigation({ copy, locale, slug }: GroupWorkspaceNavigationProps) {
@@ -53,7 +53,9 @@ export function GroupWorkspaceNavigation({ copy, locale, slug }: GroupWorkspaceN
             href={segment ? `${baseHref}/${segment}` : baseHref}
             id={`teacher-group-workspace-tab-${key}`}
             key={key}
-            label={copy.groupWorkspace.tabs[key]}
+            label={
+              <span className="teacherGroups__categoryName">{copy.groupWorkspace.tabs[key]}</span>
+            }
             scroll={false}
             value={key}
           />

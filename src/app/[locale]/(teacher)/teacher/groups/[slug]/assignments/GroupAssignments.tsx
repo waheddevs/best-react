@@ -1,5 +1,6 @@
 import AssignmentTurnedInRounded from "@mui/icons-material/AssignmentTurnedInRounded";
 import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
+import SearchRounded from "@mui/icons-material/SearchRounded";
 
 import type { Locale } from "@/config/Locales";
 import type {
@@ -78,7 +79,12 @@ export function GroupAssignments({ assignments, copy, lessons, locale }: GroupAs
         </div>
       ) : (
         <div className="teacherShared__emptyState">
-          <h3 className="teacherShared__emptyTitle">{copy.groupWorkspace.noAssignments}</h3>
+          <div>
+            <span className="teacherShared__emptyIcon">
+              <SearchRounded aria-hidden="true" />
+            </span>
+            <h3 className="teacherShared__emptyTitle">{copy.groupWorkspace.noAssignments}</h3>
+          </div>
         </div>
       )}
     </section>

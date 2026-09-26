@@ -45,7 +45,7 @@ export function GroupWorkspaceCreateAction({ copy, kind }: GroupWorkspaceCreateA
         size="small"
         startIcon={<AddRounded />}
       >
-        {copy.groupWorkspace.createActions[kind]}
+        {kind === "test" ? copy.common.create : copy.groupWorkspace.createActions[kind]}
       </Button>
 
       <Dialog fullWidth maxWidth="sm" onClose={handleClose} open={isOpen}>
