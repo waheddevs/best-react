@@ -1,6 +1,7 @@
 import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
 import QuizRounded from "@mui/icons-material/QuizRounded";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
+import SearchRounded from "@mui/icons-material/SearchRounded";
 
 import type { Locale } from "@/config/Locales";
 import type { TeacherCopy, TeacherLessonSession, TeacherLessonTest } from "@/types/teacher/Teacher";
@@ -24,7 +25,7 @@ export function GroupTests({ copy, lessons, locale, tests }: GroupTestsProps) {
   };
 
   return (
-    <section aria-labelledby="group-tests-title">
+    <section aria-labelledby="group-tests-title" className="teacherGroups__workspaceSection">
       <GroupWorkspaceSectionHeader
         action={<GroupWorkspaceCreateAction copy={copy} kind="test" />}
         description={copy.groupWorkspace.testsDescription}
@@ -73,7 +74,12 @@ export function GroupTests({ copy, lessons, locale, tests }: GroupTestsProps) {
         </div>
       ) : (
         <div className="teacherShared__emptyState">
-          <h3 className="teacherShared__emptyTitle">{copy.groupWorkspace.noTests}</h3>
+          <div>
+            <span className="teacherShared__emptyIcon">
+              <SearchRounded aria-hidden="true" />
+            </span>
+            <h3 className="teacherShared__emptyTitle">{copy.groupWorkspace.noTests}</h3>
+          </div>
         </div>
       )}
     </section>

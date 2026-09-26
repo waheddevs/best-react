@@ -1,0 +1,289 @@
+/* CONNECTED STUDENT TEST CATALOG */
+
+.studentTests {
+  display: grid;
+  gap: 24px;
+  color: #102b46;
+}
+
+.studentTests__hero,
+.studentTests__overviewHeader {
+  border: 1px solid #cae6ef;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 88% 20%, rgb(38 100 235 / 12%), transparent 30%),
+    linear-gradient(135deg, #fff 0%, #edfaff 100%);
+  padding: clamp(24px, 4vw, 48px);
+
+  & > span,
+  & div > span {
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+  }
+
+  & h1 {
+    margin: 9px 0 8px;
+    font-size: clamp(30px, 5vw, 54px);
+    letter-spacing: -0.045em;
+  }
+
+  & p {
+    max-width: 720px;
+    margin: 0;
+    color: #5e7186;
+    line-height: 1.65;
+  }
+}
+
+.studentTests__catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+  gap: 18px;
+}
+
+.studentTests__paper {
+  display: grid;
+  min-height: 280px;
+  border: 1px solid #cfe5ed;
+  border-radius: 24px;
+  background: #fff;
+  padding: 24px;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 20px 55px rgb(19 72 104 / 7%);
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+
+  &:hover {
+    border-color: #6caef8;
+    box-shadow: 0 24px 60px rgb(37 99 235 / 13%);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgb(37 99 235 / 35%);
+    outline-offset: 3px;
+  }
+
+  & h2 {
+    margin: 24px 0 8px;
+    font-size: clamp(24px, 3vw, 34px);
+    letter-spacing: -0.035em;
+  }
+
+  & > p {
+    margin: 0;
+    color: #65778a;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+}
+
+.studentTests__paperHeader,
+.studentTests__paperFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.studentTests__paperHeader div {
+  display: grid;
+  gap: 2px;
+
+  & span {
+    color: #728399;
+    font-size: 11px;
+  }
+
+  & strong {
+    font-size: 20px;
+  }
+}
+
+.studentTests__available {
+  border-radius: 999px;
+  background: #eaf8f3;
+  padding: 8px 12px;
+  color: #14745b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.studentTests__paperFooter {
+  align-self: end;
+  margin-top: 26px;
+  border-top: 1px solid #e1edf1;
+  padding-top: 18px;
+  color: #63768b;
+  font-size: 13px;
+  font-weight: 750;
+
+  & span:last-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #2563eb;
+  }
+}
+
+.studentTests__empty {
+  margin: 0;
+  border: 1px dashed #b9dbe7;
+  border-radius: 22px;
+  background: #f6fcfe;
+  padding: 64px 24px;
+  color: #65778a;
+  text-align: center;
+}
+
+.studentTests__overviewHeader {
+  & div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  & a {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+}
+
+.studentTests__skills {
+  display: grid;
+  gap: 14px;
+}
+
+.studentTests__skill {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #d5e9ef;
+  border-radius: 22px;
+  background: #fff;
+  padding: 20px;
+}
+
+.studentTests__skillIcon {
+  display: grid;
+  width: 72px;
+  min-height: 72px;
+  place-items: center;
+  border-radius: 18px;
+  background: #edf4ff;
+  color: #2563eb;
+
+  & span {
+    font-size: 10px;
+    font-weight: 900;
+  }
+}
+
+.studentTests__skillCopy {
+  & > span {
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  & h2 {
+    margin: 3px 0 5px;
+    font-size: 21px;
+  }
+
+  & p {
+    margin: 0 0 10px;
+    color: #66788b;
+    font-size: 13px;
+  }
+
+  & div {
+    display: flex;
+    gap: 15px;
+    color: #66788b;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+.studentTests__skillAction,
+.studentTests__skillActionWrap button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 15px;
+  background: linear-gradient(105deg, #137aa3, #2563eb);
+  padding: 0 18px;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 13px 30px rgb(37 99 235 / 18%);
+}
+
+.studentTests__skillActionWrap {
+  display: grid;
+  justify-items: end;
+  gap: 7px;
+
+  & button:disabled {
+    opacity: 0.62;
+    cursor: wait;
+  }
+
+  & span {
+    max-width: 190px;
+    color: #d92d20;
+    font-size: 11px;
+    text-align: right;
+  }
+}
+
+.studentTests__skillPending {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #fff7db;
+  padding: 0 15px;
+  color: #765a17;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+@media (max-width: 720px) {
+  .studentTests__skill {
+    grid-template-columns: auto 1fr;
+  }
+
+  .studentTests__skillAction,
+  .studentTests__skillActionWrap {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .studentTests__skillActionWrap button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studentTests__paper {
+    transition: none;
+  }
+}

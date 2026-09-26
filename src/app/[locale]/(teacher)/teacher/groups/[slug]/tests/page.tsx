@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { getTeacherGroupLessons, getTeacherGroupTests } from "@/data/teacher/TeacherPreviewData";
+import { loadConnectedTeacherGroupTestPapers } from "@/lib/teacher/TeacherGroupData";
 
 import {
   createGroupWorkspaceMetadata,
@@ -8,6 +9,7 @@ import {
   type GroupWorkspaceParams,
 } from "../GroupWorkspaceRoute";
 import { GroupTests } from "./GroupTests";
+import { ConnectedGroupTests } from "./ConnectedGroupTests";
 
 type GroupTestsPageProps = { params: GroupWorkspaceParams };
 
@@ -16,7 +18,11 @@ export function generateMetadata({ params }: GroupTestsPageProps): Promise<Metad
 }
 
 export default async function GroupTestsPage({ params }: GroupTestsPageProps) {
-  const { copy, locale, slug } = await getGroupWorkspaceContext(params);
+  const { connected, copy, group, locale, slug } = await getGroupWorkspaceContext(params);
+  if (connected) {
+    const papers = await loadConnectedTeacherGroupTestPapers(locale, group.id);
+    return <ConnectedGroupTests copy={copy} locale={locale} papers={papers} />;
+  }
   return (
     <GroupTests
       copy={copy}
