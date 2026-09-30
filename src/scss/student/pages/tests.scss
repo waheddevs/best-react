@@ -253,6 +253,20 @@
   }
 }
 
+.studentTests__skillCompletedActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.studentTests__skillAction_secondary {
+  border: 1px solid #b9d6e3;
+  background: #fff;
+  color: #176b91;
+  box-shadow: none;
+}
+
 .studentTests__skillPending {
   display: inline-flex;
   min-height: 44px;
@@ -272,12 +286,21 @@
   }
 
   .studentTests__skillAction,
-  .studentTests__skillActionWrap {
+  .studentTests__skillActionWrap,
+  .studentTests__skillCompletedActions {
     grid-column: 1 / -1;
     width: 100%;
   }
 
   .studentTests__skillActionWrap button {
+    width: 100%;
+  }
+
+  .studentTests__skillCompletedActions {
+    display: grid;
+  }
+
+  .studentTests__skillCompletedActions .studentTests__skillAction {
     width: 100%;
   }
 }

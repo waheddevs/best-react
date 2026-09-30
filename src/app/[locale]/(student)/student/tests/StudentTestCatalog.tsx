@@ -31,15 +31,17 @@ export function StudentTestCatalog({ copy, locale, papers }: StudentTestCatalogP
             >
               <div className="studentTests__paperHeader">
                 <div>
-                  <span>{copy.yearLabel}</span>
-                  <strong>{paper.academicYear}</strong>
+                  <span>{copy.moduleLabel}</span>
+                  <strong>{copy.academicModuleLabel}</strong>
                 </div>
                 <span className="studentTests__available">{copy.availableLabel}</span>
               </div>
               <h2>{paper.title}</h2>
               <p>{paper.sourceLabel}</p>
               <div className="studentTests__paperFooter">
-                <span>{copy.allSkillsLabel}</span>
+                <span>
+                  {copy.allSkillsLabel} · {copy.yearLabel} {paper.academicYear}
+                </span>
                 <span>
                   {copy.continueLabel}
                   <ArrowForwardRounded aria-hidden="true" />

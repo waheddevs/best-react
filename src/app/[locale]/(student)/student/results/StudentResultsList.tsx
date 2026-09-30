@@ -28,24 +28,31 @@ export function StudentResultsList({ locale, results }: StudentResultsListProps)
       {results.length > 0 ? (
         <div className="studentResultsList__grid">
           {results.map((result) => {
-            const hasEvidence =
+            const hasDetail =
+              result.skill === "SPEAKING" ||
               result.skill === "LISTENING" || result.skill === "READING";
             const content = (
               <>
                 <div className="studentResultsList__cardTop">
                   <span>{result.skill ?? copy.result}</span>
-                  {hasEvidence ? (
+                  {hasDetail ? (
                     <CheckCircleRounded aria-hidden="true" />
                   ) : (
                     <PendingActionsRounded aria-hidden="true" />
                   )}
                 </div>
                 <h2>{result.title}</h2>
-                <strong>{formatPercentage(result.percentage)}%</strong>
-                <p>
-                  {result.correctAnswerCount}/{result.totalQuestionCount} {copy.score}
-                </p>
-                {hasEvidence ? (
+                <strong>
+                  {result.skill === "SPEAKING" && result.practiceBand !== null
+                    ? `Band ${result.practiceBand.toFixed(1)}`
+                    : `${formatPercentage(result.percentage)}%`}
+                </strong>
+                {result.skill !== "SPEAKING" ? (
+                  <p>
+                    {result.correctAnswerCount}/{result.totalQuestionCount} {copy.score}
+                  </p>
+                ) : null}
+                {hasDetail ? (
                   <span className="studentResultsList__open">
                     {copy.answerList}
                     <ArrowForwardRounded aria-hidden="true" />
@@ -54,7 +61,7 @@ export function StudentResultsList({ locale, results }: StudentResultsListProps)
               </>
             );
 
-            return hasEvidence ? (
+            return hasDetail ? (
               <Link
                 className="studentResultsList__card"
                 href={`/${locale}/student/results/${result.attemptId}`}

@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
-import { ConnectedStudentTestRunner } from "@/features/student/tests/ConnectedStudentTestRunner";
+import { StudentSpeakingSimulator } from "@/features/student/tests/StudentSpeakingSimulator";
+import { StudentTestRunner } from "@/features/student/tests/StudentTestRunner";
+import { StudentWritingSimulator } from "@/features/student/tests/StudentWritingSimulator";
 import { getStudentTestAttempt } from "@/lib/student/StudentTestData";
 
 type PageProps = {
@@ -14,11 +16,13 @@ export default async function StudentSkillAttemptPage({ params }: PageProps) {
   const attempt = await getStudentTestAttempt(locale, attemptId);
   if (!attempt.skill || attempt.skill.toLowerCase() !== skill) notFound();
 
-  return (
-    <ConnectedStudentTestRunner
-      attempt={attempt}
-      locale={locale}
-      paperId={testId}
-    />
-  );
+  if (attempt.skill === "SPEAKING") {
+    return <StudentSpeakingSimulator attempt={attempt} locale={locale} paperId={testId} />;
+  }
+
+  if (attempt.skill === "WRITING") {
+    return <StudentWritingSimulator attempt={attempt} locale={locale} paperId={testId} />;
+  }
+
+  return <StudentTestRunner attempt={attempt} locale={locale} paperId={testId} />;
 }

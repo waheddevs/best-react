@@ -248,6 +248,17 @@
   display: none;
 }
 
+.studentShell_exam {
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #fff;
+}
+
+.studentShell__examMain {
+  width: 100%;
+  min-height: 100dvh;
+}
+
 @media (max-width: student.$navigation-breakpoint) {
   .studentShell__sidebar {
     display: none;

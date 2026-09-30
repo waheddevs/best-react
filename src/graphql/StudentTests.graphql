@@ -4,6 +4,7 @@ query StudentTestPapers($first: Int, $after: String) {
       cursor
       node {
         id
+        isSaved
         slug
         academicYear
         title
@@ -31,6 +32,7 @@ query StudentTestPapers($first: Int, $after: String) {
 query StudentTestPaper($paperId: ID!) {
   studentTestPaper(paperId: $paperId) {
     id
+    isSaved
     slug
     academicYear
     title
@@ -63,6 +65,13 @@ query StudentTestAttempt($attemptId: ID!) {
   }
 }
 
+query StudentAttemptMediaDownload($attemptId: ID!, $mediaObjectId: ID!) {
+  studentAttemptMediaDownload(attemptId: $attemptId, mediaObjectId: $mediaObjectId) {
+    url
+    expiresAt
+  }
+}
+
 query StudentReleasedAttemptResult($attemptId: ID!) {
   studentReleasedAttemptResult(attemptId: $attemptId) {
     attemptId
@@ -92,6 +101,20 @@ query StudentReleasedAttemptResult($attemptId: ID!) {
   }
 }
 
+query StudentSpeakingResult($attemptId: ID!) {
+  studentSpeakingResult(attemptId: $attemptId, language: EN) {
+    attemptId
+    title
+    fluencyCoherence
+    lexicalResource
+    grammaticalRangeAccuracy
+    pronunciation
+    practiceBand
+    feedback
+    releasedAt
+  }
+}
+
 query StudentResults($first: Int, $after: String) {
   studentResults(first: $first, after: $after, language: EN) {
     edges {
@@ -105,6 +128,7 @@ query StudentResults($first: Int, $after: String) {
         correctAnswerCount
         totalQuestionCount
         percentage
+        practiceBand
         highestPercentage
         passed
         submittedAt
@@ -131,6 +155,46 @@ mutation SaveStudentTestAnswer($input: SaveAttemptAnswerInput!) {
         responseMediaObjectId
         savedAt
       }
+    }
+  }
+}
+
+mutation SaveStudentAttemptNote($input: SaveAttemptSectionNoteInput!) {
+  saveAttemptSectionNote(input: $input, language: EN) {
+    attempt {
+      id
+      notes {
+        sectionId
+        text
+        savedAt
+      }
+    }
+  }
+}
+
+mutation CreateStudentAttemptAudioUpload($input: CreateAttemptAudioUploadInput!) {
+  createAttemptAudioUploadIntent(input: $input) {
+    uploadIntent {
+      mediaObjectId
+      method
+      url
+      requiredHeaders {
+        name
+        value
+      }
+      sizeBytes
+      expiresAt
+    }
+  }
+}
+
+mutation ConfirmStudentAttemptAudioUpload($input: ConfirmAttemptAudioUploadInput!) {
+  confirmAttemptAudioUpload(input: $input) {
+    mediaObject {
+      id
+      mediaType
+      status
+      malwareStatus
     }
   }
 }
@@ -162,6 +226,19 @@ fragment StudentAttemptFields on StudentAttempt {
     instructions
     content
     mediaObjectId
+    blocks {
+      id
+      position
+      kind
+      caption
+      tableHeaderRows {
+        cells
+      }
+      tableRows {
+        cells
+      }
+      questionIds
+    }
   }
   questions {
     id
@@ -183,6 +260,11 @@ fragment StudentAttemptFields on StudentAttempt {
     selectedOptionIds
     textValue
     responseMediaObjectId
+    savedAt
+  }
+  notes {
+    sectionId
+    text
     savedAt
   }
   result {
