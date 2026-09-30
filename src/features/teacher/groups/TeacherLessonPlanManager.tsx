@@ -284,7 +284,9 @@ export function TeacherLessonPlanManager({
     });
     if (!intent.ok) throw new Error(intent.code);
     const headers = new Headers(
-      intent.uploadIntent.requiredHeaders.map(({ name: headerName, value }) => [headerName, value]),
+      intent.uploadIntent.requiredHeaders.map(
+        ({ name: headerName, value }): [string, string] => [headerName, value],
+      ),
     );
     const response = await fetch(intent.uploadIntent.url, {
       body: file,

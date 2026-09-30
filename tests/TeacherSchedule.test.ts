@@ -50,6 +50,7 @@ test("schedule includes every active-day pattern and sorts by start time", () =>
   assert.equal(schedule[1]?.status, "planned");
   assert.deepEqual(schedule[1]?.lessonDays, [2]);
   assert.equal(schedule[2]?.learnerCount, 3);
+  assert.equal(schedule[2]?.category, "ielts");
   assert.equal(buildTeacherSchedule(groups, 3, 450).length, 4);
 });
 

@@ -5,7 +5,14 @@ export type LocalizedText = Record<Locale, string>;
 export type TeacherThemeMode = "light" | "dark";
 
 export type TeacherNavigationKey =
-  "dashboard" | "groups" | "tasks" | "finance" | "reception" | "transferRequests" | "profile";
+  | "dashboard"
+  | "groups"
+  | "library"
+  | "tasks"
+  | "finance"
+  | "reception"
+  | "transferRequests"
+  | "profile";
 
 export type TeacherProfileData = {
   branch: LocalizedText;
@@ -114,6 +121,7 @@ export type TeacherFinanceSnapshot = {
 };
 
 export type TeacherScheduleEntry = {
+  category: TeacherGroupCategory | null;
   endsAt: string;
   groupName: string;
   groupSlug: string;
@@ -277,12 +285,16 @@ export type TeacherCopy = {
   };
   finance: {
     attendanceRate: string;
+    collected: string;
     description: string;
     eyebrow: string;
     expectedAmount: string;
     income: string;
     labels: Record<TeacherFinanceMetric["id"], string>;
+    noData: string;
     pageTitle: string;
+    remaining: string;
+    year: string;
   };
   groupWorkspace: {
     accordingToSchedule: string;
@@ -533,13 +545,17 @@ export type TeacherCopy = {
     unsavedTitle: string;
   };
   reception: {
+    days: string;
     description: string;
     empty: string;
     eyebrow: string;
+    group: string;
     learnerCount: string;
     pageTitle: string;
     room: string;
+    students: string;
     time: string;
+    type: string;
   };
   tasks: {
     attendanceDescription: string;

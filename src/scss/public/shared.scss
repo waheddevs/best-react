@@ -1192,8 +1192,8 @@ body[data-teacher-theme] .publicShared__notificationToastDelete {
 }
 
 body[data-teacher-theme] .publicShared__notificationToastWarning {
-  --notification-accent: var(--teacher-warning);
-  --notification-accent-soft: var(--teacher-yellow);
+  --notification-accent: #f0b90b;
+  --notification-accent-soft: #fff3bf;
 }
 
 @supports (color: color-mix(in lab, red, red)) {
@@ -1203,7 +1203,7 @@ body[data-teacher-theme] .publicShared__notificationToastWarning {
   }
 
   body[data-teacher-theme] .publicShared__notificationToastWarning {
-    --notification-accent-soft: color-mix(in srgb, var(--teacher-yellow) 22%, transparent);
+    --notification-accent-soft: color-mix(in srgb, #f0b90b 20%, transparent);
   }
 }
 

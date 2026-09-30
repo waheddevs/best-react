@@ -3,7 +3,9 @@
 import AddRounded from "@mui/icons-material/AddRounded";
 import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
+import AssessmentOutlined from "@mui/icons-material/AssessmentOutlined";
 import SearchRounded from "@mui/icons-material/SearchRounded";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -239,6 +241,12 @@ export function TeacherGroupRoster({
                     </td>
                     <td>
                       <div className="teacherGroups__learnerActions">
+                        <Link
+                          aria-label={`Tests: ${learner.name}`}
+                          href={`/${locale}/teacher/groups/${groupId}/students/${learner.id}/attempts`}
+                        >
+                          <AssessmentOutlined aria-hidden="true" />
+                        </Link>
                         <button
                           aria-label={`${copy.groups.detail}: ${learner.name}`}
                           onClick={() => handleDetailsOpen(learner)}

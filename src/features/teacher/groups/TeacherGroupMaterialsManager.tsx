@@ -160,10 +160,9 @@ export function TeacherGroupMaterialsManager({
     const response = await fetch(intent.uploadIntent.url, {
       body: upload,
       headers: new Headers(
-        intent.uploadIntent.requiredHeaders.map(({ name: headerName, value }) => [
-          headerName,
-          value,
-        ]),
+        intent.uploadIntent.requiredHeaders.map(
+          ({ name: headerName, value }): [string, string] => [headerName, value],
+        ),
       ),
       method: intent.uploadIntent.method,
     });

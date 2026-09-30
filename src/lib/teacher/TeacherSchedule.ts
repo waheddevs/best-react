@@ -2,6 +2,7 @@ import type { TeacherGroup, TeacherScheduleEntry } from "@/types/teacher/Teacher
 
 type ScheduledGroup = Pick<
   TeacherGroup,
+  | "category"
   | "endsAtMinutes"
   | "id"
   | "learnerCount"
@@ -87,6 +88,7 @@ export function buildTeacherSchedule(
     const end = group.endsAtMinutes!;
     const meetsToday = group.scheduleDays.includes(todayWeekday);
     return {
+      category: group.category,
       endsAt: formatMinutes(end),
       groupName: group.name,
       groupSlug: group.slug,
