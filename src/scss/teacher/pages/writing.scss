@@ -1,0 +1,290 @@
+.teacherWritingPreview {
+  --teacher-writing-accent: #7447e8;
+  --teacher-writing-soft: color-mix(
+    in srgb,
+    var(--teacher-writing-accent) 8%,
+    var(--teacher-surface)
+  );
+
+  display: grid;
+  width: min(100%, 86rem);
+  gap: 1rem;
+  margin-inline: auto;
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+.teacherWritingPreview__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+
+  > div:nth-child(2) {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  > div:nth-child(2) > span {
+    color: var(--teacher-writing-accent);
+    font-size: 0.64rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+  }
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  h1 {
+    margin-top: 0.25rem;
+    color: var(--teacher-heading);
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    font-weight: 790;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-top: 0.2rem;
+    color: var(--teacher-muted);
+    font-size: 0.72rem;
+  }
+}
+
+.teacherWritingPreview__status {
+  display: inline-flex;
+  justify-self: end;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--teacher-writing-accent) 20%, var(--teacher-border));
+  border-radius: 0.85rem;
+  background: var(--teacher-writing-soft);
+  padding: 0.65rem 0.8rem;
+  color: var(--teacher-writing-accent);
+  font-size: 0.68rem;
+  font-weight: 820;
+
+  svg {
+    font-size: 1rem;
+  }
+}
+
+.teacherWritingPreview__notice {
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--teacher-writing-accent) 18%, var(--teacher-border));
+  border-radius: 0.9rem;
+  background: var(--teacher-writing-soft);
+  padding: 0.75rem 1rem;
+  color: var(--teacher-muted);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.teacherWritingPreview__tasks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+
+  button {
+    display: flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.9rem;
+    background: var(--teacher-surface);
+    padding: 0.7rem 1rem;
+    color: var(--teacher-muted);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button[aria-current="step"] {
+    border-color: var(--teacher-writing-accent);
+    background: var(--teacher-writing-soft);
+    color: var(--teacher-writing-accent);
+    box-shadow: inset 0 -0.2rem 0 var(--teacher-writing-accent);
+  }
+
+  span {
+    font-size: 0.73rem;
+    font-weight: 880;
+    letter-spacing: 0.06em;
+  }
+
+  small {
+    font-size: 0.66rem;
+    font-weight: 760;
+  }
+}
+
+.teacherWritingPreview__workspace {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: min(67vh, 43rem);
+  min-height: 34rem;
+  overflow: hidden;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.35rem;
+  background: var(--teacher-surface);
+  box-shadow: 0 18px 42px rgb(16 42 67 / 7%);
+}
+
+.teacherWritingPreview__source,
+.teacherWritingPreview__answer {
+  min-width: 0;
+  overflow-y: auto;
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.teacherWritingPreview__source {
+  border-right: 1px solid var(--teacher-border);
+  background: var(--teacher-canvas);
+
+  > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  > div:first-child span {
+    color: var(--teacher-writing-accent);
+    font-size: 0.66rem;
+    font-weight: 880;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  > div:first-child strong {
+    border-radius: 999px;
+    background: var(--teacher-writing-soft);
+    padding: 0.4rem 0.65rem;
+    color: var(--teacher-writing-accent);
+    font-size: 0.66rem;
+  }
+
+  h2 {
+    margin: 1.35rem 0 0;
+    color: var(--teacher-heading);
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+    font-weight: 790;
+    letter-spacing: -0.035em;
+    line-height: 1.22;
+  }
+
+  > p {
+    margin: 0.75rem 0 0;
+    color: var(--teacher-muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  > div:not(:first-child) {
+    margin-top: 1.35rem;
+    border: 1px solid color-mix(in srgb, var(--teacher-writing-accent) 18%, var(--teacher-border));
+    border-radius: 1rem;
+    background: var(--teacher-surface);
+    padding: 1.2rem;
+    color: var(--teacher-text);
+    font-size: 0.85rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+
+  blockquote {
+    margin: 1.25rem 0 0;
+    border-left: 0.22rem solid var(--teacher-writing-accent);
+    background: var(--teacher-writing-soft);
+    padding: 1rem 1.15rem;
+    color: var(--teacher-heading);
+    font-size: 0.92rem;
+    font-weight: 720;
+    line-height: 1.65;
+  }
+}
+
+.teacherWritingPreview__answer {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+
+  label {
+    color: var(--teacher-writing-accent);
+    font-size: 0.68rem;
+    font-weight: 880;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 0;
+    resize: none;
+    border: 1px solid var(--teacher-border);
+    border-radius: 1rem;
+    background: var(--teacher-canvas);
+    padding: 1.1rem;
+    color: var(--teacher-muted);
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--teacher-muted);
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .teacherWritingPreview__header {
+    grid-template-areas:
+      "back status"
+      "title title";
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .teacherWritingPreview__header .teacherGroups__backLink {
+    grid-area: back;
+  }
+
+  .teacherWritingPreview__header > div:nth-child(2) {
+    grid-area: title;
+  }
+
+  .teacherWritingPreview__status {
+    grid-area: status;
+  }
+
+  .teacherWritingPreview__workspace {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+  }
+
+  .teacherWritingPreview__source {
+    max-height: 40rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--teacher-border);
+  }
+
+  .teacherWritingPreview__answer textarea {
+    min-height: 26rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .teacherWritingPreview__source,
+  .teacherWritingPreview__answer {
+    padding: 1.1rem;
+  }
+}
