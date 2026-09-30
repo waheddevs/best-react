@@ -42,9 +42,8 @@ Student, Teacher, and operational Admin milestones:
   beyond the explicitly approved auth-shell exception below
 - Payment-provider checkout, card collection, bank transfer initiation, payroll
   execution, or refunds
-- Certificates; AI grading remains deferred until the section 2F gate
-- Teacher/Student messaging; the scoped AI assistant remains deferred until
-  the section 2F gate
+- Certificates, AI grading, AI generation, and AI assistants are out of scope
+- Teacher/Student messaging remains deferred
 - Fake integrations or buttons that pretend to perform server-side work
 
 Public exam pages may explain exam formats, rules, dates, and registration steps,
@@ -78,10 +77,10 @@ the public website.
   test using fictional/reserved test data and database persistence assertions.
 
 Student, Teacher, and operational Admin frontend/backend work is approved only
-within sections 2C, 2D, and 20A-20D until the deferred section 2F gate passes.
+within sections 2C, 2D, and 20A-20D.
 Stop and ask before adding a Parent portal, Super Admin, credentials
 registration/password reset, payment-provider processing, certificates, AI
-grading or assistant chat before that gate, unrelated chat, or unrelated backend
+grading or generation, AI assistant chat, unrelated chat, or unrelated backend
 capability.
 
 The localized Student Library at `/[locale]/student/library` remains
@@ -305,31 +304,12 @@ both this frontend repository and the sibling `best-server` backend repository.
   `best-server` or create a combined monorepo.
 - Keep all four product surfaces visually distinct as defined in section 11A.
 
-## 2F. Approved deferred Gemini integration plan
+## 2F. AI integrations cancelled
 
-The user chose Gemini as the initial free AI candidate and explicitly directed
-that integration begin only after the Teacher and Student dashboards are fully
-finished. `docs/GEMINI_INTEGRATION_PLAN.md` is the reviewable implementation
-plan and start gate. Planning is approved now; no AI code, credentials, route,
-worker, migration, or provider call belongs in the active dashboard milestone.
-
-After the documented gate passes, the approved AI scope is Teacher-owned test
-draft generation and quality review, source-backed educational research,
-Student explanations of entitled lessons and released results, and a bounded
-educational assistant in those role workspaces. Original Writing/Speaking AI
-evaluation suggestions are a later phase that requires the plan's sensitive-
-data and teacher-review gate. Existing deterministic scoring remains
-authoritative. AI cannot publish tests, set official grades, reveal active test
-answers, access unrelated records, or act on business data autonomously.
-
-The assistant exception permits only Student/Teacher interaction with Gemini
-for the educational tasks above; it does not restore Teacher/Student messaging
-or the chat workflow removed from the mobile reference. Free-tier processing
-uses fictional/reserved or demonstrably non-sensitive content only. Real learner
-data requires a documented provider/data-processing decision before use. Keep
-Gemini access in `best-server`, behind backend authorization and the existing
-GraphQL boundary. Update the sibling backend's instructions when implementation
-starts, preserving its data-design and migration rules.
+The project owner cancelled provider-backed generation on 2026-09-28. Keep test
+authoring, import, validation, publication, delivery, scoring, and review fully
+deterministic. Do not add AI provider SDKs, credentials, generation operations,
+assistant UI, or AI evaluation without a new explicit scope change.
 
 ## 3. Required technical stack
 
@@ -2784,10 +2764,9 @@ For the active Student/Admin delivery milestone, explicit non-goals remain
 Parent/Guardian portals, Super Admin, Teacher/Student messaging, lead-sales CRM
 beyond the defined request queue, HR/payroll execution, payment-provider
 checkout, production CMS outside the defined Course/Event/Library operations,
-certificates, AI grading, AI assistant chat, native mobile applications, and
-unrelated integrations. The scoped Gemini exception is already approved as a
-deferred milestone in section 2F; all other additions need a new user-approved
-scope change recorded in this file.
+certificates, AI grading or generation, AI assistant chat, native mobile
+applications, and unrelated integrations. Any addition needs a new
+user-approved scope change recorded in this file.
 
 The current frontend does not need to be visually complete before Student/Admin
 work begins. Preserve the working baseline and complete UI and backend contracts
@@ -4123,9 +4102,8 @@ The milestone is complete only when:
   treated as production-verified facts.
 - The complete approved Student and operational Admin inventories in sections
   20B-20D are implemented with matching backend contracts; Parent, Super Admin,
-  chat, payment-provider execution, certificates, and AI grading remain absent
-  from this dashboard milestone. The deferred section 2F Gemini work begins
-  only after its Teacher and Student start gate passes.
+  chat, payment-provider execution, certificates, and all AI functionality
+  remain absent from this dashboard milestone.
 - Teacher remains within section 20A and now uses the approved credentials plus
   email-code gate; no client-selected role is trusted as authorization.
 - Every in-scope screen, section, navigation item, state, and visible function
