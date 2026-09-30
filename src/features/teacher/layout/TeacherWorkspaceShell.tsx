@@ -29,6 +29,7 @@ type TeacherWorkspaceShellProps = {
 const topAlignedPaths = [
   "/teacher",
   "/teacher/groups",
+  "/teacher/library",
   "/teacher/reception",
   "/teacher/tasks",
   "/teacher/finance",
@@ -50,9 +51,11 @@ export function TeacherWorkspaceShell({
   const normalizedPathname = pathname.replace(/\/+$/, "");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isDashboard = normalizedPathname === `/${locale}/teacher`;
+  const isPracticeDetail = normalizedPathname.startsWith(`/${locale}/teacher/practices/`);
   const hasTopAlignedHeader =
     topAlignedPaths.some((path) => normalizedPathname === `/${locale}${path}`) ||
-    normalizedPathname.startsWith(`/${locale}/teacher/groups/`);
+    normalizedPathname.startsWith(`/${locale}/teacher/groups/`) ||
+    isPracticeDetail;
   const pageTitle = useMemo(() => {
     const match = [...teacherNavigationItems]
       .sort((first, second) => second.href.length - first.href.length)
@@ -91,6 +94,7 @@ export function TeacherWorkspaceShell({
         <div
           className="teacherShell__workspace"
           data-dashboard={isDashboard}
+          data-practice-detail={isPracticeDetail}
           data-top-aligned={hasTopAlignedHeader}
         >
           <TeacherTopbar

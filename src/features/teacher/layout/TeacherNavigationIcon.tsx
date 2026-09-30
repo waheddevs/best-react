@@ -2,6 +2,7 @@ import AccountBalanceWalletRounded from "@mui/icons-material/AccountBalanceWalle
 import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
 import DashboardRounded from "@mui/icons-material/DashboardRounded";
 import GroupsRounded from "@mui/icons-material/GroupsRounded";
+import LocalLibraryRounded from "@mui/icons-material/LocalLibraryRounded";
 import ManageAccountsRounded from "@mui/icons-material/ManageAccountsRounded";
 import MoveUpRounded from "@mui/icons-material/MoveUpRounded";
 import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
@@ -17,6 +18,7 @@ export function TeacherNavigationIcon({ navigationKey }: TeacherNavigationIconPr
     dashboard: DashboardRounded,
     finance: AccountBalanceWalletRounded,
     groups: GroupsRounded,
+    library: LocalLibraryRounded,
     profile: ManageAccountsRounded,
     reception: CalendarMonthRounded,
     tasks: TaskAltRounded,
