@@ -1,0 +1,254 @@
+fragment TeacherTestAuthoringVersionFields on TeacherTestVersion {
+  id
+  testId
+  version
+  status
+  primaryLanguage
+  availabilityStartsAt
+  availabilityEndsAt
+  durationMinutes
+  attemptLimit
+  passingPercentage
+  scoringRuleVersion
+  publishedAt
+  translations {
+    language
+    title
+    description
+  }
+  sections {
+    id
+    position
+    mediaObjectId
+    suggestedMinutes
+    minimumWords
+    preparationSeconds
+    responseSeconds
+    translations {
+      language
+      title
+      instructions
+      content
+    }
+    blocks {
+      id
+      position
+      kind
+      mediaObjectId
+      mediaWidthPixels
+      mediaHeightPixels
+      mediaDurationSeconds
+      headingLevel
+      tableHeaderRows {
+        cells
+      }
+      tableRows {
+        cells
+      }
+      questionIds
+      translations {
+        language
+        text
+        altText
+        caption
+      }
+    }
+  }
+  questions {
+    id
+    position
+    sectionId
+    sectionPosition
+    kind
+    answerLimit
+    maxSelections
+    acceptedAnswers
+    translations {
+      language
+      prompt
+      rationale
+    }
+    options {
+      id
+      position
+      isCorrect
+      translations {
+        language
+        text
+      }
+    }
+  }
+}
+
+query TeacherTestAuthoringDraft($testVersionId: ID!) {
+  teacherTestVersion(testVersionId: $testVersionId) {
+    ...TeacherTestAuthoringVersionFields
+  }
+}
+
+query TeacherTestAuthoringCategories {
+  teacherTestCategories {
+    id
+    name
+  }
+}
+
+query TeacherValidateTestDraft($testVersionId: ID!) {
+  validateTeacherTestDraft(testVersionId: $testVersionId) {
+    isPublishable
+    issues {
+      code
+      severity
+      path
+      message
+    }
+  }
+}
+
+mutation TeacherCreateTestSection($input: CreateTestSectionInput!) {
+  createTestSection(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherUpdateTestSection($input: UpdateTestSectionInput!) {
+  updateTestSection(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherReorderTestSections($input: ReorderTestSectionsInput!) {
+  reorderTestSections(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherDeleteTestSection($input: TestVersionIdInput!, $testSectionId: ID!) {
+  deleteTestDraftSection(input: $input, testSectionId: $testSectionId) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherCreateTestSectionBlock($input: CreateTestSectionBlockInput!) {
+  createTestSectionBlock(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherUpdateTestSectionBlock($input: UpdateTestSectionBlockInput!) {
+  updateTestSectionBlock(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherReorderTestSectionBlocks($input: ReorderTestSectionBlocksInput!) {
+  reorderTestSectionBlocks(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherDeleteTestSectionBlock($testSectionId: ID!, $testSectionBlockId: ID!) {
+  deleteTestSectionBlock(testSectionId: $testSectionId, testSectionBlockId: $testSectionBlockId) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherCreateTestQuestion($input: CreateTestQuestionInput!) {
+  createTestQuestion(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherUpdateTestQuestion($input: UpdateTestQuestionInput!) {
+  updateTestQuestion(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherReorderTestQuestions($input: ReorderTestQuestionsInput!) {
+  reorderTestQuestions(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherDeleteTestQuestion($input: TestVersionIdInput!, $questionId: ID!) {
+  deleteTestDraftQuestion(input: $input, questionId: $questionId) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherUpdateTestDraftSettings($input: UpdateTestDraftSettingsInput!) {
+  updateTestDraftSettings(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherReplaceTestDraftTranslations($input: ReplaceTestDraftTranslationsInput!) {
+  replaceTestDraftTranslations(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherGenerateListeningAudio($input: GenerateListeningAudioInput!) {
+  generateListeningAudio(input: $input) {
+    audio {
+      mediaObjectId
+      url
+      expiresAt
+      durationSeconds
+    }
+  }
+}
+
+mutation TeacherListeningAudioDownload($input: MediaObjectReferenceInput!) {
+  createMediaDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+      expiresAt
+    }
+  }
+}
+
+mutation TeacherPublishTestVersion($input: TestVersionIdInput!) {
+  publishTestVersion(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
+
+mutation TeacherCreateNextTestVersion($input: CreateNextTestVersionInput!) {
+  createNextTestVersion(input: $input) {
+    testVersion {
+      ...TeacherTestAuthoringVersionFields
+    }
+  }
+}
