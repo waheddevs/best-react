@@ -1,0 +1,18 @@
+query TeacherFinanceSnapshots($year: Int!) {
+  teacherFinanceSnapshots(year: $year) {
+    year
+    snapshots {
+      year
+      month
+      incomeUzs
+      expectedAmountUzs
+      debtUzs
+      expensesUzs
+      penaltiesUzs
+      activeLearners
+      activeGroups
+      attendanceRate
+      paymentRate
+    }
+  }
+}

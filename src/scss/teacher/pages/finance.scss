@@ -2,8 +2,8 @@
 
 .teacherFinance__month {
   &Tabs {
-    margin-bottom: 16px;
     display: flex;
+    flex: 1;
     max-width: 100%;
     gap: 7px;
     overflow-x: auto;
@@ -30,6 +30,97 @@
   }
 }
 
+.teacherFinance__filters {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.teacherFinance__yearSelect {
+  position: relative;
+  display: grid;
+  min-width: 124px;
+  gap: 4px;
+  color: var(--teacher-muted);
+  font-size: 10px;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  & button {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border: 1px solid var(--teacher-border);
+    border-radius: 12px;
+    padding: 0 12px 0 14px;
+    background: var(--teacher-surface);
+    color: var(--teacher-heading);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 760;
+    letter-spacing: normal;
+  }
+
+  & button:hover,
+  & button[aria-expanded="true"] {
+    border-color: var(--teacher-primary);
+    box-shadow: 0 0 0 3px rgb(39 101 240 / 10%);
+  }
+
+  & button:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+  }
+
+  & svg {
+    font-size: 18px;
+    transition: transform 160ms ease;
+  }
+
+  & button[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+}
+
+.teacherFinance__yearMenu {
+  min-width: 124px;
+  margin-top: 6px;
+  overflow: hidden;
+  border: 1px solid var(--teacher-border);
+  border-radius: 14px !important;
+  background: var(--teacher-surface) !important;
+  box-shadow: 0 18px 42px rgb(15 42 76 / 16%) !important;
+
+  & .MuiMenu-list {
+    padding: 6px;
+  }
+
+  & .MuiMenuItem-root {
+    min-height: 38px;
+    border-radius: 9px;
+    padding-inline: 12px;
+    color: var(--teacher-heading);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 680;
+  }
+
+  & .MuiMenuItem-root:hover {
+    background: var(--teacher-surface-subtle);
+  }
+
+  & .MuiMenuItem-root.Mui-selected,
+  & .MuiMenuItem-root.Mui-selected:hover {
+    background: var(--teacher-primary);
+    color: #fff;
+  }
+}
+
 .teacherFinance__summary {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
@@ -47,13 +138,16 @@
 
 .teacherFinance__hero {
   &Card {
-    padding: 26px;
-    background: linear-gradient(135deg, var(--teacher-primary), #0e7490);
-    color: #fff;
+    display: flex;
+    min-height: 246px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, var(--teacher-surface) 20%, #eef8ff 100%);
+    color: var(--teacher-heading);
   }
 }
 
-.teacherFinance__heroCard > span,
 .teacherFinance__rateCard > span {
   font-size: 12px;
   font-weight: 720;
@@ -61,44 +155,75 @@
 }
 
 .teacherFinance__hero {
+  &Header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--teacher-muted);
+    font-size: 12px;
+    font-weight: 760;
+  }
+  &Header > b {
+    margin-left: auto;
+    border-radius: 999px;
+    padding: 7px 10px;
+    background: #e6f7ef;
+    color: var(--teacher-success);
+    font-size: 11px;
+  }
+  &Icon {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 11px;
+    background: #e4efff;
+    color: var(--teacher-primary);
+  }
+  &Icon svg {
+    font-size: 20px;
+  }
   &Card > strong {
-    margin-top: 7px;
+    margin-top: 14px;
     display: block;
     font-size: clamp(24px, 4vw, 34px);
   }
-  &Card > div:not(.teacherFinance__bar) {
-    margin-top: 24px;
+  &Details {
+    margin-top: 14px;
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    gap: 24px;
+  }
+  &Details > span {
+    display: grid;
+    gap: 4px;
+    color: var(--teacher-muted);
+    font-size: 11px;
+  }
+  &Details b {
+    color: var(--teacher-heading);
+    font-size: 13px;
   }
 }
 
 .teacherFinance__bar {
   margin-top: 9px;
-  height: 8px;
+  height: 7px;
   overflow: hidden;
   border-radius: 99px;
-  background: rgb(255 255 255 / 24%);
+  background: #dceaf0;
   & span {
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: var(--teacher-warning);
-  }
-}
-
-.teacherFinance__hero {
-  &Card small {
-    margin-top: 7px;
-    display: block;
-    text-align: right;
+    background: linear-gradient(90deg, var(--teacher-brand), var(--teacher-primary));
   }
 }
 
 .teacherFinance__rate {
   &Card {
     display: grid;
+    min-height: 246px;
     place-items: center;
     padding: 24px;
     text-align: center;
@@ -111,6 +236,19 @@
     font-size: 29px;
     color: var(--teacher-heading);
   }
+}
+
+.teacherFinance__empty {
+  display: grid;
+  min-height: 260px;
+  place-items: center;
+  border: 1px solid var(--teacher-border);
+  border-radius: 20px;
+  background: var(--teacher-surface);
+  color: var(--teacher-muted);
+  box-shadow: var(--teacher-shadow);
+  font-weight: 680;
+  text-align: center;
 }
 
 .teacherFinance__ring {
@@ -207,6 +345,15 @@
 }
 
 @media (width <= 650px) {
+  .teacherFinance__filters {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .teacherFinance__yearSelect {
+    align-self: flex-end;
+  }
+
   .teacherFinance__summary {
     grid-template-columns: 1fr;
   }
@@ -225,5 +372,10 @@
 
   .teacherFinance__metrics {
     grid-template-columns: 1fr;
+  }
+
+  .teacherFinance__heroDetails {
+    flex-direction: column;
+    gap: 10px;
   }
 }
