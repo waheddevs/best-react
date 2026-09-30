@@ -8,7 +8,6 @@ import MeetingRoomRounded from "@mui/icons-material/MeetingRoomRounded";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useState, type SyntheticEvent } from "react";
 
@@ -41,7 +40,6 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
   const [selectedCategory, setSelectedCategory] = useState<GroupCategoryFilter>("all");
   const [deletingGroupId, setDeletingGroupId] = useState<string | null>(null);
   const [hiddenGroupIds, setHiddenGroupIds] = useState<Set<string>>(() => new Set());
-  const reduceMotion = useReducedMotion();
   const confirm = useConfirmDialog();
   const notifications = useNotifications();
   const router = useRouter();
@@ -142,18 +140,12 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
         </Tabs>
         <CreateGroupDialog connected={connected} copy={copy} />
       </div>
-      <AnimatePresence initial={false} mode="wait">
-        <motion.section
-          aria-labelledby={`teacher-groups-tab-${selectedCategory}`}
-          className="teacherGroups__catalog"
-          id="teacher-groups-panel"
-          key={selectedCategory}
-          role="tabpanel"
-          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -6 }}
-          transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: "easeOut" }}
-        >
+      <section
+        aria-labelledby={`teacher-groups-tab-${selectedCategory}`}
+        className="teacherGroups__catalog"
+        id="teacher-groups-panel"
+        role="tabpanel"
+      >
           {visibleGroups.map((group) => (
             <article className="teacherGroups__catalogCard" key={group.id}>
               <div className="teacherGroups__catalogCardHeader">
@@ -227,8 +219,7 @@ export function GroupsCatalog({ connected, copy, groups, locale }: GroupsCatalog
               {selectedCategory === "all" ? copy.groups.noGroups : copy.groups.noGroupsInCategory}
             </p>
           ) : null}
-        </motion.section>
-      </AnimatePresence>
+      </section>
     </main>
   );
 }
