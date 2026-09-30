@@ -22,13 +22,16 @@ export type StudentTestPaper = {
 };
 
 export type StudentTestsCopy = {
+  academicModuleLabel: string;
   allSkillsLabel: string;
   availableLabel: string;
   continueLabel: string;
   emptyLabel: string;
   eyebrow: string;
   minutesLabel: string;
+  moduleLabel: string;
   questionsLabel: string;
+  reviewLabel: string;
   resultLabel: string;
   sourceLabel: string;
   startLabel: string;

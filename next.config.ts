@@ -6,6 +6,9 @@ function getGraphqlUrl(baseUrl: string) {
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  experimental: {
+    proxyTimeout: 2_700_000,
+  },
   images: {
     formats: ["image/webp"],
     qualities: [75, 95],

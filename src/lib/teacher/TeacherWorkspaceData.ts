@@ -5,6 +5,7 @@ import {
   AdminUsersDocument,
   TeacherAvatarIntentDocument,
   TeacherDashboardMetricsDocument,
+  TeacherFinanceSnapshotsDocument,
   TeacherHeaderDocument,
   TeacherNotificationUpdatesDocument,
   TeacherProfileDocument,
@@ -12,6 +13,7 @@ import {
   type AdminUsersQuery,
   type TeacherHeaderQuery,
   type TeacherDashboardMetricsQuery,
+  type TeacherFinanceSnapshotsQuery,
   type TeacherNotificationUpdatesQuery,
   type TeacherProfileQuery,
   type TeacherTasksQuery,
@@ -25,6 +27,7 @@ import type {
   TeacherTopbarProfile,
 } from "@/types/teacher/TeacherNotifications";
 import type { TeacherProfileRecord } from "@/types/teacher/TeacherProfile";
+import type { TeacherFinanceSnapshot } from "@/types/teacher/Teacher";
 
 async function tokenFor(role: "TEACHER" | "ADMIN"): Promise<string> {
   const session = await auth();
@@ -44,6 +47,52 @@ export async function loadTeacherDashboardMetrics(): Promise<
     { accessToken, cache: "no-store" },
   );
   return data.teacherDashboard;
+}
+
+export async function loadTeacherFinanceSnapshots(year: number): Promise<TeacherFinanceSnapshot[]> {
+  const accessToken = await tokenFor("TEACHER");
+  const data = await executeApolloQuery<TeacherFinanceSnapshotsQuery, { year: number }>(
+    TeacherFinanceSnapshotsDocument,
+    { year },
+    { accessToken, cache: "no-store" },
+  );
+  return data.teacherFinanceSnapshots.snapshots.map((snapshot) => {
+    const date = new Date(Date.UTC(snapshot.year, snapshot.month - 1, 1));
+    const expectedAmount = Number(snapshot.expectedAmountUzs);
+    const income = Number(snapshot.incomeUzs);
+    return {
+      attendanceRate: snapshot.attendanceRate,
+      expectedAmount,
+      income,
+      label: {
+        en: new Intl.DateTimeFormat("en", { month: "long" }).format(date),
+        ru: new Intl.DateTimeFormat("ru", { month: "long" }).format(date),
+        uz: new Intl.DateTimeFormat("uz", { month: "long" }).format(date),
+      },
+      metrics: [
+        { id: "paid", tone: "success", value: income, valueType: "currency" },
+        { id: "rate", tone: "success", value: snapshot.paymentRate, valueType: "percentage" },
+        { id: "expected", tone: "warning", value: expectedAmount, valueType: "currency" },
+        { id: "debt", tone: "danger", value: Number(snapshot.debtUzs), valueType: "currency" },
+        { id: "learners", tone: "info", value: snapshot.activeLearners, valueType: "count" },
+        { id: "groups", tone: "neutral", value: snapshot.activeGroups, valueType: "count" },
+        {
+          id: "salary",
+          tone: "warning",
+          value: Number(snapshot.expensesUzs),
+          valueType: "currency",
+        },
+        {
+          id: "penalty",
+          tone: "danger",
+          value: Number(snapshot.penaltiesUzs),
+          valueType: "currency",
+        },
+      ],
+      month: `${String(snapshot.year)}-${String(snapshot.month).padStart(2, "0")}`,
+      paymentRate: snapshot.paymentRate,
+    } satisfies TeacherFinanceSnapshot;
+  });
 }
 
 async function avatarUrlFor(

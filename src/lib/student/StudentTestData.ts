@@ -12,6 +12,8 @@ import {
   StudentReleasedAttemptResultDocument,
   type StudentReleasedAttemptResultQuery,
   StudentResultsDocument,
+  StudentSpeakingResultDocument,
+  type StudentSpeakingResultQuery,
   type StudentResultsQuery,
   StudentAttemptFieldsFragmentDoc,
   type StudentAttemptFieldsFragment,
@@ -38,11 +40,7 @@ export async function getStudentTestPapers(locale: string): Promise<StudentTestP
     const data: StudentTestPapersQuery = await executeApolloQuery<
       StudentTestPapersQuery,
       { after?: string | null; first: number }
-    >(
-      StudentTestPapersDocument,
-      { after, first: 20 },
-      { accessToken, cache: "no-store" },
-    );
+    >(StudentTestPapersDocument, { after, first: 20 }, { accessToken, cache: "no-store" });
     papers.push(...data.studentTestPapers.edges.map(({ node }) => mapPaper(node)));
     after = data.studentTestPapers.pageInfo.hasNextPage
       ? data.studentTestPapers.pageInfo.endCursor
@@ -83,15 +81,22 @@ export async function getStudentReleasedAttemptResult(
   attemptId: string,
 ): Promise<StudentReleasedAttemptResultQuery["studentReleasedAttemptResult"]> {
   const accessToken = await studentToken(locale);
-  const data = await executeApolloQuery<
-    StudentReleasedAttemptResultQuery,
-    { attemptId: string }
-  >(
+  const data = await executeApolloQuery<StudentReleasedAttemptResultQuery, { attemptId: string }>(
     StudentReleasedAttemptResultDocument,
     { attemptId },
     { accessToken, cache: "no-store" },
   );
   return data.studentReleasedAttemptResult;
+}
+
+export async function getStudentSpeakingResult(locale: string, attemptId: string) {
+  const accessToken = await studentToken(locale);
+  const data = await executeApolloQuery<StudentSpeakingResultQuery, { attemptId: string }>(
+    StudentSpeakingResultDocument,
+    { attemptId },
+    { accessToken, cache: "no-store" },
+  );
+  return data.studentSpeakingResult;
 }
 
 export async function getStudentResults(
@@ -104,11 +109,7 @@ export async function getStudentResults(
     const data: StudentResultsQuery = await executeApolloQuery<
       StudentResultsQuery,
       { after?: string | null; first: number }
-    >(
-      StudentResultsDocument,
-      { after, first: 20 },
-      { accessToken, cache: "no-store" },
-    );
+    >(StudentResultsDocument, { after, first: 20 }, { accessToken, cache: "no-store" });
     results.push(...data.studentResults.edges.map(({ node }) => node));
     after = data.studentResults.pageInfo.hasNextPage
       ? data.studentResults.pageInfo.endCursor

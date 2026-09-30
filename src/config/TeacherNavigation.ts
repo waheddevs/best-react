@@ -10,6 +10,7 @@ export type TeacherNavigationItem = {
 export const teacherNavigationItems: TeacherNavigationItem[] = [
   { href: "/teacher", key: "dashboard", mobilePrimary: true, sidebarVisible: true },
   { href: "/teacher/groups", key: "groups", mobilePrimary: true, sidebarVisible: true },
+  { href: "/teacher/library", key: "library", mobilePrimary: false, sidebarVisible: true },
   { href: "/teacher/reception", key: "reception", mobilePrimary: false, sidebarVisible: true },
   { href: "/teacher/tasks", key: "tasks", mobilePrimary: false, sidebarVisible: true },
   { href: "/teacher/finance", key: "finance", mobilePrimary: true, sidebarVisible: true },

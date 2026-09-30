@@ -12,15 +12,15 @@ import type { StudentReleasedAttemptResultQuery } from "@/gql/graphql";
 
 type Result = StudentReleasedAttemptResultQuery["studentReleasedAttemptResult"];
 
-type ConnectedStudentTestResultProps = {
+type StudentTestResultProps = {
   locale: Locale;
   result: Result;
 };
 
-export function ConnectedStudentTestResult({
+export function StudentTestResult({
   locale,
   result,
-}: ConnectedStudentTestResultProps) {
+}: StudentTestResultProps) {
   const copy = getStudentTestResultsCopy(locale);
   const [selectedQuestionId, setSelectedQuestionId] = useState(
     result.answers[0]?.questionId ?? null,

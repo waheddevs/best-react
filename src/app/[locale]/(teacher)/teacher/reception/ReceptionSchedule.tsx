@@ -28,29 +28,35 @@ export function ReceptionSchedule({ copy, groups, initialNow }: ReceptionSchedul
           <table className="teacherReception__table">
             <thead>
               <tr>
+                <th scope="col">{copy.reception.group}</th>
                 <th scope="col">{copy.reception.time}</th>
+                <th scope="col">{copy.reception.days}</th>
                 <th scope="col">{copy.reception.room}</th>
-                <th scope="col">{copy.groups.learners}</th>
+                <th scope="col">{copy.reception.type}</th>
+                <th scope="col">{copy.reception.students}</th>
               </tr>
             </thead>
             <tbody>
               {schedule.map((entry) => (
                 <tr key={entry.id}>
-                  <th scope="row">
+                  <th className="teacherReception__groupName" scope="row">
+                    {entry.groupName}
+                  </th>
+                  <td>
                     <time>
                       {entry.startsAt}–{entry.endsAt}
                     </time>
-                  </th>
-                  <td>
-                    <strong>{entry.groupName}</strong>
-                    <small>
-                      {copy.reception.room} {entry.room} ·{" "}
-                      {entry.lessonDays.map((day) => copy.groups.weekdays[day - 1]).join(" / ")}
-                    </small>
                   </td>
                   <td>
-                    {entry.learnerCount} {copy.reception.learnerCount}
+                    {entry.lessonDays.map((day) => copy.groups.weekdays[day - 1]).join(" / ")}
                   </td>
+                  <td>{entry.room}</td>
+                  <td>
+                    <span className="teacherReception__typeBadge">
+                      {entry.category ? copy.groups.categories[entry.category] : "—"}
+                    </span>
+                  </td>
+                  <td>{entry.learnerCount}</td>
                 </tr>
               ))}
             </tbody>

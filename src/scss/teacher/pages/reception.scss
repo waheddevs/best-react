@@ -14,7 +14,7 @@
     outline-offset: 3px;
   }
   width: 100%;
-  min-width: 560px;
+  min-width: 820px;
   border-collapse: collapse;
   & th,
   & td {
@@ -38,24 +38,28 @@
   & tbody th {
     font-size: 0.875rem;
     line-height: calc(1.25 / 0.875);
-    color: var(--teacher-primary);
+    color: var(--teacher-heading);
   }
   & tbody td {
     font-size: 0.75rem;
     line-height: calc(1 / 0.75);
     color: var(--teacher-text);
   }
-  & td strong,
-  & td small {
-    display: block;
-  }
-  & td strong {
-    font-size: 13px;
-    color: var(--teacher-heading);
-  }
-  & td small {
-    margin-top: 3px;
-    font-size: 10px;
-    color: var(--teacher-muted);
-  }
+}
+
+.teacherReception__groupName {
+  min-width: 190px;
+}
+
+.teacherReception__typeBadge {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: var(--teacher-surface-subtle);
+  color: var(--teacher-primary);
+  font-size: 11px;
+  font-weight: 760;
+  white-space: nowrap;
 }

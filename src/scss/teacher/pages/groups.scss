@@ -442,8 +442,9 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 
 .teacherGroups__catalog {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 27rem));
+  justify-content: center;
+  gap: 1.5rem;
   &Card {
     display: flex;
     min-height: 18.5rem;
@@ -451,7 +452,13 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
     padding: 1.25rem;
     border: 1px solid var(--teacher-border);
     border-radius: 1.25rem;
-    background: var(--teacher-surface);
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--teacher-brand) 12%, transparent),
+        transparent 38%
+      ),
+      var(--teacher-surface);
     box-shadow: 0 8px 24px rgb(16 42 67 / 4%);
     transition:
       transform 180ms ease,
@@ -601,18 +608,21 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
   }
   &Link {
     display: flex;
-    min-height: 2.75rem;
+    min-height: 2.35rem;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    padding-inline: 0.9rem;
+    padding-inline: 0.85rem;
     color: var(--teacher-primary);
-    border: 0;
-    border-radius: 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--teacher-primary) 42%, var(--teacher-border));
+    border-radius: 0.65rem;
     background: transparent;
     font-size: 0.78rem;
     font-weight: 800;
-    transition: background 160ms ease;
+    transition:
+      color 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease;
   }
   &Link svg {
     font-size: 1.1rem;
@@ -621,31 +631,35 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 
 .teacherGroups__card {
   &Actions {
-    margin-top: 1rem;
     display: grid;
+    width: min(100%, 17rem);
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
+    gap: 0.85rem;
+    margin: 1rem auto 0;
   }
 }
 
 .teacherGroups__delete {
   &Button {
     display: inline-flex;
-    min-height: 2.75rem;
+    min-height: 2.35rem;
     min-width: 0px;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    padding: 0 0.5rem;
+    padding: 0 0.85rem;
     color: var(--teacher-danger);
-    border: 0;
-    border-radius: 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--teacher-danger) 42%, var(--teacher-border));
+    border-radius: 0.65rem;
     background: transparent;
     cursor: pointer;
     font: inherit;
     font-size: 0.78rem;
     font-weight: 800;
-    transition: background 160ms ease;
+    transition:
+      color 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease;
   }
   &Button svg {
     font-size: 1.05rem;
@@ -654,18 +668,17 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 
 .teacherGroups__catalog {
   &Link:hover {
-    color: var(--teacher-primary);
-    background: var(--teacher-surface-subtle);
+    color: #ffffff;
+    border-color: var(--teacher-primary);
+    background: var(--teacher-primary);
   }
 }
 
 .teacherGroups__delete {
   &Button:hover {
-    color: var(--teacher-danger);
+    color: #ffffff;
+    border-color: var(--teacher-danger);
     background: var(--teacher-danger);
-    @supports (color: color-mix(in lab, red, red)) {
-      background: color-mix(in srgb, var(--teacher-danger) 7%, var(--teacher-surface));
-    }
   }
 }
 
@@ -1837,157 +1850,304 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
   }
 }
 
-.teacherGroups__test {
-  &Grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-  &Card {
-    min-height: 13rem;
-  }
-  &Topline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  &Card > small {
-    margin-top: 0.85rem;
-    font-size: 0.65rem;
-    font-weight: 780;
-    color: var(--teacher-primary);
-  }
-  &Card h3 {
-    margin-top: 0.2rem;
-  }
-  &Meta {
-    margin-top: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem 0.85rem;
-    padding-top: 1rem;
-    font-size: 0.66rem;
-    color: var(--teacher-muted);
-  }
-}
-
-.teacherGroups__academicPapers {
+.teacherGroups__practiceGrid {
   display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
 }
 
-.teacherGroups__academicPaper {
+.teacherGroups__practiceCard {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 19.5rem;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--teacher-border);
-  border-radius: 1.1rem;
-  background: var(--teacher-surface);
-  box-shadow: 0 10px 28px rgb(16 42 67 / 5%);
+  border-radius: 1.45rem;
+  padding: 1.2rem 1.3rem;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--teacher-brand) 12%, transparent),
+      transparent 38%
+    ),
+    var(--teacher-surface);
+  box-shadow: 0 12px 30px rgb(16 42 67 / 7%);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.teacherGroups__academicPaperHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.15rem;
-  background: var(--teacher-surface-subtle);
+.teacherGroups__practiceCardLink {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+}
 
-  & div > span {
+.teacherGroups__practiceIdentity {
+  display: grid;
+  min-height: 6.75rem;
+  align-content: start;
+  justify-items: center;
+  padding: 0.3rem 0.5rem 0.9rem;
+  text-align: center;
+
+  & h3 {
+    margin: 0;
+    color: var(--teacher-muted);
+    font-size: 0.86rem;
+    font-weight: 760;
+    letter-spacing: 0.01em;
+  }
+
+  & strong {
+    display: block;
+    max-width: 100%;
+    margin-top: 0.25rem;
+    color: var(--teacher-heading);
+    font-size: clamp(3.25rem, 4.35vw, 4.65rem);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.065em;
+    line-height: 0.95;
+    white-space: nowrap;
+  }
+}
+
+.teacherGroups__practiceMeta {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  flex: 1;
+  align-content: start;
+  gap: 0;
+  margin: 0;
+  padding: 0.35rem 0.5rem;
+  border-top: 1px solid var(--teacher-border);
+  pointer-events: none;
+
+  & > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.35rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--teacher-border) 70%, transparent);
+  }
+
+  & > div:last-child {
+    border-bottom: 0;
+  }
+
+  & dt,
+  & dd {
+    margin: 0;
+  }
+
+  & dt {
     color: var(--teacher-primary);
-    font-size: 0.65rem;
-    font-weight: 850;
+    font-size: 0.58rem;
+    font-weight: 840;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  & h2 {
-    margin: 0.3rem 0 0;
+  & dd {
     color: var(--teacher-heading);
-    font-size: 1.15rem;
-  }
-
-  & p {
-    max-width: 52rem;
-    margin: 0.45rem 0 0;
-    color: var(--teacher-muted);
-    font-size: 0.7rem;
-    line-height: 1.5;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 740;
+    text-align: right;
   }
 }
 
-.teacherGroups__academicSkills {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  padding: 1rem;
-}
-
-.teacherGroups__academicSkill {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+.teacherGroups__practiceMetaStatus {
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
-  border: 1px solid var(--teacher-border);
-  border-radius: 0.9rem;
-  padding: 0.85rem;
-
-  & h3,
-  & p {
-    margin: 0;
-  }
-
-  & div > span {
-    color: var(--teacher-primary);
-    font-size: 0.58rem;
-    font-weight: 850;
-    letter-spacing: 0.08em;
-  }
-
-  & h3 {
-    margin-top: 0.15rem;
-    color: var(--teacher-heading);
-    font-size: 0.82rem;
-  }
-
-  & p {
-    margin-top: 0.3rem;
-    color: var(--teacher-muted);
-    font-size: 0.65rem;
-    line-height: 1.45;
-  }
-
-  & small {
-    display: block;
-    margin-top: 0.45rem;
-    color: var(--teacher-muted);
-    font-size: 0.62rem;
-    font-weight: 700;
-  }
+  justify-content: flex-end;
+  gap: 0.4rem;
 }
 
-.teacherGroups__academicSkillIcon {
-  display: grid;
-  width: 2.65rem;
-  height: 2.65rem;
+.teacherGroups__practiceReadyIndicator {
+  display: inline-grid;
+  width: 1rem;
+  height: 1rem;
   place-items: center;
-  border-radius: 0.75rem;
-  background: color-mix(in srgb, var(--teacher-primary) 10%, transparent);
-  color: var(--teacher-primary);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--teacher-primary) 14%, transparent);
+
+  &[data-complete="true"] {
+    color: #147a50;
+    background: #dff7eb;
+  }
 
   & svg {
-    font-size: 1.25rem;
+    font-size: 0.72rem;
   }
 }
 
-@media (max-width: 760px) {
-  .teacherGroups__academicSkills {
+.teacherGroups__practiceStudentProgress {
+  display: inline-block;
+  width: 2.35rem;
+  height: 0.28rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teacher-primary) 13%, var(--teacher-surface));
+
+  & span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--teacher-brand), var(--teacher-primary));
+  }
+}
+
+.teacherGroups__practiceFooter {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 17rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.75rem auto 0;
+  padding-top: 0.55rem;
+
+  & .teacherGroups__deleteButton {
+    min-height: 2.35rem;
+    padding-inline: 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--teacher-danger) 42%, var(--teacher-border));
+    border-radius: 0.65rem;
+  }
+
+  & .teacherGroups__deleteButton:hover {
+    color: #ffffff;
+    border-color: var(--teacher-danger);
+    background: var(--teacher-danger);
+  }
+
+  & .teacherGroups__catalogLink {
+    min-height: 2.35rem;
+    padding-inline: 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--teacher-primary) 42%, var(--teacher-border));
+    border-radius: 0.65rem;
+  }
+
+  & .teacherGroups__catalogLink:hover {
+    color: #ffffff;
+    border-color: var(--teacher-primary);
+    background: var(--teacher-primary);
+  }
+}
+
+.teacherGroups__practicePagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+
+.teacherGroups__practicePaginationPages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.teacherGroups__practicePaginationArrow,
+.teacherGroups__practicePaginationPage {
+  display: inline-grid;
+  place-items: center;
+  color: var(--teacher-heading);
+  text-decoration: none;
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.teacherGroups__practicePaginationArrow {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 50%;
+
+  & svg {
+    font-size: 1.45rem;
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+}
+
+.teacherGroups__practicePaginationPage {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: var(--teacher-muted);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 780;
+
+  &[aria-current="page"] {
+    color: #ffffff;
+    background: linear-gradient(145deg, var(--teacher-brand), var(--teacher-primary));
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--teacher-primary) 32%, transparent);
+  }
+}
+
+.teacherGroups__practicePaginationEllipsis {
+  display: inline-grid;
+  width: 1.25rem;
+  place-items: center;
+  color: var(--teacher-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .teacherGroups__practiceCard:hover {
+    border-color: color-mix(in srgb, var(--teacher-primary) 32%, var(--teacher-border));
+    box-shadow: 0 18px 38px rgb(16 42 67 / 11%);
+    transform: translateY(-3px);
+  }
+
+  .teacherGroups__practicePaginationArrow:not([data-disabled]):hover,
+  .teacherGroups__practicePaginationPage:not([aria-current="page"]):hover {
+    color: var(--teacher-primary);
+    background: color-mix(in srgb, var(--teacher-primary) 9%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 1120px) {
+  .teacherGroups__practiceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .teacherGroups__practiceGrid {
     grid-template-columns: 1fr;
   }
 
-  .teacherGroups__academicPaperHeader {
-    flex-direction: column;
+  .teacherGroups__practiceCard {
+    min-height: 18.75rem;
+  }
+
+  .teacherGroups__practiceIdentity {
+    min-height: 6.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherGroups__practiceCard,
+  .teacherGroups__practicePaginationArrow,
+  .teacherGroups__practicePaginationPage {
+    transition: none;
   }
 }
 
@@ -2527,7 +2687,8 @@ button.teacherGroups__lessonDeleteButton {
     align-items: center;
     justify-content: space-between;
   }
-  &Actions button {
+  &Actions button,
+  &Actions a {
     display: grid;
     height: 2rem;
     width: 2rem;
@@ -2538,6 +2699,7 @@ button.teacherGroups__lessonDeleteButton {
     border-radius: 0.65rem;
     background: transparent;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color 180ms ease;
   }
   &Actions .teacherGroups__learnerDeleteButton {
@@ -2553,7 +2715,8 @@ button.teacherGroups__lessonDeleteButton {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .teacherGroups__learnerActions button:hover:not(:disabled) {
+  .teacherGroups__learnerActions button:hover:not(:disabled),
+  .teacherGroups__learnerActions a:hover {
     background: rgb(100 116 139 / 9%);
     @supports (color: color-mix(in lab, red, red)) {
       background: color-mix(in srgb, var(--teacher-muted) 9%, transparent);
@@ -2924,7 +3087,7 @@ button.teacherGroups__lessonDeleteButton {
 
 @media (max-width: 1199px) {
   .teacherGroups__catalog {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 27rem));
   }
 
   .teacherGroups__lessonList,
@@ -2963,7 +3126,7 @@ button.teacherGroups__lessonDeleteButton {
   }
 
   .teacherGroups__catalog {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 27rem);
     &Card {
       min-height: 18rem;
     }
@@ -3005,7 +3168,6 @@ button.teacherGroups__lessonDeleteButton {
   .teacherGroups__overviewHub,
   .teacherGroups__lessonList,
   .teacherGroups__resourceGrid,
-  .teacherGroups__testGrid,
   .teacherGroups__linkedSections {
     grid-template-columns: 1fr;
   }

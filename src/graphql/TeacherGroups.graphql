@@ -90,11 +90,47 @@ query TeacherGroupRosterData($groupId: ID!, $first: Int, $after: String) {
   }
 }
 
-query TeacherGroupTestPapers($groupId: ID!) {
-  teacherTestPapers(groupId: $groupId) {
+query TeacherGroupTestPapers($groupId: ID!, $page: Int! = 1) {
+  teacherTestPapers(groupId: $groupId, page: $page) {
+    items {
+      id
+      practiceNumber
+      slug
+      academicYear
+      createdAt
+      completedStudentCount
+      title
+      sourceLabel
+      skills {
+        testId
+        testVersionId
+        skill
+        title
+        description
+        durationMinutes
+        questionCount
+        status
+      }
+    }
+    pageInfo {
+      currentPage
+      pageSize
+      totalItems
+      totalPages
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+
+query TeacherPracticeTest($groupId: ID!, $practiceNumber: Int!) {
+  teacherTestPaper(groupId: $groupId, practiceNumber: $practiceNumber) {
     id
+    practiceNumber
     slug
     academicYear
+    createdAt
+    completedStudentCount
     title
     sourceLabel
     skills {
@@ -106,6 +142,183 @@ query TeacherGroupTestPapers($groupId: ID!) {
       durationMinutes
       questionCount
       status
+    }
+  }
+}
+
+mutation TeacherCreatePracticeTest($input: CreateTeacherPracticeTestInput!) {
+  createTeacherPracticeTest(input: $input) {
+    testPaper {
+      id
+      practiceNumber
+    }
+  }
+}
+
+mutation TeacherDeletePracticeTest($testPaperId: ID!) {
+  deleteTeacherPracticeTest(testPaperId: $testPaperId) {
+    testPaperId
+    status
+    deletedSkillCount
+  }
+}
+
+query TeacherSpeakingPractice($testVersionId: ID!) {
+  teacherTestVersion(testVersionId: $testVersionId) {
+    id
+    durationMinutes
+    primaryLanguage
+    publishedAt
+    status
+    translations {
+      language
+      title
+      description
+    }
+    questions {
+      id
+      position
+      sectionPosition
+      translations {
+        language
+        prompt
+      }
+    }
+  }
+}
+
+query TeacherWritingPractice($testVersionId: ID!) {
+  teacherTestVersion(testVersionId: $testVersionId) {
+    id
+    durationMinutes
+    primaryLanguage
+    publishedAt
+    status
+    translations {
+      language
+      title
+      description
+    }
+    sections {
+      id
+      position
+      mediaObjectId
+      translations {
+        language
+        title
+        instructions
+        content
+      }
+    }
+    questions {
+      id
+      position
+      sectionPosition
+      translations {
+        language
+        prompt
+      }
+    }
+  }
+}
+
+query TeacherObjectivePractice($testVersionId: ID!) {
+  teacherTestVersion(testVersionId: $testVersionId) {
+    id
+    durationMinutes
+    primaryLanguage
+    publishedAt
+    status
+    translations {
+      language
+      title
+      description
+    }
+    sections {
+      id
+      position
+      mediaObjectId
+      translations {
+        language
+        title
+        instructions
+        content
+      }
+    }
+    questions {
+      id
+      position
+      sectionPosition
+      translations {
+        language
+        prompt
+      }
+      options {
+        id
+        position
+        translations {
+          language
+          text
+        }
+      }
+    }
+  }
+}
+
+query TeacherStudentAttempts($groupId: ID!, $studentId: ID!, $language: Language!) {
+  teacherStudentAttempts(groupId: $groupId, studentId: $studentId, language: $language, first: 50) {
+    edges {
+      node {
+        attemptId
+        testId
+        title
+        skill
+        attemptNumber
+        status
+        submittedAt
+        percentage
+      }
+    }
+  }
+}
+
+query TeacherSpeakingAttemptReview($attemptId: ID!, $language: Language!) {
+  teacherSpeakingAttemptReview(attemptId: $attemptId, language: $language) {
+    attemptId
+    studentDisplayName
+    title
+    status
+    answers {
+      questionId
+      position
+      sectionPosition
+      prompt
+      audioUrl
+      audioUrlExpiresAt
+    }
+    review {
+      fluencyCoherence
+      lexicalResource
+      grammaticalRangeAccuracy
+      pronunciation
+      practiceBand
+      feedback
+      reviewedAt
+      releasedAt
+    }
+  }
+}
+
+mutation TeacherSaveSpeakingAttemptReview(
+  $input: SaveSpeakingAttemptReviewInput!
+  $language: Language!
+) {
+  saveSpeakingAttemptReview(input: $input, language: $language) {
+    attemptId
+    status
+    review {
+      practiceBand
+      releasedAt
     }
   }
 }

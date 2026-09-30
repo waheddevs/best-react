@@ -15,7 +15,7 @@ import type { TeacherCopy, TeacherGroupCreateKind } from "@/types/teacher/Teache
 
 type GroupWorkspaceCreateActionProps = {
   copy: TeacherCopy;
-  kind: Exclude<TeacherGroupCreateKind, "lesson">;
+  kind: Exclude<TeacherGroupCreateKind, "lesson" | "test">;
 };
 
 export function GroupWorkspaceCreateAction({ copy, kind }: GroupWorkspaceCreateActionProps) {
@@ -45,7 +45,7 @@ export function GroupWorkspaceCreateAction({ copy, kind }: GroupWorkspaceCreateA
         size="small"
         startIcon={<AddRounded />}
       >
-        {kind === "test" ? copy.common.create : copy.groupWorkspace.createActions[kind]}
+        {copy.groupWorkspace.createActions[kind]}
       </Button>
 
       <Dialog fullWidth maxWidth="sm" onClose={handleClose} open={isOpen}>
@@ -89,33 +89,6 @@ export function GroupWorkspaceCreateAction({ copy, kind }: GroupWorkspaceCreateA
               />
             ) : null}
 
-            {kind === "test" ? (
-              <>
-                <TextField
-                  fullWidth
-                  label={copy.groupWorkspace.date}
-                  required
-                  slotProps={{ inputLabel: { shrink: true } }}
-                  type="date"
-                />
-                <div className="teacherGroups__createFieldGrid">
-                  <TextField
-                    fullWidth
-                    label={copy.groupWorkspace.questions}
-                    required
-                    slotProps={{ htmlInput: { min: 1 } }}
-                    type="number"
-                  />
-                  <TextField
-                    fullWidth
-                    label={copy.groupWorkspace.duration}
-                    required
-                    slotProps={{ htmlInput: { min: 1 } }}
-                    type="number"
-                  />
-                </div>
-              </>
-            ) : null}
           </DialogContent>
           <DialogActions className="teacherGroups__createDialogActions">
             <Button onClick={handleClose} variant="ghost">

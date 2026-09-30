@@ -7,10 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import type { Locale } from "@/config/Locales";
-import {
-  StartStudentTestAttemptDocument,
-  StudentAttemptFieldsFragmentDoc,
-} from "@/gql/graphql";
+import { StartStudentTestAttemptDocument, StudentAttemptFieldsFragmentDoc } from "@/gql/graphql";
 import { useFragment as readFragment } from "@/gql/fragment-masking";
 import type { StudentTestSkill, StudentTestsCopy } from "@/types/student/StudentTests";
 
@@ -52,13 +49,21 @@ export function StudentTestSkillAction({
     (skill.skill === "LISTENING" || skill.skill === "READING")
   ) {
     return (
-      <Link
-        className="studentTests__skillAction"
-        href={`/${locale}/student/results/${skill.attemptId}`}
-      >
-        {copy.resultLabel}
-        <ArrowForwardRounded aria-hidden="true" />
-      </Link>
+      <div className="studentTests__skillCompletedActions">
+        <Link
+          className="studentTests__skillAction studentTests__skillAction_secondary"
+          href={`/${locale}/student/tests/${paperId}/${skillPath}/${skill.attemptId}`}
+        >
+          {copy.reviewLabel}
+        </Link>
+        <Link
+          className="studentTests__skillAction"
+          href={`/${locale}/student/results/${skill.attemptId}`}
+        >
+          {copy.resultLabel}
+          <ArrowForwardRounded aria-hidden="true" />
+        </Link>
+      </div>
     );
   }
 

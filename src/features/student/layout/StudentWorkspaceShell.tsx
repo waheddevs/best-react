@@ -7,6 +7,7 @@ import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRound
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { WorkspaceLocaleNavigation } from "@/components/navigation/WorkspaceLocaleNavigation";
@@ -27,6 +28,7 @@ type StudentWorkspaceShellProps = {
 
 export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspaceShellProps) {
   /* HOOKS */
+  const pathname = usePathname();
   const connectionState = useBestApiConnection("STUDENT");
   const { handleMenuToggle, handleNavigation, localeOptions, menuOpen, navigationItems } =
     useWorkspaceShellNavigation({
@@ -35,6 +37,15 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
       locale,
     });
   const studentInitials = getWorkspaceInitials(copy.common.studentName, locale);
+  const examMode = /\/student\/tests\/[^/]+\/[^/]+\/[^/]+\/?$/.test(pathname);
+
+  if (examMode) {
+    return (
+      <div className="studentShell studentShell_exam">
+        <main className="studentShell__examMain">{children}</main>
+      </div>
+    );
+  }
 
   return (
     <div className="studentShell">
