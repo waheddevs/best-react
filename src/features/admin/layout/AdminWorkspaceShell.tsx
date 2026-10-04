@@ -3,13 +3,13 @@
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import MenuOpenRounded from "@mui/icons-material/MenuOpenRounded";
-import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { WorkspaceLocaleNavigation } from "@/components/navigation/WorkspaceLocaleNavigation";
+import { WorkspaceNotificationBell } from "@/features/notifications/WorkspaceNotificationBell";
 import { adminDockNavigationKeys, adminNavigationItems } from "@/config/AdminNavigation";
 import type { Locale } from "@/config/Locales";
 import { useWorkspaceShellNavigation } from "@/hooks/navigation/useWorkspaceShellNavigation";
@@ -96,12 +96,11 @@ export function AdminWorkspaceShell({
               onNavigate={handleNavigation}
               options={localeOptions}
             />
-            <Link
-              aria-label={copy.navigation.notifications}
-              href={`/${locale}/admin/notifications`}
-            >
-              <NotificationsNoneRounded />
-            </Link>
+            <WorkspaceNotificationBell
+              connected={connectionState === "connected"}
+              locale={locale}
+              role="ADMIN"
+            />
             <button
               aria-label={copy.common.logoutLabel}
               className="adminShell__signOut"

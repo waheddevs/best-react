@@ -1,19 +1,15 @@
 "use client";
 
 import MenuRounded from "@mui/icons-material/MenuRounded";
-import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
-import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type MouseEvent } from "react";
+import { useState } from "react";
 
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
 import { getTeacherNotificationsCopy } from "@/dictionaries/teacher/TeacherNotifications";
+import { WorkspaceNotificationBell } from "@/features/notifications/WorkspaceNotificationBell";
 import { TeacherLocaleMenu } from "@/features/teacher/layout/TeacherLocaleMenu";
-import { useTeacherNotifications } from "@/hooks/teacher/notifications/useTeacherNotifications";
 import type { TeacherCopy } from "@/types/teacher/Teacher";
 import type {
   TeacherNoticeState,
@@ -42,26 +38,10 @@ export function TeacherTopbar({
   profile,
 }: TeacherTopbarProps) {
   /* HOOKS */
-  const [notificationAnchor, setNotificationAnchor] = useState<HTMLElement | null>(null);
   const [avatarFailed, setAvatarFailed] = useState(false);
-  const notificationState = useTeacherNotifications(
-    notices,
-    locale,
-    connected,
-    initialNotificationError,
-  );
   const notificationCopy = getTeacherNotificationsCopy(locale);
 
   /* HANDLERS */
-  const handleNotificationsOpen = (event: MouseEvent<HTMLButtonElement>) => {
-    setNotificationAnchor(event.currentTarget);
-    void notificationState.refresh();
-  };
-
-  const handleNotificationsClose = () => {
-    setNotificationAnchor(null);
-  };
-
   const handleAvatarError = () => {
     setAvatarFailed(true);
   };
@@ -84,23 +64,13 @@ export function TeacherTopbar({
 
       <div className="teacherShell__topbarActions">
         <TeacherLocaleMenu label={copy.profile.language} locale={locale} />
-        <span className="teacherShell__notificationTrigger">
-          <IconButton
-            className="teacherShell__topbarIconButton"
-            label={
-              notificationState.state.unreadCount > 0
-                ? `${copy.common.notifications}: ${notificationState.state.unreadCount}`
-                : copy.common.notifications
-            }
-            onClick={handleNotificationsOpen}
-            variant="soft"
-          >
-            <NotificationsNoneRounded />
-          </IconButton>
-          {notificationState.state.unreadCount > 0 ? (
-            <span className="teacherShell__unreadDot" aria-hidden="true" />
-          ) : null}
-        </span>
+        <WorkspaceNotificationBell
+          connected={connected}
+          initial={notices}
+          initialError={initialNotificationError}
+          locale={locale}
+          role="TEACHER"
+        />
         <Link
           aria-label={`${notificationCopy.settings}: ${profile.displayName}`}
           className="teacherShell__topbarProfile"
@@ -126,52 +96,6 @@ export function TeacherTopbar({
           </span>
         </Link>
       </div>
-
-      <Menu
-        anchorEl={notificationAnchor}
-        onClose={handleNotificationsClose}
-        open={Boolean(notificationAnchor)}
-        slotProps={{ paper: { className: "teacherShell__notificationMenu" } }}
-      >
-        <li className="teacherShell__notificationHeading">{copy.common.notifications}</li>
-        {notificationState.error ? (
-          <li className="teacherShell__notificationMessage">
-            {notificationCopy.loadError}{" "}
-            <button onClick={() => void notificationState.refresh()} type="button">
-              {notificationCopy.retry}
-            </button>
-          </li>
-        ) : null}
-        {!notificationState.error && notificationState.state.notifications.length === 0 ? (
-          <li className="teacherShell__notificationMessage">{notificationCopy.empty}</li>
-        ) : null}
-        {notificationState.state.notifications.map((notification) => (
-          <MenuItem
-            className="teacherShell__notificationItem"
-            data-unread={notification.readAt === null}
-            key={notification.id}
-            onClick={() => {
-              handleNotificationsClose();
-              void notificationState.handleNotificationSelect(notification);
-            }}
-          >
-            <span className="teacherShell__notificationIcon">
-              <TaskAltRounded />
-            </span>
-            <span>
-              <strong>{notification.title}</strong>
-              {notification.body ? <small>{notification.body}</small> : null}
-              <time dateTime={notification.createdAt}>
-                {new Intl.DateTimeFormat(locale, {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                  timeZone: "Asia/Tashkent",
-                }).format(new Date(notification.createdAt))}
-              </time>
-            </span>
-          </MenuItem>
-        ))}
-      </Menu>
     </header>
   );
 }

@@ -19,6 +19,9 @@ query TeacherHeader {
         id
         kind
         taskId
+        attemptId
+        groupId
+        studentId
         title
         body
         readAt
@@ -36,6 +39,9 @@ query TeacherNotificationUpdates {
         id
         kind
         taskId
+        attemptId
+        groupId
+        studentId
         title
         body
         readAt

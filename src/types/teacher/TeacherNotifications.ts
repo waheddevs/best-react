@@ -9,6 +9,9 @@ export type TeacherNotice = {
   id: string;
   kind: string;
   taskId: string | null;
+  attemptId?: string | null;
+  groupId?: string | null;
+  studentId?: string | null;
   title: string;
   body: string | null;
   readAt: string | null;

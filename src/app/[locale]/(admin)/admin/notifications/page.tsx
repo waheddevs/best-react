@@ -1,6 +1,32 @@
-import { AdminWorkspaceRoute } from "@/features/admin/workspace/AdminWorkspaceRoute";
+import { notFound } from "next/navigation";
+
+import { isLocale } from "@/config/Locales";
+import { getWorkspaceNotificationsCopy } from "@/dictionaries/WorkspaceNotifications";
+import { loadWorkspaceNotifications } from "@/features/notifications/WorkspaceNotificationActions";
+import { WorkspaceNotificationsList } from "@/features/notifications/WorkspaceNotificationsList";
+import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+
 type PageProps = { params: Promise<{ locale: string }> };
 export default async function AdminNotificationsPage({ params }: PageProps) {
   const { locale } = await params;
-  return <AdminWorkspaceRoute locale={locale} sectionKey="notifications" />;
+  if (!isLocale(locale)) notFound();
+  const connected = !isDashboardPreviewEnabled();
+  const initial = connected
+    ? await loadWorkspaceNotifications("ADMIN", 20).catch(() => null)
+    : null;
+  return (
+    <article className="adminWorkspace">
+      <header className="adminWorkspace__header">
+        <div>
+          <h1>{getWorkspaceNotificationsCopy(locale).title}</h1>
+        </div>
+      </header>
+      <WorkspaceNotificationsList
+        connected={connected}
+        initial={initial}
+        locale={locale}
+        role="ADMIN"
+      />
+    </article>
+  );
 }

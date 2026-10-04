@@ -3,7 +3,6 @@
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import MenuRounded from "@mui/icons-material/MenuRounded";
-import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { WorkspaceLocaleNavigation } from "@/components/navigation/WorkspaceLocaleNavigation";
+import { WorkspaceNotificationBell } from "@/features/notifications/WorkspaceNotificationBell";
 import type { Locale } from "@/config/Locales";
 import { studentNavigationItems } from "@/config/StudentNavigation";
 import { useWorkspaceShellNavigation } from "@/hooks/navigation/useWorkspaceShellNavigation";
@@ -106,13 +106,11 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
                 ? copy.common.connectedNotice
                 : copy.common.previewNotice}
             </span>
-            <Link
-              aria-label={copy.navigation.notifications}
-              className="studentShell__bell"
-              href={`/${locale}/student/notifications`}
-            >
-              <NotificationsNoneRounded />
-            </Link>
+            <WorkspaceNotificationBell
+              connected={connectionState === "connected"}
+              locale={locale}
+              role="STUDENT"
+            />
             <button
               aria-label={copy.common.logoutLabel}
               className="studentShell__signOut"

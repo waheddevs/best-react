@@ -1,0 +1,39 @@
+query WorkspaceNotificationFeed($first: Int, $after: String, $unreadOnly: Boolean) {
+  myUnreadNotificationCount
+  myNotifications(first: $first, after: $after, unreadOnly: $unreadOnly) {
+    edges {
+      cursor
+      node {
+        id
+        kind
+        taskId
+        attemptId
+        groupId
+        studentId
+        title
+        body
+        readAt
+        createdAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+mutation WorkspaceMarkNotificationRead($input: MarkNotificationReadInput!) {
+  markNotificationRead(input: $input) {
+    notification {
+      id
+      readAt
+    }
+  }
+}
+
+mutation WorkspaceMarkAllNotificationsRead {
+  markAllNotificationsRead {
+    updatedCount
+  }
+}
