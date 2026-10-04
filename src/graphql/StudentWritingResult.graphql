@@ -1,0 +1,30 @@
+query StudentWritingResult($attemptId: ID!) {
+  studentWritingResult(attemptId: $attemptId, language: EN) {
+    attemptId
+    title
+    practiceBand
+    feedback
+    releasedAt
+    task1 {
+      taskAchievement
+      coherenceCohesion
+      lexicalResource
+      grammaticalRangeAccuracy
+      feedback
+      band
+    }
+    task2 {
+      taskAchievement
+      coherenceCohesion
+      lexicalResource
+      grammaticalRangeAccuracy
+      feedback
+      band
+    }
+    answers {
+      sectionPosition
+      prompt
+      textValue
+    }
+  }
+}

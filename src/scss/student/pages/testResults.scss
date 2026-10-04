@@ -101,7 +101,9 @@
     font: inherit;
     text-align: left;
     cursor: pointer;
-    transition: border-color 160ms ease, box-shadow 160ms ease;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
   }
 
   & button[aria-current="true"] {
@@ -313,7 +315,9 @@
 }
 
 a.studentResultsList__card {
-  transition: border-color 160ms ease, transform 160ms ease;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
 
   &:hover {
     border-color: #75aff7;
@@ -372,5 +376,99 @@ a.studentResultsList__card {
 @media (prefers-reduced-motion: reduce) {
   a.studentResultsList__card {
     transition: none;
+  }
+}
+.studentWritingResult {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 3vw, 3rem) 4rem;
+  color: #0a3152;
+
+  > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+    color: #1d55f0;
+    text-decoration: none;
+  }
+  header {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid #d5e9f1;
+    border-radius: 1.25rem;
+    background: #f4fafc;
+  }
+  header span {
+    color: #1d55f0;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  header h1 {
+    margin: 0.4rem 0 1rem;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+  }
+  header strong {
+    font-size: 1.25rem;
+  }
+  header p {
+    margin-bottom: 0;
+    color: #55708a;
+  }
+}
+
+.studentWritingResult__tasks {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+.studentWritingResult__tasks > section,
+.studentWritingResult__overall {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #d5e9f1;
+  border-radius: 1.25rem;
+  background: #fff;
+}
+.studentWritingResult__tasks h2 {
+  margin: 0 0 1rem;
+  color: #1d55f0;
+}
+.studentWritingResult__tasks h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: pre-wrap;
+}
+.studentWritingResult__criteria {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1.25rem 0;
+}
+.studentWritingResult__criteria p {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+  background: #f4fafc;
+}
+.studentWritingResult__answer {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #f4fafc;
+}
+.studentWritingResult__answer p {
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
+.studentWritingResult__overall {
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .studentWritingResult__criteria {
+    grid-template-columns: 1fr;
   }
 }

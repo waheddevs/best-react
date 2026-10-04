@@ -30,7 +30,9 @@ export function StudentResultsList({ locale, results }: StudentResultsListProps)
           {results.map((result) => {
             const hasDetail =
               result.skill === "SPEAKING" ||
-              result.skill === "LISTENING" || result.skill === "READING";
+              result.skill === "WRITING" ||
+              result.skill === "LISTENING" ||
+              result.skill === "READING";
             const content = (
               <>
                 <div className="studentResultsList__cardTop">
@@ -43,11 +45,12 @@ export function StudentResultsList({ locale, results }: StudentResultsListProps)
                 </div>
                 <h2>{result.title}</h2>
                 <strong>
-                  {result.skill === "SPEAKING" && result.practiceBand !== null
+                  {(result.skill === "SPEAKING" || result.skill === "WRITING") &&
+                  result.practiceBand !== null
                     ? `Band ${result.practiceBand.toFixed(1)}`
                     : `${formatPercentage(result.percentage)}%`}
                 </strong>
-                {result.skill !== "SPEAKING" ? (
+                {result.skill !== "SPEAKING" && result.skill !== "WRITING" ? (
                   <p>
                     {result.correctAnswerCount}/{result.totalQuestionCount} {copy.score}
                   </p>

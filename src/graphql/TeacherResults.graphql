@@ -1,0 +1,118 @@
+query TeacherResultAttemptSkill($attemptId: ID!) {
+  teacherResultAttemptSkill(attemptId: $attemptId)
+}
+
+query TeacherObjectiveAttemptResult($attemptId: ID!) {
+  teacherObjectiveAttemptResult(attemptId: $attemptId, language: EN) {
+    attemptId
+    studentDisplayName
+    title
+    skill
+    correctAnswerCount
+    totalQuestionCount
+    percentage
+    answers {
+      position
+      prompt
+      studentAnswer
+      correctAnswer
+      isCorrect
+    }
+  }
+}
+
+query TeacherResultInbox(
+  $groupId: ID
+  $paperId: ID
+  $skill: TestSkill
+  $status: AttemptStatus
+  $search: String
+  $first: Int
+  $after: String
+) {
+  teacherResultInbox(
+    groupId: $groupId
+    paperId: $paperId
+    skill: $skill
+    status: $status
+    search: $search
+    first: $first
+    after: $after
+    language: EN
+  ) {
+    edges {
+      cursor
+      node {
+        attemptId
+        studentId
+        studentDisplayName
+        groupId
+        groupName
+        paperId
+        practiceNumber
+        title
+        skill
+        status
+        attemptNumber
+        submittedAt
+        percentage
+        practiceBand
+        releasedAt
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query TeacherWritingAttemptReview($attemptId: ID!) {
+  teacherWritingAttemptReview(attemptId: $attemptId, language: EN) {
+    attemptId
+    studentDisplayName
+    title
+    status
+    answers {
+      questionId
+      sectionPosition
+      prompt
+      textValue
+    }
+    review {
+      task1 {
+        taskAchievement
+        coherenceCohesion
+        lexicalResource
+        grammaticalRangeAccuracy
+        feedback
+        band
+      }
+      task2 {
+        taskAchievement
+        coherenceCohesion
+        lexicalResource
+        grammaticalRangeAccuracy
+        feedback
+        band
+      }
+      practiceBand
+      feedback
+      reviewedAt
+      updatedAt
+      releasedAt
+    }
+  }
+}
+
+mutation TeacherSaveWritingAttemptReview($input: SaveWritingAttemptReviewInput!) {
+  saveWritingAttemptReview(input: $input, language: EN) {
+    attemptId
+    status
+    review {
+      practiceBand
+      updatedAt
+      releasedAt
+    }
+  }
+}

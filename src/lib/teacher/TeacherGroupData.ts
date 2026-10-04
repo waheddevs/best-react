@@ -18,9 +18,18 @@ import {
   TeacherTestAuthoringDraftDocument,
   TeacherTestAuthoringVersionFieldsFragmentDoc,
   TeacherSpeakingAttemptReviewDocument,
+  TeacherResultInboxDocument,
+  TeacherResultAttemptSkillDocument,
+  TeacherObjectiveAttemptResultDocument,
+  TeacherWritingAttemptReviewDocument,
   TeacherWritingPracticeDocument,
   TeacherStudentAttemptsDocument,
   type TeacherSpeakingAttemptReviewQuery,
+  type TeacherResultInboxQuery,
+  type TeacherResultAttemptSkillQuery,
+  type TeacherObjectiveAttemptResultQuery,
+  type TeacherResultInboxQueryVariables,
+  type TeacherWritingAttemptReviewQuery,
   type TeacherStudentAttemptsQuery,
   type TeacherGroupQuery,
   type TeacherGroupOverviewDataQuery,
@@ -521,4 +530,53 @@ export async function loadConnectedTeacherSpeakingAttemptReview(
     { accessToken, cache: "no-store" },
   );
   return data.teacherSpeakingAttemptReview;
+}
+
+export async function loadConnectedTeacherResultInbox(
+  locale: Locale,
+  variables: TeacherResultInboxQueryVariables,
+): Promise<TeacherResultInboxQuery["teacherResultInbox"]> {
+  const accessToken = await teacherToken(locale);
+  const data = await executeApolloQuery<TeacherResultInboxQuery, TeacherResultInboxQueryVariables>(
+    TeacherResultInboxDocument,
+    variables,
+    { accessToken, cache: "no-store" },
+  );
+  return data.teacherResultInbox;
+}
+
+export async function loadConnectedTeacherResultAttemptSkill(locale: Locale, attemptId: string) {
+  const accessToken = await teacherToken(locale);
+  const data = await executeApolloQuery<TeacherResultAttemptSkillQuery, { attemptId: string }>(
+    TeacherResultAttemptSkillDocument,
+    { attemptId },
+    { accessToken, cache: "no-store" },
+  );
+  return data.teacherResultAttemptSkill;
+}
+
+export async function loadConnectedTeacherObjectiveAttemptResult(
+  locale: Locale,
+  attemptId: string,
+) {
+  const accessToken = await teacherToken(locale);
+  const data = await executeApolloQuery<TeacherObjectiveAttemptResultQuery, { attemptId: string }>(
+    TeacherObjectiveAttemptResultDocument,
+    { attemptId },
+    { accessToken, cache: "no-store" },
+  );
+  return data.teacherObjectiveAttemptResult;
+}
+
+export async function loadConnectedTeacherWritingAttemptReview(
+  locale: Locale,
+  attemptId: string,
+): Promise<TeacherWritingAttemptReviewQuery["teacherWritingAttemptReview"]> {
+  const accessToken = await teacherToken(locale);
+  const data = await executeApolloQuery<TeacherWritingAttemptReviewQuery, { attemptId: string }>(
+    TeacherWritingAttemptReviewDocument,
+    { attemptId },
+    { accessToken, cache: "no-store" },
+  );
+  return data.teacherWritingAttemptReview;
 }

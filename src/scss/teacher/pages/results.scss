@@ -1,0 +1,466 @@
+.teacherWritingReview,
+.teacherObjectiveResult {
+  margin: 0 auto;
+  max-width: 1500px;
+  padding: 2rem clamp(1rem, 3vw, 3rem) 4rem;
+  color: #0a3152;
+}
+
+.teacherResults {
+  margin: 0;
+  max-width: none;
+  padding: 0;
+  color: var(--teacher-text);
+}
+
+.teacherPractices__resultsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  border: 1px solid #cfe5ef;
+  border-radius: 0.75rem;
+  padding: 0.7rem 1rem;
+  color: #1d55f0;
+  text-decoration: none;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.teacherObjectiveResult {
+  > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+    color: #1d55f0;
+    text-decoration: none;
+  }
+  header {
+    margin-bottom: 1.25rem;
+  }
+  header span {
+    color: #1d55f0;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  header h1 {
+    margin: 0.4rem 0 1rem;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+  }
+  .teacherObjectiveResult__tableWrap {
+    overflow-x: auto;
+    border: 1px solid #d5e9f1;
+    border-radius: 1.25rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+  }
+  th,
+  td {
+    border-bottom: 1px solid #e4eef3;
+    padding: 1rem;
+    text-align: left;
+  }
+  th {
+    background: #f0f9fc;
+    color: #55708a;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  td:nth-child(2) {
+    min-width: 16rem;
+  }
+}
+
+.teacherWritingReview__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  span {
+    color: #1d55f0;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  h1 {
+    margin: 0.35rem 0;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+  }
+  p {
+    margin: 0;
+    color: #55708a;
+  }
+  > strong {
+    border-radius: 999px;
+    background: #eaf3ff;
+    padding: 0.7rem 1rem;
+    white-space: nowrap;
+  }
+}
+
+.teacherResults__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background: var(--teacher-surface-subtle);
+
+  label,
+  .teacherResults__filterField {
+    display: grid;
+    gap: 0.4rem;
+    min-width: 10rem;
+    flex: 1 1 10rem;
+  }
+  label.teacherResults__searchField {
+    min-width: 15rem;
+    flex: 1.75 1 18rem;
+  }
+  label > span,
+  .teacherResults__filterField > span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--teacher-muted);
+  }
+  input[type="search"] {
+    width: 100%;
+    min-height: 2.75rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--teacher-surface);
+    color: var(--teacher-heading);
+    font: inherit;
+  }
+  > .teacherResults__clearFilters {
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    border-radius: 0.65rem;
+    padding: 0.45rem 0.65rem;
+    color: #1d55f0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+}
+
+.teacherResults__filters .teacherResults__dropdownTrigger {
+  display: flex;
+  width: 100%;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.75rem;
+  background: var(--teacher-surface);
+  color: var(--teacher-heading);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 550;
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+
+  > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--teacher-primary);
+    font-size: 1.15rem;
+    transition: transform 160ms ease;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--teacher-primary);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 12%, transparent);
+  }
+
+  &[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+}
+
+.teacherResults__dropdownMenu.MuiPaper-root {
+  margin-top: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface) !important;
+  box-shadow: var(--teacher-shadow) !important;
+
+  .MuiMenu-list {
+    padding: 0;
+  }
+}
+
+.teacherResults__dropdownOption.MuiMenuItem-root {
+  min-height: 2.75rem !important;
+  border-radius: 0.75rem !important;
+  padding: 0.6rem 0.8rem !important;
+  color: var(--teacher-text) !important;
+  font-family: var(--font-geist-sans), sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 750 !important;
+
+  &:hover,
+  &:focus-visible,
+  &.Mui-focusVisible,
+  &[data-active="true"],
+  &.Mui-selected,
+  &.Mui-selected:hover {
+    color: var(--teacher-primary) !important;
+    background: rgb(37 99 235 / 10%) !important;
+
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, var(--teacher-surface)) !important;
+    }
+  }
+}
+
+.teacherResults__tableWrap {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background: var(--teacher-surface);
+
+  &[data-loading="true"] table,
+  &[data-loading="true"] > p {
+    opacity: 0.55;
+  }
+
+  &[data-loading="true"]::after {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--teacher-border);
+    border-top-color: var(--teacher-primary);
+    border-radius: 50%;
+    content: "";
+    animation: teacherResultsSpin 650ms linear infinite;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--teacher-text);
+    font-family: var(--font-geist-sans), sans-serif;
+    font-size: 0.82rem;
+    font-weight: 550;
+    line-height: 1.45;
+  }
+  th,
+  td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--teacher-border);
+    white-space: nowrap;
+  }
+  th {
+    background: var(--teacher-surface-subtle);
+    color: var(--teacher-heading);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  td {
+    font-size: 0.82rem;
+    font-weight: 550;
+  }
+  td:first-child {
+    color: var(--teacher-heading);
+    font-weight: 700;
+  }
+  td a {
+    color: #1d55f0;
+    font-weight: 700;
+  }
+  td span[data-status] {
+    display: inline-block;
+    border-radius: 999px;
+    background: #edf4ff;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 750;
+  }
+  td span[data-status="REVIEW_REQUIRED"] {
+    background: #fff3df;
+    color: #865300;
+  }
+  td span[data-status="SCORED"] {
+    background: #e8f6f1;
+    color: #087357;
+  }
+  > p {
+    padding: 1.5rem;
+    text-align: center;
+  }
+}
+
+.teacherResults__next {
+  display: inline-block;
+  margin-top: 1rem;
+  border: 0;
+  background: transparent;
+  color: #1d55f0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.teacherResults__filterError {
+  margin: -0.5rem 0 1rem;
+  color: var(--teacher-danger);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+@keyframes teacherResultsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.teacherWritingReview__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  color: #1d55f0;
+  text-decoration: none;
+}
+.teacherWritingReview__header {
+  display: block;
+}
+.teacherWritingReview__tasks {
+  display: grid;
+  gap: 1.5rem;
+}
+.teacherWritingReview__task,
+.teacherWritingReview__overall {
+  padding: clamp(1rem, 2vw, 2rem);
+  border: 1px solid #d5e9f1;
+  border-radius: 1.25rem;
+  background: #fff;
+}
+.teacherWritingReview__task h2 {
+  margin: 0 0 1rem;
+  color: #1d55f0;
+}
+.teacherWritingReview__task h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: pre-wrap;
+}
+.teacherWritingReview__answer {
+  padding: 1.25rem;
+  border-radius: 0.9rem;
+  background: #f1f8fb;
+}
+.teacherWritingReview__answer p {
+  white-space: pre-wrap;
+  line-height: 1.65;
+}
+.teacherWritingReview__criteria {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1.25rem 0;
+}
+.teacherWritingReview__criteria label,
+.teacherWritingReview__feedback {
+  display: grid;
+  gap: 0.4rem;
+  color: #55708a;
+  font-weight: 700;
+}
+.teacherWritingReview__criteria input,
+.teacherWritingReview__feedback textarea {
+  width: 100%;
+  border: 1px solid #c9e3ef;
+  border-radius: 0.75rem;
+  padding: 0.7rem;
+  background: #fff;
+  color: #0a3152;
+  font: inherit;
+}
+.teacherWritingReview__criteria input {
+  max-width: 6rem;
+}
+.teacherWritingReview__task > strong {
+  display: block;
+  margin-top: 1rem;
+}
+.teacherWritingReview__overall {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+.teacherWritingReview__overall p {
+  margin: 0;
+  color: #55708a;
+}
+.teacherWritingReview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.teacherWritingReview__actions button {
+  border: 1px solid #1d55f0;
+  border-radius: 0.75rem;
+  padding: 0.8rem 1.1rem;
+  background: #fff;
+  color: #1d55f0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.teacherWritingReview__actions button:last-child {
+  background: #1d55f0;
+  color: #fff;
+}
+.teacherWritingReview__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 800px) {
+  .teacherWritingReview__criteria {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacherResults__tableWrap[data-loading="true"]::after {
+    animation: none;
+  }
+}

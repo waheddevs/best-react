@@ -13,7 +13,9 @@ import {
   type StudentReleasedAttemptResultQuery,
   StudentResultsDocument,
   StudentSpeakingResultDocument,
+  StudentWritingResultDocument,
   type StudentSpeakingResultQuery,
+  type StudentWritingResultQuery,
   type StudentResultsQuery,
   StudentAttemptFieldsFragmentDoc,
   type StudentAttemptFieldsFragment,
@@ -97,6 +99,16 @@ export async function getStudentSpeakingResult(locale: string, attemptId: string
     { accessToken, cache: "no-store" },
   );
   return data.studentSpeakingResult;
+}
+
+export async function getStudentWritingResult(locale: string, attemptId: string) {
+  const accessToken = await studentToken(locale);
+  const data = await executeApolloQuery<StudentWritingResultQuery, { attemptId: string }>(
+    StudentWritingResultDocument,
+    { attemptId },
+    { accessToken, cache: "no-store" },
+  );
+  return data.studentWritingResult;
 }
 
 export async function getStudentResults(

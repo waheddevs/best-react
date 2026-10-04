@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import type { Locale } from "@/config/Locales";
+import { getTeacherResultsCopy } from "@/dictionaries/teacher/TeacherResults";
 import {
   TeacherSaveSpeakingAttemptReviewDocument,
   type TeacherSpeakingAttemptReviewQuery,
 } from "@/gql/graphql";
+import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 
 type Review = TeacherSpeakingAttemptReviewQuery["teacherSpeakingAttemptReview"];
 
@@ -47,7 +49,9 @@ const criteria = [
 
 export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; review: Review }) {
   const labels = copy[locale];
+  const resultsCopy = getTeacherResultsCopy(locale);
   const router = useRouter();
+  const confirm = useConfirmDialog();
   const initial = review.review;
   const [scores, setScores] = useState({
     fluencyCoherence: initial?.fluencyCoherence ?? 0,
@@ -58,25 +62,43 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
   });
   const [feedback, setFeedback] = useState(initial?.feedback ?? "");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState(review.status);
+  const released = status === "SCORED";
   const [saveReview, { loading }] = useMutation(TeacherSaveSpeakingAttemptReviewDocument, {
     context: { authenticated: true },
   });
 
   const save = async (release: boolean) => {
     setMessage("");
-    await saveReview({
-      variables: {
-        input: { attemptId: review.attemptId, feedback, release, ...scores },
-        language: "EN",
-      },
-    });
-    setMessage(labels.saved);
-    router.refresh();
+    if (released) return;
+    if (release) {
+      const accepted = await confirm({
+        cancelLabel: resultsCopy.cancel,
+        confirmLabel: resultsCopy.release,
+        message: resultsCopy.releaseConfirm,
+        title: resultsCopy.release,
+      });
+      if (!accepted) return;
+    }
+    try {
+      const response = await saveReview({
+        variables: {
+          input: { attemptId: review.attemptId, feedback, release, ...scores },
+          language: "EN",
+        },
+      });
+      if (!response.data?.saveSpeakingAttemptReview) throw new Error("Missing saved review");
+      setStatus(response.data.saveSpeakingAttemptReview.status);
+      setMessage(release ? resultsCopy.released : labels.saved);
+      router.refresh();
+    } catch {
+      setMessage(resultsCopy.saveError);
+    }
   };
 
   return (
     <section className="teacherSpeakingReview">
-      <Link href={`/${locale}/teacher`}>
+      <Link href={`/${locale}/teacher/results`}>
         <ArrowBackRounded />
         {labels.title}
       </Link>
@@ -108,6 +130,7 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
               max="9"
               step="0.5"
               type="number"
+              disabled={released || loading}
               value={scores[key]}
               onChange={(event) =>
                 setScores((current) => ({ ...current, [key]: Number(event.target.value) }))
@@ -122,6 +145,7 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
             max="9"
             step="0.5"
             type="number"
+            disabled={released || loading}
             value={scores.practiceBand}
             onChange={(event) =>
               setScores((current) => ({ ...current, practiceBand: Number(event.target.value) }))
@@ -131,6 +155,7 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
         <label className="teacherSpeakingReview__feedback">
           <span>{labels.feedback}</span>
           <textarea
+            disabled={released || loading}
             maxLength={5000}
             rows={7}
             value={feedback}
@@ -140,12 +165,16 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
       </div>
       <footer>
         <span aria-live="polite">{message}</span>
-        <button disabled={loading} onClick={() => void save(false)} type="button">
-          {labels.save}
-        </button>
-        <button disabled={loading} onClick={() => void save(true)} type="button">
-          {labels.release}
-        </button>
+        {!released ? (
+          <button disabled={loading} onClick={() => void save(false)} type="button">
+            {labels.save}
+          </button>
+        ) : null}
+        {!released ? (
+          <button disabled={loading} onClick={() => void save(true)} type="button">
+            {labels.release}
+          </button>
+        ) : null}
       </footer>
     </section>
   );

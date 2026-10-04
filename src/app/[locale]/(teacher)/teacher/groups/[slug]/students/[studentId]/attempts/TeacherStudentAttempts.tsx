@@ -49,7 +49,7 @@ export function TeacherStudentAttempts({
         <div>
           {attempts.map(({ node }) => {
             const reviewable =
-              node.skill === "SPEAKING" &&
+              (node.skill === "SPEAKING" || node.skill === "WRITING") &&
               (node.status === "SUBMITTED" || node.status === "REVIEW_REQUIRED");
             return (
               <article key={node.attemptId}>
