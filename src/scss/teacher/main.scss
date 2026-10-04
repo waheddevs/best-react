@@ -1,4 +1,5 @@
 @use "../variables" as shared;
+@use "../workspaceNotifications";
 @use "variables" as teacher;
 @use "layout/shell";
 @use "shared" as teacherShared;
@@ -9,9 +10,9 @@
 @use "pages/objectivePreview";
 @use "pages/speaking";
 @use "pages/writing";
-@use "pages/tasks";
+@use "./pages/results.scss";
 @use "pages/finance";
+@use "./pages/library.scss";
 @use "pages/reception";
-@use "pages/transferRequests";
-@use "pages/profile";
+@use "./pages/profile.scss";
 @use "pages/loading";

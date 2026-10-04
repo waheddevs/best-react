@@ -1,6 +1,8 @@
+@use "../workspaceNotifications";
 @use "layout/shell";
 @use "pages/workspace";
 @use "pages/library";
 @use "pages/testRunner";
 @use "pages/tests";
 @use "pages/testResults";
+@use "pages/settings";

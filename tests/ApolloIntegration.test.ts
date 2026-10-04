@@ -27,6 +27,30 @@ const TeacherGroupsDocument = gql`
   }
 `;
 
+const TeacherLibraryItemsDocument = gql`
+  query ApolloIntegrationTeacherLibraryItems($first: Int) {
+    teacherLibraryItems(first: $first) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`;
+
+const StudentLibraryItemsDocument = gql`
+  query ApolloIntegrationStudentLibraryItems($language: Language!, $first: Int) {
+    studentLibraryItems(language: $language, first: $first) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`;
+
 const graphqlUrl = process.env.BEST_API_INTERNAL_URL ?? "http://127.0.0.1:4199/graphql";
 
 function integrationClient() {
@@ -66,4 +90,22 @@ test("Apollo preserves backend authorization for Teacher operations", async () =
         (item: { extensions?: { code?: string } }) => item.extensions?.code === "UNAUTHENTICATED",
       ),
   );
+});
+
+test("Library queries require the correct authenticated workspace role", async () => {
+  for (const [query, variables] of [
+    [TeacherLibraryItemsDocument, { first: 1 }],
+    [StudentLibraryItemsDocument, { first: 1, language: "EN" }],
+  ] as const) {
+    await assert.rejects(
+      integrationClient().query({ fetchPolicy: "no-cache", query, variables }),
+      (error: unknown) =>
+        error instanceof Error &&
+        "errors" in error &&
+        Array.isArray(error.errors) &&
+        error.errors.some(
+          (item: { extensions?: { code?: string } }) => item.extensions?.code === "UNAUTHENTICATED",
+        ),
+    );
+  }
 });
