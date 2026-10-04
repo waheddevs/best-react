@@ -1,0 +1,36 @@
+query StudentLibraryBooks($language: Language!, $first: Int, $after: String) {
+  studentLibraryItems(language: $language, first: $first, after: $after) {
+    edges {
+      cursor
+      node {
+        id
+        title
+        description
+        category {
+          name
+        }
+        attachments {
+          mediaObject {
+            id
+            mimeType
+            originalName
+            sizeBytes
+          }
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+mutation StudentLibraryBookDownload($input: CreateLibraryDownloadIntentInput!) {
+  createStudentLibraryDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+      expiresAt
+    }
+  }
+}

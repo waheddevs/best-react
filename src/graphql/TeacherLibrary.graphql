@@ -1,0 +1,69 @@
+query TeacherLibraryCategories {
+  teacherLibraryCategories {
+    id
+    name
+  }
+}
+
+query TeacherLibraryItems($first: Int, $after: String, $categoryId: ID) {
+  teacherLibraryItems(first: $first, after: $after, categoryId: $categoryId) {
+    edges {
+      cursor
+      node {
+        id
+        createdAt
+        primaryLanguage
+        category {
+          id
+          name
+        }
+        translations {
+          language
+          title
+          description
+        }
+        attachments {
+          id
+          mediaObject {
+            id
+            originalName
+            mimeType
+            sizeBytes
+            status
+            malwareStatus
+          }
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+mutation TeacherLibraryCreateCategory($input: CreateLibraryCategoryInput!) {
+  createLibraryCategory(input: $input) {
+    category {
+      id
+      name
+    }
+  }
+}
+
+mutation TeacherLibraryCreateItem($input: CreateLibraryItemInput!) {
+  createLibraryItem(input: $input) {
+    item {
+      id
+    }
+  }
+}
+
+mutation TeacherLibraryArchiveItem($input: SetLibraryItemArchivedInput!) {
+  setLibraryItemArchived(input: $input) {
+    item {
+      id
+      archivedAt
+    }
+  }
+}

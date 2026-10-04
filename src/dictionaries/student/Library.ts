@@ -11,6 +11,12 @@ export type StudentLibraryCopy = {
   types: Record<"all" | "guide" | "checklist" | "article", string>;
   related: string;
   readResource: string;
+  pdfBooks: string;
+  pdfEmpty: string;
+  pdfOpen: string;
+  pdfError: string;
+  pdfLoadMore: string;
+  pdfRetry: string;
 };
 
 const libraryCopy: Record<Locale, StudentLibraryCopy> = {
@@ -30,6 +36,12 @@ const libraryCopy: Record<Locale, StudentLibraryCopy> = {
     },
     related: "O‘xshash resurslar",
     readResource: "O‘qish",
+    pdfBooks: "PDF kitoblar",
+    pdfEmpty: "Hozircha PDF kitob yo‘q.",
+    pdfOpen: "PDFni ochish",
+    pdfError: "PDF kitoblarni yuklab bo‘lmadi.",
+    pdfLoadMore: "Yana ko‘rsatish",
+    pdfRetry: "Qayta urinish",
   },
   ru: {
     eyebrow: "Библиотека ученика",
@@ -47,6 +59,12 @@ const libraryCopy: Record<Locale, StudentLibraryCopy> = {
     },
     related: "Похожие материалы",
     readResource: "Читать",
+    pdfBooks: "PDF-книги",
+    pdfEmpty: "PDF-книг пока нет.",
+    pdfOpen: "Открыть PDF",
+    pdfError: "Не удалось загрузить PDF-книги.",
+    pdfLoadMore: "Показать ещё",
+    pdfRetry: "Повторить",
   },
   en: {
     eyebrow: "Student library",
@@ -64,6 +82,12 @@ const libraryCopy: Record<Locale, StudentLibraryCopy> = {
     },
     related: "Related resources",
     readResource: "Read",
+    pdfBooks: "PDF books",
+    pdfEmpty: "No PDF books yet.",
+    pdfOpen: "Open PDF",
+    pdfError: "PDF books could not be loaded.",
+    pdfLoadMore: "Show more",
+    pdfRetry: "Retry",
   },
 };
 

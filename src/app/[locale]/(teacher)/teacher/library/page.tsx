@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
-import { getTeacherCopy } from "@/dictionaries/teacher/Teacher";
 import { createTeacherMetadata } from "@/features/teacher/layout/TeacherMetadata";
+import { loadTeacherLibraryBooks } from "@/features/teacher/library/TeacherLibraryActions";
+import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+
+import { TeacherLibraryCatalog } from "./TeacherLibraryCatalog";
 
 type TeacherLibraryPageProps = { params: Promise<{ locale: string }> };
 
@@ -15,12 +18,19 @@ export async function generateMetadata({ params }: TeacherLibraryPageProps): Pro
 export default async function TeacherLibraryPage({ params }: TeacherLibraryPageProps) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-
+  const preview = isDashboardPreviewEnabled();
+  const result = preview ? null : await loadTeacherLibraryBooks();
   return (
-    <main aria-labelledby="teacher-library-title">
-      <h1 className="teacherShared__pageTitle" id="teacher-library-title">
-        {getTeacherCopy(locale).navigation.library}
-      </h1>
-    </main>
+    <TeacherLibraryCatalog
+      initialPage={
+        result?.ok
+          ? result.page
+          : preview
+            ? { edges: [], pageInfo: { endCursor: null, hasNextPage: false } }
+            : null
+      }
+      locale={locale}
+      preview={preview}
+    />
   );
 }
