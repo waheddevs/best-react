@@ -7,7 +7,7 @@ import EditNoteRounded from "@mui/icons-material/EditNoteRounded";
 import { useMutation } from "@apollo/client/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { Locale } from "@/config/Locales";
 import {
@@ -129,7 +129,8 @@ export function StudentWritingSimulator({
   );
   const [saveState, setSaveState] = useState<"error" | "idle" | "saved" | "saving">("idle");
   const [error, setError] = useState("");
-  const [completed, setCompleted] = useState(false);
+  const [completed, setCompleted] = useState(attempt.status !== "IN_PROGRESS");
+  const [finalizing, setFinalizing] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(() =>
     secondsRemaining(attempt.expiresAt, attempt.serverTime),
   );
@@ -138,6 +139,8 @@ export function StudentWritingSimulator({
       attempt.answers.map((answer) => [answer.questionId, answer.textValue ?? ""]),
     ),
   );
+  const answersRef = useRef(answers);
+  const saveQueueRef = useRef<Record<string, Promise<void>>>({});
   const autoSubmittedRef = useRef(false);
   const [saveAnswer] = useMutation(SaveStudentTestAnswerDocument, {
     context: { authenticated: true },
@@ -147,6 +150,38 @@ export function StudentWritingSimulator({
   });
   const task = tasks[currentTask];
   const returnHref = `/${locale}/student/tests/${paperId}`;
+
+  const persistTask = useCallback(
+    async (taskIndex: number) => {
+      const target = tasks[taskIndex];
+      if (!target) return false;
+      const questionId = target.question.id;
+      const value = answersRef.current[questionId]?.trim() ?? "";
+      if (!value) return false;
+
+      setSaveState("saving");
+      const previous = saveQueueRef.current[questionId] ?? Promise.resolve();
+      const next = previous
+        .catch(() => undefined)
+        .then(async () => {
+          if (savedAnswersRef.current[questionId] === value) return;
+          await saveAnswer({
+            variables: { input: { attemptId: attempt.id, questionId, textValue: value } },
+          });
+          savedAnswersRef.current[questionId] = value;
+          if (answersRef.current[questionId]?.trim() === value) setSaveState("saved");
+        });
+      saveQueueRef.current[questionId] = next;
+      try {
+        await next;
+        return true;
+      } catch {
+        setSaveState("error");
+        return false;
+      }
+    },
+    [attempt.id, saveAnswer, tasks],
+  );
 
   useEffect(() => {
     if (completed) return;
@@ -158,84 +193,84 @@ export function StudentWritingSimulator({
   }, [completed]);
 
   useEffect(() => {
-    if (remainingSeconds !== 0 || autoSubmittedRef.current) return;
+    if (completed || remainingSeconds !== 0 || autoSubmittedRef.current) return;
     autoSubmittedRef.current = true;
-    void submitAttempt({ variables: { input: { attemptId: attempt.id } } }).finally(() => {
-      router.push(returnHref);
-      router.refresh();
-    });
-  }, [attempt.id, remainingSeconds, returnHref, router, submitAttempt]);
+    setFinalizing(true);
+    void (async () => {
+      await Promise.allSettled(Object.values(saveQueueRef.current));
+      try {
+        await submitAttempt({ variables: { input: { attemptId: attempt.id } } });
+        router.push(returnHref);
+        router.refresh();
+      } catch {
+        setError(labels.submitError);
+        setFinalizing(false);
+      }
+    })();
+  }, [
+    attempt.id,
+    completed,
+    labels.submitError,
+    remainingSeconds,
+    returnHref,
+    router,
+    submitAttempt,
+  ]);
 
   useEffect(() => {
     if (!task) return;
     const text = answers[task.question.id]?.trim() ?? "";
     if (!text || savedAnswersRef.current[task.question.id] === text) return;
     const timeout = window.setTimeout(() => {
-      setSaveState("saving");
-      void saveAnswer({
-        variables: {
-          input: { attemptId: attempt.id, questionId: task.question.id, textValue: text },
-        },
-      })
-        .then(() => {
-          savedAnswersRef.current[task.question.id] = text;
-          setSaveState("saved");
-        })
-        .catch(() => setSaveState("error"));
+      void persistTask(currentTask);
     }, 800);
     return () => window.clearTimeout(timeout);
-  }, [answers, attempt.id, saveAnswer, task]);
+  }, [answers, currentTask, persistTask, task]);
 
   if (!task || tasks.length === 0) return null;
 
   const text = answers[task.question.id] ?? "";
   const wordCount = countWords(text);
-  const minimumWords = getMinimumWords(task.section.instructions, task.section.position);
+  const minimumWords = getMinimumWords(task.section.position);
   const wordsRemaining = Math.max(0, minimumWords - wordCount);
-
-  const persistTask = async (taskIndex: number) => {
-    const target = tasks[taskIndex];
-    if (!target) return true;
-    const value = answers[target.question.id]?.trim() ?? "";
-    if (!value || savedAnswersRef.current[target.question.id] === value) return Boolean(value);
-    setSaveState("saving");
-    try {
-      await saveAnswer({
-        variables: {
-          input: { attemptId: attempt.id, questionId: target.question.id, textValue: value },
-        },
-      });
-      savedAnswersRef.current[target.question.id] = value;
-      setSaveState("saved");
-      return true;
-    } catch {
-      setSaveState("error");
-      return false;
-    }
-  };
 
   const changeTask = async (nextTask: number) => {
     setError("");
     const saved = await persistTask(currentTask);
-    if (!saved && text.trim()) {
+    if (!saved && answersRef.current[task.question.id]?.trim()) {
       setError(labels.saveError);
       return;
     }
     setCurrentTask(nextTask);
   };
 
-  const finish = async () => {
-    setError("");
+  const leave = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    event.preventDefault();
     const saved = await persistTask(currentTask);
-    if (!saved && text.trim()) {
+    if (!saved && answersRef.current[task.question.id]?.trim()) {
       setError(labels.saveError);
       return;
     }
-    if (tasks.some(({ question }) => !(answers[question.id] ?? "").trim())) {
+    router.push(returnHref);
+  };
+
+  const finish = async () => {
+    setError("");
+    if (tasks.some(({ question }) => !(answersRef.current[question.id] ?? "").trim())) {
       setError(labels.emptyTasks);
       return;
     }
     if (!window.confirm(labels.finishConfirm)) return;
+    setFinalizing(true);
+    const saved = (await Promise.all(tasks.map((_, index) => persistTask(index)))).every(Boolean);
+    if (!saved) {
+      setError(labels.saveError);
+      setFinalizing(false);
+      return;
+    }
     autoSubmittedRef.current = true;
     try {
       await submitAttempt({ variables: { input: { attemptId: attempt.id } } });
@@ -243,6 +278,7 @@ export function StudentWritingSimulator({
     } catch {
       autoSubmittedRef.current = false;
       setError(labels.submitError);
+      setFinalizing(false);
     }
   };
 
@@ -267,7 +303,7 @@ export function StudentWritingSimulator({
   return (
     <main className="studentWritingSimulator">
       <header className="studentWritingSimulator__header">
-        <Link aria-label={labels.back} href={returnHref}>
+        <Link aria-label={labels.back} href={returnHref} onClick={(event) => void leave(event)}>
           <ArrowBackRounded aria-hidden="true" />
         </Link>
         <div>
@@ -285,12 +321,13 @@ export function StudentWritingSimulator({
         {tasks.map(({ section }, index) => (
           <button
             aria-current={index === currentTask ? "step" : undefined}
+            disabled={finalizing}
             key={section.id}
             onClick={() => void changeTask(index)}
             type="button"
           >
             <span>{labels.task.replace("{number}", String(section.position))}</span>
-            <small>{getSuggestedMinutes(section.instructions, section.position)} min</small>
+            <small>{getSuggestedMinutes(section.position)} min</small>
           </button>
         ))}
       </nav>
@@ -313,13 +350,13 @@ export function StudentWritingSimulator({
           <label htmlFor={`writing-answer-${task.question.id}`}>{labels.answer}</label>
           <textarea
             autoFocus
+            disabled={finalizing}
             id={`writing-answer-${task.question.id}`}
             onChange={(event) => {
               setSaveState("idle");
-              setAnswers((current) => ({
-                ...current,
-                [task.question.id]: event.target.value,
-              }));
+              const next = { ...answersRef.current, [task.question.id]: event.target.value };
+              answersRef.current = next;
+              setAnswers(next);
             }}
             spellCheck
             value={text}
@@ -346,7 +383,11 @@ export function StudentWritingSimulator({
 
       <div className="studentWritingSimulator__actions">
         {currentTask > 0 ? (
-          <button onClick={() => void changeTask(currentTask - 1)} type="button">
+          <button
+            disabled={finalizing}
+            onClick={() => void changeTask(currentTask - 1)}
+            type="button"
+          >
             <ArrowBackRounded aria-hidden="true" />
             {labels.previous}
           </button>
@@ -354,12 +395,16 @@ export function StudentWritingSimulator({
           <span />
         )}
         {currentTask < tasks.length - 1 ? (
-          <button onClick={() => void changeTask(currentTask + 1)} type="button">
+          <button
+            disabled={finalizing}
+            onClick={() => void changeTask(currentTask + 1)}
+            type="button"
+          >
             {labels.next}
             <ArrowForwardRounded aria-hidden="true" />
           </button>
         ) : (
-          <button disabled={submitting} onClick={() => void finish()} type="button">
+          <button disabled={finalizing || submitting} onClick={() => void finish()} type="button">
             <EditNoteRounded aria-hidden="true" />
             {labels.finish}
           </button>
@@ -380,14 +425,12 @@ function countWords(value: string) {
   return words?.length ?? 0;
 }
 
-function getMinimumWords(instructions: string, position: number) {
-  const match = instructions.match(/(?:at least|minimum of)\s+(\d+)\s+words/i);
-  return match?.[1] ? Number(match[1]) : position === 1 ? 150 : 250;
+function getMinimumWords(position: number) {
+  return position === 1 ? 150 : 250;
 }
 
-function getSuggestedMinutes(instructions: string, position: number) {
-  const match = instructions.match(/(?:about|approximately)\s+(\d+)\s+minutes/i);
-  return match?.[1] ? Number(match[1]) : position === 1 ? 20 : 40;
+function getSuggestedMinutes(position: number) {
+  return position === 1 ? 20 : 40;
 }
 
 function secondsRemaining(expiresAt: string | null, serverTime: string): number | null {

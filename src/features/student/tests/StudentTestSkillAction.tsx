@@ -67,7 +67,11 @@ export function StudentTestSkillAction({
     );
   }
 
-  if (skill.attemptStatus === "SUBMITTED" || skill.attemptStatus === "SCORED") {
+  if (
+    skill.attemptStatus === "SUBMITTED" ||
+    skill.attemptStatus === "REVIEW_REQUIRED" ||
+    skill.attemptStatus === "SCORED"
+  ) {
     return <span className="studentTests__skillPending">{copy.submittedLabel}</span>;
   }
 

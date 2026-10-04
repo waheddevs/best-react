@@ -19,8 +19,15 @@ import {
 import { resolveDynamicTestLayout } from "@/lib/tests/DynamicTestLayout";
 
 import { StudentAudioRecorder } from "./StudentAudioRecorder";
+import {
+  StudentAcademicReadingQuestions,
+  type StudentAcademicReadingCopy,
+} from "./StudentAcademicReadingQuestions";
 import { StudentListeningAudioPlayer } from "./StudentListeningAudioPlayer";
 import { StudentListeningFormTable } from "./StudentListeningFormTable";
+import { StudentListeningMultipleChoiceList } from "./StudentListeningMultipleChoiceList";
+import { StudentListeningPartFourCompletion } from "./StudentListeningPartFourCompletion";
+import { StudentListeningPartThreeList } from "./StudentListeningPartThreeList";
 import { StudentTestSectionMaterial } from "./StudentTestSectionMaterial";
 import { StudentTestShell } from "./StudentTestShell";
 
@@ -140,6 +147,78 @@ const dynamicRunnerCopy = {
   en: { part: "Part", visual: "Visual material" },
 } as const;
 
+const listeningPartThreeCopy = {
+  uz: {
+    matching: "26–30 · Fikrlarni speakerlar bilan moslang",
+    multipleChoice: "21–25 · A, B yoki C javobini tanlang",
+    select: "Speakerni tanlang",
+    speakers: "Speaker variantlari",
+  },
+  ru: {
+    matching: "26–30 · Сопоставьте мнения с говорящими",
+    multipleChoice: "21–25 · Выберите A, B или C",
+    select: "Выберите говорящего",
+    speakers: "Варианты говорящих",
+  },
+  en: {
+    matching: "26–30 · Match the views to the speakers",
+    multipleChoice: "21–25 · Choose A, B or C",
+    select: "Choose a speaker",
+    speakers: "Speaker options",
+  },
+} as const;
+
+const listeningPartFourCopy = {
+  uz: {
+    noteCompletion: "31–35 · Qaydlarni to‘ldiring",
+    tableCompletion: "36–40 · Jadvalni to‘ldiring",
+  },
+  ru: {
+    noteCompletion: "31–35 · Заполните заметки",
+    tableCompletion: "36–40 · Заполните таблицу",
+  },
+  en: {
+    noteCompletion: "31–35 · Complete the notes",
+    tableCompletion: "36–40 · Complete the table",
+  },
+} as const;
+
+const academicReadingCopy: Record<Locale, StudentAcademicReadingCopy> = {
+  uz: {
+    choose: "Javobni tanlang",
+    headingMatching: "14–18 · Sarlavhalarni moslang",
+    informationMatching: "19–22 · Ma’lumotlarni moslang",
+    multipleChoice: "32–36 · A, B, C yoki D javobini tanlang",
+    noteCompletion: "7–13 · Qaydlarni to‘ldiring",
+    sentenceCompletion: "23–26 · Gaplarni to‘ldiring",
+    summaryCompletion: "37–40 · Xulosani to‘ldiring",
+    trueFalseNotGiven: "1–6 · TRUE / FALSE / NOT GIVEN",
+    yesNoNotGiven: "27–31 · YES / NO / NOT GIVEN",
+  },
+  ru: {
+    choose: "Выберите ответ",
+    headingMatching: "14–18 · Сопоставьте заголовки",
+    informationMatching: "19–22 · Сопоставьте информацию",
+    multipleChoice: "32–36 · Выберите A, B, C или D",
+    noteCompletion: "7–13 · Заполните заметки",
+    sentenceCompletion: "23–26 · Дополните предложения",
+    summaryCompletion: "37–40 · Заполните краткое содержание",
+    trueFalseNotGiven: "1–6 · TRUE / FALSE / NOT GIVEN",
+    yesNoNotGiven: "27–31 · YES / NO / NOT GIVEN",
+  },
+  en: {
+    choose: "Choose an answer",
+    headingMatching: "14–18 · Match the headings",
+    informationMatching: "19–22 · Match the information",
+    multipleChoice: "32–36 · Choose A, B, C or D",
+    noteCompletion: "7–13 · Complete the notes",
+    sentenceCompletion: "23–26 · Complete the sentences",
+    summaryCompletion: "37–40 · Complete the summary",
+    trueFalseNotGiven: "1–6 · TRUE / FALSE / NOT GIVEN",
+    yesNoNotGiven: "27–31 · YES / NO / NOT GIVEN",
+  },
+};
+
 export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunnerProps) {
   const copy = runnerCopy[locale];
   const dynamicCopy = dynamicRunnerCopy[locale];
@@ -201,6 +280,38 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
       ? (section.blocks.find((block) => block.kind === "TABLE" && block.tableRows.length > 0) ??
         null)
       : null;
+  const listeningMultipleChoiceQuestions =
+    attempt.skill === "LISTENING" &&
+    section?.position === 2 &&
+    sectionQuestions.length > 0 &&
+    sectionQuestions.every((item) => item.kind === "SINGLE_CHOICE" && item.options.length === 3)
+      ? sectionQuestions
+      : null;
+  const listeningPartThreeQuestions =
+    attempt.skill === "LISTENING" &&
+    section?.position === 3 &&
+    sectionQuestions.length === 10 &&
+    sectionQuestions.every((item) => item.kind === "SINGLE_CHOICE" && item.options.length === 3)
+      ? sectionQuestions
+      : null;
+  const listeningPartFourQuestions =
+    attempt.skill === "LISTENING" &&
+    section?.position === 4 &&
+    sectionQuestions.length === 10 &&
+    sectionQuestions.every(
+      (item) => item.kind === "SHORT_TEXT" && item.position >= 31 && item.position <= 40,
+    )
+      ? [...sectionQuestions].sort((left, right) => left.position - right.position)
+      : null;
+  const listeningPartFourTableBlock = listeningPartFourQuestions
+    ? (section?.blocks.find(
+        (block) =>
+          block.kind === "TABLE" &&
+          block.tableRows.some(({ cells }) =>
+            cells.some((cell) => /\{\{(?:3[6-9]|40)\}\}/u.test(cell)),
+          ),
+      ) ?? null)
+    : null;
   const questionRange = sectionQuestions.length
     ? `${String(sectionQuestions[0]?.position)}–${String(sectionQuestions.at(-1)?.position)}`
     : "";
@@ -314,6 +425,22 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
     if (selectedOptionIds.length > 0) {
       void persistForQuestion(questionId, { selectedOptionIds });
     }
+  };
+
+  const handleMatching = (questionId: string, optionId: string) => {
+    const matchingQuestion = attempt.questions.find(({ id }) => id === questionId);
+    if (matchingQuestion?.kind !== "MATCHING") {
+      handleSingle(questionId, optionId);
+      return;
+    }
+
+    const localAnswer = answers[questionId] ?? emptyLocalAnswer;
+    const selectedOptionIds = [optionId];
+    setAnswers((current) => ({
+      ...current,
+      [questionId]: { ...localAnswer, selectedOptionIds },
+    }));
+    void persistForQuestion(questionId, { selectedOptionIds });
   };
 
   const handleTextChange = (questionId: string, textValue: string) =>
@@ -446,7 +573,9 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
         ) : null}
 
         <section className="connectedTestRunner__questionCanvas">
-          {listeningFormBlock ? null : (
+          {listeningFormBlock ||
+          listeningPartFourQuestions ||
+          attempt.skill === "READING" ? null : (
             <header className="connectedTestRunner__questionGroupHeading">
               <h2>
                 {copy.question} {questionRange}
@@ -454,7 +583,34 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
             </header>
           )}
 
-          {listeningFormBlock ? (
+          {attempt.skill === "READING" && section ? (
+            <StudentAcademicReadingQuestions
+              answerLabel={copy.answer}
+              answers={answers}
+              copy={academicReadingCopy[locale]}
+              currentQuestionId={question.id}
+              onChoiceAnswer={handleSingle}
+              onMatchingAnswer={handleMatching}
+              onQuestionFocus={(questionId) => {
+                const index = attempt.questions.findIndex(({ id }) => id === questionId);
+                if (index >= 0) setCurrentIndex(index);
+              }}
+              onReviewToggle={(questionId) =>
+                setReviewIds((current) =>
+                  current.includes(questionId)
+                    ? current.filter((id) => id !== questionId)
+                    : [...current, questionId],
+                )
+              }
+              onTextAnswerBlur={handleTextSave}
+              onTextAnswerChange={handleTextChange}
+              questions={sectionQuestions}
+              readOnly={readOnly}
+              reviewIds={reviewIds}
+              reviewLabel={copy.review}
+              sectionPosition={section.position}
+            />
+          ) : listeningFormBlock ? (
             <StudentListeningFormTable
               answerLabel={copy.answer}
               answers={answers}
@@ -467,6 +623,66 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
               }}
               questions={sectionQuestions}
               readOnly={readOnly}
+            />
+          ) : listeningMultipleChoiceQuestions ? (
+            <StudentListeningMultipleChoiceList
+              answers={answers}
+              currentQuestionId={question.id}
+              onAnswer={handleSingle}
+              onQuestionFocus={(questionId) => {
+                const index = attempt.questions.findIndex(({ id }) => id === questionId);
+                if (index >= 0) setCurrentIndex(index);
+              }}
+              onReviewToggle={(questionId) =>
+                setReviewIds((current) =>
+                  current.includes(questionId)
+                    ? current.filter((id) => id !== questionId)
+                    : [...current, questionId],
+                )
+              }
+              questions={listeningMultipleChoiceQuestions}
+              readOnly={readOnly}
+              reviewIds={reviewIds}
+              reviewLabel={copy.review}
+            />
+          ) : listeningPartThreeQuestions ? (
+            <StudentListeningPartThreeList
+              answers={answers}
+              copy={listeningPartThreeCopy[locale]}
+              currentQuestionId={question.id}
+              onAnswer={handleSingle}
+              onQuestionFocus={(questionId) => {
+                const index = attempt.questions.findIndex(({ id }) => id === questionId);
+                if (index >= 0) setCurrentIndex(index);
+              }}
+              onReviewToggle={(questionId) =>
+                setReviewIds((current) =>
+                  current.includes(questionId)
+                    ? current.filter((id) => id !== questionId)
+                    : [...current, questionId],
+                )
+              }
+              questions={listeningPartThreeQuestions}
+              readOnly={readOnly}
+              reviewIds={reviewIds}
+              reviewLabel={copy.review}
+            />
+          ) : listeningPartFourQuestions ? (
+            <StudentListeningPartFourCompletion
+              answerLabel={copy.answer}
+              answers={answers}
+              copy={listeningPartFourCopy[locale]}
+              currentQuestionId={question.id}
+              noteQuestions={listeningPartFourQuestions.slice(0, 5)}
+              onAnswerBlur={handleTextSave}
+              onAnswerChange={handleTextChange}
+              onQuestionFocus={(questionId) => {
+                const index = attempt.questions.findIndex(({ id }) => id === questionId);
+                if (index >= 0) setCurrentIndex(index);
+              }}
+              readOnly={readOnly}
+              tableBlock={listeningPartFourTableBlock}
+              tableQuestions={listeningPartFourQuestions.slice(5)}
             />
           ) : (
             <div className="connectedTestRunner__questionList">
