@@ -1,0 +1,66 @@
+import type { Locale } from "@/config/Locales";
+
+const copy = {
+  uz: {
+    part: "Part {number}",
+    title: "Sarlavha",
+    instructions: "Ko‘rsatma",
+    content: "Studentga qo‘shimcha matn",
+    questions: "Student savollari",
+    cueCard: "Cue card",
+    question: "Savol {number}",
+    unsaved: "Saqlanmagan o‘zgarishlar bor",
+    clear: "Joriy partdagi matnlarni tozalash",
+    publishTitle: "Saqlash va e’lon qilish",
+    publishMessage: "Saqlasangiz, Speaking testi studentlarga ham e’lon qilinadi. Davom etasizmi?",
+    publishConfirm: "Saqlash va e’lon qilish",
+    saving: "Speaking saqlanmoqda…",
+    saved: "Speaking saqlandi va student testiga e’lon qilindi.",
+    error: "Speaking saqlanmadi. Qayta urinib ko‘ring.",
+    validation: "Uchala partning sarlavhasi, ko‘rsatmasi va barcha savollarini to‘ldiring.",
+    empty: "Speaking ma’lumotlari topilmadi.",
+  },
+  ru: {
+    part: "Часть {number}",
+    title: "Заголовок",
+    instructions: "Инструкция",
+    content: "Дополнительный текст для студента",
+    questions: "Вопросы для студента",
+    cueCard: "Карточка с заданием",
+    question: "Вопрос {number}",
+    unsaved: "Есть несохранённые изменения",
+    clear: "Очистить текст текущей части",
+    publishTitle: "Сохранить и опубликовать",
+    publishMessage:
+      "При сохранении тест Speaking также будет опубликован для студентов. Продолжить?",
+    publishConfirm: "Сохранить и опубликовать",
+    saving: "Сохранение Speaking…",
+    saved: "Speaking сохранён и опубликован для студентов.",
+    error: "Не удалось сохранить Speaking. Повторите попытку.",
+    validation: "Заполните заголовок, инструкцию и все вопросы в трёх частях.",
+    empty: "Данные Speaking недоступны.",
+  },
+  en: {
+    part: "Part {number}",
+    title: "Title",
+    instructions: "Instructions",
+    content: "Additional student-facing text",
+    questions: "Student questions",
+    cueCard: "Cue card",
+    question: "Question {number}",
+    unsaved: "There are unsaved changes",
+    clear: "Clear the current part's text",
+    publishTitle: "Save and publish",
+    publishMessage: "Saving will also publish the Speaking test for students. Continue?",
+    publishConfirm: "Save and publish",
+    saving: "Saving Speaking…",
+    saved: "Speaking was saved and published for students.",
+    error: "Speaking could not be saved. Try again.",
+    validation: "Complete the title, instructions, and all questions in all three parts.",
+    empty: "Speaking data is unavailable.",
+  },
+} as const;
+
+export function getTeacherSpeakingAuthoringCopy(locale: Locale) {
+  return copy[locale];
+}

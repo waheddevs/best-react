@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
+import { loadConnectedTeacherTestAuthoringVersion } from "@/lib/teacher/TeacherGroupData";
 
 import {
   getTeacherPracticeContext,
   parsePracticeNumber,
   type TeacherPracticeParams,
 } from "../TeacherPracticeRoute";
-import { TeacherPracticeSkillPage } from "../TeacherPracticeSkillPage";
+import { TeacherReadingEditor } from "./TeacherReadingEditor";
 
 type TeacherReadingPageProps = { params: TeacherPracticeParams };
 
@@ -23,12 +25,20 @@ export async function generateMetadata({ params }: TeacherReadingPageProps): Pro
 
 export default async function TeacherReadingPage({ params }: TeacherReadingPageProps) {
   const context = await getTeacherPracticeContext(params);
+  if (!context.connected) notFound();
+  const reading = context.connectedPaper?.skills.find(({ skill }) => skill === "READING");
+  if (!reading) notFound();
+  const version = await loadConnectedTeacherTestAuthoringVersion(
+    context.locale,
+    reading.testVersionId,
+  );
+  if (version.sections.length !== 3) notFound();
   return (
-    <TeacherPracticeSkillPage
+    <TeacherReadingEditor
+      initialVersion={version}
       locale={context.locale}
       practiceHref={context.practiceHref}
       practiceNumber={context.practiceNumber}
-      skill="reading"
     />
   );
 }

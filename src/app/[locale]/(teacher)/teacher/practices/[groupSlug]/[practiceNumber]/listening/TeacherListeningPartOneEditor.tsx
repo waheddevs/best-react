@@ -5,10 +5,7 @@ import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import GraphicEqRounded from "@mui/icons-material/GraphicEqRounded";
 import HeadphonesRounded from "@mui/icons-material/HeadphonesRounded";
 import SaveOutlined from "@mui/icons-material/SaveOutlined";
-import VisibilityOutlined from "@mui/icons-material/VisibilityOutlined";
 import { useMutation } from "@apollo/client/react";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import { useEffect, useMemo, useState } from "react";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
@@ -20,12 +17,16 @@ import {
   TeacherCreateNextTestVersionDocument,
   TeacherGenerateListeningAudioDocument,
   TeacherListeningAudioDownloadDocument,
+  TeacherPublishTestVersionDocument,
   TeacherTestAuthoringVersionFieldsFragmentDoc,
   TeacherUpdateTestQuestionDocument,
   TeacherUpdateTestSectionBlockDocument,
   TeacherUpdateTestSectionDocument,
   type TeacherTestAuthoringVersionFieldsFragment,
 } from "@/gql/graphql";
+import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
+
+import { TeacherListeningPartTabs } from "./TeacherListeningPartTabs";
 
 type TeacherListeningPartOneEditorProps = {
   initialVersion: TeacherTestAuthoringVersionFieldsFragment;
@@ -58,6 +59,11 @@ type AudioPreview = {
 };
 
 const questionToken = /\{\{(\d+)\}\}/;
+const publishConfirmation = {
+  confirmLabel: "Save and publish",
+  message: "If you save, the test will be published also, are you sure to publish?",
+  title: "Save and publish",
+} as const;
 
 export function TeacherListeningPartOneEditor({
   initialVersion,
@@ -67,12 +73,12 @@ export function TeacherListeningPartOneEditor({
 }: TeacherListeningPartOneEditorProps) {
   const labels = getTeacherListeningCopy(locale);
   const practiceCopy = getTeacherPracticesCopy(locale);
+  const confirm = useConfirmDialog();
   const [version, setVersion] = useState(initialVersion);
   const initialState = useMemo(() => editorStateFromVersion(initialVersion), [initialVersion]);
   const [editor, setEditor] = useState(initialState);
   const [baseline, setBaseline] = useState(() => JSON.stringify(initialState));
   const [savedTranscript, setSavedTranscript] = useState(initialState.transcript.trim());
-  const [preview, setPreview] = useState(false);
   const [audioPreview, setAudioPreview] = useState<AudioPreview | null>(null);
   const [audioConfirmed, setAudioConfirmed] = useState(false);
   const [attachedAudioUrl, setAttachedAudioUrl] = useState<string | null>(null);
@@ -96,6 +102,9 @@ export function TeacherListeningPartOneEditor({
     context: { authenticated: true },
   });
   const [updateQuestion] = useMutation(TeacherUpdateTestQuestionDocument, {
+    context: { authenticated: true },
+  });
+  const [publishVersion] = useMutation(TeacherPublishTestVersionDocument, {
     context: { authenticated: true },
   });
   const serializedEditor = JSON.stringify(editor);
@@ -136,6 +145,20 @@ export function TeacherListeningPartOneEditor({
       rows: current.rows.map((row) => (row.key === key ? { ...row, ...values } : row)),
     }));
 
+  const clearEditor = () => {
+    setEditor((current) => ({
+      ...current,
+      instructions: "",
+      rows: current.rows.map((row) => ({ ...row, answer: "", question: "" })),
+      title: "",
+      transcript: "",
+    }));
+    setAudioPreview(null);
+    setAudioConfirmed(false);
+    setAudioState("idle");
+    setSaveState("idle");
+  };
+
   const save = async () => {
     if (!partOne || !tableBlock || saveState === "saving") return;
     const isComplete =
@@ -155,6 +178,14 @@ export function TeacherListeningPartOneEditor({
       setSaveState("validation");
       return;
     }
+    const accepted = await confirm({
+      cancelLabel: practiceCopy.cancel,
+      confirmLabel: publishConfirmation.confirmLabel,
+      message: publishConfirmation.message,
+      title: publishConfirmation.title,
+    });
+    if (!accepted) return;
+
     setSaveState("saving");
     try {
       let workingVersion = version;
@@ -271,6 +302,13 @@ export function TeacherListeningPartOneEditor({
         workingVersion = readFragment(TeacherTestAuthoringVersionFieldsFragmentDoc, questionMasked);
       }
 
+      const published = await publishVersion({
+        variables: { input: { testVersionId: workingVersion.id } },
+      });
+      const publishedMasked = published.data?.publishTestVersion.testVersion;
+      if (!publishedMasked) throw new Error("The Listening test was not published");
+      workingVersion = readFragment(TeacherTestAuthoringVersionFieldsFragmentDoc, publishedMasked);
+
       setVersion(workingVersion);
       setBaseline(JSON.stringify(editor));
       setSavedTranscript(editor.transcript.trim());
@@ -345,39 +383,18 @@ export function TeacherListeningPartOneEditor({
       </header>
 
       <div className="teacherPractices__detailToolbar">
-        <Tabs
-          aria-label="Listening parts"
-          className="teacherGroups__categoryTabs teacherGroups__workspaceNav teacherPractices__partTabs"
-          component="nav"
-          scrollButtons={false}
-          value="part-1"
-          variant="scrollable"
-        >
-          {[1, 2, 3, 4].map((part) => (
-            <Tab
-              className="teacherGroups__categoryTab"
-              disabled={part !== 1}
-              key={part}
-              label={<span className="teacherGroups__categoryName">Part {part}</span>}
-              value={`part-${String(part)}`}
-            />
-          ))}
-        </Tabs>
+        <TeacherListeningPartTabs activePart={1} practiceHref={practiceHref} />
         <div
           aria-label={practiceCopy.skillActions}
           className="teacherPractices__actions"
           role="group"
         >
           <button
-            aria-label={labels.preview}
-            aria-pressed={preview}
-            data-action="preview"
-            onClick={() => setPreview((current) => !current)}
+            aria-label={practiceCopy.deleteSkill}
+            data-action="delete"
+            onClick={clearEditor}
             type="button"
           >
-            <VisibilityOutlined aria-hidden="true" />
-          </button>
-          <button aria-label={practiceCopy.deleteSkill} data-action="delete" disabled type="button">
             <DeleteOutlineRounded aria-hidden="true" />
           </button>
           <button
@@ -404,7 +421,6 @@ export function TeacherListeningPartOneEditor({
             onChange={(event) =>
               setEditor((current) => ({ ...current, title: event.target.value }))
             }
-            readOnly={preview}
             value={editor.title}
           />
         </div>
@@ -413,7 +429,6 @@ export function TeacherListeningPartOneEditor({
           onChange={(event) =>
             setEditor((current) => ({ ...current, instructions: event.target.value }))
           }
-          readOnly={preview}
           rows={2}
           value={editor.instructions}
         />
@@ -455,7 +470,6 @@ export function TeacherListeningPartOneEditor({
                     <input
                       aria-label={`${labels.question} ${row.position ?? labels.example}`}
                       onChange={(event) => setRow(row.key, { question: event.target.value })}
-                      readOnly={preview}
                       value={row.question}
                     />
                   </td>
@@ -463,7 +477,6 @@ export function TeacherListeningPartOneEditor({
                     <input
                       aria-label={`${labels.answer} ${row.position ?? labels.example}`}
                       onChange={(event) => setRow(row.key, { answer: event.target.value })}
-                      readOnly={preview}
                       value={row.answer}
                     />
                   </td>
@@ -489,16 +502,14 @@ export function TeacherListeningPartOneEditor({
               </span>
             </div>
           </div>
-          {!preview ? (
-            <button
-              disabled={audioState === "generating" || editor.transcript.trim().length === 0}
-              onClick={() => void requestAudioGeneration()}
-              type="button"
-            >
-              <GraphicEqRounded aria-hidden="true" />
-              {labels.createAudio}
-            </button>
-          ) : null}
+          <button
+            disabled={audioState === "generating" || editor.transcript.trim().length === 0}
+            onClick={() => void requestAudioGeneration()}
+            type="button"
+          >
+            <GraphicEqRounded aria-hidden="true" />
+            {labels.createAudio}
+          </button>
         </div>
         <label htmlFor="teacher-listening-transcript">{labels.transcript}</label>
         <textarea
@@ -510,7 +521,6 @@ export function TeacherListeningPartOneEditor({
             setAudioState("idle");
           }}
           placeholder={labels.transcriptPlaceholder}
-          readOnly={preview}
           rows={8}
           value={editor.transcript}
         />
@@ -519,7 +529,7 @@ export function TeacherListeningPartOneEditor({
             <audio controls preload="metadata" src={audioSource}>
               {labels.audioPlaybackUnsupported}
             </audio>
-            {audioPreview && !preview ? (
+            {audioPreview ? (
               <label>
                 <input
                   checked={audioConfirmed}
@@ -566,21 +576,22 @@ function editorStateFromVersion(version: TeacherTestAuthoringVersionFieldsFragme
   );
   const table = section?.blocks.find(({ kind }) => kind === "TABLE");
   const sectionQuestions = version.questions.filter(({ sectionPosition }) => sectionPosition === 1);
-  const rows = (table?.tableRows ?? []).map(({ cells }, index): EditorRow => {
+  const rows = (table?.tableRows ?? []).flatMap(({ cells }): EditorRow[] => {
     const question = cells[0] ?? "";
-    const value = cells[1] ?? "";
-    const match = questionToken.exec(value);
-    const position = match ? Number(match[1]) : null;
+    const match = questionToken.exec(cells[1] ?? "");
+    if (!match) return [];
+
+    const position = Number(match[1]);
     const savedQuestion =
-      position === null
-        ? null
-        : (sectionQuestions.find((candidate) => candidate.position === position) ?? null);
-    return {
-      answer: position === null ? value : (savedQuestion?.acceptedAnswers[0] ?? ""),
-      key: position === null ? `example-${String(index)}` : `question-${String(position)}`,
-      position,
-      question,
-    };
+      sectionQuestions.find((candidate) => candidate.position === position) ?? null;
+    return [
+      {
+        answer: savedQuestion?.acceptedAnswers[0] ?? "",
+        key: `question-${String(position)}`,
+        position,
+        question,
+      },
+    ];
   });
   return {
     instructions: translation?.instructions ?? "",

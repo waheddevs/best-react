@@ -26,10 +26,8 @@ export async function generateMetadata({ params }: TeacherListeningPageProps): P
 
 export default async function TeacherListeningPage({ params }: TeacherListeningPageProps) {
   const context = await getTeacherPracticeContext(params);
-  if (context.connected && context.practiceNumber === 1) {
-    const listening = context.connectedPaper?.skills.find(
-      ({ skill }) => skill === "LISTENING",
-    );
+  if (context.connected) {
+    const listening = context.connectedPaper?.skills.find(({ skill }) => skill === "LISTENING");
     if (!listening) notFound();
     const version = await loadConnectedTeacherTestAuthoringVersion(
       context.locale,

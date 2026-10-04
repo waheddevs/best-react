@@ -161,11 +161,12 @@
   input {
     min-height: 2.75rem;
     padding-inline: 0.85rem;
+    font-family: var(--font-geist-sans), sans-serif;
     font-weight: 700;
   }
 
   textarea {
-    resize: vertical;
+    resize: none;
     padding: 0.75rem 0.85rem;
     line-height: 1.5;
   }
@@ -199,7 +200,7 @@
   span,
   small {
     color: var(--teacher-primary);
-    font-size: var(--teacher-listening-font-size);
+    font-size: 0.75rem;
     font-weight: 700;
     line-height: 1rem;
     letter-spacing: 0.08em;
@@ -209,7 +210,8 @@
   h2 {
     margin: 0;
     color: var(--teacher-heading);
-    font-size: var(--teacher-listening-font-size);
+    font-family: var(--font-geist-sans), sans-serif;
+    font-size: 1.5rem;
     font-weight: 500;
     line-height: 1.75rem;
   }
@@ -253,7 +255,7 @@
   th {
     color: var(--teacher-muted);
     background: color-mix(in srgb, var(--teacher-brand) 7%, var(--teacher-surface));
-    font-size: var(--teacher-listening-font-size);
+    font-size: 0.75rem;
     font-weight: 700;
     line-height: 1rem;
     letter-spacing: 0.04em;
@@ -262,7 +264,7 @@
 
   th:first-child,
   td:first-child {
-    width: 6rem;
+    width: 4rem;
     text-align: center;
   }
 
@@ -324,6 +326,251 @@
   font-variant-numeric: tabular-nums;
 }
 
+.teacherListening__editorTable.teacherListening__choiceTable {
+  min-width: 82rem;
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 24rem;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(4),
+  th:nth-child(5),
+  td:nth-child(5) {
+    width: 14rem;
+  }
+
+  th:nth-child(6),
+  td:nth-child(6) {
+    width: 9rem;
+  }
+
+  select {
+    width: 100%;
+    min-height: 2.35rem;
+    border: 1px solid transparent;
+    border-radius: 0.55rem;
+    padding-inline: 0.65rem;
+    color: var(--teacher-heading);
+    background: color-mix(in srgb, var(--teacher-surface) 84%, transparent);
+    font: inherit;
+    font-size: var(--teacher-listening-font-size);
+    outline: none;
+
+    &:focus {
+      border-color: var(--teacher-primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+  }
+}
+
+.teacherAnswerDropdown__trigger {
+  display: flex;
+  width: 100%;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.65rem;
+  padding: 0.55rem 0.65rem;
+  color: var(--teacher-heading);
+  background: color-mix(in srgb, var(--teacher-surface) 84%, transparent);
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--teacher-primary);
+    font-size: 1.15rem;
+    transition: transform 160ms ease;
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--teacher-primary) 45%, var(--teacher-border));
+  }
+
+  &:focus-visible {
+    border-color: var(--teacher-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 12%, transparent);
+  }
+
+  &[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+}
+
+.teacherAnswerDropdown__menu.MuiPaper-root {
+  margin-top: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1rem;
+  background: var(--teacher-surface) !important;
+  box-shadow: var(--teacher-shadow) !important;
+
+  .MuiMenu-list {
+    padding: 0;
+  }
+}
+
+.teacherAnswerDropdown__menuItem.MuiMenuItem-root {
+  min-height: 2.75rem !important;
+  border-radius: 0.75rem !important;
+  padding: 0.6rem 0.8rem !important;
+  color: var(--teacher-text) !important;
+  font-size: 0.78rem !important;
+  font-weight: 750 !important;
+
+  &:hover,
+  &:focus-visible,
+  &.Mui-focusVisible,
+  &[data-active="true"],
+  &.Mui-selected,
+  &.Mui-selected:hover {
+    color: var(--teacher-primary) !important;
+    background: rgb(37 99 235 / 10%) !important;
+
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--teacher-primary) 9%, var(--teacher-surface)) !important;
+    }
+  }
+}
+
+.teacherListening__partThreeTables,
+.teacherListening__partFourTables {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1rem;
+
+  > section {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.9rem;
+    background: color-mix(in srgb, var(--teacher-surface) 96%, transparent);
+    box-shadow: 0 8px 20px rgb(16 42 67 / 4%);
+  }
+
+  h3 {
+    margin: 0;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--teacher-border);
+    color: var(--teacher-heading);
+    background: color-mix(in srgb, var(--teacher-brand) 4%, var(--teacher-surface));
+    font-size: 0.85rem;
+    font-weight: 750;
+    line-height: 1.4;
+  }
+}
+
+.teacherListening__partThreeTables {
+  gap: 2rem;
+}
+
+.teacherListening__editorTable.teacherListening__completionTable {
+  min-width: 58rem;
+
+  th:nth-child(2),
+  td:nth-child(2),
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 28%;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: auto;
+  }
+}
+
+.teacherListening__speakerOptions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25rem 0.75rem;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 0;
+  border-bottom: 1px solid var(--teacher-border);
+
+  legend {
+    margin-bottom: 0;
+    padding: 0.4rem 0 0;
+    color: var(--teacher-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  label {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  span {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 0.55rem;
+    color: #fff;
+    background: var(--teacher-primary);
+    font-weight: 750;
+  }
+
+  input {
+    width: 100%;
+    min-height: 2.35rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.55rem;
+    padding-inline: 0.65rem;
+    color: var(--teacher-heading);
+    background: var(--teacher-surface);
+    font: inherit;
+    outline: none;
+
+    &:focus {
+      border-color: var(--teacher-primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+  }
+}
+
+.teacherListening__editorTable.teacherListening__matchingTable {
+  min-width: 52rem;
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: auto;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 16rem;
+  }
+
+  select {
+    width: 100%;
+    min-height: 2.35rem;
+    border: 1px solid transparent;
+    border-radius: 0.55rem;
+    padding-inline: 0.65rem;
+    color: var(--teacher-heading);
+    background: color-mix(in srgb, var(--teacher-surface) 84%, transparent);
+    font: inherit;
+    outline: none;
+
+    &:focus {
+      border-color: var(--teacher-primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-primary) 10%, transparent);
+    }
+  }
+}
+
 .teacherListening__rowLabel--example {
   font-size: var(--teacher-listening-font-size);
   line-height: 1.375rem;
@@ -343,8 +590,8 @@
 
   > textarea {
     width: 100%;
-    min-height: 10rem;
-    resize: vertical;
+    min-height: 20rem;
+    resize: none;
     border: 1px solid var(--teacher-border);
     border-radius: 0.85rem;
     padding: 0.85rem 0.9rem;
@@ -489,6 +736,300 @@
 .teacherListening__saveStatus.is-error,
 .teacherListening__saveStatus.is-validation {
   color: var(--teacher-danger);
+}
+
+.teacherReading {
+  --teacher-listening-font-size: 0.85rem;
+  --teacher-reading-accent: var(--teacher-brand);
+
+  display: grid;
+  gap: 1.25rem;
+  font-size: var(--teacher-listening-font-size);
+
+  textarea {
+    resize: none;
+  }
+}
+
+.teacherReading__passagePanel,
+.teacherReading__questionsPanel {
+  overflow: hidden;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--teacher-reading-accent) 8%, transparent),
+      transparent 38%
+    ),
+    var(--teacher-surface);
+  box-shadow: 0 12px 30px rgb(16 42 67 / 5%);
+}
+
+.teacherReading__panelHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.2rem;
+  border-bottom: 1px solid var(--teacher-border);
+
+  > div {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  span,
+  small {
+    color: var(--teacher-reading-accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--teacher-heading);
+    font-family: var(--font-geist-sans), sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.75rem;
+  }
+
+  small {
+    padding: 0.42rem 0.65rem;
+    border-radius: 999px;
+    color: #a66500;
+    background: color-mix(in srgb, #d99100 12%, transparent);
+  }
+}
+
+.teacherReading__passagePanel > textarea {
+  width: calc(100% - 2rem);
+  min-height: 32rem;
+  margin: 1rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.9rem;
+  padding: 1.1rem;
+  color: var(--teacher-heading);
+  background: color-mix(in srgb, var(--teacher-surface) 92%, transparent);
+  font: inherit;
+  line-height: 1.75;
+  outline: none;
+
+  &:focus {
+    border-color: var(--teacher-reading-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-reading-accent) 10%, transparent);
+  }
+}
+
+.teacherReading__questionGroups {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1rem;
+
+  > section {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.9rem;
+    background: color-mix(in srgb, var(--teacher-surface) 96%, transparent);
+    box-shadow: 0 8px 20px rgb(16 42 67 / 4%);
+  }
+
+  h3 {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--teacher-border);
+    color: var(--teacher-heading);
+    background: color-mix(in srgb, var(--teacher-reading-accent) 5%, var(--teacher-surface));
+    font-size: 0.85rem;
+    font-weight: 750;
+    line-height: 1.4;
+  }
+}
+
+.teacherListening__editorTable.teacherReading__questionTable {
+  min-width: calc(28rem + var(--reading-option-count, 0) * 8.5rem);
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: auto;
+  }
+
+  th:not(:first-child, :nth-child(2)),
+  td:not(:first-child, :nth-child(2)) {
+    width: 8.5rem;
+  }
+
+  th:last-child,
+  td:last-child {
+    width: 9rem;
+  }
+
+  &[data-wide-answer="true"] {
+    th:last-child,
+    td:last-child {
+      width: 18rem;
+    }
+  }
+
+  &[data-fixed-choices="true"] {
+    min-width: 38rem;
+
+    th:last-child,
+    td:last-child {
+      width: 13rem;
+    }
+  }
+}
+
+.teacherReading__empty {
+  margin: 0;
+  color: var(--teacher-muted);
+  font-size: 0.85rem;
+}
+
+.teacherSpeakingAuthoring {
+  --teacher-reading-accent: var(--teacher-brand);
+
+  display: grid;
+  gap: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.teacherSpeakingAuthoring__intro textarea {
+  resize: none;
+}
+
+.teacherSpeakingAuthoring__panel {
+  overflow: hidden;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--teacher-brand) 8%, transparent),
+      transparent 38%
+    ),
+    var(--teacher-surface);
+  box-shadow: 0 12px 30px rgb(16 42 67 / 5%);
+}
+
+.teacherSpeakingAuthoring__content,
+.teacherSpeakingAuthoring__question {
+  display: grid;
+  gap: 0.55rem;
+  color: var(--teacher-heading);
+  font-weight: 700;
+}
+
+.teacherSpeakingAuthoring__content {
+  padding: 1rem 1.2rem 0;
+}
+
+.teacherSpeakingAuthoring__questions {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.2rem;
+}
+
+.teacherSpeakingAuthoring__content textarea,
+.teacherSpeakingAuthoring__question textarea {
+  width: 100%;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  color: var(--teacher-heading);
+  background: color-mix(in srgb, var(--teacher-surface) 92%, transparent);
+  font: inherit;
+  font-weight: 400;
+  line-height: 1.5;
+  outline: none;
+  resize: none;
+
+  &:focus {
+    border-color: var(--teacher-brand);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-brand) 12%, transparent);
+  }
+}
+
+.teacherSpeakingAuthoring__empty {
+  color: var(--teacher-muted);
+  font-size: 0.85rem;
+}
+
+.teacherWritingAuthoring {
+  --teacher-reading-accent: var(--teacher-brand);
+
+  display: grid;
+  gap: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.teacherWritingAuthoring__subtitle {
+  color: var(--teacher-heading);
+  font-weight: 700;
+}
+
+.teacherWritingAuthoring__tasks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.teacherWritingAuthoring__panel {
+  overflow: hidden;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--teacher-brand) 8%, transparent),
+      transparent 38%
+    ),
+    var(--teacher-surface);
+  box-shadow: 0 12px 30px rgb(16 42 67 / 5%);
+}
+
+.teacherWritingAuthoring__panelHeading > div > span {
+  font-size: 1rem;
+  line-height: 1.4rem;
+}
+
+.teacherWritingAuthoring__question {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1.2rem;
+  color: var(--teacher-heading);
+  font-weight: 700;
+}
+
+.teacherWritingAuthoring__question textarea {
+  width: 100%;
+  min-height: 12rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  color: var(--teacher-heading);
+  background: color-mix(in srgb, var(--teacher-surface) 92%, transparent);
+  font: inherit;
+  font-weight: 400;
+  line-height: 1.5;
+  outline: none;
+  resize: none;
+
+  &:focus {
+    border-color: var(--teacher-brand);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--teacher-brand) 12%, transparent);
+  }
+}
+
+.teacherWritingAuthoring__empty {
+  color: var(--teacher-muted);
+  font-size: 0.85rem;
 }
 
 .teacherPractices__actions button:disabled {
@@ -800,6 +1341,14 @@
   }
 
   .teacherListening__intro > div {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherWritingAuthoring__tasks {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherListening__speakerOptions {
     grid-template-columns: 1fr;
   }
 
