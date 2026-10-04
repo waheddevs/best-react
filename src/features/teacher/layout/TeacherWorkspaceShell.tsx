@@ -6,6 +6,7 @@ import { useMemo, useState, type ReactNode } from "react";
 
 import type { Locale } from "@/config/Locales";
 import { teacherNavigationItems } from "@/config/TeacherNavigation";
+import { getWorkspaceNotificationsCopy } from "@/dictionaries/WorkspaceNotifications";
 import { TeacherMobileNavigation } from "@/features/teacher/layout/TeacherMobileNavigation";
 import { TeacherSidebar } from "@/features/teacher/layout/TeacherSidebar";
 import { TeacherThemeProvider } from "@/features/teacher/layout/TeacherThemeProvider";
@@ -31,10 +32,10 @@ const topAlignedPaths = [
   "/teacher/groups",
   "/teacher/library",
   "/teacher/reception",
-  "/teacher/tasks",
   "/teacher/finance",
-  "/teacher/transfer-requests",
+  "/teacher/results",
   "/teacher/profile",
+  "/teacher/notifications",
 ];
 
 export function TeacherWorkspaceShell({
@@ -57,6 +58,9 @@ export function TeacherWorkspaceShell({
     normalizedPathname.startsWith(`/${locale}/teacher/groups/`) ||
     isPracticeDetail;
   const pageTitle = useMemo(() => {
+    if (normalizedPathname === `/${locale}/teacher/notifications`) {
+      return getWorkspaceNotificationsCopy(locale).title;
+    }
     const match = [...teacherNavigationItems]
       .sort((first, second) => second.href.length - first.href.length)
       .find((item) => {

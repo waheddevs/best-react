@@ -4,7 +4,8 @@ import DashboardRounded from "@mui/icons-material/DashboardRounded";
 import GroupsRounded from "@mui/icons-material/GroupsRounded";
 import LocalLibraryRounded from "@mui/icons-material/LocalLibraryRounded";
 import ManageAccountsRounded from "@mui/icons-material/ManageAccountsRounded";
-import MoveUpRounded from "@mui/icons-material/MoveUpRounded";
+import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
+import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
 import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
 
 import type { TeacherNavigationKey } from "@/types/teacher/Teacher";
@@ -19,10 +20,11 @@ export function TeacherNavigationIcon({ navigationKey }: TeacherNavigationIconPr
     finance: AccountBalanceWalletRounded,
     groups: GroupsRounded,
     library: LocalLibraryRounded,
+    notifications: NotificationsNoneRounded,
     profile: ManageAccountsRounded,
     reception: CalendarMonthRounded,
+    results: QueryStatsRounded,
     tasks: TaskAltRounded,
-    transferRequests: MoveUpRounded,
   } satisfies Record<TeacherNavigationKey, typeof DashboardRounded>;
   const Icon = icons[navigationKey];
 

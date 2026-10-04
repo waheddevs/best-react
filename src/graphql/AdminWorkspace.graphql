@@ -2,7 +2,6 @@ query AdminOperationalOverview {
   adminOperationalOverview {
     activeGroups
     activeUsers
-    openTransfers
     pendingIntakes
     pendingMedia
     unreadNotifications
@@ -303,25 +302,6 @@ query AdminMediaObjects($after: String, $first: Int) {
   }
 }
 
-query AdminTransferRequests($after: String, $first: Int) {
-  adminTransferRequests(after: $after, first: $first) {
-    edges {
-      node {
-        id
-        studentDisplayName
-        fromGroupName
-        toGroupName
-        status
-        createdAt
-      }
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-}
-
 query AdminNotifications($after: String, $first: Int) {
   myNotifications(after: $after, first: $first) {
     edges {
@@ -368,7 +348,21 @@ query AdminProfile {
     email
     branchName
     phone
+    preferredLanguage
+    avatarMediaObjectId
     status
     role
+  }
+}
+
+mutation AdminUpdateProfile($input: UpdateMyProfileInput!) {
+  updateMyProfile(input: $input) {
+    profile {
+      displayName
+      email
+      phone
+      preferredLanguage
+      avatarMediaObjectId
+    }
   }
 }

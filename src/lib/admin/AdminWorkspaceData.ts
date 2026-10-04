@@ -21,10 +21,10 @@ import {
   AdminNotificationsDocument,
   AdminOperationalOverviewDocument,
   AdminProfileDocument,
+  type AdminProfileQuery,
   AdminScheduleDocument,
   AdminStudentsDocument,
   AdminTestsDocument,
-  AdminTransferRequestsDocument,
   AdminTuitionLedgerDocument,
   AdminUsersDocument,
 } from "@/gql/graphql";
@@ -83,7 +83,8 @@ async function allNodes<T>(
 }
 
 function tone(value: string): Status {
-  if (/OVERDUE|REJECTED|DECLINED|FAILED|BLOCKED|CANCELLED|INFECTED|ABSENT/.test(value)) return "danger";
+  if (/OVERDUE|REJECTED|DECLINED|FAILED|BLOCKED|CANCELLED|INFECTED|ABSENT/.test(value))
+    return "danger";
   if (/PENDING|NEW|REVIEW|DUE|DRAFT|INACTIVE|QUARANTINED|LATE|VERIFYING/.test(value))
     return "warning";
   if (/PAID|PUBLISHED|ACTIVE|RESOLVED|APPROVED|COMPLETED|CLEAN|PRESENT|READY/.test(value))
@@ -114,17 +115,7 @@ function record(
 }
 
 export async function loadAdminProfile() {
-  const data = await adminQuery<{
-    myProfile: {
-      id: string;
-      displayName: string;
-      email?: string | null;
-      branchName?: string | null;
-      phone?: string | null;
-      status: string;
-      role: string;
-    };
-  }>(AdminProfileDocument);
+  const data = await adminQuery<AdminProfileQuery>(AdminProfileDocument);
   return data.myProfile;
 }
 
@@ -140,7 +131,6 @@ export async function loadAdminWorkspaceData(
         adminOperationalOverview: {
           activeGroups: number;
           activeUsers: number;
-          openTransfers: number;
           pendingIntakes: number;
           pendingMedia: number;
           unreadNotifications: number;
@@ -161,7 +151,7 @@ export async function loadAdminWorkspaceData(
           { label: labels.navigation.teachers, value: String(academic.activeTeacherCount) },
           {
             label: labels.common.openQueueLabel,
-            value: String(op.pendingIntakes + op.openTransfers + op.pendingMedia),
+            value: String(op.pendingIntakes + op.pendingMedia),
           },
         ],
         records: [
@@ -172,14 +162,6 @@ export async function loadAdminWorkspaceData(
             labels.common.openQueueLabel,
             op.pendingIntakes ? "warning" : "success",
             "/admin/requests",
-          ),
-          record(
-            "transfers",
-            labels.navigation.transferRequests,
-            String(op.openTransfers),
-            labels.common.openQueueLabel,
-            op.openTransfers ? "warning" : "success",
-            "/admin/transfer-requests",
           ),
           record(
             "media",
@@ -536,31 +518,6 @@ export async function loadAdminWorkspaceData(
             getAdminStatusLabel(locale, item.status),
             tone(item.status),
             `/admin/imports/${encodeURIComponent(item.id)}`,
-          ),
-        ),
-      };
-    }
-    case "transferRequests": {
-      type Transfer = {
-        id: string;
-        studentDisplayName: string;
-        fromGroupName: string;
-        toGroupName: string;
-        status: string;
-        createdAt: string;
-      };
-      const nodes = await allNodes<Transfer>(
-        AdminTransferRequestsDocument,
-        "adminTransferRequests",
-      );
-      return {
-        records: nodes.map((item) =>
-          record(
-            item.id,
-            item.studentDisplayName,
-            `${item.fromGroupName} → ${item.toGroupName}`,
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
           ),
         ),
       };

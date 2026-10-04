@@ -8,10 +8,11 @@ export type TeacherNavigationKey =
   | "dashboard"
   | "groups"
   | "library"
+  | "notifications"
   | "tasks"
   | "finance"
+  | "results"
   | "reception"
-  | "transferRequests"
   | "profile";
 
 export type TeacherProfileData = {
@@ -212,17 +213,6 @@ export type TeacherLessonTest = {
   title: LocalizedText;
 };
 
-export type TeacherTransferRequestStatus = "pending" | "approved" | "declined";
-
-export type TeacherTransferRequest = {
-  createdAt: string;
-  fromGroup: string;
-  id: string;
-  learnerName: string;
-  status: TeacherTransferRequestStatus;
-  toGroup: string;
-};
-
 export type TeacherNotificationPreview = {
   id: string;
   message: LocalizedText;
@@ -242,7 +232,6 @@ export type TeacherPreviewData = {
   notifications: TeacherNotificationPreview[];
   profile: TeacherProfileData;
   tasks: TeacherTask[];
-  transferRequests: TeacherTransferRequest[];
 };
 
 export type TeacherCopy = {
@@ -492,8 +481,6 @@ export type TeacherCopy = {
   profile: {
     accessSecurity: string;
     accountSettings: string;
-    activeSessions: string;
-    activeSessionsDescription: string;
     branch: string;
     changePassword: string;
     changePasswordDescription: string;
@@ -537,9 +524,6 @@ export type TeacherCopy = {
     preferences: string;
     qrMessage: string;
     qrTitle: string;
-    sessionDevice: string;
-    sessionLocation: string;
-    sessionPreview: string;
     subject: string;
     unsavedMessage: string;
     unsavedTitle: string;
@@ -569,15 +553,5 @@ export type TeacherCopy = {
     pageTitle: string;
     pauseDescription: string;
     pauseTitle: string;
-  };
-  transferRequests: {
-    approved: string;
-    declined: string;
-    description: string;
-    eyebrow: string;
-    emptyDescription: string;
-    emptyTitle: string;
-    pageTitle: string;
-    pending: string;
   };
 };

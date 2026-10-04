@@ -461,7 +461,6 @@ export const teacherPreviewData: TeacherPreviewData = {
     subject: localized("Ingliz tili", "Английский язык", "English"),
   },
   tasks,
-  transferRequests: [],
 };
 
 export function getTeacherGroup(slug: string) {

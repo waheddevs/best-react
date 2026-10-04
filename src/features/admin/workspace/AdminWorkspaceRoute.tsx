@@ -4,7 +4,6 @@ import { isLocale } from "@/config/Locales";
 import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import { getAdminProvisionUserCopy } from "@/dictionaries/admin/AdminProvisionUser";
 import { loadAdminWorkspaceData } from "@/lib/admin/AdminWorkspaceData";
-import { loadAdminTeacherRecipients } from "@/lib/teacher/TeacherWorkspaceData";
 import type { AdminNavigationKey } from "@/types/admin/AdminWorkspace";
 
 import { AdminSectionPage } from "./AdminSectionPage";
@@ -15,8 +14,6 @@ export async function AdminWorkspaceRoute({ locale, sectionKey }: AdminWorkspace
   if (!isLocale(locale)) notFound();
   const copy = getAdminWorkspaceCopy(locale);
   const data = await loadAdminWorkspaceData(sectionKey, locale);
-  const taskRecipients =
-    sectionKey === "notifications" ? await loadAdminTeacherRecipients() : undefined;
   const provisionRole =
     sectionKey === "students" ? "STUDENT" : sectionKey === "teachers" ? "TEACHER" : undefined;
   return (
@@ -25,7 +22,6 @@ export async function AdminWorkspaceRoute({ locale, sectionKey }: AdminWorkspace
       locale={locale}
       provisionCopy={provisionRole ? getAdminProvisionUserCopy(locale, provisionRole) : undefined}
       provisionRole={provisionRole}
-      taskRecipients={taskRecipients}
       section={{ ...copy.sections[sectionKey], ...data, metrics: data.metrics ?? [] }}
     />
   );

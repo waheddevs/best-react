@@ -31,6 +31,11 @@ The Teacher inventory still comes from the user-supplied 102.2-second mobile
 reference video `IMG_7623.MP4`, except the Teacher chat workflow that the user
 explicitly removed from scope.
 
+The Transfer Requests feature was removed on 2026-10-04. Do not expose it in
+Teacher or Admin navigation, routes, dictionaries, GraphQL documents, generated
+client contracts, dashboard queues, or preview data. Historical transfer
+language elsewhere in this document is superseded by this decision.
+
 ## 2. Non-negotiable scope boundaries
 
 Do not implement or scaffold any of the following outside the approved

@@ -12,7 +12,6 @@ import HistoryOutlined from "@mui/icons-material/HistoryOutlined";
 import ImportExportOutlined from "@mui/icons-material/ImportExportOutlined";
 import InsightsOutlined from "@mui/icons-material/InsightsOutlined";
 import ManageAccountsOutlined from "@mui/icons-material/ManageAccountsOutlined";
-import MoveUpOutlined from "@mui/icons-material/MoveUpOutlined";
 import NotificationsOutlined from "@mui/icons-material/NotificationsOutlined";
 import QuizOutlined from "@mui/icons-material/QuizOutlined";
 import SchoolOutlined from "@mui/icons-material/SchoolOutlined";
@@ -41,7 +40,6 @@ const icons = {
   students: ManageAccountsOutlined,
   teachers: AdminPanelSettingsOutlined,
   tests: QuizOutlined,
-  transferRequests: MoveUpOutlined,
 } satisfies Record<AdminNavigationKey, typeof DashboardOutlined>;
 
 type AdminNavigationIconProps = { navigationKey: AdminNavigationKey };

@@ -12,13 +12,13 @@ export const teacherNavigationItems: TeacherNavigationItem[] = [
   { href: "/teacher/groups", key: "groups", mobilePrimary: true, sidebarVisible: true },
   { href: "/teacher/library", key: "library", mobilePrimary: false, sidebarVisible: true },
   { href: "/teacher/reception", key: "reception", mobilePrimary: false, sidebarVisible: true },
-  { href: "/teacher/tasks", key: "tasks", mobilePrimary: false, sidebarVisible: true },
-  { href: "/teacher/finance", key: "finance", mobilePrimary: true, sidebarVisible: true },
   {
-    href: "/teacher/transfer-requests",
-    key: "transferRequests",
+    href: "/teacher/notifications",
+    key: "notifications",
     mobilePrimary: false,
     sidebarVisible: true,
   },
+  { href: "/teacher/finance", key: "finance", mobilePrimary: true, sidebarVisible: true },
+  { href: "/teacher/results", key: "results", mobilePrimary: false, sidebarVisible: true },
   { href: "/teacher/profile", key: "profile", mobilePrimary: true, sidebarVisible: true },
 ];

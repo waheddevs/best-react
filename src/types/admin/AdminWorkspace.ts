@@ -14,7 +14,6 @@ export type AdminNavigationKey =
   | "results"
   | "library"
   | "imports"
-  | "transferRequests"
   | "notifications"
   | "audit"
   | "reports"

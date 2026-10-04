@@ -19,7 +19,6 @@ export const adminNavigationItems: ReadonlyArray<{
   { href: "/admin/results", key: "results" },
   { href: "/admin/library", key: "library" },
   { href: "/admin/imports", key: "imports" },
-  { href: "/admin/transfer-requests", key: "transferRequests" },
   { href: "/admin/notifications", key: "notifications" },
   { href: "/admin/audit", key: "audit" },
   { href: "/admin/reports", key: "reports" },
