@@ -1,0 +1,21 @@
+query StudentSettingsProfile {
+  myProfile {
+    displayName
+    email
+    phone
+    preferredLanguage
+    avatarMediaObjectId
+  }
+}
+
+mutation StudentUpdateSettingsProfile($input: UpdateMyProfileInput!) {
+  updateMyProfile(input: $input) {
+    profile {
+      displayName
+      email
+      phone
+      preferredLanguage
+      avatarMediaObjectId
+    }
+  }
+}

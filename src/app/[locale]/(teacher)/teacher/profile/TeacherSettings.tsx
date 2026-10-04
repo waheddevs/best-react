@@ -1,14 +1,10 @@
 "use client";
 
-import BadgeRounded from "@mui/icons-material/BadgeRounded";
-import CameraAltRounded from "@mui/icons-material/CameraAltRounded";
-import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
+import CloudUploadOutlined from "@mui/icons-material/CloudUploadOutlined";
 import ComputerRounded from "@mui/icons-material/ComputerRounded";
 import DarkModeRounded from "@mui/icons-material/DarkModeRounded";
 import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
-import DevicesRounded from "@mui/icons-material/DevicesRounded";
 import LanguageRounded from "@mui/icons-material/LanguageRounded";
-import LockRounded from "@mui/icons-material/LockRounded";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import QrCode2Rounded from "@mui/icons-material/QrCode2Rounded";
 import Dialog from "@mui/material/Dialog";
@@ -25,7 +21,6 @@ import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
 import { locales } from "@/config/Locales";
 import { getTeacherProfileMessages } from "@/dictionaries/teacher/TeacherProfileMessages";
-import { TeacherPageHeader } from "@/features/teacher/layout/TeacherPageHeader";
 import { updateTeacherProfile } from "@/features/teacher/profile/TeacherProfileActions";
 import { useLocaleSwitcher } from "@/hooks/navigation/useLocaleSwitcher";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
@@ -45,10 +40,9 @@ type TeacherSettingsProps = {
   locale: Locale;
   profile: TeacherProfileRecord;
 };
-type ProfileDialog = "information" | "password" | "qr" | "sessions" | "language" | null;
+type ProfileDialog = "password" | "qr" | "language" | null;
 
 export function TeacherSettings({ connected, copy, locale, profile }: TeacherSettingsProps) {
-  /* HOOKS */
   const router = useRouter();
   const session = useSession();
   const notifications = useNotifications();
@@ -68,33 +62,42 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
   const [phone, setPhone] = useState(profile.phone ?? "");
   const [subject, setSubject] = useState(profile.teacherSubject ?? "");
   const [photoName, setPhotoName] = useState<string | null>(null);
+  const [removeAvatar, setRemoveAvatar] = useState(false);
   const [avatarFailed, setAvatarFailed] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  /* HANDLERS */
-  const handleDialogOpen = (dialog: Exclude<ProfileDialog, null>) => {
-    if (dialog === "information") {
-      const name = splitTeacherDisplayName(profileState.displayName);
-      setFirstName(name.firstName);
-      setLastName(name.lastName);
-      setPhone(profileState.phone ?? "");
-      setSubject(profileState.teacherSubject ?? "");
-    }
-    setActiveDialog(dialog);
-  };
-  const handleDialogClose = () => {
-    setActiveDialog(null);
-    const name = splitTeacherDisplayName(profileState.displayName);
-    setFirstName(name.firstName);
-    setLastName(name.lastName);
+  const currentName = splitTeacherDisplayName(profileState.displayName);
+  const isDirty =
+    joinTeacherDisplayName(firstName, lastName) !== profileState.displayName ||
+    phone.trim() !== (profileState.phone ?? "") ||
+    subject.trim() !== (profileState.teacherSubject ?? "") ||
+    removeAvatar;
+
+  const handleCancel = () => {
+    setFirstName(currentName.firstName);
+    setLastName(currentName.lastName);
     setPhone(profileState.phone ?? "");
     setSubject(profileState.teacherSubject ?? "");
+    setPhotoName(null);
+    setRemoveAvatar(false);
   };
 
   const handleInformationSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!isDirty) return;
+    const displayName = joinTeacherDisplayName(firstName, lastName);
     if (!connected) {
-      setActiveDialog(null);
+      setProfileState((current) => ({
+        ...current,
+        avatarMediaObjectId: removeAvatar ? null : current.avatarMediaObjectId,
+        avatarUrl: removeAvatar ? null : current.avatarUrl,
+        displayName,
+        initials: teacherInitials(displayName),
+        phone: phone.trim() || null,
+        teacherSubject: subject.trim() || null,
+      }));
+      setRemoveAvatar(false);
+      setPhotoName(null);
       notifications.info({
         title: copy.profile.unsavedTitle,
         message: copy.profile.unsavedMessage,
@@ -104,25 +107,27 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
     setIsSaving(true);
     try {
       const updated = await updateTeacherProfile({
-        avatarMediaObjectId: profileState.avatarMediaObjectId,
+        avatarMediaObjectId: removeAvatar ? null : profileState.avatarMediaObjectId,
         branchName: profileState.branchName,
-        displayName: joinTeacherDisplayName(firstName, lastName),
+        displayName,
         phone: phone.trim() || null,
         preferredLanguage: profileState.preferredLanguage,
         teacherSubject: subject.trim() || null,
       });
       setProfileState((current) => ({
         ...current,
+        avatarMediaObjectId: updated.avatarMediaObjectId ?? null,
+        avatarUrl: removeAvatar ? null : current.avatarUrl,
+        branchName: updated.branchName ?? null,
         displayName: updated.displayName,
         email: updated.email ?? null,
-        phone: updated.phone ?? null,
-        teacherSubject: updated.teacherSubject ?? null,
-        branchName: updated.branchName ?? null,
-        preferredLanguage: updated.preferredLanguage,
-        avatarMediaObjectId: updated.avatarMediaObjectId ?? null,
         initials: teacherInitials(updated.displayName),
+        phone: updated.phone ?? null,
+        preferredLanguage: updated.preferredLanguage,
+        teacherSubject: updated.teacherSubject ?? null,
       }));
-      setActiveDialog(null);
+      setRemoveAvatar(false);
+      setPhotoName(null);
       notifications.success({ title: copy.profile.profileInformation, message: messages.saved });
       router.refresh();
     } catch {
@@ -132,7 +137,25 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
     }
   };
 
-  const handleAvatarError = () => setAvatarFailed(true);
+  const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (
+      !["image/png", "image/jpeg", "image/gif"].includes(file.type) ||
+      file.size > 5 * 1024 * 1024
+    ) {
+      notifications.warning({ title: copy.profile.photoTitle, message: messages.photoInvalid });
+      return;
+    }
+    setPhotoName(file.name);
+    notifications.info({ title: copy.profile.photoTitle, message: copy.profile.photoMessage });
+  };
+
+  const handleRemovePhoto = () => {
+    setPhotoName(null);
+    if (profileState.avatarMediaObjectId || profileState.avatarUrl) setRemoveAvatar(true);
+  };
 
   const handlePasswordSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -144,14 +167,6 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
     });
   };
 
-  const handlePhotoOpen = () => photoInputRef.current?.click();
-  const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file?.type.startsWith("image/") && file.size <= 5 * 1024 * 1024) setPhotoName(file.name);
-    event.target.value = "";
-    notifications.info({ title: copy.profile.photoTitle, message: copy.profile.photoMessage });
-  };
-
   const handleDelete = async () => {
     const accepted = await confirm({
       cancelLabel: copy.profile.deleteAccountCancel,
@@ -160,11 +175,12 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
       title: copy.profile.deleteVerificationTitle,
       tone: "danger",
     });
-    if (accepted)
+    if (accepted) {
       notifications.warning({
         title: copy.profile.deleteAccountTitle,
         message: copy.profile.deleteAccountMessage,
       });
+    }
   };
 
   const handleLogout = async () => {
@@ -176,7 +192,6 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
       tone: "danger",
     });
     if (!accepted) return;
-
     const redirectTo = `/${locale}/login?role=teacher`;
     if (session.status === "authenticated") {
       await signOut({ redirectTo });
@@ -185,53 +200,23 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
     router.push(redirectTo);
   };
 
-  const handleSettingSelect = (settingId: Exclude<ProfileDialog, null>) => {
-    handleDialogOpen(settingId);
-  };
-
-  const accountSettings = [
-    {
-      description: copy.profile.profileInformationDescription,
-      icon: BadgeRounded,
-      id: "information" as const,
-      label: copy.profile.profileInformation,
-    },
-    {
-      description: copy.profile.changePasswordDescription,
-      icon: LockRounded,
-      id: "password" as const,
-      label: copy.profile.changePassword,
-    },
-  ];
-
-  const accessSettings = [
-    {
-      description: copy.profile.computerLoginDescription,
-      icon: ComputerRounded,
-      id: "qr" as const,
-      label: copy.profile.computerLogin,
-    },
-    {
-      description: copy.profile.activeSessionsDescription,
-      icon: DevicesRounded,
-      id: "sessions" as const,
-      label: copy.profile.activeSessions,
-    },
-  ];
-
   return (
     <main className="teacherProfile__page">
-      <TeacherPageHeader eyebrow={copy.profile.eyebrow} title={copy.profile.pageTitle} />
-      <div className="teacherProfile__layout">
-        <aside className="teacherProfile__summary">
-          <div className="teacherProfile__identity">
+      <form className="teacherProfile__account" onSubmit={handleInformationSubmit}>
+        <header className="teacherProfile__accountHeader">
+          <span>{copy.profile.eyebrow}</span>
+          <h1>{messages.accountTitle}</h1>
+        </header>
+
+        <section className="teacherProfile__accountBody" aria-label={messages.accountTitle}>
+          <div className="teacherProfile__photoRow">
             <span className="teacherProfile__avatar">
-              {profileState.avatarUrl && !avatarFailed ? (
+              {profileState.avatarUrl && !removeAvatar && !avatarFailed ? (
                 <Image
                   alt={profileState.displayName}
                   fill
-                  onError={handleAvatarError}
-                  sizes="84px"
+                  onError={() => setAvatarFailed(true)}
+                  sizes="88px"
                   src={profileState.avatarUrl}
                   unoptimized
                 />
@@ -239,199 +224,42 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
                 profileState.initials
               )}
             </span>
-            <div>
-              <h2>{profileState.displayName}</h2>
-              <p>
-                {[copy.common.teacherRole, profileState.email, profileState.teacherSubject]
-                  .filter(Boolean)
-                  .join(" · ")}
-              </p>
-              <small>
-                {[profileState.phone, profileState.preferredLanguage, profileState.branchName]
-                  .filter(Boolean)
-                  .join(" · ")}
-              </small>
-            </div>
-          </div>
-          {photoName ? (
-            <button
-              className="teacherProfile__file"
-              onClick={() => setPhotoName(null)}
-              type="button"
-            >
-              {copy.common.reset}: {photoName}
-            </button>
-          ) : null}
-          <div className="teacherProfile__summaryActions">
-            <button
-              className="teacherProfile__summaryAction"
-              onClick={handlePhotoOpen}
-              type="button"
-            >
-              <span className="teacherProfile__summaryActionIcon">
-                <CameraAltRounded />
-              </span>
-              <span>
-                <strong>{copy.profile.changePhoto}</strong>
-                <small>{copy.profile.changePhotoDescription}</small>
-              </span>
-            </button>
-            <button
-              className="teacherProfile__summaryAction"
-              data-danger="true"
-              onClick={handleLogout}
-              type="button"
-            >
-              <span className="teacherProfile__summaryActionIcon">
-                <LogoutRounded />
-              </span>
-              <span>
-                <strong>{copy.profile.logout}</strong>
-                <small>{copy.profile.logoutDescription}</small>
-              </span>
-            </button>
-          </div>
-        </aside>
-
-        <div className="teacherProfile__settings">
-          <section className="teacherProfile__settingsGroup">
-            <header className="teacherProfile__settingsGroupHeader">
-              <h2>{copy.profile.accountSettings}</h2>
-            </header>
-            <div className="teacherProfile__settingsList">
-              {accountSettings.map((setting) => {
-                const SettingIcon = setting.icon;
-                return (
-                  <button
-                    className="teacherProfile__setting"
-                    key={setting.id}
-                    onClick={() => handleSettingSelect(setting.id)}
-                    type="button"
-                  >
-                    <span className="teacherProfile__settingIcon">
-                      <SettingIcon />
-                    </span>
-                    <div>
-                      <strong>{setting.label}</strong>
-                      <small>{setting.description}</small>
-                    </div>
-                    <ChevronRightRounded />
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="teacherProfile__settingsGroup">
-            <header className="teacherProfile__settingsGroupHeader">
-              <h2>{copy.profile.accessSecurity}</h2>
-            </header>
-            <div className="teacherProfile__settingsList">
-              {accessSettings.map((setting) => {
-                const SettingIcon = setting.icon;
-                return (
-                  <button
-                    className="teacherProfile__setting"
-                    key={setting.id}
-                    onClick={() => handleSettingSelect(setting.id)}
-                    type="button"
-                  >
-                    <span className="teacherProfile__settingIcon">
-                      <SettingIcon />
-                    </span>
-                    <div>
-                      <strong>{setting.label}</strong>
-                      <small>{setting.description}</small>
-                    </div>
-                    <ChevronRightRounded />
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="teacherProfile__settingsGroup">
-            <header className="teacherProfile__settingsGroupHeader">
-              <h2>{copy.profile.preferences}</h2>
-            </header>
-            <div className="teacherProfile__settingsList">
-              <button
-                className="teacherProfile__setting"
-                onClick={() => handleSettingSelect("language")}
-                type="button"
-              >
-                <span className="teacherProfile__settingIcon">
-                  <LanguageRounded />
-                </span>
-                <div>
-                  <strong>{copy.profile.language}</strong>
-                  <small>{copy.profile.languageDescription}</small>
-                </div>
-                <ChevronRightRounded />
-              </button>
-              <div className="teacherProfile__setting">
-                <span className="teacherProfile__settingIcon">
-                  <DarkModeRounded />
-                </span>
-                <div>
-                  <strong>{copy.profile.nightMode}</strong>
-                  <small>{copy.profile.nightModeDescription}</small>
-                </div>
-                <Switch
-                  checked={teacherTheme.mode === "dark"}
-                  onChange={teacherTheme.toggleMode}
-                  slotProps={{ input: { "aria-label": copy.profile.nightMode } }}
-                />
+            <div className="teacherProfile__photoDetails">
+              <strong>{messages.profilePicture}</strong>
+              <div className="teacherProfile__photoActions">
+                <button
+                  className="teacherProfile__upload"
+                  onClick={() => photoInputRef.current?.click()}
+                  type="button"
+                >
+                  <CloudUploadOutlined aria-hidden="true" />
+                  {messages.uploadImage}
+                </button>
+                <button
+                  className="teacherProfile__remove"
+                  disabled={
+                    !photoName &&
+                    (removeAvatar || (!profileState.avatarUrl && !profileState.avatarMediaObjectId))
+                  }
+                  onClick={handleRemovePhoto}
+                  type="button"
+                >
+                  {messages.removeImage}
+                </button>
               </div>
+              <small>{messages.photoHint}</small>
+              {photoName ? (
+                <small className="teacherProfile__selectedFile">{photoName}</small>
+              ) : null}
             </div>
-          </section>
+          </div>
 
-          <section className="teacherProfile__settingsGroup" data-danger="true">
-            <header className="teacherProfile__settingsGroupHeader">
-              <h2>{copy.profile.dangerZone}</h2>
-            </header>
-            <div className="teacherProfile__settingsList">
-              <button
-                className="teacherProfile__setting"
-                data-danger="true"
-                onClick={handleDelete}
-                type="button"
-              >
-                <span className="teacherProfile__settingIcon">
-                  <DeleteOutlineRounded />
-                </span>
-                <div>
-                  <strong>{copy.profile.deleteAccount}</strong>
-                  <small>{copy.profile.deleteAccountDescription}</small>
-                </div>
-                <ChevronRightRounded />
-              </button>
-            </div>
-          </section>
-        </div>
-      </div>
-
-      <input
-        accept="image/*"
-        className="teacherProfile__fileInput"
-        onChange={handlePhotoChange}
-        ref={photoInputRef}
-        type="file"
-      />
-
-      <Dialog
-        fullWidth
-        maxWidth="sm"
-        onClose={handleDialogClose}
-        open={activeDialog === "information"}
-      >
-        <form onSubmit={handleInformationSubmit}>
-          <DialogTitle>{copy.profile.profileInformation}</DialogTitle>
-          <DialogContent className="teacherProfile__form">
+          <div className="teacherProfile__fieldGrid">
             <label>
               {copy.profile.displayName}
               <input
                 autoComplete="given-name"
+                maxLength={80}
                 onChange={(event) => setFirstName(event.target.value)}
                 required
                 value={firstName}
@@ -441,34 +269,172 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
               {copy.profile.lastName}
               <input
                 autoComplete="family-name"
+                maxLength={80}
                 onChange={(event) => setLastName(event.target.value)}
                 value={lastName}
               />
             </label>
+            <div className="teacherProfile__emailField">
+              <label>
+                {messages.email}
+                <input
+                  autoComplete="email"
+                  readOnly
+                  type="email"
+                  value={profileState.email ?? ""}
+                />
+              </label>
+              <button
+                className="teacherProfile__remove"
+                onClick={() =>
+                  notifications.info({
+                    title: messages.editEmail,
+                    message: messages.editEmailUnavailable,
+                  })
+                }
+                type="button"
+              >
+                {messages.editEmail}
+              </button>
+              <small>{messages.emailHelp}</small>
+            </div>
             <label>
               {copy.profile.phone}
-              <input onChange={(event) => setPhone(event.target.value)} type="tel" value={phone} />
+              <input
+                autoComplete="tel"
+                onChange={(event) => setPhone(event.target.value)}
+                type="tel"
+                value={phone}
+              />
             </label>
             <label>
               {copy.profile.subject}
               <input onChange={(event) => setSubject(event.target.value)} value={subject} />
             </label>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDialogClose} variant="ghost">
-              {copy.common.cancel}
-            </Button>
-            <Button disabled={isSaving} type="submit" variant="primary">
-              {connected ? messages.save : copy.common.savePreview}
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
+          </div>
+          {profileState.branchName ? (
+            <p className="teacherProfile__accountMeta">
+              {copy.profile.branch}: {profileState.branchName}
+            </p>
+          ) : null}
+        </section>
+
+        <footer className="teacherProfile__accountFooter">
+          <button className="teacherProfile__remove" onClick={handleCancel} type="button">
+            {copy.common.cancel}
+          </button>
+          <button className="teacherProfile__save" disabled={!isDirty || isSaving} type="submit">
+            {connected ? messages.save : copy.common.savePreview}
+          </button>
+        </footer>
+      </form>
+
+      <section className="teacherProfile__section">
+        <div>
+          <h2>{messages.passwordTitle}</h2>
+          <p>{messages.passwordHelp}</p>
+        </div>
+        <button
+          className="teacherProfile__remove"
+          onClick={() => setActiveDialog("password")}
+          type="button"
+        >
+          {copy.profile.changePassword}
+        </button>
+      </section>
+
+      <section className="teacherProfile__section teacherProfile__section--preferences">
+        <div className="teacherProfile__sectionHeading">
+          <h2>{copy.profile.preferences}</h2>
+        </div>
+        <div className="teacherProfile__settingRow">
+          <LanguageRounded aria-hidden="true" />
+          <div>
+            <strong>{copy.profile.language}</strong>
+            <small>{copy.profile.languageDescription}</small>
+          </div>
+          <button
+            className="teacherProfile__remove"
+            onClick={() => setActiveDialog("language")}
+            type="button"
+          >
+            {locale.toUpperCase()}
+          </button>
+        </div>
+        <div className="teacherProfile__settingRow">
+          <DarkModeRounded aria-hidden="true" />
+          <div>
+            <strong>{copy.profile.nightMode}</strong>
+            <small>{copy.profile.nightModeDescription}</small>
+          </div>
+          <Switch
+            checked={teacherTheme.mode === "dark"}
+            onChange={teacherTheme.toggleMode}
+            slotProps={{ input: { "aria-label": copy.profile.nightMode } }}
+          />
+        </div>
+        <div className="teacherProfile__settingRow">
+          <ComputerRounded aria-hidden="true" />
+          <div>
+            <strong>{copy.profile.computerLogin}</strong>
+            <small>{copy.profile.computerLoginDescription}</small>
+          </div>
+          <button
+            className="teacherProfile__remove"
+            onClick={() => setActiveDialog("qr")}
+            type="button"
+          >
+            {messages.open}
+          </button>
+        </div>
+      </section>
+
+      <section className="teacherProfile__section teacherProfile__section--danger">
+        <div className="teacherProfile__sectionHeading">
+          <h2>{copy.profile.dangerZone}</h2>
+        </div>
+        <div className="teacherProfile__settingRow">
+          <DeleteOutlineRounded aria-hidden="true" />
+          <div>
+            <strong>{copy.profile.deleteAccount}</strong>
+            <small>{copy.profile.deleteAccountDescription}</small>
+          </div>
+          <button
+            className="teacherProfile__remove"
+            onClick={() => void handleDelete()}
+            type="button"
+          >
+            {copy.profile.deleteAccount}
+          </button>
+        </div>
+        <div className="teacherProfile__settingRow">
+          <LogoutRounded aria-hidden="true" />
+          <div>
+            <strong>{copy.profile.logout}</strong>
+            <small>{copy.profile.logoutDescription}</small>
+          </div>
+          <button
+            className="teacherProfile__remove"
+            onClick={() => void handleLogout()}
+            type="button"
+          >
+            {copy.profile.logout}
+          </button>
+        </div>
+      </section>
+
+      <input
+        accept=".png,.jpg,.jpeg,.gif"
+        className="teacherProfile__fileInput"
+        onChange={handlePhotoChange}
+        ref={photoInputRef}
+        type="file"
+      />
 
       <Dialog
         fullWidth
         maxWidth="xs"
-        onClose={handleDialogClose}
+        onClose={() => setActiveDialog(null)}
         open={activeDialog === "password"}
       >
         <form onSubmit={handlePasswordSubmit}>
@@ -484,7 +450,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
             </label>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleDialogClose} variant="ghost">
+            <Button onClick={() => setActiveDialog(null)} variant="ghost">
               {copy.common.cancel}
             </Button>
             <Button type="submit" variant="primary">
@@ -494,7 +460,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
         </form>
       </Dialog>
 
-      <Dialog maxWidth="xs" onClose={handleDialogClose} open={activeDialog === "qr"}>
+      <Dialog maxWidth="xs" onClose={() => setActiveDialog(null)} open={activeDialog === "qr"}>
         <DialogTitle>{copy.profile.qrTitle}</DialogTitle>
         <DialogContent className="teacherProfile__dialogCenter">
           <span className="teacherProfile__qr">
@@ -503,7 +469,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
           <p>{copy.profile.qrMessage}</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose} variant="primary">
+          <Button onClick={() => setActiveDialog(null)} variant="primary">
             {copy.common.close}
           </Button>
         </DialogActions>
@@ -512,31 +478,7 @@ export function TeacherSettings({ connected, copy, locale, profile }: TeacherSet
       <Dialog
         fullWidth
         maxWidth="xs"
-        onClose={handleDialogClose}
-        open={activeDialog === "sessions"}
-      >
-        <DialogTitle>{copy.profile.activeSessions}</DialogTitle>
-        <DialogContent>
-          <div className="teacherProfile__session">
-            <DevicesRounded />
-            <div>
-              <strong>{copy.profile.sessionDevice}</strong>
-              <small>{copy.profile.sessionLocation}</small>
-            </div>
-          </div>
-          <p className="teacherProfile__dialogCopy">{copy.profile.sessionPreview}</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} variant="primary">
-            {copy.common.close}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        fullWidth
-        maxWidth="xs"
-        onClose={handleDialogClose}
+        onClose={() => setActiveDialog(null)}
         open={activeDialog === "language"}
       >
         <DialogTitle>{copy.profile.language}</DialogTitle>
