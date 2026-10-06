@@ -738,6 +738,18 @@
   color: var(--teacher-danger);
 }
 
+body[data-teacher-theme="dark"] {
+  .teacherListening__audioStatus > svg {
+    color: var(--teacher-brand);
+    background: color-mix(in srgb, var(--teacher-brand) 12%, var(--teacher-surface));
+  }
+
+  .teacherListening__audioMessage.is-ready,
+  .teacherListening__saveStatus.is-saved {
+    color: var(--teacher-success);
+  }
+}
+
 .teacherReading {
   --teacher-listening-font-size: 0.85rem;
   --teacher-reading-accent: var(--teacher-brand);

@@ -1990,6 +1990,11 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
   }
 }
 
+body[data-teacher-theme="dark"] .teacherGroups__practiceReadyIndicator[data-complete="true"] {
+  color: var(--teacher-success);
+  background: color-mix(in srgb, var(--teacher-success) 14%, var(--teacher-surface));
+}
+
 .teacherGroups__practiceStudentProgress {
   display: inline-block;
   width: 2.35rem;

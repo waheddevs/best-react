@@ -15,6 +15,19 @@
   --teacher-objective-soft: #fff7ed;
 }
 
+body[data-teacher-theme="dark"] .teacherObjectivePreview {
+  --teacher-objective-accent: var(--teacher-brand);
+  --teacher-objective-soft: color-mix(
+    in srgb,
+    var(--teacher-objective-accent) 10%,
+    var(--teacher-surface)
+  );
+}
+
+body[data-teacher-theme="dark"] .teacherObjectivePreview[data-skill="reading"] {
+  --teacher-objective-accent: var(--teacher-yellow);
+}
+
 .teacherObjectivePreview__header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);

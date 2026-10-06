@@ -1,11 +1,10 @@
 "use client";
 
-import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import { useMutation } from "@apollo/client/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
 import { getTeacherResultsCopy } from "@/dictionaries/teacher/TeacherResults";
 import {
@@ -14,26 +13,26 @@ import {
 } from "@/gql/graphql";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 
+import { TeacherResultDetailHeader } from "./TeacherResultDetailHeader";
+
 type Review = TeacherSpeakingAttemptReviewQuery["teacherSpeakingAttemptReview"];
+const feedbackMaxLength = 5000;
 
 const copy = {
   uz: {
     feedback: "Feedback",
-    release: "Bahoni Studentga chiqarish",
     save: "Draftni saqlash",
     saved: "Saqlandi",
     title: "Speaking tekshiruvi",
   },
   ru: {
     feedback: "Комментарий",
-    release: "Опубликовать оценку",
     save: "Сохранить черновик",
     saved: "Сохранено",
     title: "Проверка Speaking",
   },
   en: {
     feedback: "Feedback",
-    release: "Release result to Student",
     save: "Save draft",
     saved: "Saved",
     title: "Speaking review",
@@ -97,26 +96,25 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
   };
 
   return (
-    <section className="teacherSpeakingReview">
-      <Link href={`/${locale}/teacher/results`}>
-        <ArrowBackRounded />
-        {labels.title}
-      </Link>
-      <header>
-        <span>{review.studentDisplayName}</span>
-        <h1>{review.title}</h1>
-      </header>
+    <main className="teacherResultDetail teacherSpeakingReview">
+      <TeacherResultDetailHeader
+        locale={locale}
+        skill="SPEAKING"
+        studentName={review.studentDisplayName}
+        summary={resultsCopy.statuses[status]}
+        title={review.title}
+      />
       <div className="teacherSpeakingReview__answers">
         {review.answers.map((answer) => (
           <article key={answer.questionId}>
             <span>
-              Part {answer.sectionPosition} · {answer.position}
+              {resultsCopy.part} {answer.sectionPosition} · {answer.position}
             </span>
             <h2>{answer.prompt}</h2>
             {answer.audioUrl ? (
               <audio controls preload="none" src={answer.audioUrl} />
             ) : (
-              <p>No recording</p>
+              <p>{resultsCopy.noRecording}</p>
             )}
           </article>
         ))}
@@ -139,7 +137,7 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
           </label>
         ))}
         <label>
-          <span>Overall practice band</span>
+          <span>{resultsCopy.band}</span>
           <input
             min="0"
             max="9"
@@ -152,30 +150,52 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
             }
           />
         </label>
-        <label className="teacherSpeakingReview__feedback">
-          <span>{labels.feedback}</span>
+        <div className="teacherSpeakingReview__feedback">
+          <label htmlFor="speaking-feedback">{labels.feedback}</label>
           <textarea
+            aria-describedby="speaking-feedback-count"
             disabled={released || loading}
-            maxLength={5000}
+            id="speaking-feedback"
+            maxLength={feedbackMaxLength}
             rows={7}
             value={feedback}
             onChange={(event) => setFeedback(event.target.value)}
           />
-        </label>
+          <small className="teacherResultDetail__characterCount" id="speaking-feedback-count">
+            {feedback.length} / {feedbackMaxLength}
+          </small>
+        </div>
       </div>
-      <footer>
-        <span aria-live="polite">{message}</span>
+      <footer className="teacherResultDetail__actions">
+        <span aria-live="polite" className="teacherResultDetail__actionMessage" role="status">
+          {message}
+        </span>
         {!released ? (
-          <button disabled={loading} onClick={() => void save(false)} type="button">
+          <Button
+            disabled={loading}
+            onClick={() => void save(false)}
+            shape="soft"
+            size="small"
+            type="button"
+            variant="secondary"
+          >
             {labels.save}
-          </button>
+          </Button>
         ) : null}
         {!released ? (
-          <button disabled={loading} onClick={() => void save(true)} type="button">
-            {labels.release}
-          </button>
+          <Button
+            disabled={loading}
+            hoverEffect="jump"
+            onClick={() => void save(true)}
+            shape="soft"
+            size="small"
+            type="button"
+            variant="primary"
+          >
+            {resultsCopy.release}
+          </Button>
         ) : null}
       </footer>
-    </section>
+    </main>
   );
 }

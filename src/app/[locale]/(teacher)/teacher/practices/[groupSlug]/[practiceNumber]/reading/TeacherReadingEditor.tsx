@@ -436,7 +436,7 @@ export function TeacherReadingEditor({
               wideAnswer={
                 (activePassage === 1 && index === 1) ||
                 (activePassage === 2 && index === 2) ||
-                (activePassage === 3 && index === 1)
+                (activePassage === 3 && index === 2)
               }
             />
           ))}

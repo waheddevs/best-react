@@ -742,8 +742,7 @@
   }
 }
 
-.teacherAttemptList,
-.teacherSpeakingReview {
+.teacherAttemptList {
   display: grid;
   gap: 1.25rem;
   width: min(72rem, calc(100% - 3rem));
@@ -759,6 +758,11 @@
     font-weight: 800;
     text-decoration: none;
   }
+}
+
+.teacherSpeakingReview {
+  display: grid;
+  gap: 1.25rem;
 }
 
 .teacherAttemptList {
@@ -803,53 +807,6 @@
   }
 }
 
-.teacherSpeakingReview {
-  & header {
-    border-radius: 1.25rem;
-    background: #fff3f6;
-    padding: 1.25rem;
-  }
-
-  & header span {
-    color: #e54866;
-    font-weight: 850;
-  }
-
-  & header h1 {
-    margin: 0.35rem 0 0;
-  }
-
-  & footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.75rem;
-  }
-
-  & footer span {
-    margin-right: auto;
-    color: #19815f;
-    font-weight: 800;
-  }
-
-  & footer button {
-    min-height: 2.9rem;
-    border: 1px solid #e54866;
-    border-radius: 0.85rem;
-    background: #fff;
-    padding: 0 1rem;
-    color: #e54866;
-    font: inherit;
-    font-weight: 850;
-    cursor: pointer;
-  }
-
-  & footer button:last-child {
-    background: #e54866;
-    color: #fff;
-  }
-}
-
 .teacherSpeakingReview__answers {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -858,22 +815,23 @@
   & article {
     display: grid;
     gap: 0.75rem;
-    border: 1px solid #f0cbd3;
+    border: 1px solid var(--teacher-border);
     border-radius: 1rem;
     background: var(--teacher-surface);
     padding: 1rem;
   }
 
   & span {
-    color: #e54866;
+    color: var(--teacher-primary);
     font-size: 0.75rem;
-    font-weight: 900;
+    font-weight: 800;
     text-transform: uppercase;
   }
 
   & h2 {
     margin: 0;
-    font-size: 1rem;
+    color: var(--teacher-heading);
+    font-size: 0.95rem;
     line-height: 1.45;
   }
 
@@ -907,7 +865,18 @@
 }
 
 .teacherSpeakingReview__feedback {
+  display: grid;
   grid-column: 1 / -1;
+  gap: 0.4rem;
+  color: var(--teacher-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+
+  textarea {
+    height: 9.5rem;
+    overflow-y: auto;
+    resize: none;
+  }
 }
 
 @media (max-width: 720px) {
@@ -918,10 +887,5 @@
 
   .teacherSpeakingReview__feedback {
     grid-column: auto;
-  }
-
-  .teacherSpeakingReview footer {
-    align-items: stretch;
-    flex-direction: column;
   }
 }

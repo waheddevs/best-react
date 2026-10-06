@@ -717,6 +717,12 @@
   }
 }
 
+body[data-teacher-theme="dark"]
+  .teacherDashboard__scheduleCard[data-status="next"]
+  .teacherDashboard__scheduleStatus {
+  color: var(--teacher-brand);
+}
+
 @media (max-width: 359px) {
   .teacherDashboard__finance {
     &ChartRow {

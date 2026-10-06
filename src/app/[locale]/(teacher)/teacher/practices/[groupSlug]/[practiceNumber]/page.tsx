@@ -108,9 +108,6 @@ export default async function TeacherPracticePage({ params }: TeacherPracticePag
       locale={locale}
       practiceNumber={practiceNumber}
       practicesHref={practicesHref}
-      resultsHref={
-        connectedPaper ? `/${locale}/teacher/results?paperId=${connectedPaper.id}` : null
-      }
       skillHrefs={skillHrefs}
       skills={skills}
     />

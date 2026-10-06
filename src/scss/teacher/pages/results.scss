@@ -1,9 +1,10 @@
-.teacherWritingReview,
-.teacherObjectiveResult {
-  margin: 0 auto;
-  max-width: 1500px;
-  padding: 2rem clamp(1rem, 3vw, 3rem) 4rem;
-  color: #0a3152;
+.teacherResultDetail {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  color: var(--teacher-text);
+  font-family: var(--font-geist-sans), sans-serif;
 }
 
 .teacherResults {
@@ -13,96 +14,154 @@
   color: var(--teacher-text);
 }
 
-.teacherPractices__resultsLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
-  border: 1px solid #cfe5ef;
-  border-radius: 0.75rem;
-  padding: 0.7rem 1rem;
-  color: #1d55f0;
-  text-decoration: none;
-  font-weight: 700;
+.teacherResultDetail__header {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--teacher-border);
+}
+.teacherResultDetail__header > .teacherGroups__backLink {
+  justify-self: start;
+}
+
+.teacherResultDetail__heading {
+  display: flex;
+  min-width: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.teacherResultDetail__heading > div {
+  min-width: 0;
+}
+
+.teacherResultDetail__eyebrow {
+  margin: 0 0 0.45rem;
+  color: var(--teacher-primary);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.teacherResultDetail__heading {
+  h1 {
+    margin: 0;
+    color: var(--teacher-heading);
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-weight: 850;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+}
+
+.teacherResultDetail__student,
+.teacherResultDetail__description {
+  margin: 0.45rem 0 0;
+  color: var(--teacher-muted);
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+.teacherResultDetail__summary {
+  flex: 0 0 auto;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 999px;
+  background: var(--teacher-surface-subtle);
+  color: var(--teacher-heading);
+  font-size: 0.78rem;
+  font-weight: 800;
   white-space: nowrap;
 }
 
+.teacherObjectiveResult__tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--teacher-border);
+  border-radius: 1.25rem;
+  background: var(--teacher-surface);
+}
+
 .teacherObjectiveResult {
-  > a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 1.25rem;
-    color: #1d55f0;
-    text-decoration: none;
-  }
-  header {
-    margin-bottom: 1.25rem;
-  }
-  header span {
-    color: #1d55f0;
-    font-size: 0.8rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-  }
-  header h1 {
-    margin: 0.4rem 0 1rem;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-  }
-  .teacherObjectiveResult__tableWrap {
-    overflow-x: auto;
-    border: 1px solid #d5e9f1;
-    border-radius: 1.25rem;
-  }
   table {
     width: 100%;
+    min-width: 50rem;
+    table-layout: fixed;
     border-collapse: collapse;
-    background: #fff;
+    color: var(--teacher-text);
+    font-family: var(--font-geist-sans), sans-serif;
+    font-size: 0.82rem;
+    font-weight: 550;
+    line-height: 1.45;
   }
+
+  .teacherObjectiveResult__numberColumn {
+    width: 7%;
+  }
+  .teacherObjectiveResult__questionColumn {
+    width: 40%;
+  }
+  .teacherObjectiveResult__answerColumn {
+    width: 18%;
+  }
+  .teacherObjectiveResult__statusColumn {
+    width: 17%;
+  }
+
   th,
   td {
-    border-bottom: 1px solid #e4eef3;
-    padding: 1rem;
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid var(--teacher-border);
     text-align: left;
+    vertical-align: top;
   }
+
   th {
-    background: #f0f9fc;
-    color: #55708a;
-    font-size: 0.8rem;
+    background: var(--teacher-surface-subtle);
+    color: var(--teacher-heading);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     white-space: nowrap;
   }
-  td:nth-child(2) {
-    min-width: 16rem;
+
+  td {
+    overflow-wrap: anywhere;
+    font-size: 0.82rem;
+    font-weight: 550;
+  }
+
+  td:first-child {
+    color: var(--teacher-primary);
+    font-weight: 750;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
   }
 }
 
-.teacherWritingReview__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+.teacherObjectiveResult__status {
+  display: inline-flex;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: var(--teacher-surface-subtle);
+  color: var(--teacher-muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  white-space: nowrap;
 
-  span {
-    color: #1d55f0;
-    font-size: 0.8rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+  &[data-result="correct"] {
+    background: color-mix(in srgb, var(--teacher-success) 11%, var(--teacher-surface));
+    color: var(--teacher-success);
   }
-  h1 {
-    margin: 0.35rem 0;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-  }
-  p {
-    margin: 0;
-    color: #55708a;
-  }
-  > strong {
-    border-radius: 999px;
-    background: #eaf3ff;
-    padding: 0.7rem 1rem;
-    white-space: nowrap;
+
+  &[data-result="incorrect"] {
+    background: color-mix(in srgb, var(--teacher-danger) 9%, var(--teacher-surface));
+    color: var(--teacher-danger);
   }
 }
 
@@ -326,6 +385,27 @@
   }
 }
 
+body[data-teacher-theme="dark"] .teacherResults__tableWrap {
+  td a {
+    color: var(--teacher-primary);
+  }
+
+  td span[data-status] {
+    background: color-mix(in srgb, var(--teacher-primary) 14%, var(--teacher-surface));
+    color: var(--teacher-primary);
+  }
+
+  td span[data-status="REVIEW_REQUIRED"] {
+    background: color-mix(in srgb, var(--teacher-warning) 15%, var(--teacher-surface));
+    color: var(--teacher-warning);
+  }
+
+  td span[data-status="SCORED"] {
+    background: color-mix(in srgb, var(--teacher-success) 14%, var(--teacher-surface));
+    color: var(--teacher-success);
+  }
+}
+
 .teacherResults__next {
   display: inline-block;
   margin-top: 1rem;
@@ -350,112 +430,205 @@
   }
 }
 
-.teacherWritingReview__back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
-  color: #1d55f0;
-  text-decoration: none;
-}
-.teacherWritingReview__header {
-  display: block;
-}
 .teacherWritingReview__tasks {
   display: grid;
+  min-width: 0;
   gap: 1.5rem;
 }
 .teacherWritingReview__task,
 .teacherWritingReview__overall {
-  padding: clamp(1rem, 2vw, 2rem);
-  border: 1px solid #d5e9f1;
+  display: grid;
+  min-width: 0;
+  gap: 1.2rem;
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  border: 1px solid var(--teacher-border);
   border-radius: 1.25rem;
-  background: #fff;
+  background: var(--teacher-surface);
+  color: var(--teacher-text);
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
-.teacherWritingReview__task h2 {
-  margin: 0 0 1rem;
-  color: #1d55f0;
+.teacherWritingReview__taskIntro {
+  display: grid;
+  gap: 0.4rem;
 }
-.teacherWritingReview__task h3 {
-  font-size: 1rem;
-  font-weight: 600;
+.teacherWritingReview__taskIntro h2 {
+  color: var(--teacher-heading);
+  font-size: 1.05rem;
+  font-weight: 820;
+  letter-spacing: -0.025em;
+}
+.teacherWritingReview__taskIntro h3 {
+  color: var(--teacher-text);
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 .teacherWritingReview__answer {
-  padding: 1.25rem;
+  display: grid;
+  min-width: 0;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem;
   border-radius: 0.9rem;
-  background: #f1f8fb;
+  background: var(--teacher-surface-subtle);
+}
+.teacherWritingReview__answer strong {
+  color: var(--teacher-muted);
+  font-size: 0.8rem;
+  font-weight: 750;
 }
 .teacherWritingReview__answer p {
+  min-width: 0;
+  font-size: 0.88rem;
+  font-weight: 500;
   white-space: pre-wrap;
-  line-height: 1.65;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 .teacherWritingReview__criteria {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.8rem;
-  margin: 1.25rem 0;
+  gap: 1rem;
 }
 .teacherWritingReview__criteria label,
 .teacherWritingReview__feedback {
   display: grid;
-  gap: 0.4rem;
-  color: #55708a;
+  gap: 0.45rem;
+  color: var(--teacher-muted);
+  font-size: 0.8rem;
   font-weight: 700;
+  line-height: 1.4;
+}
+.teacherWritingReview__criteria label {
+  grid-template-rows: minmax(2.2rem, auto) 2.75rem;
+}
+.teacherWritingReview__criteria label > span {
+  align-self: end;
 }
 .teacherWritingReview__criteria input,
 .teacherWritingReview__feedback textarea {
   width: 100%;
-  border: 1px solid #c9e3ef;
+  border: 1px solid var(--teacher-border);
   border-radius: 0.75rem;
-  padding: 0.7rem;
-  background: #fff;
-  color: #0a3152;
+  background: var(--teacher-surface);
+  color: var(--teacher-heading);
   font: inherit;
+  font-size: 0.88rem;
+  font-weight: 550;
+  line-height: 1.5;
+}
+.teacherWritingReview__criteria input:focus-visible,
+.teacherWritingReview__feedback textarea:focus-visible {
+  outline: 2px solid var(--teacher-primary);
+  outline-offset: 2px;
 }
 .teacherWritingReview__criteria input {
-  max-width: 6rem;
+  height: 2.75rem;
+  max-width: 7rem;
+  padding: 0 0.75rem;
 }
-.teacherWritingReview__task > strong {
-  display: block;
-  margin-top: 1rem;
+.teacherWritingReview__feedback textarea {
+  height: 7.25rem;
+  overflow-y: auto;
+  padding: 0.7rem 0.8rem;
+  resize: none;
+}
+.teacherResultDetail__characterCount {
+  justify-self: end;
+  color: var(--teacher-muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.teacherWritingReview__band {
+  color: var(--teacher-heading);
+  font-size: 0.82rem;
+  font-weight: 780;
+}
+.teacherWritingReview__task > .teacherWritingReview__band {
+  padding-top: 1rem;
+  border-top: 1px solid var(--teacher-border);
 }
 .teacherWritingReview__overall {
-  display: grid;
-  gap: 0.8rem;
   margin-top: 1.5rem;
+}
+.teacherWritingReview__overallSummary {
+  display: grid;
+  gap: 0.3rem;
 }
 .teacherWritingReview__overall p {
   margin: 0;
-  color: #55708a;
+  color: var(--teacher-muted);
+  font-size: 0.8rem;
 }
-.teacherWritingReview__actions {
+.teacherWritingReview__footer {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--teacher-border);
 }
-.teacherWritingReview__actions button {
-  border: 1px solid #1d55f0;
-  border-radius: 0.75rem;
-  padding: 0.8rem 1.1rem;
-  background: #fff;
-  color: #1d55f0;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
+.teacherWritingReview__footer > [role="status"] {
+  min-width: 0;
+  color: var(--teacher-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
 }
-.teacherWritingReview__actions button:last-child {
-  background: #1d55f0;
-  color: #fff;
+.teacherWritingReview__footer .teacherResultDetail__actions {
+  margin-left: auto;
 }
-.teacherWritingReview__actions button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.teacherResultDetail__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.teacherResultDetail__actionMessage {
+  margin-right: auto;
+  color: var(--teacher-success);
+  font-size: 0.82rem;
+  font-weight: 750;
 }
 
 @media (max-width: 800px) {
+  .teacherResultDetail__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
   .teacherWritingReview__criteria {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .teacherWritingReview__criteria {
+    grid-template-columns: 1fr;
+  }
+
+  .teacherWritingReview__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teacherWritingReview__footer .teacherResultDetail__actions {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .teacherResultDetail__actions .publicShared__button {
+    width: 100%;
+  }
+
+  .teacherResultDetail__actionMessage {
+    width: 100%;
   }
 }
 

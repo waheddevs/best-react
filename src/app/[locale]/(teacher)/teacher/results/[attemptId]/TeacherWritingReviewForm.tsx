@@ -1,11 +1,10 @@
 "use client";
 
-import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import { useMutation } from "@apollo/client/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
 import { getTeacherResultsCopy } from "@/dictionaries/teacher/TeacherResults";
 import {
@@ -16,9 +15,12 @@ import {
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { toPublicApiError } from "@/lib/apollo/ApolloError";
 
+import { TeacherResultDetailHeader } from "./TeacherResultDetailHeader";
+
 type Review = TeacherWritingAttemptReviewQuery["teacherWritingAttemptReview"];
 type ScoreKey =
   "taskAchievement" | "coherenceCohesion" | "lexicalResource" | "grammaticalRangeAccuracy";
+const feedbackMaxLength = 5000;
 
 const criteria: ScoreKey[] = [
   "taskAchievement",
@@ -69,9 +71,10 @@ export function TeacherWritingReviewForm({ locale, review }: { locale: Locale; r
       released ||
       Object.values(tasks).some(
         (task) =>
-          criteria.some((key) => !isValidBand(task[key])) || (task.feedback?.length ?? 0) > 5000,
+          criteria.some((key) => !isValidBand(task[key])) ||
+          (task.feedback?.length ?? 0) > feedbackMaxLength,
       ) ||
-      feedback.length > 5000
+      feedback.length > feedbackMaxLength
     ) {
       setMessage(copy.saveError);
       return;
@@ -110,24 +113,25 @@ export function TeacherWritingReviewForm({ locale, review }: { locale: Locale; r
   };
 
   return (
-    <main className="teacherWritingReview">
-      <Link className="teacherWritingReview__back" href={`/${locale}/teacher/results`}>
-        <ArrowBackRounded aria-hidden="true" />
-        {copy.back}
-      </Link>
-      <header className="teacherWritingReview__header">
-        <span>{review.studentDisplayName}</span>
-        <h1>{review.title}</h1>
-        <p>{copy.practiceOnly}</p>
-      </header>
+    <main className="teacherResultDetail teacherWritingReview">
+      <TeacherResultDetailHeader
+        description={copy.practiceOnly}
+        locale={locale}
+        skill="WRITING"
+        studentName={review.studentDisplayName}
+        summary={copy.statuses[status]}
+        title={review.title}
+      />
       <div className="teacherWritingReview__tasks">
         {(["task1", "task2"] as const).map((taskKey, index) => {
           const answer = review.answers.find((item) => item.sectionPosition === index + 1);
           const task = tasks[taskKey];
           return (
             <section className="teacherWritingReview__task" key={taskKey}>
-              <h2>Task {index + 1}</h2>
-              <h3>{answer?.prompt ?? `Task ${index + 1}`}</h3>
+              <div className="teacherWritingReview__taskIntro">
+                <h2>Task {index + 1}</h2>
+                <h3>{answer?.prompt ?? `Task ${index + 1}`}</h3>
+              </div>
               <div className="teacherWritingReview__answer">
                 <strong>{copy.answer}</strong>
                 <p>{answer?.textValue || copy.noAnswer}</p>
@@ -153,11 +157,13 @@ export function TeacherWritingReviewForm({ locale, review }: { locale: Locale; r
                   </label>
                 ))}
               </div>
-              <label className="teacherWritingReview__feedback">
-                <span>{copy.taskFeedback}</span>
+              <div className="teacherWritingReview__feedback">
+                <label htmlFor={`writing-task-${index + 1}-feedback`}>{copy.taskFeedback}</label>
                 <textarea
+                  aria-describedby={`writing-task-${index + 1}-feedback-count`}
                   disabled={released || loading}
-                  maxLength={5000}
+                  id={`writing-task-${index + 1}-feedback`}
+                  maxLength={feedbackMaxLength}
                   rows={4}
                   value={task.feedback ?? ""}
                   onChange={(event) =>
@@ -167,8 +173,14 @@ export function TeacherWritingReviewForm({ locale, review }: { locale: Locale; r
                     }))
                   }
                 />
-              </label>
-              <strong>
+                <small
+                  className="teacherResultDetail__characterCount"
+                  id={`writing-task-${index + 1}-feedback-count`}
+                >
+                  {task.feedback?.length ?? 0} / {feedbackMaxLength}
+                </small>
+              </div>
+              <strong className="teacherWritingReview__band">
                 {copy.band}: {average(task).toFixed(2)}
               </strong>
             </section>
@@ -176,31 +188,61 @@ export function TeacherWritingReviewForm({ locale, review }: { locale: Locale; r
         })}
       </div>
       <section className="teacherWritingReview__overall">
-        <label className="teacherWritingReview__feedback">
-          <span>{copy.feedback}</span>
+        <div className="teacherWritingReview__feedback">
+          <label htmlFor="writing-overall-feedback">{copy.feedback}</label>
           <textarea
+            aria-describedby="writing-overall-feedback-count"
             disabled={released || loading}
-            maxLength={5000}
+            id="writing-overall-feedback"
+            maxLength={feedbackMaxLength}
             rows={4}
             value={feedback}
             onChange={(event) => setFeedback(event.target.value)}
           />
-        </label>
-        <strong>
-          {copy.band}: {released ? review.review?.practiceBand.toFixed(1) : practiceBand.toFixed(1)}
-        </strong>
-        <p>{copy.practiceOnly}</p>
-        <span aria-live="polite" role="status">
-          {message}
-        </span>
-        {!released ? (
-          <div className="teacherWritingReview__actions">
-            <button disabled={loading} onClick={() => void save(false)} type="button">
-              {copy.saveDraft}
-            </button>
-            <button disabled={loading} onClick={() => void save(true)} type="button">
-              {copy.release}
-            </button>
+          <small
+            className="teacherResultDetail__characterCount"
+            id="writing-overall-feedback-count"
+          >
+            {feedback.length} / {feedbackMaxLength}
+          </small>
+        </div>
+        <div className="teacherWritingReview__overallSummary">
+          <strong className="teacherWritingReview__band">
+            {copy.band}:{" "}
+            {released ? review.review?.practiceBand.toFixed(1) : practiceBand.toFixed(1)}
+          </strong>
+          <p>{copy.practiceOnly}</p>
+        </div>
+        {!released || message ? (
+          <div className="teacherWritingReview__footer">
+            <span aria-live="polite" role="status">
+              {message}
+            </span>
+            {!released ? (
+              <div className="teacherResultDetail__actions">
+                <Button
+                  disabled={loading}
+                  onClick={() => void save(false)}
+                  shape="soft"
+                  size="small"
+                  type="button"
+                  variant="secondary"
+                >
+                  {copy.saveDraft}
+                </Button>
+                <Button
+                  disabled={loading}
+                  hoverEffect="jump"
+                  onClick={() => void save(true)}
+                  shape="soft"
+                  size="small"
+                  type="button"
+                  variant="primary"
+                >
+                  {copy.release}
+                </Button>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </section>

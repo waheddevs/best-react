@@ -3,13 +3,11 @@ import EditNoteRounded from "@mui/icons-material/EditNoteRounded";
 import HeadphonesRounded from "@mui/icons-material/HeadphonesRounded";
 import MenuBookRounded from "@mui/icons-material/MenuBookRounded";
 import MicRounded from "@mui/icons-material/MicRounded";
-import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
 import Link from "next/link";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
 import { getTeacherPracticesCopy } from "@/dictionaries/teacher/TeacherPractices";
-import { getTeacherResultsCopy } from "@/dictionaries/teacher/TeacherResults";
 import type {
   TeacherPracticeSkillKind,
   TeacherPracticeSkillSummary,
@@ -19,7 +17,6 @@ type TeacherPracticeOverviewProps = {
   locale: Locale;
   practiceNumber: number;
   practicesHref: string;
-  resultsHref: string | null;
   skillHrefs: Record<TeacherPracticeSkillKind, string>;
   skills: TeacherPracticeSkillSummary[];
 };
@@ -35,7 +32,6 @@ export function TeacherPracticeOverview({
   locale,
   practiceNumber,
   practicesHref,
-  resultsHref,
   skillHrefs,
   skills,
 }: TeacherPracticeOverviewProps) {
@@ -58,12 +54,6 @@ export function TeacherPracticeOverview({
             {copy.practiceTitle} {practiceNumber}
           </h1>
         </div>
-        {resultsHref ? (
-          <Link className="teacherPractices__resultsLink" href={resultsHref}>
-            <QueryStatsRounded aria-hidden="true" />
-            {getTeacherResultsCopy(locale).title}
-          </Link>
-        ) : null}
       </header>
 
       <section className="teacherPractices__skillGrid" aria-label={copy.practiceTitle}>
