@@ -7,7 +7,7 @@ import { getStudentSettingsCopy } from "@/dictionaries/student/StudentSettings";
 import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
 import { loadStudentSettingsIdentity } from "@/lib/student/StudentSettingsData";
 
-import { StudentAccountSettings } from "./StudentAccountSettings";
+import { StudentSettingsView } from "./StudentSettingsView";
 
 type PageProps = { params: Promise<{ locale: string }> };
 export default async function StudentSettingsPage({ params }: PageProps) {
@@ -16,7 +16,7 @@ export default async function StudentSettingsPage({ params }: PageProps) {
   const copy = getStudentSettingsCopy(locale);
   if (isDashboardPreviewEnabled()) {
     return (
-      <StudentAccountSettings
+      <StudentSettingsView
         connected={false}
         copy={copy}
         locale={locale}
@@ -33,5 +33,5 @@ export default async function StudentSettingsPage({ params }: PageProps) {
       </div>
     );
   }
-  return <StudentAccountSettings connected copy={copy} locale={locale} profile={profile} />;
+  return <StudentSettingsView connected copy={copy} locale={locale} profile={profile} />;
 }

@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import type { StudentSettingsCopy } from "@/dictionaries/student/StudentSettings";
+import { StudentProfileAvatar } from "@/features/student/layout/StudentProfileAvatar";
 import { saveStudentName } from "@/features/student/settings/StudentSettingsActions";
-import { getWorkspaceInitials } from "@/lib/WorkspaceIdentity";
 import type { Locale } from "@/config/Locales";
 import type { StudentAccountIdentity } from "@/types/student/StudentSettings";
 
@@ -74,21 +74,28 @@ export function StudentAccountSettings({
 
   return (
     <article className="studentSettings">
-      <header className="studentSettings__header">
-        <h1>{copy.account}</h1>
-      </header>
-
       <form noValidate onSubmit={(event) => void handleSubmit(event)}>
         <div className="studentSettings__body">
-          <section aria-labelledby="student-settings-picture" className="studentSettings__pictureRow">
-            <div aria-hidden="true" className="studentSettings__avatar">
-              {getWorkspaceInitials(savedName, locale)}
-            </div>
+          <section
+            aria-labelledby="student-settings-picture"
+            className="studentSettings__pictureRow"
+          >
+            <StudentProfileAvatar
+              avatarUrl={profile.avatarUrl}
+              className="studentSettings__avatar"
+              displayName={savedName}
+              locale={locale}
+              size={84}
+            />
             <div>
               <h2 id="student-settings-picture">{copy.picture}</h2>
               <div className="studentSettings__pictureActions">
-                <button disabled type="button">{copy.uploadPicture}</button>
-                <button disabled type="button">{copy.removePicture}</button>
+                <button disabled type="button">
+                  {copy.uploadPicture}
+                </button>
+                <button disabled type="button">
+                  {copy.removePicture}
+                </button>
               </div>
               <p>{copy.pictureHelp}</p>
             </div>
@@ -162,13 +169,25 @@ export function StudentAccountSettings({
         </section>
 
         <footer className="studentSettings__footer">
-          <p aria-live="polite" className={`studentSettings__status studentSettings__status_${status}`}>
+          <p
+            aria-live="polite"
+            className={`studentSettings__status studentSettings__status_${status}`}
+          >
             {status === "saved" ? copy.saved : status === "error" ? copy.saveError : ""}
           </p>
-          <button className="studentSettings__cancel" disabled={pending} onClick={handleCancel} type="button">
+          <button
+            className="studentSettings__cancel"
+            disabled={pending}
+            onClick={handleCancel}
+            type="button"
+          >
             {copy.cancel}
           </button>
-          <button className="studentSettings__save" disabled={!connected || !dirty || pending} type="submit">
+          <button
+            className="studentSettings__save"
+            disabled={!connected || !dirty || pending}
+            type="submit"
+          >
             {pending ? copy.saving : copy.save}
           </button>
         </footer>

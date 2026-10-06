@@ -2,6 +2,7 @@ import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
+import { StudentSectionHero } from "@/features/student/workspace/StudentSectionHero";
 import type { StudentTestPaper, StudentTestsCopy } from "@/types/student/StudentTests";
 
 type StudentTestCatalogProps = {
@@ -13,11 +14,14 @@ type StudentTestCatalogProps = {
 export function StudentTestCatalog({ copy, locale, papers }: StudentTestCatalogProps) {
   return (
     <article className="studentTests">
-      <header className="studentTests__hero">
-        <span>{copy.eyebrow}</span>
-        <h1>{copy.title}</h1>
-        <p>{copy.subtitle}</p>
-      </header>
+      <StudentSectionHero
+        description={copy.subtitle}
+        eyebrow={copy.eyebrow}
+        kind="tests"
+        locale={locale}
+        title={copy.title}
+        value={papers.length}
+      />
 
       {papers.length === 0 ? (
         <p className="studentTests__empty">{copy.emptyLabel}</p>

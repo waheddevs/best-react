@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
 import { getStudentTestResultsCopy } from "@/dictionaries/student/StudentTestResults";
+import { StudentSectionHero } from "@/features/student/workspace/StudentSectionHero";
 import type { StudentResultsQuery } from "@/gql/graphql";
 
 type ResultNode = StudentResultsQuery["studentResults"]["edges"][number]["node"];
@@ -19,11 +20,14 @@ export function StudentResultsList({ locale, results }: StudentResultsListProps)
 
   return (
     <article className="studentResultsList">
-      <header className="studentResultsList__header">
-        <span>{copy.result}</span>
-        <h1>{copy.resultsTitle}</h1>
-        <p>{copy.resultsDescription}</p>
-      </header>
+      <StudentSectionHero
+        description={copy.resultsDescription}
+        eyebrow={copy.result}
+        kind="results"
+        locale={locale}
+        title={copy.resultsTitle}
+        value={results.length}
+      />
 
       {results.length > 0 ? (
         <div className="studentResultsList__grid">

@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Locale } from "@/config/Locales";
 import {
@@ -21,10 +21,17 @@ type Props = {
   connected: boolean;
   initial: WorkspaceNoticePage | null;
   locale: Locale;
+  onUnreadCountChange?: (count: number | null) => void;
   role: WorkspaceRole;
 };
 
-export function WorkspaceNotificationsList({ connected, initial, locale, role }: Props) {
+export function WorkspaceNotificationsList({
+  connected,
+  initial,
+  locale,
+  onUnreadCountChange,
+  role,
+}: Props) {
   /* HOOKS */
   const router = useRouter();
   const reduceMotion = useReducedMotion();
@@ -34,6 +41,10 @@ export function WorkspaceNotificationsList({ connected, initial, locale, role }:
   const [displayedUnreadOnly, setDisplayedUnreadOnly] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(connected && !initial);
+
+  useEffect(() => {
+    onUnreadCountChange?.(page?.unreadCount ?? null);
+  }, [onUnreadCountChange, page?.unreadCount]);
 
   /* HANDLERS */
   const handleReload = async (filter = selectedUnreadOnly) => {

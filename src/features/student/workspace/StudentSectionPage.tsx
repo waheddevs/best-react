@@ -6,15 +6,28 @@ import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
 import { useWorkspaceRecordSearch } from "@/hooks/useWorkspaceRecordSearch";
+import type { StudentHeroKind } from "@/dictionaries/student/StudentHero";
 import type { StudentSectionCopy, StudentWorkspaceCopy } from "@/types/student/StudentWorkspace";
+
+import { StudentSectionHero } from "./StudentSectionHero";
 
 type StudentSectionPageProps = {
   common: StudentWorkspaceCopy["common"];
+  heroKind: StudentHeroKind;
+  heroLabel?: string;
+  heroValue?: number | string;
   locale: Locale;
   section: StudentSectionCopy;
 };
 
-export function StudentSectionPage({ common, locale, section }: StudentSectionPageProps) {
+export function StudentSectionPage({
+  common,
+  heroKind,
+  heroLabel,
+  heroValue,
+  locale,
+  section,
+}: StudentSectionPageProps) {
   /* HOOKS */
   const {
     handleQueryChange,
@@ -24,17 +37,16 @@ export function StudentSectionPage({ common, locale, section }: StudentSectionPa
 
   return (
     <article className="studentWorkspace">
-      <header className="studentWorkspace__hero">
-        <div>
-          <span className="studentWorkspace__eyebrow">{section.eyebrow}</span>
-          <h1>{section.title}</h1>
-          <p>{section.description}</p>
-        </div>
-        <div className="studentWorkspace__streak">
-          <strong>12</strong>
-          <span>{common.previewNotice}</span>
-        </div>
-      </header>
+      <StudentSectionHero
+        description={section.description}
+        eyebrow={section.eyebrow}
+        kind={heroKind}
+        label={heroLabel}
+        locale={locale}
+        preview={heroKind !== "dashboard"}
+        title={section.title}
+        value={heroKind === "payments" ? undefined : (heroValue ?? section.records.length)}
+      />
 
       <section aria-label={section.title} className="studentWorkspace__summary">
         <div>

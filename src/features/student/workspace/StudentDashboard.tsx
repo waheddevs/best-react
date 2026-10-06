@@ -1,5 +1,8 @@
 import type { Locale } from "@/config/Locales";
+import { studentSettingsPreview } from "@/data/student/StudentSettingsPreview";
 import { getStudentWorkspaceCopy } from "@/dictionaries/student/StudentWorkspace";
+import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+import { loadStudentSettingsIdentity } from "@/lib/student/StudentSettingsData";
 import { getStudentTestPapers } from "@/lib/student/StudentTestData";
 import type { StudentWorkspaceRecord } from "@/types/student/StudentWorkspace";
 
@@ -30,6 +33,10 @@ const writingCopy = {
 
 export async function StudentDashboard({ locale }: StudentDashboardProps) {
   const copy = getStudentWorkspaceCopy(locale);
+  const identity = isDashboardPreviewEnabled()
+    ? studentSettingsPreview
+    : await loadStudentSettingsIdentity().catch(() => null);
+  const firstName = identity?.displayName.trim().split(/\s+/)[0];
   const papers = await getStudentTestPapers(locale);
   const labels = writingCopy[locale];
   const writingRecords: StudentWorkspaceRecord[] = papers.flatMap((paper) =>
@@ -60,10 +67,15 @@ export async function StudentDashboard({ locale }: StudentDashboardProps) {
   return (
     <StudentSectionPage
       common={copy.common}
+      heroKind="dashboard"
+      heroValue={writingRecords.length}
       locale={locale}
       section={{
         ...copy.sections.dashboard,
         records: [...writingRecords, ...copy.sections.dashboard.records],
+        title: firstName
+          ? `${copy.sections.dashboard.title}, ${firstName}`
+          : copy.sections.dashboard.title,
       }}
     />
   );

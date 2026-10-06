@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
+import { libraryResources } from "@/data/student/LibraryResources";
 import { getStudentLibraryCopy } from "@/dictionaries/student/Library";
 import { loadStudentLibraryBooks } from "@/features/student/library/StudentLibraryActions";
 import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
@@ -29,7 +30,7 @@ export default async function LibraryPage({ params }: LibraryPageProps) {
 
   return (
     <main className="library">
-      <LibraryHero copy={copy} />
+      <LibraryHero copy={copy} locale={locale} resourceCount={libraryResources.length} />
       <LibraryCatalog
         locale={locale}
         copy={copy}

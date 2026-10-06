@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
+import { getStudentWorkspaceCopy } from "@/dictionaries/student/StudentWorkspace";
 import { getWorkspaceNotificationsCopy } from "@/dictionaries/WorkspaceNotifications";
 import { loadWorkspaceNotifications } from "@/features/notifications/WorkspaceNotificationActions";
-import { WorkspaceNotificationsList } from "@/features/notifications/WorkspaceNotificationsList";
 import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+
+import { StudentNotificationsContent } from "./StudentNotificationsContent";
 
 type PageProps = { params: Promise<{ locale: string }> };
 export default async function StudentNotificationsPage({ params }: PageProps) {
@@ -14,15 +16,15 @@ export default async function StudentNotificationsPage({ params }: PageProps) {
   const initial = connected
     ? await loadWorkspaceNotifications("STUDENT", 20).catch(() => null)
     : null;
+  const section = getStudentWorkspaceCopy(locale).sections.notifications;
   return (
-    <article className="studentWorkspace">
-      <h1>{getWorkspaceNotificationsCopy(locale).title}</h1>
-      <WorkspaceNotificationsList
-        connected={connected}
-        initial={initial}
-        locale={locale}
-        role="STUDENT"
-      />
-    </article>
+    <StudentNotificationsContent
+      connected={connected}
+      description={section.description}
+      eyebrow={section.eyebrow}
+      initial={initial}
+      locale={locale}
+      title={getWorkspaceNotificationsCopy(locale).title}
+    />
   );
 }

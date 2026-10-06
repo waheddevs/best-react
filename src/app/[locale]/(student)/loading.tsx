@@ -1,7 +1,7 @@
 export default function StudentLoading() {
   return (
     <div aria-busy="true" className="studentWorkspace">
-      <div className="studentWorkspace__hero" />
+      <div className="studentHero" />
       <div className="studentWorkspace__summary">
         <div />
         <div />
