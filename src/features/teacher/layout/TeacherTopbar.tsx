@@ -1,5 +1,7 @@
 "use client";
 
+import DarkModeRounded from "@mui/icons-material/DarkModeRounded";
+import LightModeRounded from "@mui/icons-material/LightModeRounded";
 import MenuRounded from "@mui/icons-material/MenuRounded";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +12,7 @@ import type { Locale } from "@/config/Locales";
 import { getTeacherNotificationsCopy } from "@/dictionaries/teacher/TeacherNotifications";
 import { WorkspaceNotificationBell } from "@/features/notifications/WorkspaceNotificationBell";
 import { TeacherLocaleMenu } from "@/features/teacher/layout/TeacherLocaleMenu";
+import { useTeacherTheme } from "@/hooks/teacher/useTeacherTheme";
 import type { TeacherCopy } from "@/types/teacher/Teacher";
 import type {
   TeacherNoticeState,
@@ -38,12 +41,13 @@ export function TeacherTopbar({
   profile,
 }: TeacherTopbarProps) {
   /* HOOKS */
-  const [avatarFailed, setAvatarFailed] = useState(false);
+  const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
   const notificationCopy = getTeacherNotificationsCopy(locale);
+  const teacherTheme = useTeacherTheme();
 
   /* HANDLERS */
   const handleAvatarError = () => {
-    setAvatarFailed(true);
+    setFailedAvatarUrl(profile.avatarUrl);
   };
 
   return (
@@ -64,6 +68,16 @@ export function TeacherTopbar({
 
       <div className="teacherShell__topbarActions">
         <TeacherLocaleMenu label={copy.profile.language} locale={locale} />
+        <button
+          aria-label={copy.profile.nightMode}
+          aria-pressed={teacherTheme.mode === "dark"}
+          className="teacherShell__themeToggle"
+          onClick={teacherTheme.toggleMode}
+          title={copy.profile.nightMode}
+          type="button"
+        >
+          {teacherTheme.mode === "dark" ? <LightModeRounded /> : <DarkModeRounded />}
+        </button>
         <WorkspaceNotificationBell
           connected={connected}
           initial={notices}
@@ -77,7 +91,7 @@ export function TeacherTopbar({
           href={`/${locale}/teacher/profile`}
         >
           <span className="teacherShell__topbarAvatar">
-            {profile.avatarUrl && !avatarFailed ? (
+            {profile.avatarUrl && failedAvatarUrl !== profile.avatarUrl ? (
               <Image
                 alt=""
                 fill

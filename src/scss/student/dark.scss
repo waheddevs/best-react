@@ -1,0 +1,403 @@
+/* Student-only night mode. The Teacher and public palettes stay independent. */
+
+body[data-student-theme="light"] {
+  --background: #fbfaf5;
+  background: #fbfaf5;
+}
+
+body[data-student-theme="dark"] {
+  --background: #151428;
+  --surface: #24213d;
+  --surface-elevated: #2c2948;
+  --text: #f3f0ff;
+  --heading: #f3f0ff;
+  --muted: #b1accd;
+  --border: #39365a;
+  --action-blue: #a99eff;
+  --brand-turquoise: #a99eff;
+  color-scheme: dark;
+  background: var(--background);
+
+  .studentShell {
+    --student-ink: #f3f0ff;
+    --student-muted: #b1accd;
+    --student-primary: #a99eff;
+    --student-primary-strong: #c2b9ff;
+    --student-warm: #151428;
+    --student-surface: #24213d;
+    --student-border: #39365a;
+  }
+
+  .studentShell__sidebar,
+  .studentShell__mobilePanel {
+    border-color: #39365a;
+    background: #211e3a;
+    box-shadow: 0 24px 70px rgb(0 0 0 / 24%);
+  }
+
+  .studentShell__navLink {
+    color: var(--student-muted);
+
+    &:hover {
+      background: #2c2948;
+      color: var(--student-primary);
+    }
+  }
+
+  .studentShell__navLinkActive {
+    background: #6658d9;
+  }
+
+  .studentShell__profile,
+  .studentShell__dock {
+    background: #24213dee;
+  }
+
+  .studentShell__topbar {
+    background: var(--student-warm);
+  }
+
+  .studentShell__profileAvatar,
+  .studentShell__avatar {
+    background: #3a3463;
+    color: #f3f0ff;
+  }
+
+  .studentShell__avatar {
+    border-color: #4a4380;
+  }
+
+  .studentShell__profileLogout:hover,
+  .studentShell__menuButton:hover,
+  .studentShell__signOut:hover {
+    background: #39345e;
+  }
+
+  .studentShell__menuButton,
+  .studentShell__signOut,
+  .studentShell__localeTrigger,
+  .studentShell__themeToggle,
+  .studentShell__topActions > .workspaceBell[data-role="student"] .workspaceBell__trigger {
+    border-color: var(--student-border);
+    background: var(--student-surface);
+    color: var(--student-muted);
+    box-shadow: none;
+  }
+
+  .studentShell__localeTrigger svg:first-child {
+    color: var(--student-primary);
+  }
+
+  .studentShell__themeToggle:hover,
+  .studentShell__topActions > .workspaceBell[data-role="student"] .workspaceBell__trigger:hover {
+    border-color: var(--student-primary);
+    background: #302b51;
+    color: var(--student-primary);
+  }
+
+  .studentShell__dockLinkActive {
+    background: #3a3463;
+  }
+
+  .studentShell__examMain,
+  .studentShell_exam {
+    background: var(--background);
+  }
+
+  .studentWorkspace__summary > div,
+  .studentWorkspace__toolbar label,
+  .studentWorkspace__card,
+  .studentWorkspace__detailGrid section,
+  .studentSettings,
+  .studentSettings__unavailable {
+    border-color: var(--student-border);
+    background: var(--student-surface);
+    color: var(--student-ink);
+    box-shadow: 0 14px 42px rgb(0 0 0 / 14%);
+  }
+
+  .studentWorkspace__detail > header {
+    background: linear-gradient(135deg, #342d63, #24213d);
+  }
+
+  .studentWorkspace__detail h1,
+  .studentWorkspace__toolbar input {
+    color: var(--student-ink);
+  }
+
+  .studentWorkspace__summary span,
+  .studentWorkspace__card p,
+  .studentWorkspace__detail header p,
+  .studentWorkspace__detailGrid section p {
+    color: var(--student-muted);
+  }
+
+  .studentWorkspace__journey i,
+  .studentWorkspace__progress {
+    background: #39365a;
+  }
+
+  .studentWorkspace__cardTop > strong {
+    color: #777099;
+  }
+
+  .studentWorkspace__open,
+  .studentWorkspace__back {
+    color: var(--student-primary);
+  }
+
+  .studentWorkspace__status_neutral {
+    background: #39365a;
+    color: #cbc5eb;
+  }
+
+  .studentWorkspace__empty {
+    border-color: var(--student-border);
+    color: var(--student-muted);
+  }
+
+  .studentSettings__field input,
+  .studentSettings__cancel {
+    border-color: var(--student-border);
+    background: #1b1931;
+    color: var(--student-ink);
+  }
+
+  .studentSettings__field input:disabled,
+  .studentSettings__field input:read-only,
+  .studentSettings__pictureActions button,
+  .studentSettings__password > span,
+  .studentSettings__notice {
+    border-color: var(--student-border);
+    background: #2c2948;
+    color: var(--student-muted);
+  }
+
+  .studentSettings__pictureActions button:first-child {
+    background: #39345e;
+    color: var(--student-primary);
+  }
+
+  .studentSettings__avatar {
+    border-color: var(--student-surface);
+  }
+
+  .studentSettings__save {
+    color: #1b1931;
+  }
+
+  .studentTests,
+  .studentTestResult,
+  .studentResultsList,
+  .studentWritingResult {
+    color: var(--student-ink);
+  }
+
+  .studentTests__overviewHeader {
+    border-color: var(--student-border);
+    background: linear-gradient(135deg, #342d63, #24213d);
+  }
+
+  .studentTests__overviewHeader p,
+  .studentTests__paperFooter,
+  .studentTests__paperHeader span,
+  .studentTests__skillCopy div {
+    color: var(--student-muted);
+  }
+
+  .studentTests__overviewHeader a,
+  .studentTests__skillCopy > span,
+  .studentTests__paperFooter span:last-child {
+    color: var(--student-primary);
+  }
+
+  .studentTests__paper,
+  .studentTests__skill,
+  .studentTests__empty,
+  .studentTestResult__answers,
+  .studentTestResult__evidence,
+  .studentTestResult__answers button,
+  .studentResultsList__card,
+  .studentResultsList__empty,
+  .studentWritingResult__tasks > section,
+  .studentWritingResult__overall {
+    border-color: var(--student-border);
+    background: var(--student-surface);
+    color: var(--student-ink);
+  }
+
+  .studentTestResult__layout {
+    border-color: var(--student-border);
+    background: var(--student-surface);
+  }
+
+  .studentTestResult__answers {
+    border-color: var(--student-border);
+  }
+
+  .studentTests__skillIcon,
+  .studentTests__skillAction_secondary,
+  .studentTestResult__sourceFallback {
+    background: #302b51;
+    color: var(--student-primary);
+  }
+
+  .studentTestResult__answers,
+  .studentTestResult__sourceFallback,
+  .studentWritingResult__answer,
+  .studentWritingResult__criteria {
+    background: #1b1931;
+  }
+
+  .studentTests__paper p,
+  .studentTests__skillCopy p,
+  .studentResultsList__card p,
+  .studentWritingResult__criteria p {
+    color: var(--student-muted);
+  }
+
+  .testRunner__navigator,
+  .testRunner__question,
+  .connectedTestRunner__stimulus,
+  .connectedTestRunner__question,
+  .connectedTestRunner__navigator,
+  .studentWritingSimulator__source,
+  .studentWritingSimulator__editor,
+  .studentSpeakingSimulator__questionCard {
+    border-color: var(--student-border);
+    background: var(--student-surface);
+    color: var(--student-ink);
+  }
+
+  .connectedTestRunner {
+    --test-accent-soft: #302b51;
+    --test-border: #39365a;
+    --test-ink: #f3f0ff;
+    --test-muted: #b1accd;
+  }
+
+  .studentShell__examMain .connectedTestRunner,
+  .studentShell__examMain .connectedTestRunner__header,
+  .studentShell__examMain .connectedTestRunner__body,
+  .studentShell__examMain .connectedTestRunner__stimulus,
+  .studentShell__examMain .connectedTestRunner__questionCanvas,
+  .studentShell__examMain .connectedTestRunner__navigator {
+    border-color: var(--student-border) !important;
+    background: var(--student-surface) !important;
+    color: var(--student-ink) !important;
+  }
+
+  .studentShell__examMain .connectedTestRunner__sectionBar,
+  .studentShell__examMain .connectedTestRunner__notesPanel,
+  .studentShell__examMain .connectedTestRunner__questionItem {
+    border-color: var(--student-border);
+    background: #1b1931;
+    color: var(--student-ink);
+  }
+
+  .studentShell__examMain .connectedTestRunner__brand,
+  .studentShell__examMain .connectedTestRunner__brand span,
+  .studentShell__examMain .connectedTestRunner__partButton,
+  .studentShell__examMain .connectedTestRunner__timer span {
+    color: var(--student-ink) !important;
+  }
+
+  .studentShell__examMain .connectedTestRunner__tools > button:not(.connectedTestRunner__submit),
+  .studentShell__examMain .connectedTestRunner__partButton span {
+    color: var(--student-muted);
+  }
+
+  .studentShell__examMain .connectedTestRunner__notesPanel textarea,
+  .studentShell__examMain .connectedTestRunner__inlineAnswer,
+  .studentShell__examMain .connectedTestRunner__text textarea {
+    border-color: var(--student-border);
+    background: #1b1931;
+    color: var(--student-ink);
+  }
+
+  .testRunner__choices label,
+  .testRunner__matching label,
+  .testRunner__ordering li,
+  .connectedTestRunner__choices label,
+  .studentSpeakingSimulator__notes {
+    border-color: var(--student-border);
+    background: #2c2948;
+    color: var(--student-ink);
+  }
+
+  .testRunner__matching select,
+  .testRunner__textAnswer textarea,
+  .connectedTestRunner__text textarea,
+  .studentWritingSimulator__editor textarea {
+    border-color: var(--student-border);
+    background: #1b1931;
+    color: var(--student-ink);
+  }
+
+  .workspaceBell[data-role="student"],
+  .workspaceNoticePanel[data-role="student"],
+  .workspaceNotifications[data-role="student"] {
+    --notice-accent: #a99eff;
+    --notice-soft: #302b51;
+    --notice-border: #39365a;
+    --notice-text: #f3f0ff;
+    --notice-muted: #b1accd;
+  }
+
+  .workspaceNoticePanel__paper,
+  .workspaceNoticePanel__drawerPaper {
+    border-color: #39365a;
+    background: #24213d !important;
+    color: #f3f0ff;
+  }
+
+  .workspaceNoticePanel[data-role="student"] .workspaceNoticePanel__item,
+  .workspaceNotifications[data-role="student"] .workspaceNotifications__item {
+    background: #24213d;
+
+    &:hover,
+    &:focus-visible,
+    &[data-unread="true"] {
+      background: #302b51;
+    }
+  }
+
+  .publicShared__notificationToast,
+  .publicShared__centerAlert {
+    border-color: #39365a;
+    background: linear-gradient(145deg, #2c2948, #1b1931) !important;
+    color: #f3f0ff;
+  }
+
+  .publicShared__notificationDialog.publicShared__notificationDialogStudent {
+    --heading: #f3f0ff;
+    --muted: #b1accd;
+    --notification-accent: #a99eff;
+    --notification-accent-soft: #39345e;
+    --notification-confirm-color: #1b1931;
+    border-color: #39365a;
+    background: linear-gradient(145deg, #2c2948, #1b1931) !important;
+  }
+
+  .publicShared__notificationDialogCancel {
+    border-color: #39365a;
+    background: #302b51;
+    color: #f3f0ff;
+  }
+}
+
+body[data-student-theme="dark"] .studentShell__localeMenu {
+  border-color: #39365a;
+  background: #24213d !important;
+  color: #f3f0ff;
+}
+
+body[data-student-theme="dark"] .studentShell__localeMenuItem {
+  color: #f3f0ff !important;
+
+  &[data-active="true"],
+  &:hover {
+    background: #39345e !important;
+    color: #c2b9ff !important;
+  }
+}

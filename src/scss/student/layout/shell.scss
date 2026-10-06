@@ -13,13 +13,14 @@
   --student-surface: #ffffff;
   --student-border: #e8e4f2;
   min-height: 100dvh;
+  padding-block: 20px;
   background: var(--student-warm);
   color: var(--student-ink);
 }
 
 .studentShell__sidebar {
   position: fixed;
-  inset: 20px auto 20px 20px;
+  inset: 32px auto 32px 28px;
   z-index: 20;
   display: flex;
   width: 232px;
@@ -43,9 +44,10 @@
 .studentShell__logo {
   width: 42px;
   height: 42px;
-  border-radius: 14px;
-  background: white;
-  padding: 5px;
+  flex: 0 0 42px;
+  background: var(--student-primary);
+  -webkit-mask: url("/icons/logo.svg") center / 36px 36px no-repeat;
+  mask: url("/icons/logo.svg") center / 36px 36px no-repeat;
 }
 
 .studentShell__brand {
@@ -54,14 +56,8 @@
     gap: 2px;
   }
   & strong {
-    font-size: 15px;
+    font-size: 17px;
     letter-spacing: -0.02em;
-  }
-  & small {
-    color: var(--student-muted);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
   }
 }
 
@@ -123,12 +119,14 @@
   padding: 12px;
 }
 
-.studentShell__profile > span,
+.studentShell__profileAvatar,
 .studentShell__avatar {
+  position: relative;
   display: grid;
   flex: 0 0 38px;
   height: 38px;
   place-items: center;
+  overflow: hidden;
   border-radius: 14px;
   background: #d9d3ff;
   color: var(--student-primary-strong);
@@ -136,9 +134,17 @@
   font-weight: 800;
 }
 
+.studentShell__avatar {
+  flex-basis: 44px;
+  height: 44px;
+  border: 3px solid #e4defc;
+  border-radius: 50%;
+}
+
 .studentShell__profile {
-  & div {
+  & > div {
     display: grid;
+    flex: 1;
     min-width: 0;
     gap: 2px;
   }
@@ -154,8 +160,36 @@
   }
 }
 
+.studentShell__profileLogout {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--student-primary-strong);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #ece8ff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--student-primary);
+    outline-offset: 2px;
+  }
+
+  & svg {
+    font-size: 20px;
+  }
+}
+
 .studentShell__workspace {
-  min-height: 100dvh;
+  min-height: calc(100dvh - 40px);
+  background: var(--student-warm);
   padding-left: 272px;
 }
 
@@ -167,10 +201,8 @@
   min-height: 76px;
   align-items: center;
   justify-content: flex-end;
-  border-bottom: 1px solid rgb(102 88 217 / 10%);
-  background: rgb(251 250 245 / 88%);
+  background: var(--student-warm);
   padding: 12px 36px;
-  backdrop-filter: blur(18px);
 }
 
 .studentShell__menuButton,
@@ -189,6 +221,7 @@
 }
 
 .studentShell__signOut {
+  display: none;
   cursor: pointer;
 }
 
@@ -203,40 +236,146 @@
   gap: 10px;
 }
 
-.studentShell__locales {
-  display: flex;
-  gap: 3px;
+.studentShell__localeTrigger {
+  display: inline-flex;
+  min-width: 100px;
+  height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
   border: 1px solid var(--student-border);
-  border-radius: 14px;
-  background: white;
-  padding: 4px;
+  border-radius: 16px;
+  background: #f0edff;
+  padding: 0 11px;
+  color: var(--student-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
 
-  & a {
-    display: grid;
-    min-width: 34px;
-    height: 32px;
-    place-items: center;
-    border-radius: 10px;
-    color: var(--student-muted);
-    font-size: 9px;
-    font-weight: 800;
-    text-decoration: none;
+  & svg:first-child {
+    color: var(--student-primary);
+    font-size: 18px;
   }
-  & a[aria-current="page"] {
-    background: #ece8ff;
-    color: var(--student-primary-strong);
+
+  & svg:last-child {
+    font-size: 18px;
+    transition: transform 180ms ease;
+  }
+
+  &[aria-expanded="true"] svg:last-child {
+    transform: rotate(180deg);
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--student-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--student-primary);
+    outline-offset: 2px;
   }
 }
 
-.studentShell__secure {
+.studentShell__localeMenu {
+  margin-top: 6px;
+  padding: 6px;
+  border: 1px solid var(--student-border, #e8e4f2);
+  border-radius: 16px !important;
+  background: var(--student-surface, #ffffff) !important;
+  box-shadow: 0 18px 48px rgb(68 56 148 / 16%) !important;
+}
+
+.studentShell__localeMenuItem {
+  min-height: 44px !important;
+  border-radius: 12px !important;
+  color: var(--student-ink, #24233d) !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+
+  &[data-active="true"],
+  &:hover {
+    background: #ece8ff !important;
+    color: var(--student-primary-strong, #4c3fc2) !important;
+  }
+}
+
+.studentShell__themeToggle,
+.studentShell__topActions > .workspaceBell[data-role="student"] .workspaceBell__trigger {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  place-items: center;
+  border: 1px solid var(--student-border);
+  border-radius: 14px;
+  background: var(--student-surface);
   color: var(--student-muted);
-  font-size: 12px;
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+
+  & svg {
+    font-size: 21px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: var(--student-primary);
+      background: #f0edff;
+      color: var(--student-primary);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--student-primary);
+    outline-offset: 2px;
+  }
+}
+
+.studentShell__topbarProfile {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  color: var(--student-ink);
+  text-decoration: none;
+
+  &:hover .studentShell__topbarProfileCopy strong,
+  &:focus-visible .studentShell__topbarProfileCopy strong {
+    color: var(--student-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--student-primary);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+.studentShell__topbarProfileCopy {
+  display: grid;
+  gap: 2px;
+
+  & strong {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  & small {
+    color: var(--student-muted);
+    font-size: 11px;
+  }
 }
 
 .studentShell__main {
   width: min(100%, 1440px);
   margin: 0 auto;
-  padding: 34px 36px 64px;
+  padding: 16px 36px 52px;
 }
 
 .studentShell__mobilePanel,
@@ -251,6 +390,7 @@
 .studentShell_exam {
   min-height: 100dvh;
   overflow: hidden;
+  padding-block: 0;
   background: #fff;
 }
 
@@ -260,15 +400,21 @@
 }
 
 @media (max-width: student.$navigation-breakpoint) {
+  .studentShell {
+    padding-block: 0;
+  }
+
   .studentShell__sidebar {
     display: none;
   }
 
   .studentShell__workspace {
+    min-height: 100dvh;
     padding-left: 0;
   }
 
   .studentShell__topbar {
+    top: 0;
     justify-content: space-between;
     padding: 10px 20px;
   }
@@ -286,18 +432,10 @@
     & strong {
       font-size: 13px;
     }
-    & span {
-      color: var(--student-muted);
-      font-size: 10px;
-    }
   }
 
-  .studentShell__secure {
-    display: none;
-  }
-
-  .studentShell__locales {
-    display: none;
+  .studentShell__signOut {
+    display: grid;
   }
 
   .studentShell__mobilePanel {
@@ -317,29 +455,6 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 5px;
-    }
-  }
-
-  .studentShell__mobileLocales {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 10px;
-
-    & a {
-      display: grid;
-      min-width: 38px;
-      height: 34px;
-      place-items: center;
-      border-radius: 10px;
-      background: #f4f1ff;
-      color: var(--student-muted);
-      font-size: 10px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-    & a[aria-current="page"] {
-      background: var(--student-primary);
-      color: white;
     }
   }
 
@@ -395,9 +510,17 @@
   }
 
   .studentShell__topActions {
-    & .studentShell__avatar {
-      display: none;
-    }
+    gap: 6px;
+  }
+
+  .studentShell__mobileBrand,
+  .studentShell__topbarProfileCopy {
+    display: none;
+  }
+
+  .studentShell__localeTrigger {
+    min-width: 84px;
+    padding-inline: 7px;
   }
 
   .studentShell__mobilePanel {

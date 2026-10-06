@@ -5,9 +5,7 @@ export const studentNavigationItems: ReadonlyArray<{
   key: StudentNavigationKey;
 }> = [
   { href: "/student", key: "dashboard" },
-  { href: "/student/courses", key: "courses" },
   { href: "/student/schedule", key: "schedule" },
-  { href: "/student/assignments", key: "assignments" },
   { href: "/student/library", key: "library" },
   { href: "/student/tests", key: "tests" },
   { href: "/student/results", key: "results" },

@@ -1185,6 +1185,15 @@ body[data-teacher-theme] .publicShared__buttonDanger:hover {
   }
 }
 
+.publicShared__notificationDialog.publicShared__notificationDialogStudent {
+  --notification-accent: #6658d9;
+  --notification-accent-soft: #ece8ff;
+  --heading: #24233d;
+  --muted: #6d6a86;
+  border-color: #e8e4f2;
+  background: linear-gradient(145deg, #ffffffed, #f0edffed) !important;
+}
+
 body[data-teacher-theme] .publicShared__notificationDialogDanger,
 body[data-teacher-theme] .publicShared__notificationToastDelete {
   --notification-accent: var(--teacher-danger);
@@ -1497,6 +1506,83 @@ body[data-teacher-theme] .publicShared__centerAlertError {
     &__centerAlertClosed {
       transition-duration: 0.01ms;
     }
+  }
+}
+
+body[data-teacher-theme="dark"] {
+  .publicShared__notificationToast,
+  .publicShared__notificationDialog {
+    --notification-accent-soft: color-mix(
+      in srgb,
+      var(--notification-accent) 17%,
+      var(--teacher-surface-elevated)
+    );
+    color: var(--teacher-text) !important;
+    border-color: var(--teacher-border);
+    background: linear-gradient(145deg, #1a2a42f5, #111c2ef5) !important;
+    box-shadow:
+      0 24px 64px rgb(0 0 0 / 38%),
+      inset 0 1px rgb(255 255 255 / 6%) !important;
+  }
+
+  .publicShared__notificationToastSuccess {
+    --notification-accent: var(--teacher-success);
+  }
+
+  .publicShared__notificationToastError,
+  .publicShared__notificationToastDelete {
+    --notification-accent: var(--teacher-danger);
+  }
+
+  .publicShared__notificationToastWarning,
+  .publicShared__notificationDialogWarning {
+    --notification-accent: var(--teacher-warning);
+  }
+
+  .publicShared__notificationDialogWarning {
+    --notification-confirm-color: #102a43;
+  }
+
+  .publicShared__notificationAction,
+  .publicShared__notificationDialogCancel {
+    color: var(--teacher-heading);
+    border-color: var(--teacher-border);
+    background: var(--teacher-surface-elevated);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--teacher-heading);
+      border-color: var(--teacher-primary);
+      background: color-mix(in srgb, var(--teacher-primary) 12%, var(--teacher-surface-elevated));
+    }
+  }
+
+  .publicShared__notificationClose:hover,
+  .publicShared__notificationClose:focus-visible {
+    background: var(--teacher-surface-elevated);
+  }
+
+  .publicShared__centerAlert {
+    --center-alert-soft: color-mix(
+      in srgb,
+      var(--center-alert-accent) 17%,
+      var(--teacher-surface-elevated)
+    );
+    color: var(--teacher-text);
+    border-color: var(--teacher-border);
+    background: linear-gradient(145deg, #1a2a42f5, #111c2ef5) !important;
+    box-shadow:
+      0 28px 72px rgb(0 0 0 / 40%),
+      inset 0 1px rgb(255 255 255 / 6%) !important;
+  }
+
+  .publicShared__centerAlertSuccess {
+    --center-alert-accent: var(--teacher-success);
+  }
+
+  .publicShared__centerAlertInfo,
+  .publicShared__centerAlertComingSoon {
+    --center-alert-accent: var(--teacher-primary);
   }
 }
 

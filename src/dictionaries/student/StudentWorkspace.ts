@@ -16,6 +16,7 @@ type LocalizedSectionSeed = {
     progress?: number;
     status: "success" | "warning" | "info" | "neutral";
     title: [string, string, string];
+    weeklySlot?: { day: number; startsAt: string };
   }>;
   title: [string, string, string];
 };
@@ -25,7 +26,7 @@ const localeIndex: Record<Locale, 0 | 1 | 2> = { uz: 0, ru: 1, en: 2 };
 const sectionSeeds: Record<StudentWorkspaceSectionKey, LocalizedSectionSeed> = {
   dashboard: {
     eyebrow: ["Bugungi o'qish", "Учёба сегодня", "Learning today"],
-    title: ["Xush kelibsiz, Dilnoza", "С возвращением, Дильноза", "Welcome back, Dilnoza"],
+    title: ["Xush kelibsiz", "С возвращением", "Welcome back"],
     description: [
       "Darslar, vazifalar va o'sishni bitta sokin markazdan kuzating.",
       "Следите за уроками, заданиями и прогрессом в одном спокойном пространстве.",
@@ -110,6 +111,7 @@ const sectionSeeds: Record<StudentWorkspaceSectionKey, LocalizedSectionSeed> = {
         meta: ["Dushanba · 16:00–17:30", "Понедельник · 16:00–17:30", "Monday · 16:00–17:30"],
         detail: ["204-xona · Mohira ustoz", "Кабинет 204 · Мохира", "Room 204 · Mohira"],
         status: "info",
+        weeklySlot: { day: 1, startsAt: "16:00" },
       },
       {
         id: "schedule-2",
@@ -121,6 +123,7 @@ const sectionSeeds: Record<StudentWorkspaceSectionKey, LocalizedSectionSeed> = {
           "Studio B · pair practice",
         ],
         status: "neutral",
+        weeklySlot: { day: 3, startsAt: "17:40" },
       },
       {
         id: "schedule-3",
@@ -128,6 +131,7 @@ const sectionSeeds: Record<StudentWorkspaceSectionKey, LocalizedSectionSeed> = {
         meta: ["Juma · 16:00–16:30", "Пятница · 16:00–16:30", "Friday · 16:00–16:30"],
         detail: ["Onlayn uchrashuv", "Онлайн-встреча", "Online meeting"],
         status: "success",
+        weeklySlot: { day: 5, startsAt: "16:00" },
       },
     ],
   },
@@ -355,9 +359,9 @@ const sectionSeeds: Record<StudentWorkspaceSectionKey, LocalizedSectionSeed> = {
     eyebrow: ["Shaxsiy sozlamalar", "Личные настройки", "Personal settings"],
     title: ["Profil va afzalliklar", "Профиль и предпочтения", "Profile and preferences"],
     description: [
-      "Til, aloqa ma'lumoti va bildirishnoma tanlovlarini boshqaring.",
-      "Управляйте языком, контактами и предпочтениями уведомлений.",
-      "Manage language, contact details, and notification preferences.",
+      "Ism-familiyangiz va hisob ma'lumotlarini ko'ring.",
+      "Просматривайте имя и данные учётной записи.",
+      "Review your name and account details.",
     ],
     records: [
       {
@@ -405,7 +409,7 @@ const navigation: Record<Locale, StudentWorkspaceCopy["navigation"]> = {
   uz: {
     dashboard: "Bosh sahifa",
     courses: "Kurslar",
-    schedule: "Jadval",
+    schedule: "Mening guruhim",
     assignments: "Vazifalar",
     library: "Kutubxona",
     tests: "Testlar",
@@ -418,7 +422,7 @@ const navigation: Record<Locale, StudentWorkspaceCopy["navigation"]> = {
   ru: {
     dashboard: "Главная",
     courses: "Курсы",
-    schedule: "Расписание",
+    schedule: "Моя группа",
     assignments: "Задания",
     library: "Библиотека",
     tests: "Тесты",
@@ -431,7 +435,7 @@ const navigation: Record<Locale, StudentWorkspaceCopy["navigation"]> = {
   en: {
     dashboard: "Home",
     courses: "Courses",
-    schedule: "Schedule",
+    schedule: "My Group",
     assignments: "Assignments",
     library: "Library",
     tests: "Tests",
@@ -445,51 +449,66 @@ const navigation: Record<Locale, StudentWorkspaceCopy["navigation"]> = {
 
 const common: Record<Locale, StudentWorkspaceCopy["common"]> = {
   uz: {
-    accountLabel: "Talaba profili",
+    accountLabel: "O‘quvchi",
     all: "Barchasi",
-    connectedNotice: "Server bilan himoyalangan o'quv maydoni",
     continueLabel: "Ochish",
     emptyLabel: "Mos ma'lumot topilmadi.",
     languageLabel: "Til",
+    logoutCancel: "Qolish",
+    logoutConfirm: "Chiqish",
     logoutLabel: "Chiqish",
+    logoutVerificationMessage:
+      "O‘quvchi ish maydonidan chiqmoqchimisiz? Saqlanmagan o‘zgarishlar yo‘qolishi mumkin.",
+    logoutVerificationTitle: "Chiqishni tasdiqlang",
     menuClose: "Menyuni yopish",
     menuOpen: "Menyuni ochish",
     previewNotice: "Namuna ma'lumotlari",
     searchLabel: "Qidirish",
     searchPlaceholder: "Nomi yoki holati bo'yicha qidiring",
-    studentName: "Dilnoza Karimova",
+    themeDarkLabel: "Tungi rejimni yoqish",
+    themeLightLabel: "Kunduzgi rejimni yoqish",
     workspaceLabel: "Student Workspace",
   },
   ru: {
-    accountLabel: "Профиль ученика",
+    accountLabel: "Ученик",
     all: "Все",
-    connectedNotice: "Защищённое учебное пространство",
     continueLabel: "Открыть",
     emptyLabel: "Подходящих данных не найдено.",
     languageLabel: "Язык",
+    logoutCancel: "Остаться",
+    logoutConfirm: "Выйти",
     logoutLabel: "Выйти",
+    logoutVerificationMessage:
+      "Вы хотите выйти из рабочего пространства ученика? Несохранённые изменения могут быть потеряны.",
+    logoutVerificationTitle: "Подтвердите выход",
     menuClose: "Закрыть меню",
     menuOpen: "Открыть меню",
     previewNotice: "Демонстрационные данные",
     searchLabel: "Поиск",
     searchPlaceholder: "Поиск по названию или статусу",
-    studentName: "Дильноза Каримова",
+    themeDarkLabel: "Включить ночной режим",
+    themeLightLabel: "Включить дневной режим",
     workspaceLabel: "Student Workspace",
   },
   en: {
-    accountLabel: "Student profile",
+    accountLabel: "Student",
     all: "All",
-    connectedNotice: "Server-protected learning space",
     continueLabel: "Open",
     emptyLabel: "No matching records found.",
     languageLabel: "Language",
+    logoutCancel: "Stay",
+    logoutConfirm: "Log out",
     logoutLabel: "Log out",
+    logoutVerificationMessage:
+      "Do you want to leave the Student Workspace? Unsaved changes may be lost.",
+    logoutVerificationTitle: "Confirm log out",
     menuClose: "Close menu",
     menuOpen: "Open menu",
     previewNotice: "Preview data",
     searchLabel: "Search",
     searchPlaceholder: "Search by title or status",
-    studentName: "Dilnoza Karimova",
+    themeDarkLabel: "Turn on dark mode",
+    themeLightLabel: "Turn on light mode",
     workspaceLabel: "Student Workspace",
   },
 };
@@ -508,6 +527,7 @@ function localizeSection(locale: Locale, seed: LocalizedSectionSeed): StudentSec
       progress: record.progress,
       status: record.status,
       title: record.title[index],
+      weeklySlot: record.weeklySlot,
     })),
     title: seed.title[index],
   };

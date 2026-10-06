@@ -53,10 +53,12 @@ export function TeacherWorkspaceShell({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isDashboard = normalizedPathname === `/${locale}/teacher`;
   const isPracticeDetail = normalizedPathname.startsWith(`/${locale}/teacher/practices/`);
+  const isResultDetail = normalizedPathname.startsWith(`/${locale}/teacher/results/`);
   const hasTopAlignedHeader =
     topAlignedPaths.some((path) => normalizedPathname === `/${locale}${path}`) ||
     normalizedPathname.startsWith(`/${locale}/teacher/groups/`) ||
-    isPracticeDetail;
+    isPracticeDetail ||
+    isResultDetail;
   const pageTitle = useMemo(() => {
     if (normalizedPathname === `/${locale}/teacher/notifications`) {
       return getWorkspaceNotificationsCopy(locale).title;

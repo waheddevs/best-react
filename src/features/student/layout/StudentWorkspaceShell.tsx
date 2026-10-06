@@ -1,43 +1,67 @@
 "use client";
 
 import CloseRounded from "@mui/icons-material/CloseRounded";
+import DarkModeRounded from "@mui/icons-material/DarkModeRounded";
+import LightModeRounded from "@mui/icons-material/LightModeRounded";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import MenuRounded from "@mui/icons-material/MenuRounded";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { WorkspaceLocaleNavigation } from "@/components/navigation/WorkspaceLocaleNavigation";
 import { WorkspaceNotificationBell } from "@/features/notifications/WorkspaceNotificationBell";
 import type { Locale } from "@/config/Locales";
 import { studentNavigationItems } from "@/config/StudentNavigation";
 import { useWorkspaceShellNavigation } from "@/hooks/navigation/useWorkspaceShellNavigation";
+import { useWorkspaceLogout } from "@/hooks/navigation/useWorkspaceLogout";
+import { useStudentTheme } from "@/hooks/student/useStudentTheme";
 import { useBestApiConnection } from "@/hooks/useBestApiConnection";
-import { getWorkspaceInitials } from "@/lib/WorkspaceIdentity";
+import { studentShortName } from "@/lib/student/StudentDisplayName";
+import type { StudentAccountIdentity } from "@/types/student/StudentSettings";
 import type { StudentWorkspaceCopy } from "@/types/student/StudentWorkspace";
 
+import { StudentProfileAvatar } from "./StudentProfileAvatar";
+import { StudentLocaleMenu } from "./StudentLocaleMenu";
 import { StudentWorkspaceNavigation } from "./StudentWorkspaceNavigation";
 
 type StudentWorkspaceShellProps = {
   children: ReactNode;
   copy: StudentWorkspaceCopy;
   locale: Locale;
+  profile: Pick<StudentAccountIdentity, "avatarUrl" | "displayName"> | null;
 };
 
-export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspaceShellProps) {
+export function StudentWorkspaceShell({
+  children,
+  copy,
+  locale,
+  profile,
+}: StudentWorkspaceShellProps) {
   /* HOOKS */
   const pathname = usePathname();
   const connectionState = useBestApiConnection("STUDENT");
-  const { handleMenuToggle, handleNavigation, localeOptions, menuOpen, navigationItems } =
+  const studentTheme = useStudentTheme();
+  const { handleMenuToggle, handleNavigation, menuOpen, navigationItems } =
     useWorkspaceShellNavigation({
       dashboardKey: "dashboard",
       items: studentNavigationItems,
       locale,
     });
-  const studentInitials = getWorkspaceInitials(copy.common.studentName, locale);
+  const displayName = profile?.displayName || copy.common.accountLabel;
+  const shortName = studentShortName(displayName, locale);
   const examMode = /\/student\/tests\/[^/]+\/[^/]+\/[^/]+\/?$/.test(pathname);
+  const handleLogout = useWorkspaceLogout({
+    confirmation: {
+      brand: "student",
+      cancelLabel: copy.common.logoutCancel,
+      confirmLabel: copy.common.logoutConfirm,
+      icon: "logout",
+      message: copy.common.logoutVerificationMessage,
+      title: copy.common.logoutVerificationTitle,
+    },
+    locale,
+    role: "student",
+  });
 
   if (examMode) {
     return (
@@ -51,16 +75,9 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
     <div className="studentShell">
       <aside className="studentShell__sidebar">
         <Link className="studentShell__brand" href={`/${locale}/student`}>
-          <Image
-            alt="BEST LC"
-            className="studentShell__logo"
-            height={42}
-            src="/icons/logo.svg"
-            width={42}
-          />
+          <span aria-hidden="true" className="studentShell__logo" />
           <span>
             <strong>BEST LC</strong>
-            <small>{copy.common.workspaceLabel}</small>
           </span>
         </Link>
         <nav aria-label={copy.common.workspaceLabel} className="studentShell__navigation">
@@ -71,11 +88,26 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
           />
         </nav>
         <div className="studentShell__profile">
-          <span aria-hidden="true">{studentInitials}</span>
+          <StudentProfileAvatar
+            avatarUrl={profile?.avatarUrl ?? null}
+            className="studentShell__profileAvatar"
+            displayName={displayName}
+            locale={locale}
+            size={38}
+          />
           <div>
-            <strong>{copy.common.studentName}</strong>
+            <strong>{shortName}</strong>
             <small>{copy.common.accountLabel}</small>
           </div>
+          <button
+            aria-label={copy.common.logoutLabel}
+            className="studentShell__profileLogout"
+            onClick={() => void handleLogout()}
+            title={copy.common.logoutLabel}
+            type="button"
+          >
+            <LogoutRounded aria-hidden="true" />
+          </button>
         </div>
       </aside>
 
@@ -92,20 +124,27 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
           </button>
           <div className="studentShell__mobileBrand">
             <strong>BEST LC</strong>
-            <span>{copy.common.workspaceLabel}</span>
           </div>
           <div className="studentShell__topActions">
-            <WorkspaceLocaleNavigation
-              className="studentShell__locales"
-              label={copy.common.languageLabel}
-              onNavigate={handleNavigation}
-              options={localeOptions}
-            />
-            <span className="studentShell__secure">
-              {connectionState === "connected"
-                ? copy.common.connectedNotice
-                : copy.common.previewNotice}
-            </span>
+            <StudentLocaleMenu label={copy.common.languageLabel} locale={locale} />
+            <button
+              aria-label={
+                studentTheme.mode === "dark"
+                  ? copy.common.themeLightLabel
+                  : copy.common.themeDarkLabel
+              }
+              aria-pressed={studentTheme.mode === "dark"}
+              className="studentShell__themeToggle"
+              onClick={studentTheme.toggleMode}
+              title={
+                studentTheme.mode === "dark"
+                  ? copy.common.themeLightLabel
+                  : copy.common.themeDarkLabel
+              }
+              type="button"
+            >
+              {studentTheme.mode === "dark" ? <LightModeRounded /> : <DarkModeRounded />}
+            </button>
             <WorkspaceNotificationBell
               connected={connectionState === "connected"}
               locale={locale}
@@ -114,25 +153,33 @@ export function StudentWorkspaceShell({ children, copy, locale }: StudentWorkspa
             <button
               aria-label={copy.common.logoutLabel}
               className="studentShell__signOut"
-              onClick={() => void signOut({ redirectTo: `/${locale}/login` })}
+              onClick={() => void handleLogout()}
               title={copy.common.logoutLabel}
               type="button"
             >
               <LogoutRounded />
             </button>
-            <div aria-label={copy.common.accountLabel} className="studentShell__avatar">
-              {studentInitials}
-            </div>
+            <Link
+              aria-label={`${copy.navigation.settings}: ${displayName}`}
+              className="studentShell__topbarProfile"
+              href={`/${locale}/student/settings`}
+            >
+              <StudentProfileAvatar
+                avatarUrl={profile?.avatarUrl ?? null}
+                className="studentShell__avatar"
+                displayName={displayName}
+                locale={locale}
+                size={44}
+              />
+              <span className="studentShell__topbarProfileCopy">
+                <strong>{shortName}</strong>
+                <small>{copy.common.accountLabel}</small>
+              </span>
+            </Link>
           </div>
         </header>
         {menuOpen ? (
           <div className="studentShell__mobilePanel">
-            <WorkspaceLocaleNavigation
-              className="studentShell__mobileLocales"
-              label={copy.common.languageLabel}
-              onNavigate={handleNavigation}
-              options={localeOptions}
-            />
             <nav aria-label={copy.common.workspaceLabel}>
               <StudentWorkspaceNavigation
                 copy={copy.navigation}

@@ -433,6 +433,71 @@ body[data-teacher-theme="dark"] .teacherShell {
   }
 }
 
+.teacherShell__themeToggle {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  place-items: center;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.875rem;
+  background: var(--teacher-surface);
+  color: var(--teacher-muted);
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+
+  svg {
+    font-size: 1.3rem;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: var(--teacher-brand);
+      background: var(--teacher-surface-subtle);
+      color: var(--teacher-primary);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+  }
+}
+
+.teacherShell__topbarActions > .workspaceBell[data-role="teacher"] .workspaceBell__trigger {
+  border-color: var(--teacher-border);
+  border-radius: 0.875rem;
+  background: var(--teacher-surface);
+  color: var(--teacher-muted);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+
+  svg {
+    font-size: 1.3rem;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: var(--teacher-brand);
+      background: var(--teacher-surface-subtle);
+      color: var(--teacher-primary);
+    }
+  }
+
+  &:focus-visible {
+    border-color: var(--teacher-border);
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+    background: var(--teacher-surface);
+    color: var(--teacher-muted);
+  }
+}
+
 .teacherShell__mobile {
   &MenuButton {
     display: none !important;
@@ -766,6 +831,12 @@ body[data-teacher-theme="dark"] .teacherShell {
       background: var(--teacher-primary);
       box-shadow: 0 8px 18px rgb(37 99 235 / 18%);
     }
+  }
+}
+
+@media (max-width: 360px) {
+  .teacherShell__topbarLeading > div:last-child {
+    display: none;
   }
 }
 

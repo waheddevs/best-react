@@ -11,6 +11,8 @@ export type StudentNavigationKey =
   | "notifications"
   | "settings";
 
+export type StudentThemeMode = "light" | "dark";
+
 export type StudentWorkspaceSectionKey = Exclude<StudentNavigationKey, "library">;
 
 export type StudentMetric = {
@@ -27,6 +29,7 @@ export type StudentWorkspaceRecord = {
   progress?: number;
   status: "success" | "warning" | "info" | "neutral";
   title: string;
+  weeklySlot?: { day: number; startsAt: string };
 };
 
 export type StudentSectionCopy = {
@@ -41,17 +44,21 @@ export type StudentWorkspaceCopy = {
   common: {
     accountLabel: string;
     all: string;
-    connectedNotice: string;
     continueLabel: string;
     emptyLabel: string;
     languageLabel: string;
+    logoutCancel: string;
+    logoutConfirm: string;
     logoutLabel: string;
+    logoutVerificationMessage: string;
+    logoutVerificationTitle: string;
     menuClose: string;
     menuOpen: string;
     previewNotice: string;
     searchLabel: string;
     searchPlaceholder: string;
-    studentName: string;
+    themeDarkLabel: string;
+    themeLightLabel: string;
     workspaceLabel: string;
   };
   navigation: Record<StudentNavigationKey, string>;

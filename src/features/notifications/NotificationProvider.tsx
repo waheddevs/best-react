@@ -72,6 +72,7 @@ export function NotificationProvider({ children, copy }: NotificationProviderPro
       return new Promise<boolean>((resolve) => {
         resolveRef.current = resolve;
         setDialogOptions({
+          brand: input.brand ?? "default",
           title: input.title ?? copy.confirm.title,
           message: input.message ?? copy.confirm.message,
           confirmLabel: input.confirmLabel ?? copy.confirm.confirmLabel,

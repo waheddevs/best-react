@@ -318,14 +318,32 @@
 }
 
 body[data-teacher-theme="dark"] {
-  .workspaceBell[data-role="teacher"] .workspaceBell__trigger,
+  .workspaceBell[data-role="teacher"],
   .workspaceNoticePanel[data-role="teacher"],
   .workspaceNotifications[data-role="teacher"] {
+    --notice-accent: var(--teacher-primary);
     --notice-soft: #17243a;
     --notice-border: #263750;
     --notice-text: #f3f7fc;
     --notice-muted: #a7b4c7;
+  }
+
+  .workspaceBell[data-role="teacher"] .workspaceBell__trigger,
+  .workspaceNoticePanel[data-role="teacher"],
+  .workspaceNotifications[data-role="teacher"] {
     background: #111c2e;
+  }
+
+  .workspaceBell[data-role="teacher"] .workspaceBell__dot {
+    border-color: #111c2e;
+  }
+
+  .workspaceNoticePanel__paper,
+  .workspaceNoticePanel__drawerPaper {
+    border-color: var(--teacher-border);
+    background: var(--teacher-surface) !important;
+    color: var(--teacher-text);
+    box-shadow: 0 18px 48px rgb(0 0 0 / 34%) !important;
   }
 
   .workspaceNoticePanel[data-role="teacher"] .workspaceNoticePanel__item,

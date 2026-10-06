@@ -3,9 +3,11 @@ import type { ReactNode } from "react";
 
 import { DashboardServiceUnavailable } from "@/components/ui/DashboardServiceUnavailable";
 import { isLocale } from "@/config/Locales";
+import { studentSettingsPreview } from "@/data/student/StudentSettingsPreview";
 import { getStudentWorkspaceCopy } from "@/dictionaries/student/StudentWorkspace";
 import { StudentWorkspaceShell } from "@/features/student/layout/StudentWorkspaceShell";
-import { getDashboardAccessState } from "@/lib/DashboardAccess";
+import { getDashboardAccessState, isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
+import { loadStudentSettingsIdentity } from "@/lib/student/StudentSettingsData";
 import { StudentThemeProvider } from "@/theme/StudentThemeProvider";
 
 import "@/scss/student/main.scss";
@@ -35,9 +37,20 @@ export default async function StudentLayout({ children, params }: StudentLayoutP
     return <DashboardServiceUnavailable locale={locale} />;
   }
 
+  const identity = isDashboardPreviewEnabled()
+    ? studentSettingsPreview
+    : await loadStudentSettingsIdentity().catch(() => null);
+  const profile = identity
+    ? { avatarUrl: identity.avatarUrl, displayName: identity.displayName }
+    : null;
+
   return (
     <StudentThemeProvider>
-      <StudentWorkspaceShell copy={getStudentWorkspaceCopy(locale)} locale={locale}>
+      <StudentWorkspaceShell
+        copy={getStudentWorkspaceCopy(locale)}
+        locale={locale}
+        profile={profile}
+      >
         {children}
       </StudentWorkspaceShell>
     </StudentThemeProvider>

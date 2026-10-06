@@ -9,7 +9,10 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, type MouseEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
-import { getWorkspaceNotificationText, getWorkspaceNotificationsCopy } from "@/dictionaries/WorkspaceNotifications";
+import {
+  getWorkspaceNotificationText,
+  getWorkspaceNotificationsCopy,
+} from "@/dictionaries/WorkspaceNotifications";
 import {
   loadWorkspaceNotifications,
   markAllWorkspaceNotificationsRead,
@@ -138,7 +141,9 @@ export function WorkspaceNotificationBell({
             <span className="workspaceNoticePanel__itemDot" aria-hidden="true" />
             <span>
               <strong>{getWorkspaceNotificationText(locale, notice).title}</strong>
-              {getWorkspaceNotificationText(locale, notice).body ? <small>{getWorkspaceNotificationText(locale, notice).body}</small> : null}
+              {getWorkspaceNotificationText(locale, notice).body ? (
+                <small>{getWorkspaceNotificationText(locale, notice).body}</small>
+              ) : null}
               <time dateTime={notice.createdAt}>
                 {new Intl.DateTimeFormat(locale, {
                   dateStyle: "medium",
@@ -181,7 +186,12 @@ export function WorkspaceNotificationBell({
         {unreadCount > 0 ? <span className="workspaceBell__dot" aria-hidden="true" /> : null}
       </span>
       {mobile ? (
-        <Drawer anchor="bottom" onClose={() => setAnchor(null)} open={open}>
+        <Drawer
+          anchor="bottom"
+          onClose={() => setAnchor(null)}
+          open={open}
+          slotProps={{ paper: { className: "workspaceNoticePanel__drawerPaper" } }}
+        >
           {content}
         </Drawer>
       ) : (

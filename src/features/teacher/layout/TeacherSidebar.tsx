@@ -1,15 +1,14 @@
 "use client";
 
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
 import { teacherNavigationItems } from "@/config/TeacherNavigation";
 import { TeacherNavigationIcon } from "@/features/teacher/layout/TeacherNavigationIcon";
-import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
+import { useWorkspaceLogout } from "@/hooks/navigation/useWorkspaceLogout";
 import type { TeacherCopy } from "@/types/teacher/Teacher";
 
 type TeacherSidebarProps = {
@@ -21,9 +20,18 @@ type TeacherSidebarProps = {
 export function TeacherSidebar({ copy, locale, onNavigate }: TeacherSidebarProps) {
   /* HOOKS */
   const pathname = usePathname();
-  const router = useRouter();
-  const session = useSession();
-  const confirm = useConfirmDialog();
+  const handleLogout = useWorkspaceLogout({
+    confirmation: {
+      cancelLabel: copy.profile.logoutCancel,
+      confirmLabel: copy.profile.logoutConfirm,
+      message: copy.profile.logoutVerificationMessage,
+      title: copy.profile.logoutVerificationTitle,
+      tone: "danger",
+    },
+    locale,
+    onConfirmed: onNavigate,
+    role: "teacher",
+  });
 
   const isActive = (href: string) => {
     const localizedHref = `/${locale}${href}`;
@@ -33,25 +41,6 @@ export function TeacherSidebar({ copy, locale, onNavigate }: TeacherSidebarProps
   };
 
   /* HANDLERS */
-  const handleLogout = async () => {
-    const accepted = await confirm({
-      cancelLabel: copy.profile.logoutCancel,
-      confirmLabel: copy.profile.logoutConfirm,
-      message: copy.profile.logoutVerificationMessage,
-      title: copy.profile.logoutVerificationTitle,
-      tone: "danger",
-    });
-    if (!accepted) return;
-
-    onNavigate?.();
-    const redirectTo = `/${locale}/login?role=teacher`;
-    if (session.status === "authenticated") {
-      await signOut({ redirectTo });
-      return;
-    }
-    router.push(redirectTo);
-  };
-
   return (
     <div className="teacherShell__sidebarContent">
       <div aria-hidden="true" className="teacherShell__sidebarPattern">

@@ -3,6 +3,7 @@
 import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import ErrorOutlineRounded from "@mui/icons-material/ErrorOutlineRounded";
 import HelpOutlineRounded from "@mui/icons-material/HelpOutlineRounded";
+import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import WarningAmberRounded from "@mui/icons-material/WarningAmberRounded";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -30,6 +31,7 @@ const toneClassNames: Record<ConfirmDialogTone, string> = {
 
 function renderDialogIcon(tone: ConfirmDialogTone, icon: NotificationIcon) {
   if (icon === "delete") return <DeleteOutlineRounded aria-hidden="true" />;
+  if (icon === "logout") return <LogoutRounded aria-hidden="true" />;
   if (tone === "danger") return <ErrorOutlineRounded aria-hidden="true" />;
   if (tone === "warning") return <WarningAmberRounded aria-hidden="true" />;
   return <HelpOutlineRounded aria-hidden="true" />;
@@ -57,7 +59,7 @@ export function LiquidAlertDialog({ options, onCancel, onConfirm }: LiquidAlertD
       slotProps={{
         backdrop: { className: "publicShared__notificationDialogBackdrop" },
         paper: {
-          className: `publicShared__notificationDialog ${toneClassNames[options.tone]}`,
+          className: `publicShared__notificationDialog ${toneClassNames[options.tone]}${options.brand === "student" ? " publicShared__notificationDialogStudent" : ""}`,
         },
       }}
     >
