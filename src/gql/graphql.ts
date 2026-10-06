@@ -44,6 +44,12 @@ export type BeginCredentialLoginInput = {
   password: string;
 };
 
+export type ChangeMyPasswordInput = {
+  confirmPassword: string;
+  currentPassword: string;
+  newPassword: string;
+};
+
 export type CompleteTeacherTaskInput = {
   taskId: string | number;
 };
@@ -433,6 +439,7 @@ export type UpdateMyProfileInput = {
   avatarMediaObjectId?: string | number | null | undefined;
   branchName?: string | null | undefined;
   displayName: string;
+  email?: string | null | undefined;
   phone?: string | null | undefined;
   preferredLanguage: Language;
   teacherSubject?: string | null | undefined;
@@ -1303,6 +1310,14 @@ export type StudentSettingsProfileQuery = {
     preferredLanguage: Language;
     avatarMediaObjectId: string | null;
   };
+};
+
+export type StudentProfileAvatarDownloadIntentMutationVariables = Exact<{
+  input: MediaObjectReferenceInput;
+}>;
+
+export type StudentProfileAvatarDownloadIntentMutation = {
+  createMediaDownloadIntent: { downloadIntent: { url: string } };
 };
 
 export type StudentUpdateSettingsProfileMutationVariables = Exact<{
@@ -2461,6 +2476,54 @@ export type TeacherUpdateProfileMutation = {
       avatarMediaObjectId: string | null;
     };
   };
+};
+
+export type TeacherChangePasswordMutationVariables = Exact<{
+  input: ChangeMyPasswordInput;
+}>;
+
+export type TeacherChangePasswordMutation = { changeMyPassword: { changed: boolean } };
+
+export type TeacherDeleteAccountMutationVariables = Exact<{ [key: string]: never }>;
+
+export type TeacherDeleteAccountMutation = { deleteMyAccount: { deleted: boolean } };
+
+export type TeacherProfileUploadIntentMutationVariables = Exact<{
+  input: CreateMediaUploadIntentInput;
+}>;
+
+export type TeacherProfileUploadIntentMutation = {
+  createMediaUploadIntent: {
+    uploadIntent: {
+      mediaObjectId: string;
+      method: string;
+      url: string;
+      requiredHeaders: Array<{ name: string; value: string }>;
+    };
+  };
+};
+
+export type TeacherConfirmProfileUploadMutationVariables = Exact<{
+  input: MediaObjectReferenceInput;
+}>;
+
+export type TeacherConfirmProfileUploadMutation = {
+  confirmMediaUpload: {
+    mediaObject: {
+      id: string;
+      mediaType: MediaType;
+      status: MediaObjectStatus;
+      malwareStatus: MediaMalwareStatus;
+    };
+  };
+};
+
+export type TeacherProfileAvatarDownloadIntentMutationVariables = Exact<{
+  input: MediaObjectReferenceInput;
+}>;
+
+export type TeacherProfileAvatarDownloadIntentMutation = {
+  createMediaDownloadIntent: { downloadIntent: { url: string } };
 };
 
 export type TeacherResultAttemptSkillQueryVariables = Exact<{
@@ -6171,6 +6234,58 @@ export const StudentSettingsProfileDocument = {
     },
   ],
 } as unknown as DocumentNode<StudentSettingsProfileQuery, StudentSettingsProfileQueryVariables>;
+export const StudentProfileAvatarDownloadIntentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "StudentProfileAvatarDownloadIntent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "input" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "MediaObjectReferenceInput" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createMediaDownloadIntent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: { kind: "Variable", name: { kind: "Name", value: "input" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "downloadIntent" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [{ kind: "Field", name: { kind: "Name", value: "url" } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StudentProfileAvatarDownloadIntentMutation,
+  StudentProfileAvatarDownloadIntentMutationVariables
+>;
 export const StudentUpdateSettingsProfileDocument = {
   kind: "Document",
   definitions: [
@@ -10941,6 +11056,248 @@ export const TeacherUpdateProfileDocument = {
     },
   ],
 } as unknown as DocumentNode<TeacherUpdateProfileMutation, TeacherUpdateProfileMutationVariables>;
+export const TeacherChangePasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "TeacherChangePassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "input" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ChangeMyPasswordInput" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "changeMyPassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: { kind: "Variable", name: { kind: "Name", value: "input" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [{ kind: "Field", name: { kind: "Name", value: "changed" } }],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TeacherChangePasswordMutation, TeacherChangePasswordMutationVariables>;
+export const TeacherDeleteAccountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "TeacherDeleteAccount" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteMyAccount" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [{ kind: "Field", name: { kind: "Name", value: "deleted" } }],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TeacherDeleteAccountMutation, TeacherDeleteAccountMutationVariables>;
+export const TeacherProfileUploadIntentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "TeacherProfileUploadIntent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "input" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "CreateMediaUploadIntentInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createMediaUploadIntent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: { kind: "Variable", name: { kind: "Name", value: "input" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "uploadIntent" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "mediaObjectId" } },
+                      { kind: "Field", name: { kind: "Name", value: "method" } },
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "requiredHeaders" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "name" } },
+                            { kind: "Field", name: { kind: "Name", value: "value" } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  TeacherProfileUploadIntentMutation,
+  TeacherProfileUploadIntentMutationVariables
+>;
+export const TeacherConfirmProfileUploadDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "TeacherConfirmProfileUpload" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "input" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "MediaObjectReferenceInput" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "confirmMediaUpload" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: { kind: "Variable", name: { kind: "Name", value: "input" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "mediaObject" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "mediaType" } },
+                      { kind: "Field", name: { kind: "Name", value: "status" } },
+                      { kind: "Field", name: { kind: "Name", value: "malwareStatus" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  TeacherConfirmProfileUploadMutation,
+  TeacherConfirmProfileUploadMutationVariables
+>;
+export const TeacherProfileAvatarDownloadIntentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "TeacherProfileAvatarDownloadIntent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "input" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "MediaObjectReferenceInput" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createMediaDownloadIntent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: { kind: "Variable", name: { kind: "Name", value: "input" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "downloadIntent" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [{ kind: "Field", name: { kind: "Name", value: "url" } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  TeacherProfileAvatarDownloadIntentMutation,
+  TeacherProfileAvatarDownloadIntentMutationVariables
+>;
 export const TeacherResultAttemptSkillDocument = {
   kind: "Document",
   definitions: [

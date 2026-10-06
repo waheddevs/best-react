@@ -8,6 +8,14 @@ query StudentSettingsProfile {
   }
 }
 
+mutation StudentProfileAvatarDownloadIntent($input: MediaObjectReferenceInput!) {
+  createMediaDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+    }
+  }
+}
+
 mutation StudentUpdateSettingsProfile($input: UpdateMyProfileInput!) {
   updateMyProfile(input: $input) {
     profile {

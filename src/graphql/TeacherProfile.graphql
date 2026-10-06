@@ -23,3 +23,48 @@ mutation TeacherUpdateProfile($input: UpdateMyProfileInput!) {
     }
   }
 }
+
+mutation TeacherChangePassword($input: ChangeMyPasswordInput!) {
+  changeMyPassword(input: $input) {
+    changed
+  }
+}
+
+mutation TeacherDeleteAccount {
+  deleteMyAccount {
+    deleted
+  }
+}
+
+mutation TeacherProfileUploadIntent($input: CreateMediaUploadIntentInput!) {
+  createMediaUploadIntent(input: $input) {
+    uploadIntent {
+      mediaObjectId
+      method
+      url
+      requiredHeaders {
+        name
+        value
+      }
+    }
+  }
+}
+
+mutation TeacherConfirmProfileUpload($input: MediaObjectReferenceInput!) {
+  confirmMediaUpload(input: $input) {
+    mediaObject {
+      id
+      mediaType
+      status
+      malwareStatus
+    }
+  }
+}
+
+mutation TeacherProfileAvatarDownloadIntent($input: MediaObjectReferenceInput!) {
+  createMediaDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+    }
+  }
+}
