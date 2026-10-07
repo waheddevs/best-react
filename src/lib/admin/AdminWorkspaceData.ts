@@ -29,6 +29,7 @@ import {
   AdminUsersDocument,
 } from "@/gql/graphql";
 import { executePublicApi } from "@/lib/PublicApi";
+import { profileAvatarUrlsFor } from "@/lib/ProfileAvatarIntents";
 import type { AdminNavigationKey, AdminWorkspaceRecord } from "@/types/admin/AdminWorkspace";
 
 type Connection<T> = {
@@ -110,8 +111,17 @@ function record(
   detail: string,
   status: Status,
   href?: string,
+  avatarUrl?: string | null,
 ): AdminWorkspaceRecord {
-  return { id, title, meta, detail, status, href };
+  return { id, title, meta, detail, status, href, avatarUrl };
+}
+
+async function adminAvatarUrlsFor(userIds: string[]): Promise<Map<string, string>> {
+  const session = await auth();
+  if (session?.bestApi?.role !== "ADMIN" || !session.bestApi.accessToken) {
+    throw new Error("Admin session required");
+  }
+  return profileAvatarUrlsFor(session.bestApi.accessToken, userIds).catch(() => new Map());
 }
 
 export async function loadAdminProfile() {
@@ -221,6 +231,7 @@ export async function loadAdminWorkspaceData(
         scoredTestCount: number;
       };
       const nodes = await allNodes<Student>(AdminStudentsDocument, "adminStudents");
+      const avatarUrls = await adminAvatarUrlsFor(nodes.map((item) => item.studentId));
       return {
         records: nodes.map((item) =>
           record(
@@ -230,6 +241,7 @@ export async function loadAdminWorkspaceData(
             getAdminStatusLabel(locale, item.status),
             tone(item.status),
             `/admin/students/${encodeURIComponent(item.studentId)}`,
+            avatarUrls.get(item.studentId) ?? null,
           ),
         ),
       };
@@ -244,6 +256,7 @@ export async function loadAdminWorkspaceData(
         status: string;
       };
       const nodes = await allNodes<User>(AdminUsersDocument, "adminUsers", { role: "TEACHER" });
+      const avatarUrls = await adminAvatarUrlsFor(nodes.map((item) => item.id));
       return {
         records: nodes.map((item) =>
           record(
@@ -253,6 +266,7 @@ export async function loadAdminWorkspaceData(
             getAdminStatusLabel(locale, item.status),
             tone(item.status),
             `/admin/teachers/${encodeURIComponent(item.id)}`,
+            avatarUrls.get(item.id) ?? null,
           ),
         ),
       };

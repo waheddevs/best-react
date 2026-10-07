@@ -20,6 +20,7 @@ export type AdminNavigationKey =
   | "settings";
 
 export type AdminWorkspaceRecord = {
+  avatarUrl?: string | null;
   detail: string;
   href?: string;
   id: string;

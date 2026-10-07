@@ -4,6 +4,8 @@ import Link from "next/link";
 import type { Locale } from "@/config/Locales";
 import type { AdminWorkspaceCopy, AdminWorkspaceRecord } from "@/types/admin/AdminWorkspace";
 
+import { AdminRecordAvatar } from "./AdminRecordAvatar";
+
 type AdminDetailPageProps = {
   backHref: string;
   common: AdminWorkspaceCopy["common"];
@@ -19,6 +21,13 @@ export function AdminDetailPage({ backHref, common, locale, record }: AdminDetai
         {common.all}
       </Link>
       <header>
+        {record.avatarUrl !== undefined ? (
+          <AdminRecordAvatar
+            avatarUrl={record.avatarUrl}
+            className="adminWorkspace__avatar--detail"
+            displayName={record.title}
+          />
+        ) : null}
         <small>{record.id}</small>
         <h1>{record.title}</h1>
         <p>{record.meta}</p>

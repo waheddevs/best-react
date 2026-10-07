@@ -316,9 +316,10 @@
     border-bottom: 0;
   }
   & > div:first-child {
-    display: grid;
+    display: flex;
+    align-items: center;
     min-width: 0;
-    gap: 4px;
+    gap: 10px;
   }
   & small {
     color: #8b96a6;
@@ -337,6 +338,41 @@
     color: #68758a;
     font-size: 11px;
     line-height: 1.45;
+  }
+}
+
+.adminWorkspace__recordLabel {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.adminWorkspace__avatar {
+  position: relative;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #e5f7f1;
+  color: #177e65;
+  font-size: 13px;
+  font-weight: 800;
+
+  img {
+    object-fit: cover;
+  }
+
+  &--detail {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 16px;
+    border: 2px solid rgb(255 255 255 / 35%);
+    background: rgb(255 255 255 / 16%);
+    color: white;
+    font-size: 21px;
   }
 }
 

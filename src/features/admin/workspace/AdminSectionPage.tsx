@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
 import { AdminProvisionUserForm } from "@/features/admin/users/AdminProvisionUserForm";
+import { AdminRecordAvatar } from "@/features/admin/workspace/AdminRecordAvatar";
 import { useAdminWorkspaceRecords } from "@/hooks/admin/useAdminWorkspaceRecords";
 import type {
   AdminProvisionUserCopy,
@@ -102,8 +103,13 @@ export function AdminSectionPage({
         {rows.map((record) => (
           <div className="adminWorkspace__row" key={record.id} role="row">
             <div role="cell">
-              <small>{record.id}</small>
-              <strong>{record.title}</strong>
+              {record.avatarUrl !== undefined ? (
+                <AdminRecordAvatar avatarUrl={record.avatarUrl} displayName={record.title} />
+              ) : null}
+              <span className="adminWorkspace__recordLabel">
+                <small>{record.id}</small>
+                <strong>{record.title}</strong>
+              </span>
             </div>
             <p role="cell">{record.meta}</p>
             <span
