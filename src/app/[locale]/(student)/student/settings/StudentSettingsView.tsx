@@ -5,6 +5,7 @@ import { StudentSectionHero } from "@/features/student/workspace/StudentSectionH
 import type { StudentAccountIdentity } from "@/types/student/StudentSettings";
 
 import { StudentAccountSettings } from "./StudentAccountSettings";
+import { StudentPasswordSettings } from "./StudentPasswordSettings";
 
 type StudentSettingsViewProps = {
   connected: boolean;
@@ -32,6 +33,7 @@ export function StudentSettingsView({
         title={copy.account}
       />
       <StudentAccountSettings connected={connected} copy={copy} locale={locale} profile={profile} />
+      <StudentPasswordSettings connected={connected} copy={copy} />
     </div>
   );
 }

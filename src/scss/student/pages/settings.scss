@@ -1,274 +1,212 @@
 .studentSettingsPage {
   display: grid;
-  gap: 24px;
+  gap: 18px;
+  padding-bottom: 32px;
 }
 
-.studentSettings {
+.studentSettings,
+.studentSettings__passwordCard {
   width: 100%;
   overflow: hidden;
   border: 1px solid var(--student-border);
-  border-radius: 28px;
+  border-radius: 20px;
   background: var(--student-surface);
-  box-shadow: 0 22px 64px rgb(53 43 103 / 7%);
+  box-shadow: 0 18px 48px rgb(53 43 103 / 7%);
 }
 
 .studentSettings__body {
   display: grid;
-  gap: 30px;
-  padding: 36px 42px 42px;
+  gap: 18px;
+  padding: 20px 30px 28px;
+}
+
+.studentSettings__body > h2,
+.studentSettings__passwordCard > h2 {
+  margin: 0;
+  color: var(--student-ink);
+  font-size: 18px;
+  font-weight: 740;
 }
 
 .studentSettings__pictureRow {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 16px;
   min-width: 0;
 
-  h2 {
-    margin: 0 0 7px;
-    color: var(--student-ink);
-    font-size: 19px;
-    letter-spacing: -0.025em;
+  > div {
+    display: grid;
+    min-width: 0;
+    gap: 8px;
   }
 
-  p {
+  p,
+  small {
     margin: 0;
     color: var(--student-muted);
-    font-size: 13px;
-    line-height: 1.55;
-  }
-}
-
-.studentSettings__pictureActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin: 0 0 9px;
-
-  button {
-    min-height: 42px;
-    border: 1px solid #dcd6ed;
-    border-radius: 12px;
-    background: #f8f7fb;
-    padding: 0 14px;
-    color: #77718c;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: not-allowed;
+    font-size: 12px;
+    line-height: 1.45;
   }
 
-  button:first-child {
-    border-color: #d9d3f2;
-    background: #eeeafd;
-    color: #6b61a5;
+  .studentSettings__selectedFile {
+    overflow: hidden;
+    color: var(--student-primary-strong);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
 .studentSettings__avatar {
   position: relative;
   display: grid;
-  width: 84px;
-  height: 84px;
-  flex: 0 0 84px;
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
   place-items: center;
   overflow: hidden;
-  border: 3px solid white;
+  border: 4px solid var(--student-surface);
   border-radius: 50%;
-  background: linear-gradient(135deg, #6658d9, #9c8ff2);
-  color: white;
-  font-size: 24px;
-  font-weight: 750;
-  box-shadow:
-    0 0 0 1px var(--student-border),
-    0 10px 24px rgb(102 88 217 / 18%);
+  background: var(--student-primary);
+  color: #fff;
+  font-size: 23px;
+  font-weight: 800;
+  box-shadow: 0 0 0 1px var(--student-border);
+}
+
+.studentSettings__pictureActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+
+  svg {
+    font-size: 19px;
+  }
 }
 
 .studentSettings__nameGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
+  align-items: start;
+  gap: 18px 20px;
 }
 
-.studentSettings__field {
+.studentSettings__field,
+.studentSettings__passwordFields label {
   display: grid;
-  align-content: start;
-  gap: 9px;
-
-  label {
-    color: var(--student-ink);
-    font-size: 14px;
-    font-weight: 700;
-  }
+  min-width: 0;
+  gap: 8px;
+  color: var(--student-ink);
+  font-size: 13px;
+  font-weight: 680;
 
   input {
     width: 100%;
     min-width: 0;
-    min-height: 52px;
-    border: 1px solid #ddd8ed;
-    border-radius: 14px;
+    min-height: 46px;
+    border: 1px solid var(--student-border);
+    border-radius: 12px;
     outline: 0;
-    background: white;
-    padding: 0 16px;
+    background: var(--student-surface);
+    padding: 0 15px;
     color: var(--student-ink);
     font: inherit;
+    font-size: 14px;
+    font-weight: 480;
     transition:
-      border-color 0.18s ease,
-      box-shadow 0.18s ease;
+      border-color 180ms ease,
+      box-shadow 180ms ease;
 
     &:focus-visible {
       border-color: var(--student-primary);
-      box-shadow: 0 0 0 3px rgb(102 88 217 / 17%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--student-primary) 16%, transparent);
     }
 
     &[aria-invalid="true"] {
-      border-color: #bb4966;
+      border-color: #d43c5e;
     }
 
-    &:disabled,
-    &:read-only {
-      background: #f8f7fb;
-      color: #5e5a74;
+    &:disabled {
+      opacity: 0.65;
     }
-  }
-
-  small {
-    color: var(--student-muted);
-    font-size: 12px;
-    line-height: 1.5;
   }
 
   .studentSettings__error {
-    color: #a93554;
-  }
-}
-
-.studentSettings__email {
-  max-width: 530px;
-}
-
-.studentSettings__notice {
-  margin: -4px 0 0;
-  border: 1px solid #ddd8f5;
-  border-radius: 14px;
-  background: #f5f2ff;
-  padding: 12px 16px;
-  color: #4f449f;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.studentSettings__password {
-  display: flex;
-  min-height: 138px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  border-top: 1px solid var(--student-border);
-  border-bottom: 1px solid var(--student-border);
-  padding: 30px 42px;
-
-  h2 {
-    margin: 0 0 8px;
-    color: var(--student-ink);
-    font-size: 21px;
-    letter-spacing: -0.025em;
-  }
-
-  p {
-    margin: 0;
-    color: var(--student-muted);
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  > span {
-    max-width: 265px;
-    border: 1px solid var(--student-border);
-    border-radius: 13px;
-    background: #f8f7fb;
-    padding: 11px 14px;
-    color: var(--student-muted);
+    color: #bd3152;
     font-size: 12px;
-    line-height: 1.45;
-    text-align: center;
+    font-weight: 500;
   }
 }
 
 .studentSettings__footer {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  gap: 12px;
-  padding: 24px 42px;
-
-  button {
-    min-width: 128px;
-    min-height: 46px;
-    border-radius: 13px;
-    padding: 0 18px;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    transition:
-      background-color 0.18s ease,
-      box-shadow 0.18s ease,
-      transform 0.18s ease;
-
-    &:focus-visible {
-      outline: 3px solid rgb(102 88 217 / 36%);
-      outline-offset: 2px;
-    }
-  }
+  gap: 10px;
+  border-top: 1px solid var(--student-border);
+  padding: 16px 30px;
 }
 
-.studentSettings__status {
-  flex: 1;
-  margin: 0;
-  font-size: 13px;
-
-  &_saved {
-    color: #24745d;
-  }
-
-  &_error {
-    color: #a93554;
-  }
+.studentSettings__footer button {
+  min-width: 112px;
 }
 
 .studentSettings__cancel {
-  border: 1px solid #ded9eb;
-  background: white;
-  color: var(--student-ink);
+  --border: var(--student-border);
+  --surface: var(--student-surface);
+  --heading: var(--student-ink);
+  --brand-turquoise: var(--student-primary);
+  --action-blue: var(--student-primary);
 
-  &:hover:not(:disabled) {
-    background: #f4f1ff;
-  }
+  border: 1px solid var(--student-border);
+  background-color: var(--student-surface);
+  color: var(--student-ink);
 }
 
 .studentSettings__save {
-  border: 1px solid var(--student-primary);
-  background: var(--student-primary);
-  color: white;
-  box-shadow: 0 8px 18px rgb(102 88 217 / 18%);
+  --gradient-cta: linear-gradient(115deg, #6555d8, #8071ed);
+  --tw-shadow-color: rgb(102 88 217 / 22%);
+  --action-blue: var(--student-primary);
+}
 
-  &:hover:not(:disabled) {
-    background: var(--student-primary-strong);
-    box-shadow: 0 11px 24px rgb(102 88 217 / 24%);
-    transform: translateY(-1px);
-  }
+.studentSettings__passwordCard {
+  display: grid;
+  gap: 18px;
+  padding: 20px 30px;
 
-  &:disabled {
-    opacity: 0.52;
+  form {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 20px;
   }
+}
+
+.studentSettings__passwordFields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.studentSettings__passwordActions {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+}
+
+.studentSettings__fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
 }
 
 .studentSettings__unavailable {
   width: min(100%, 980px);
   margin: 0 auto;
   border: 1px solid var(--student-border);
-  border-radius: 24px;
-  background: white;
+  border-radius: 20px;
+  background: var(--student-surface);
   padding: 40px;
   color: var(--student-ink);
 
@@ -278,48 +216,41 @@
   }
 }
 
-@media (max-width: 680px) {
-  .studentSettings__body,
-  .studentSettings__password,
-  .studentSettings__footer {
-    padding-right: 24px;
-    padding-left: 24px;
-  }
-
-  .studentSettings__nameGrid {
+@media (max-width: 1000px) {
+  .studentSettings__passwordCard form {
     grid-template-columns: 1fr;
-    gap: 18px;
   }
 
-  .studentSettings__password {
-    align-items: flex-start;
-    flex-direction: column;
+  .studentSettings__passwordActions {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 700px) {
+  .studentSettings__body,
+  .studentSettings__footer,
+  .studentSettings__passwordCard {
+    padding-inline: 20px;
   }
 
-  .studentSettings__password > span {
-    max-width: none;
-    text-align: left;
+  .studentSettings__nameGrid,
+  .studentSettings__passwordFields {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
 @media (max-width: 480px) {
   .studentSettings__pictureRow {
     align-items: flex-start;
+    gap: 13px;
   }
 
   .studentSettings__avatar {
-    width: 68px;
-    height: 68px;
-    flex-basis: 68px;
-    font-size: 20px;
-  }
-
-  .studentSettings__footer {
-    flex-wrap: wrap;
-  }
-
-  .studentSettings__status {
-    flex-basis: 100%;
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
+    font-size: 18px;
   }
 
   .studentSettings__footer button {
@@ -330,7 +261,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .studentSettings__field input,
-  .studentSettings__footer button {
+  .studentSettings__passwordFields input {
     transition: none;
   }
 }

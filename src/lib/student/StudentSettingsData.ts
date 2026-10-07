@@ -41,8 +41,10 @@ export const loadStudentSettingsIdentity = cache(async (): Promise<StudentAccoun
     }
   }
   return {
+    avatarMediaObjectId: avatarMediaObjectId ?? null,
     avatarUrl,
     displayName: data.myProfile.displayName,
     email: data.myProfile.email ?? null,
+    phone: data.myProfile.phone ?? null,
   };
 });
