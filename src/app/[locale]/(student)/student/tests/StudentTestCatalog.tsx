@@ -1,17 +1,41 @@
-import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
-import Link from "next/link";
-
 import type { Locale } from "@/config/Locales";
 import { StudentSectionHero } from "@/features/student/workspace/StudentSectionHero";
 import type { StudentTestPaper, StudentTestsCopy } from "@/types/student/StudentTests";
+
+import { StudentTestCard } from "./StudentTestCard";
+import { StudentTestPagination } from "./StudentTestPagination";
 
 type StudentTestCatalogProps = {
   copy: StudentTestsCopy;
   locale: Locale;
   papers: StudentTestPaper[];
+  requestedPage: number;
 };
 
-export function StudentTestCatalog({ copy, locale, papers }: StudentTestCatalogProps) {
+const pageSize = 9;
+
+function testNumber(paper: StudentTestPaper): number | null {
+  const match =
+    /(?:test|practice)-(\d+)(?:-|$)/i.exec(paper.slug) ??
+    /\b(?:test|practice)\s*#?\s*(\d+)\b/i.exec(paper.title);
+  const number = match ? Number(match[1]) : null;
+  return number !== null && Number.isSafeInteger(number) && number > 0 ? number : null;
+}
+
+export function StudentTestCatalog({
+  copy,
+  locale,
+  papers,
+  requestedPage,
+}: StudentTestCatalogProps) {
+  const orderedPapers = papers
+    .map((paper, index) => ({ paper, index, number: testNumber(paper) }))
+    .sort((a, b) => (a.number ?? Infinity) - (b.number ?? Infinity) || a.index - b.index);
+  const totalPages = Math.max(1, Math.ceil(papers.length / pageSize));
+  const currentPage = Math.min(requestedPage, totalPages);
+  const startIndex = (currentPage - 1) * pageSize;
+  const visiblePapers = orderedPapers.slice(startIndex, startIndex + pageSize);
+
   return (
     <article className="studentTests">
       <StudentSectionHero
@@ -26,34 +50,25 @@ export function StudentTestCatalog({ copy, locale, papers }: StudentTestCatalogP
       {papers.length === 0 ? (
         <p className="studentTests__empty">{copy.emptyLabel}</p>
       ) : (
-        <section aria-label={copy.title} className="studentTests__catalog">
-          {papers.map((paper) => (
-            <Link
-              className="studentTests__paper"
-              href={`/${locale}/student/tests/${paper.id}`}
-              key={paper.id}
-            >
-              <div className="studentTests__paperHeader">
-                <div>
-                  <span>{copy.moduleLabel}</span>
-                  <strong>{copy.academicModuleLabel}</strong>
-                </div>
-                <span className="studentTests__available">{copy.availableLabel}</span>
-              </div>
-              <h2>{paper.title}</h2>
-              <p>{paper.sourceLabel}</p>
-              <div className="studentTests__paperFooter">
-                <span>
-                  {copy.allSkillsLabel} · {copy.yearLabel} {paper.academicYear}
-                </span>
-                <span>
-                  {copy.continueLabel}
-                  <ArrowForwardRounded aria-hidden="true" />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </section>
+        <>
+          <section aria-label={copy.title} className="studentTests__catalog">
+            {visiblePapers.map(({ paper, number }, index) => (
+              <StudentTestCard
+                copy={copy}
+                key={paper.id}
+                locale={locale}
+                number={number ?? startIndex + index + 1}
+                paper={paper}
+              />
+            ))}
+          </section>
+          <StudentTestPagination
+            copy={copy}
+            currentPage={currentPage}
+            pathname={`/${locale}/student/tests`}
+            totalPages={totalPages}
+          />
+        </>
       )}
     </article>
   );

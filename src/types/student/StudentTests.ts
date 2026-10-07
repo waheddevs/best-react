@@ -24,15 +24,22 @@ export type StudentTestPaper = {
 export type StudentTestsCopy = {
   academicModuleLabel: string;
   allSkillsLabel: string;
+  applyLabel: string;
   availableLabel: string;
   continueLabel: string;
   emptyLabel: string;
   eyebrow: string;
   minutesLabel: string;
   moduleLabel: string;
+  nextPage: string;
+  pageLabel: string;
+  paginationLabel: string;
+  practiceTestLabel: string;
+  previousPage: string;
   questionsLabel: string;
   reviewLabel: string;
   resultLabel: string;
+  skillSubtitles: Record<TestSkill, readonly [string, string]>;
   sourceLabel: string;
   startLabel: string;
   startingLabel: string;
