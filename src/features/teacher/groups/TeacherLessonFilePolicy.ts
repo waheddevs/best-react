@@ -18,3 +18,28 @@ export function isAcceptedTeacherLessonFile(file: File): boolean {
 export function getTeacherLessonFileSizeLimit(file: File): number {
   return imageMimeTypes.has(getTeacherLessonFileMimeType(file)) ? imageLimit : generalFileLimit;
 }
+
+export type TeacherLessonFileValidationError = "type" | "size" | null;
+
+export function getTeacherLessonFileValidationError(
+  file: File | null,
+): TeacherLessonFileValidationError {
+  if (!file) return null;
+  if (!isAcceptedTeacherLessonFile(file)) return "type";
+  if (file.size <= 0 || file.size > getTeacherLessonFileSizeLimit(file)) return "size";
+  return null;
+}
+
+export function isTeacherLessonFormValid(input: {
+  editing: boolean;
+  materialFile: File | null;
+  name: string;
+  taskFile: File | null;
+}): boolean {
+  if (!input.name.trim() || input.name.trim().length > 240) return false;
+  if (!input.editing && (!input.materialFile || !input.taskFile)) return false;
+  return (
+    getTeacherLessonFileValidationError(input.materialFile) === null &&
+    getTeacherLessonFileValidationError(input.taskFile) === null
+  );
+}
