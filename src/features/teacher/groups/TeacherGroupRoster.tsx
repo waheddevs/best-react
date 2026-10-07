@@ -3,9 +3,7 @@
 import AddRounded from "@mui/icons-material/AddRounded";
 import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import AssessmentOutlined from "@mui/icons-material/AssessmentOutlined";
 import SearchRounded from "@mui/icons-material/SearchRounded";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -15,6 +13,7 @@ import type { Locale } from "@/config/Locales";
 import { TeacherAddStudentDialog } from "@/features/teacher/groups/TeacherAddStudentDialog";
 import { deleteConnectedTeacherStudent } from "@/features/teacher/groups/TeacherGroupActions";
 import { TeacherStudentDetailsDrawer } from "@/features/teacher/groups/TeacherStudentDetailsDrawer";
+import { TeacherLearnerAvatar } from "@/features/teacher/groups/TeacherLearnerAvatar";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import {
@@ -216,7 +215,11 @@ export function TeacherGroupRoster({
                     <td>
                       <div className="teacherGroups__learnerIdentity">
                         <span className="teacherGroups__learnerIndex">{index + 1}</span>
-                        <span className="teacherGroups__learnerAvatar">{learner.initials}</span>
+                        <TeacherLearnerAvatar
+                          avatarUrl={learner.avatarUrl}
+                          className="teacherGroups__learnerAvatar"
+                          initials={learner.initials}
+                        />
                         <strong>{learner.name}</strong>
                       </div>
                     </td>
@@ -241,12 +244,6 @@ export function TeacherGroupRoster({
                     </td>
                     <td>
                       <div className="teacherGroups__learnerActions">
-                        <Link
-                          aria-label={`Tests: ${learner.name}`}
-                          href={`/${locale}/teacher/groups/${groupId}/students/${learner.id}/attempts`}
-                        >
-                          <AssessmentOutlined aria-hidden="true" />
-                        </Link>
                         <button
                           aria-label={`${copy.groups.detail}: ${learner.name}`}
                           onClick={() => handleDetailsOpen(learner)}
