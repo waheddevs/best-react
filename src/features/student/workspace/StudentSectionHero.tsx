@@ -1,14 +1,4 @@
-import AutoStoriesRounded from "@mui/icons-material/AutoStoriesRounded";
-import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
-import CreditCardRounded from "@mui/icons-material/CreditCardRounded";
-import DashboardRounded from "@mui/icons-material/DashboardRounded";
-import EmojiEventsRounded from "@mui/icons-material/EmojiEventsRounded";
-import InsightsRounded from "@mui/icons-material/InsightsRounded";
-import NotificationsActiveRounded from "@mui/icons-material/NotificationsActiveRounded";
-import PersonRounded from "@mui/icons-material/PersonRounded";
-import QuizRounded from "@mui/icons-material/QuizRounded";
-import SchoolRounded from "@mui/icons-material/SchoolRounded";
-import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
+import Image from "next/image";
 
 import type { Locale } from "@/config/Locales";
 import { getStudentHeroCopy, type StudentHeroKind } from "@/dictionaries/student/StudentHero";
@@ -24,19 +14,19 @@ type StudentSectionHeroProps = {
   value?: number | string;
 };
 
-const icons = {
-  dashboard: DashboardRounded,
-  courses: SchoolRounded,
-  schedule: CalendarMonthRounded,
-  assignments: TaskAltRounded,
-  library: AutoStoriesRounded,
-  tests: QuizRounded,
-  results: EmojiEventsRounded,
-  progress: InsightsRounded,
-  payments: CreditCardRounded,
-  notifications: NotificationsActiveRounded,
-  settings: PersonRounded,
-} satisfies Record<StudentHeroKind, typeof DashboardRounded>;
+const iconImages = {
+  dashboard: "/images/student/hero-icons/dashboard.svg",
+  courses: "/images/student/hero-icons/courses.svg",
+  schedule: "/images/student/hero-icons/schedule.svg",
+  assignments: "/images/student/hero-icons/assignments.svg",
+  library: "/images/student/hero-icons/library.svg",
+  tests: "/images/student/hero-icons/tests.svg",
+  results: "/images/student/hero-icons/results.svg",
+  progress: "/images/student/hero-icons/progress.svg",
+  payments: "/images/student/hero-icons/payments.svg",
+  notifications: "/images/student/hero-icons/notifications.svg",
+  settings: "/images/student/hero-icons/settings.svg",
+} satisfies Record<StudentHeroKind, string>;
 
 export function StudentSectionHero({
   description,
@@ -49,19 +39,27 @@ export function StudentSectionHero({
   value,
 }: StudentSectionHeroProps) {
   const copy = getStudentHeroCopy(locale);
-  const Icon = icons[kind];
+  const iconSrc = iconImages[kind];
 
   return (
     <header className="studentHero">
+      <span aria-hidden="true" className="studentHero__orbit" />
       <div className="studentHero__copy">
         <span className="studentHero__eyebrow">{eyebrow}</span>
         <h1>{title}</h1>
         <p>{description}</p>
       </div>
-      <div className="studentHero__visual" data-kind={kind}>
-        <span aria-hidden="true" className="studentHero__orbit" />
+      <Image
+        alt=""
+        aria-hidden="true"
+        className="studentHero__watermark"
+        height={300}
+        src={iconSrc}
+        unoptimized
+        width={300}
+      />
+      <div className="studentHero__visual">
         <div className="studentHero__signal">
-          <Icon aria-hidden="true" className="studentHero__icon" />
           {value !== undefined ? <strong>{value}</strong> : null}
           <span>{label ?? copy.labels[kind]}</span>
           {preview ? <small>{copy.preview}</small> : null}
