@@ -27,3 +27,34 @@ mutation StudentUpdateSettingsProfile($input: UpdateMyProfileInput!) {
     }
   }
 }
+
+mutation StudentChangePassword($input: ChangeMyPasswordInput!) {
+  changeMyPassword(input: $input) {
+    changed
+  }
+}
+
+mutation StudentProfileUploadIntent($input: CreateMediaUploadIntentInput!) {
+  createMediaUploadIntent(input: $input) {
+    uploadIntent {
+      mediaObjectId
+      method
+      url
+      requiredHeaders {
+        name
+        value
+      }
+    }
+  }
+}
+
+mutation StudentConfirmProfileUpload($input: MediaObjectReferenceInput!) {
+  confirmMediaUpload(input: $input) {
+    mediaObject {
+      id
+      mediaType
+      status
+      malwareStatus
+    }
+  }
+}

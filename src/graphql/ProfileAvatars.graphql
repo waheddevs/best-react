@@ -1,0 +1,6 @@
+mutation ProfileAvatarDownloadIntents($userIds: [ID!]!) {
+  profileAvatarDownloadIntents(userIds: $userIds) {
+    userId
+    url
+  }
+}

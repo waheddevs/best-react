@@ -1,0 +1,57 @@
+query StudentCurrentGroup {
+  studentCurrentGroup {
+    membershipId
+    startedAt
+    group {
+      id
+      name
+      category
+      room
+      scheduleDays
+      startsAtMinutes
+      endsAtMinutes
+      timeZone
+      activeStudentCount
+    }
+  }
+}
+
+query StudentGroupLessons($groupId: ID!, $after: String) {
+  studentGroupLessons(groupId: $groupId, first: 50, after: $after) {
+    edges {
+      node {
+        id
+        lessonNumber
+        translations {
+          language
+          title
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+query StudentGroupMaterials($groupId: ID!, $language: Language!, $after: String) {
+  studentGroupMaterials(groupId: $groupId, language: $language, first: 50, after: $after) {
+    edges {
+      node {
+        id
+        lessonId
+        libraryItemId
+        kind
+        mediaObject {
+          id
+          originalName
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}

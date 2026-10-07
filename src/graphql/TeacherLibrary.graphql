@@ -13,6 +13,7 @@ query TeacherLibraryItems($first: Int, $after: String, $categoryId: ID) {
         id
         createdAt
         primaryLanguage
+        visibility
         category {
           id
           name

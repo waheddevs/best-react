@@ -67,6 +67,15 @@ mutation TeacherCreateLesson($input: CreateLessonInput!) {
   }
 }
 
+mutation TeacherScheduleLesson($input: SetLessonStatusInput!) {
+  setLessonStatus(input: $input) {
+    lesson {
+      id
+      status
+    }
+  }
+}
+
 mutation TeacherUpdateLesson($input: UpdateLessonInput!) {
   updateLesson(input: $input) {
     lesson {
