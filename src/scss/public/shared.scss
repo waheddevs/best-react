@@ -1194,6 +1194,11 @@ body[data-teacher-theme] .publicShared__buttonDanger:hover {
   background: linear-gradient(145deg, #ffffffed, #f0edffed) !important;
 }
 
+.publicShared__notificationDialog.publicShared__notificationDialogStudent.publicShared__notificationDialogDanger {
+  --notification-accent: #d32f2f;
+  --notification-accent-soft: #d32f2f26;
+}
+
 body[data-teacher-theme] .publicShared__notificationDialogDanger,
 body[data-teacher-theme] .publicShared__notificationToastDelete {
   --notification-accent: var(--teacher-danger);

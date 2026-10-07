@@ -22,6 +22,7 @@
   position: fixed;
   inset: 32px auto 32px 28px;
   z-index: 20;
+  isolation: isolate;
   display: flex;
   width: 232px;
   flex-direction: column;
@@ -30,6 +31,20 @@
   border-radius: 30px;
   background: #f0edff;
   box-shadow: 0 24px 70px rgb(68 56 148 / 12%);
+
+  &::before {
+    position: absolute;
+    bottom: -240px;
+    left: -82px;
+    width: 396px;
+    height: 396px;
+    border-radius: 79px;
+    background: linear-gradient(125deg, #5141c7 0%, #7364e8 58%, #8ed7f7 160%);
+    content: "";
+    pointer-events: none;
+    transform: rotate(-55deg);
+    z-index: -1;
+  }
 }
 
 .studentShell__brand {
@@ -110,13 +125,18 @@
 }
 
 .studentShell__profile {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 10px;
   margin: 0 14px 14px;
+  border: 1px solid rgb(255 255 255 / 20%);
   border-radius: 18px;
-  background: rgb(255 255 255 / 82%);
+  background: rgb(255 255 255 / 8%);
   padding: 12px;
+  color: #fff;
+  backdrop-filter: blur(12px);
 }
 
 .studentShell__profileAvatar,
@@ -134,11 +154,14 @@
   font-weight: 800;
 }
 
+.studentShell__profileAvatar {
+  background: rgb(255 255 255 / 18%);
+  color: #fff;
+}
+
 .studentShell__avatar {
   flex-basis: 44px;
   height: 44px;
-  border: 3px solid #e4defc;
-  border-radius: 50%;
 }
 
 .studentShell__profile {
@@ -155,7 +178,7 @@
     white-space: nowrap;
   }
   & small {
-    color: var(--student-muted);
+    color: rgb(255 255 255 / 82%);
     font-size: 10px;
   }
 }
@@ -169,16 +192,16 @@
   border: 0;
   border-radius: 11px;
   background: transparent;
-  color: var(--student-primary-strong);
+  color: #fff;
   cursor: pointer;
   transition: background 0.2s ease;
 
   &:hover {
-    background: #ece8ff;
+    background: rgb(255 255 255 / 16%);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--student-primary);
+    outline: 2px solid #fff;
     outline-offset: 2px;
   }
 
@@ -195,14 +218,23 @@
 
 .studentShell__topbar {
   position: sticky;
-  top: 0;
+  top: 20px;
   z-index: 15;
   display: flex;
-  min-height: 76px;
+  min-height: 96px;
   align-items: center;
   justify-content: flex-end;
   background: var(--student-warm);
-  padding: 12px 36px;
+  padding: 16px 36px 36px;
+
+  &::before {
+    position: absolute;
+    inset: -20px 0 auto;
+    height: 20px;
+    background: var(--student-warm);
+    content: "";
+    pointer-events: none;
+  }
 }
 
 .studentShell__menuButton,
@@ -375,7 +407,7 @@
 .studentShell__main {
   width: min(100%, 1440px);
   margin: 0 auto;
-  padding: 16px 36px 52px;
+  padding: 0 36px 52px;
 }
 
 .studentShell__mobilePanel,
@@ -415,8 +447,13 @@
 
   .studentShell__topbar {
     top: 0;
+    min-height: 76px;
     justify-content: space-between;
     padding: 10px 20px;
+
+    &::before {
+      display: none;
+    }
   }
 
   .studentShell__menuButton,
