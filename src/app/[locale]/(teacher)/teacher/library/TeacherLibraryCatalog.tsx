@@ -302,7 +302,6 @@ export function TeacherLibraryCatalog({
                     aria-expanded={Boolean(categoryAnchor)}
                     aria-haspopup="menu"
                     aria-label={`${copy.category}: ${category || copy.selectCategory}`}
-                    aria-required="true"
                     className="teacherLibrary__categoryTrigger"
                     onClick={(event) => setCategoryAnchor(event.currentTarget)}
                     type="button"
