@@ -1,5 +1,6 @@
 "use client";
 
+import DoneRounded from "@mui/icons-material/DoneRounded";
 import { useLazyQuery } from "@apollo/client/react";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
@@ -195,7 +196,10 @@ export function TeacherResultsInbox({
                   )}
                 </td>
                 <td>
-                  <span data-status={node.status}>{copy.statuses[node.status]}</span>
+                  <span data-status={node.status}>
+                    {node.status === "SCORED" ? <DoneRounded aria-hidden="true" /> : null}
+                    {copy.statuses[node.status]}
+                  </span>
                 </td>
                 <td>
                   {node.skill &&

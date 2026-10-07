@@ -116,6 +116,7 @@ export function TeacherWritingReviewForm({ locale, review }: { locale: Locale; r
     <main className="teacherResultDetail teacherWritingReview">
       <TeacherResultDetailHeader
         description={copy.practiceOnly}
+        isScored={status === "SCORED"}
         locale={locale}
         skill="WRITING"
         studentName={review.studentDisplayName}

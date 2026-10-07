@@ -1,4 +1,5 @@
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
+import DoneRounded from "@mui/icons-material/DoneRounded";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import type { Locale } from "@/config/Locales";
@@ -8,6 +9,7 @@ type ResultSkill = "LISTENING" | "READING" | "WRITING" | "SPEAKING";
 
 type TeacherResultDetailHeaderProps = {
   description?: string;
+  isScored?: boolean;
   locale: Locale;
   skill: ResultSkill;
   studentName: string;
@@ -17,6 +19,7 @@ type TeacherResultDetailHeaderProps = {
 
 export function TeacherResultDetailHeader({
   description,
+  isScored = false,
   locale,
   skill,
   studentName,
@@ -41,7 +44,10 @@ export function TeacherResultDetailHeader({
           <p className="teacherResultDetail__student">{studentName}</p>
           {description ? <p className="teacherResultDetail__description">{description}</p> : null}
         </div>
-        <strong className="teacherResultDetail__summary">{summary}</strong>
+        <strong className="teacherResultDetail__summary" data-scored={isScored || undefined}>
+          {isScored ? <DoneRounded aria-hidden="true" /> : null}
+          {summary}
+        </strong>
       </div>
     </header>
   );

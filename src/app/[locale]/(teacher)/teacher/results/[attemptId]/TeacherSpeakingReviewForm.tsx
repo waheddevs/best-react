@@ -98,6 +98,7 @@ export function TeacherSpeakingReviewForm({ locale, review }: { locale: Locale; 
   return (
     <main className="teacherResultDetail teacherSpeakingReview">
       <TeacherResultDetailHeader
+        isScored={status === "SCORED"}
         locale={locale}
         skill="SPEAKING"
         studentName={review.studentDisplayName}

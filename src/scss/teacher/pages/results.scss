@@ -66,7 +66,10 @@
 }
 
 .teacherResultDetail__summary {
+  display: inline-flex;
   flex: 0 0 auto;
+  align-items: center;
+  gap: 0.35rem;
   padding: 0.55rem 0.85rem;
   border: 1px solid var(--teacher-border);
   border-radius: 999px;
@@ -75,6 +78,16 @@
   font-size: 0.78rem;
   font-weight: 800;
   white-space: nowrap;
+
+  &[data-scored="true"] {
+    border-color: #bfe8d8;
+    background: #e8f6f1;
+    color: #087357;
+  }
+
+  svg {
+    font-size: 1rem;
+  }
 }
 
 .teacherObjectiveResult__tableWrap {
@@ -364,12 +377,18 @@
     font-weight: 700;
   }
   td span[data-status] {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     border-radius: 999px;
     background: #edf4ff;
     padding: 0.4rem 0.7rem;
     font-size: 0.72rem;
     font-weight: 750;
+
+    svg {
+      font-size: 0.9rem;
+    }
   }
   td span[data-status="REVIEW_REQUIRED"] {
     background: #fff3df;
@@ -404,6 +423,12 @@ body[data-teacher-theme="dark"] .teacherResults__tableWrap {
     background: color-mix(in srgb, var(--teacher-success) 14%, var(--teacher-surface));
     color: var(--teacher-success);
   }
+}
+
+body[data-teacher-theme="dark"] .teacherResultDetail__summary[data-scored="true"] {
+  border-color: color-mix(in srgb, var(--teacher-success) 35%, var(--teacher-surface));
+  background: color-mix(in srgb, var(--teacher-success) 14%, var(--teacher-surface));
+  color: var(--teacher-success);
 }
 
 .teacherResults__next {
