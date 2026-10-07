@@ -6,6 +6,7 @@ import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import DescriptionOutlined from "@mui/icons-material/DescriptionOutlined";
 import DownloadOutlined from "@mui/icons-material/DownloadOutlined";
 import Edit from "@mui/icons-material/Edit";
+import PublishRounded from "@mui/icons-material/PublishRounded";
 import SaveOutlined from "@mui/icons-material/SaveOutlined";
 import SearchRounded from "@mui/icons-material/SearchRounded";
 import { useRouter } from "next/navigation";
@@ -20,13 +21,14 @@ import {
   createConnectedTeacherLessonPlan,
   createTeacherLessonUploadIntent,
   getTeacherLessonFileDownload,
+  publishConnectedTeacherLessonPlan,
   replaceConnectedTeacherLessonResource,
   updateConnectedTeacherLessonPlan,
 } from "@/features/teacher/groups/TeacherLessonPlanActions";
 import {
   getTeacherLessonFileMimeType,
-  getTeacherLessonFileSizeLimit,
-  isAcceptedTeacherLessonFile,
+  getTeacherLessonFileValidationError,
+  isTeacherLessonFormValid,
   teacherLessonFileAccept,
 } from "@/features/teacher/groups/TeacherLessonFilePolicy";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
@@ -91,24 +93,24 @@ export function TeacherLessonPlanManager({
         (resource) => resource.lessonId === editingLesson.id && resource.kind === "TASK",
       )
     : undefined;
-
-  const selectFile = (file: File | undefined, setFile: (next: File | null) => void) => {
-    if (!file) return;
-    if (!isAcceptedTeacherLessonFile(file)) {
-      notifications.error({ title: copy.file, message: copy.fileFormatError });
-      return;
-    }
-    if (file.size > getTeacherLessonFileSizeLimit(file)) {
-      notifications.error({ title: copy.file, message: copy.fileSizeError });
-      return;
-    }
-    setFile(file);
-  };
+  const materialFileError = getTeacherLessonFileValidationError(materialFile);
+  const taskFileError = getTeacherLessonFileValidationError(taskFile);
+  const showRequiredErrors = Boolean(name.trim() || materialFile || taskFile);
+  const materialMissing = !editingLesson && !materialFile;
+  const taskMissing = !editingLesson && !taskFile;
+  const formValid = isTeacherLessonFormValid({
+    editing: editingLesson !== null,
+    materialFile,
+    name,
+    taskFile,
+  });
+  const fileMessage = (error: "type" | "size" | null) =>
+    error === "type" ? copy.fileFormatError : error === "size" ? copy.fileSizeError : "";
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalizedName = name.trim();
-    if (!normalizedName || pending) return;
+    if (!formValid || pending) return;
     setPending(true);
     try {
       if (editingLesson) {
@@ -284,9 +286,10 @@ export function TeacherLessonPlanManager({
     });
     if (!intent.ok) throw new Error(intent.code);
     const headers = new Headers(
-      intent.uploadIntent.requiredHeaders.map(
-        ({ name: headerName, value }): [string, string] => [headerName, value],
-      ),
+      intent.uploadIntent.requiredHeaders.map(({ name: headerName, value }): [string, string] => [
+        headerName,
+        value,
+      ]),
     );
     const response = await fetch(intent.uploadIntent.url, {
       body: file,
@@ -350,6 +353,27 @@ export function TeacherLessonPlanManager({
     setPending(false);
   };
 
+  const handleShare = async (lesson: TeacherLessonPlan) => {
+    if (!connected || pending || lesson.status !== "DRAFT") return;
+    setPending(true);
+    try {
+      const result = await publishConnectedTeacherLessonPlan(lesson.id);
+      if (!result.ok) throw new Error(result.code);
+      setData((current) => ({
+        ...current,
+        lessons: current.lessons.map((item) =>
+          item.id === lesson.id ? { ...item, status: result.lesson.status } : item,
+        ),
+      }));
+      notifications.success({ title: copy.sharedTitle, message: copy.sharedMessage });
+      router.refresh();
+    } catch {
+      notifications.error({ title: copy.share, message: copy.shareFailed });
+    } finally {
+      setPending(false);
+    }
+  };
+
   const openResource = async (resource: TeacherLessonResource, download: boolean) => {
     const url = resource.previewUrl ?? (await resolveConnectedUrl(resource.mediaObjectId));
     if (!url) {
@@ -382,6 +406,8 @@ export function TeacherLessonPlanManager({
         <label className="teacherGroups__lessonPlanName">
           <input
             aria-label={copy.name}
+            aria-describedby="teacher-lesson-name-validation"
+            aria-invalid={!name.trim()}
             disabled={pending}
             maxLength={240}
             onChange={(event) => setName(event.target.value)}
@@ -389,6 +415,12 @@ export function TeacherLessonPlanManager({
             required
             value={name}
           />
+          <small
+            className={`teacherGroups__lessonFieldMessage${showRequiredErrors && !name.trim() ? "teacherGroups__lessonFieldMessage--error" : ""}`}
+            id="teacher-lesson-name-validation"
+          >
+            {name.trim() ? "\u00a0" : copy.nameRequired}
+          </small>
         </label>
         <div className="teacherGroups__lessonUploadFields">
           <FilePicker
@@ -396,14 +428,24 @@ export function TeacherLessonPlanManager({
             file={materialFile}
             inputRef={materialInputRef}
             label={copy.addMaterial}
-            onChange={(file) => selectFile(file, setMaterialFile)}
+            message={
+              fileMessage(materialFileError) || (materialMissing ? copy.materialRequired : "")
+            }
+            messageId="teacher-lesson-material-validation"
+            onChange={(file) => setMaterialFile(file ?? null)}
+            required={!editingLesson}
+            validationError={materialFileError !== null || (showRequiredErrors && materialMissing)}
           />
           <FilePicker
             currentFileName={editingTask?.originalName}
             file={taskFile}
             inputRef={taskInputRef}
             label={copy.addTask}
-            onChange={(file) => selectFile(file, setTaskFile)}
+            message={fileMessage(taskFileError) || (taskMissing ? copy.taskRequired : "")}
+            messageId="teacher-lesson-task-validation"
+            onChange={(file) => setTaskFile(file ?? null)}
+            required={!editingLesson}
+            validationError={taskFileError !== null || (showRequiredErrors && taskMissing)}
           />
         </div>
         <div className="teacherGroups__lessonPlanFormActions">
@@ -420,7 +462,7 @@ export function TeacherLessonPlanManager({
             </Button>
           ) : null}
           <Button
-            disabled={pending}
+            disabled={pending || !formValid}
             hoverEffect="jump"
             shape="soft"
             size="small"
@@ -481,6 +523,18 @@ export function TeacherLessonPlanManager({
                       <td>{formatDate(lesson.createdAt, locale)}</td>
                       <td>
                         <div className="teacherGroups__learnerActions teacherGroups__lessonActions">
+                          {connected && lesson.status === "DRAFT" ? (
+                            <button
+                              aria-label={copy.share}
+                              className="teacherGroups__lessonActionButton--share"
+                              disabled={pending}
+                              onClick={() => void handleShare(lesson)}
+                              title={copy.share}
+                              type="button"
+                            >
+                              <PublishRounded />
+                            </button>
+                          ) : null}
                           <button
                             aria-label={copy.edit}
                             disabled={pending}
@@ -526,26 +580,52 @@ type FilePickerProps = {
   file: File | null;
   inputRef: RefObject<HTMLInputElement | null>;
   label: string;
+  message: string;
+  messageId: string;
   onChange: (file: File | undefined) => void;
+  required: boolean;
+  validationError: boolean;
 };
 
-function FilePicker({ currentFileName, file, inputRef, label, onChange }: FilePickerProps) {
+function FilePicker({
+  currentFileName,
+  file,
+  inputRef,
+  label,
+  message,
+  messageId,
+  onChange,
+  required,
+  validationError,
+}: FilePickerProps) {
   const displayedFileName = file?.name ?? currentFileName;
   return (
-    <label className="teacherGroups__lessonFilePicker">
-      <span className="teacherGroups__lessonFileButton">
-        <AttachFileOutlined />
-        <span title={displayedFileName}>
-          {displayedFileName ? truncateFileName(displayedFileName) : label}
+    <div className="teacherGroups__lessonFileField">
+      <label className="teacherGroups__lessonFilePicker" data-invalid={validationError}>
+        <span className="teacherGroups__lessonFileButton">
+          <AttachFileOutlined />
+          <span title={displayedFileName}>
+            {displayedFileName ? truncateFileName(displayedFileName) : label}
+          </span>
         </span>
-      </span>
-      <input
-        accept={teacherLessonFileAccept}
-        onChange={(event) => onChange(event.target.files?.[0])}
-        ref={inputRef}
-        type="file"
-      />
-    </label>
+        <input
+          accept={teacherLessonFileAccept}
+          aria-describedby={messageId}
+          aria-invalid={validationError || (required && !file)}
+          onChange={(event) => onChange(event.target.files?.[0])}
+          ref={inputRef}
+          required={required}
+          type="file"
+        />
+      </label>
+      <small
+        className={`teacherGroups__lessonFieldMessage${validationError ? "teacherGroups__lessonFieldMessage--error" : ""}`}
+        id={messageId}
+        role={validationError ? "alert" : undefined}
+      >
+        {message || "\u00a0"}
+      </small>
+    </div>
   );
 }
 
@@ -662,7 +742,7 @@ function createPreviewLesson(
     name,
     room,
     startsAt,
-    status: "DRAFT",
+    status: "SCHEDULED",
     summary: null,
   };
 }

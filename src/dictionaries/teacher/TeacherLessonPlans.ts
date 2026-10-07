@@ -29,7 +29,9 @@ export type TeacherLessonPlanCopy = {
   materialList: string;
   materialCount: (count: number) => string;
   materialName: string;
+  materialRequired: string;
   name: string;
+  nameRequired: string;
   noFile: string;
   number: string;
   preview: string;
@@ -37,12 +39,17 @@ export type TeacherLessonPlanCopy = {
   save: string;
   savedMessage: string;
   savedTitle: string;
+  share: string;
+  shareFailed: string;
+  sharedMessage: string;
+  sharedTitle: string;
   sort: string;
   sortName: string;
   sortNewest: string;
   sortOldest: string;
   sortType: string;
   task: string;
+  taskRequired: string;
   uploadFailed: string;
   uploading: string;
 };
@@ -77,7 +84,9 @@ const copy: Record<Locale, TeacherLessonPlanCopy> = {
     materialList: "Materiallar ro‘yxati",
     materialCount: (count) => `${count} ta material`,
     materialName: "Material nomi",
+    materialRequired: "Material faylini tanlang.",
     name: "Nomi",
+    nameRequired: "Lesson nomini kiriting.",
     noFile: "Fayl tanlanmagan",
     number: "№",
     preview: "Ko‘rish",
@@ -85,12 +94,17 @@ const copy: Record<Locale, TeacherLessonPlanCopy> = {
     save: "Saqlash",
     savedMessage: "O‘zgarishlar barcha joyda yangilandi.",
     savedTitle: "Saqlandi",
+    share: "Studentlarga ulashish",
+    shareFailed: "Lesson studentlarga ulashilmadi. Qayta urinib ko‘ring.",
+    sharedMessage: "Lesson endi guruh studentlariga ko‘rinadi.",
+    sharedTitle: "Lesson ulashildi",
     sort: "Saralash",
     sortName: "A-Z",
     sortNewest: "Yangi",
     sortOldest: "Eski",
     sortType: "Turi",
     task: "Task",
+    taskRequired: "Task faylini tanlang.",
     uploadFailed: "Fayl yuklanmadi. Format, hajm va server holatini tekshiring.",
     uploading: "Yuklanmoqda…",
   },
@@ -123,7 +137,9 @@ const copy: Record<Locale, TeacherLessonPlanCopy> = {
     materialList: "Список материалов",
     materialCount: (count) => `${count} материалов`,
     materialName: "Название материала",
+    materialRequired: "Выберите файл материала.",
     name: "Название",
+    nameRequired: "Введите название урока.",
     noFile: "Файл не выбран",
     number: "№",
     preview: "Просмотр",
@@ -131,12 +147,17 @@ const copy: Record<Locale, TeacherLessonPlanCopy> = {
     save: "Сохранить",
     savedMessage: "Изменения обновлены во всех разделах.",
     savedTitle: "Сохранено",
+    share: "Поделиться со студентами",
+    shareFailed: "Не удалось открыть урок студентам. Повторите попытку.",
+    sharedMessage: "Теперь урок виден студентам группы.",
+    sharedTitle: "Урок опубликован",
     sort: "Сортировка",
     sortName: "А-Я",
     sortNewest: "Новые",
     sortOldest: "Старые",
     sortType: "Тип",
     task: "Задание",
+    taskRequired: "Выберите файл задания.",
     uploadFailed: "Файл не загружен. Проверьте формат, размер и сервер.",
     uploading: "Загрузка…",
   },
@@ -169,7 +190,9 @@ const copy: Record<Locale, TeacherLessonPlanCopy> = {
     materialList: "Materials list",
     materialCount: (count) => `${count} ${count === 1 ? "material" : "materials"}`,
     materialName: "Material name",
+    materialRequired: "Choose a material file.",
     name: "Name",
+    nameRequired: "Enter a lesson name.",
     noFile: "No file selected",
     number: "No.",
     preview: "Preview",
@@ -177,12 +200,17 @@ const copy: Record<Locale, TeacherLessonPlanCopy> = {
     save: "Save",
     savedMessage: "The changes are now reflected everywhere.",
     savedTitle: "Saved",
+    share: "Share with students",
+    shareFailed: "The lesson could not be shared. Please try again.",
+    sharedMessage: "The lesson is now visible to group students.",
+    sharedTitle: "Lesson shared",
     sort: "Sort",
     sortName: "A-Z",
     sortNewest: "New",
     sortOldest: "Old",
     sortType: "Type",
     task: "Task",
+    taskRequired: "Choose a task file.",
     uploadFailed: "The file was not uploaded. Check its format, size, and the server.",
     uploading: "Uploading…",
   },

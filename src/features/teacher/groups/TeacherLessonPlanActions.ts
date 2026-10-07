@@ -12,6 +12,7 @@ import {
   TeacherLessonFileDownloadDocument,
   TeacherLessonUploadIntentDocument,
   TeacherLessonWorkspaceDocument,
+  TeacherScheduleLessonDocument,
   TeacherSetLessonArchivedDocument,
   TeacherUpdateLessonDocument,
   type CreateLessonInput,
@@ -29,6 +30,7 @@ import {
   type TeacherLessonFileDownloadMutation,
   type TeacherLessonUploadIntentMutation,
   type TeacherLessonWorkspaceQuery,
+  type TeacherScheduleLessonMutation,
   type TeacherSetLessonArchivedMutation,
   type TeacherUpdateLessonMutation,
   type UpdateLessonInput,
@@ -110,6 +112,9 @@ export async function confirmTeacherLessonUpload(mediaObjectId: string) {
 }
 
 export async function createConnectedTeacherLessonPlan(input: LessonPlanWriteInput) {
+  if (!input.materialMediaObjectId || !input.taskMediaObjectId) {
+    return { ok: false as const, code: "LESSON_FILES_REQUIRED" };
+  }
   const accessToken = await teacherToken();
   if (!accessToken) return { ok: false as const, code: "UNAUTHORIZED" };
   let lessonId: string | null = null;
@@ -167,7 +172,8 @@ export async function createConnectedTeacherLessonPlan(input: LessonPlanWriteInp
       });
       resourceIds.push(task.id);
     }
-    return { ok: true as const, lesson: lessonData.createLesson.lesson };
+    const scheduled = await scheduleLesson(accessToken, lessonId);
+    return { ok: true as const, lesson: scheduled };
   } catch (error) {
     await Promise.all(
       resourceIds.map((materialId) => archiveResourceQuietly(accessToken, materialId)),
@@ -177,6 +183,29 @@ export async function createConnectedTeacherLessonPlan(input: LessonPlanWriteInp
     }
     return { ok: false as const, code: resultCode(error) };
   }
+}
+
+export async function publishConnectedTeacherLessonPlan(lessonId: string) {
+  const accessToken = await teacherToken();
+  if (!accessToken) return { ok: false as const, code: "UNAUTHORIZED" };
+  try {
+    const lesson = await scheduleLesson(accessToken, lessonId);
+    return { ok: true as const, lesson };
+  } catch (error) {
+    return { ok: false as const, code: resultCode(error) };
+  }
+}
+
+async function scheduleLesson(accessToken: string, lessonId: string) {
+  const data = await executeApolloMutation<
+    TeacherScheduleLessonMutation,
+    { input: { lessonId: string; status: "SCHEDULED" } }
+  >(
+    TeacherScheduleLessonDocument,
+    { input: { lessonId, status: "SCHEDULED" } },
+    { accessToken, cache: "no-store" },
+  );
+  return data.setLessonStatus.lesson;
 }
 
 export async function updateConnectedTeacherLessonPlan(input: UpdateLessonPlanInput) {
