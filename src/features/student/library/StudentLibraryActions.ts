@@ -14,19 +14,31 @@ async function studentToken(): Promise<string | null> {
   return session?.bestApi?.role === "STUDENT" ? (session.bestApi.accessToken ?? null) : null;
 }
 
-export async function loadStudentLibraryBooks(locale: Locale, after?: string) {
+export async function loadStudentLibraryBooks(locale: Locale) {
   const accessToken = await studentToken();
   if (!accessToken) return { ok: false as const };
   try {
-    const data = await executeApolloQuery<
-      StudentLibraryBooksQuery,
-      { language: "EN" | "RU" | "UZ"; first: number; after?: string }
-    >(
-      StudentLibraryBooksDocument,
-      { language: locale.toUpperCase() as "EN" | "RU" | "UZ", first: 50, after },
-      { accessToken, cache: "no-store" },
-    );
-    return { ok: true as const, page: data.studentLibraryItems };
+    const edges: StudentLibraryBooksQuery["studentLibraryItems"]["edges"] = [];
+    let after: string | undefined;
+    const seenCursors = new Set<string>();
+    while (true) {
+      const data: StudentLibraryBooksQuery = await executeApolloQuery<
+        StudentLibraryBooksQuery,
+        { language: "EN" | "RU" | "UZ"; first: number; after?: string }
+      >(
+        StudentLibraryBooksDocument,
+        { language: locale.toUpperCase() as "EN" | "RU" | "UZ", first: 50, after },
+        { accessToken, cache: "no-store" },
+      );
+      const page = data.studentLibraryItems;
+      edges.push(...page.edges);
+      if (!page.pageInfo.hasNextPage) break;
+      const cursor = page.pageInfo.endCursor;
+      if (!cursor || seenCursors.has(cursor)) throw new Error("INVALID_LIBRARY_CURSOR");
+      seenCursors.add(cursor);
+      after = cursor;
+    }
+    return { ok: true as const, page: { edges } };
   } catch {
     return { ok: false as const };
   }
