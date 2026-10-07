@@ -5,17 +5,18 @@ import { StudentSectionHero } from "@/features/student/workspace/StudentSectionH
 type LibraryHeroProps = {
   copy: StudentLibraryCopy;
   locale: Locale;
-  resourceCount: number;
+  resourceCount?: number;
+  preview: boolean;
 };
 
-export function LibraryHero({ copy, locale, resourceCount }: LibraryHeroProps) {
+export function LibraryHero({ copy, locale, resourceCount, preview }: LibraryHeroProps) {
   return (
     <StudentSectionHero
       description={copy.description}
       eyebrow={copy.eyebrow}
       kind="library"
       locale={locale}
-      preview
+      preview={preview}
       title={copy.title}
       value={resourceCount}
     />

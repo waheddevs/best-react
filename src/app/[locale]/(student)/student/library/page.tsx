@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
-import { libraryResources } from "@/data/student/LibraryResources";
 import { getStudentLibraryCopy } from "@/dictionaries/student/Library";
 import { loadStudentLibraryBooks } from "@/features/student/library/StudentLibraryActions";
 import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
 import { createPageMetadata } from "@/lib/Metadata";
 
 import { LibraryCatalog } from "./LibraryCatalog";
-import { LibraryHero } from "./LibraryHero";
 
 type LibraryPageProps = { params: Promise<{ locale: string }> };
 
@@ -27,16 +25,13 @@ export default async function LibraryPage({ params }: LibraryPageProps) {
   const copy = getStudentLibraryCopy(locale);
   const preview = isDashboardPreviewEnabled();
   const books = preview ? null : await loadStudentLibraryBooks(locale);
-
   return (
-    <main className="library">
-      <LibraryHero copy={copy} locale={locale} resourceCount={libraryResources.length} />
-      <LibraryCatalog
-        locale={locale}
-        copy={copy}
-        bookPage={books?.ok ? books.page : null}
-        preview={preview}
-      />
-    </main>
+    <LibraryCatalog
+      key={locale}
+      locale={locale}
+      copy={copy}
+      bookPage={books?.ok ? books.page : null}
+      preview={preview}
+    />
   );
 }
