@@ -18,11 +18,20 @@ import {
   markAllWorkspaceNotificationsRead,
   markWorkspaceNotificationRead,
 } from "@/features/notifications/WorkspaceNotificationActions";
+import {
+  announceWorkspaceNotificationChange,
+  onWorkspaceNotificationChange,
+} from "@/features/notifications/WorkspaceNotificationEvents";
 import { workspaceNotificationTarget } from "@/lib/notifications/WorkspaceNotificationTarget";
+import { recentWorkspaceNotices } from "@/lib/notifications/WorkspaceNotificationPreview";
 import type { WorkspaceNotice, WorkspaceRole } from "@/types/WorkspaceNotification";
 
 type WorkspaceNotificationBellProps = {
   connected: boolean;
+  getNoticeText?: (
+    locale: Locale,
+    notice: WorkspaceNotice,
+  ) => { title: string; body: string | null };
   initial?: { notifications: WorkspaceNotice[]; unreadCount: number };
   initialError?: boolean;
   locale: Locale;
@@ -31,6 +40,7 @@ type WorkspaceNotificationBellProps = {
 
 export function WorkspaceNotificationBell({
   connected,
+  getNoticeText,
   initial,
   initialError = false,
   locale,
@@ -46,12 +56,14 @@ export function WorkspaceNotificationBell({
   const [loading, setLoading] = useState(connected && !initial);
   const open = Boolean(anchor);
   const allHref = `/${locale}/${role.toLowerCase()}/notifications`;
+  const previewLimit = role === "STUDENT" ? 3 : 8;
+  const recentNotices = recentWorkspaceNotices(notices, previewLimit);
 
   const refresh = useCallback(async () => {
     if (!connected) return;
     setLoading(true);
     try {
-      const page = await loadWorkspaceNotifications(role);
+      const page = await loadWorkspaceNotifications(role, previewLimit);
       setNotices(page.edges.map(({ node }) => node));
       setUnreadCount(page.unreadCount);
       setError(false);
@@ -60,7 +72,7 @@ export function WorkspaceNotificationBell({
     } finally {
       setLoading(false);
     }
-  }, [connected, role]);
+  }, [connected, previewLimit, role]);
 
   useEffect(() => {
     if (!connected) return;
@@ -77,6 +89,11 @@ export function WorkspaceNotificationBell({
     };
   }, [connected, initial, refresh]);
 
+  useEffect(() => {
+    if (!connected) return;
+    return onWorkspaceNotificationChange(role, "bell", () => void refresh());
+  }, [connected, refresh, role]);
+
   const select = async (notice: WorkspaceNotice) => {
     setAnchor(null);
     if (connected && !notice.readAt) {
@@ -88,11 +105,13 @@ export function WorkspaceNotificationBell({
           ),
         );
         setUnreadCount((current) => Math.max(0, current - 1));
+        announceWorkspaceNotificationChange(role, "bell");
       } catch {
         setError(true);
       }
     }
-    router.push(workspaceNotificationTarget(locale, role, notice));
+    const target = workspaceNotificationTarget(locale, role, notice);
+    if (target) router.push(target);
   };
 
   const markAll = async () => {
@@ -101,6 +120,7 @@ export function WorkspaceNotificationBell({
     try {
       await markAllWorkspaceNotificationsRead(role);
       await refresh();
+      announceWorkspaceNotificationChange(role, "bell");
     } catch {
       setError(true);
     } finally {
@@ -130,30 +150,32 @@ export function WorkspaceNotificationBell({
         <p className="workspaceNoticePanel__message">{copy.empty}</p>
       ) : null}
       {connected &&
-        notices.map((notice) => (
-          <button
-            className="workspaceNoticePanel__item"
-            data-unread={!notice.readAt}
-            key={notice.id}
-            onClick={() => void select(notice)}
-            type="button"
-          >
-            <span className="workspaceNoticePanel__itemDot" aria-hidden="true" />
-            <span>
-              <strong>{getWorkspaceNotificationText(locale, notice).title}</strong>
-              {getWorkspaceNotificationText(locale, notice).body ? (
-                <small>{getWorkspaceNotificationText(locale, notice).body}</small>
-              ) : null}
-              <time dateTime={notice.createdAt}>
-                {new Intl.DateTimeFormat(locale, {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                  timeZone: "Asia/Tashkent",
-                }).format(new Date(notice.createdAt))}
-              </time>
-            </span>
-          </button>
-        ))}
+        recentNotices.map((notice) => {
+          const noticeText =
+            getNoticeText?.(locale, notice) ?? getWorkspaceNotificationText(locale, notice);
+          return (
+            <button
+              className="workspaceNoticePanel__item"
+              data-unread={!notice.readAt}
+              key={notice.id}
+              onClick={() => void select(notice)}
+              type="button"
+            >
+              <span className="workspaceNoticePanel__itemDot" aria-hidden="true" />
+              <span>
+                <strong>{noticeText.title}</strong>
+                {noticeText.body ? <small>{noticeText.body}</small> : null}
+                <time dateTime={notice.createdAt}>
+                  {new Intl.DateTimeFormat(locale, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                    timeZone: "Asia/Tashkent",
+                  }).format(new Date(notice.createdAt))}
+                </time>
+              </span>
+            </button>
+          );
+        })}
       <div className="workspaceNoticePanel__footer">
         {connected && unreadCount > 0 ? (
           <button disabled={loading} onClick={() => void markAll()} type="button">
@@ -200,7 +222,14 @@ export function WorkspaceNotificationBell({
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           onClose={() => setAnchor(null)}
           open={open}
-          slotProps={{ paper: { className: "workspaceNoticePanel__paper" } }}
+          slotProps={{
+            paper: {
+              className:
+                role === "STUDENT"
+                  ? "workspaceNoticePanel__paper workspaceNoticePanel__paper_student"
+                  : "workspaceNoticePanel__paper",
+            },
+          }}
           transformOrigin={{ vertical: "top", horizontal: "right" }}
         >
           {content}

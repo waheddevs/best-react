@@ -12,6 +12,7 @@ import type { ReactNode } from "react";
 import { WorkspaceNotificationBell } from "@/features/notifications/WorkspaceNotificationBell";
 import type { Locale } from "@/config/Locales";
 import { studentNavigationItems } from "@/config/StudentNavigation";
+import { getStudentNotificationText } from "@/dictionaries/student/StudentNotifications";
 import { useWorkspaceShellNavigation } from "@/hooks/navigation/useWorkspaceShellNavigation";
 import { useWorkspaceLogout } from "@/hooks/navigation/useWorkspaceLogout";
 import { useStudentTheme } from "@/hooks/student/useStudentTheme";
@@ -58,6 +59,7 @@ export function StudentWorkspaceShell({
       icon: "logout",
       message: copy.common.logoutVerificationMessage,
       title: copy.common.logoutVerificationTitle,
+      tone: "danger",
     },
     locale,
     role: "student",
@@ -147,6 +149,7 @@ export function StudentWorkspaceShell({
             </button>
             <WorkspaceNotificationBell
               connected={connectionState === "connected"}
+              getNoticeText={getStudentNotificationText}
               locale={locale}
               role="STUDENT"
             />

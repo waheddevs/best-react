@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState, type ReactNode } from "react";
 
 import type { Locale } from "@/config/Locales";
 import {
@@ -14,22 +14,41 @@ import {
   markAllWorkspaceNotificationsRead,
   markWorkspaceNotificationRead,
 } from "@/features/notifications/WorkspaceNotificationActions";
+import {
+  announceWorkspaceNotificationChange,
+  onWorkspaceNotificationChange,
+} from "@/features/notifications/WorkspaceNotificationEvents";
 import { workspaceNotificationTarget } from "@/lib/notifications/WorkspaceNotificationTarget";
-import type { WorkspaceNoticePage, WorkspaceRole } from "@/types/WorkspaceNotification";
+import type {
+  WorkspaceNotice,
+  WorkspaceNoticePage,
+  WorkspaceRole,
+} from "@/types/WorkspaceNotification";
 
 type Props = {
   connected: boolean;
+  emptyIcon?: ReactNode;
   initial: WorkspaceNoticePage | null;
   locale: Locale;
+  getDateGroup?: (locale: Locale, createdAt: string) => string;
+  getNoticeText?: (
+    locale: Locale,
+    notice: WorkspaceNotice,
+  ) => { title: string; body: string | null };
   onUnreadCountChange?: (count: number | null) => void;
+  renderNoticeIcon?: (notice: WorkspaceNotice) => ReactNode;
   role: WorkspaceRole;
 };
 
 export function WorkspaceNotificationsList({
   connected,
+  emptyIcon,
+  getDateGroup,
+  getNoticeText,
   initial,
   locale,
   onUnreadCountChange,
+  renderNoticeIcon,
   role,
 }: Props) {
   /* HOOKS */
@@ -46,12 +65,25 @@ export function WorkspaceNotificationsList({
     onUnreadCountChange?.(page?.unreadCount ?? null);
   }, [onUnreadCountChange, page?.unreadCount]);
 
+  useEffect(() => {
+    if (!connected) return;
+    return onWorkspaceNotificationChange(role, "list", () => {
+      void loadWorkspaceNotifications(role, 20, null, displayedUnreadOnly)
+        .then((updated) => {
+          setPage(updated);
+          setError(false);
+        })
+        .catch(() => setError(true));
+    });
+  }, [connected, displayedUnreadOnly, role]);
+
   /* HANDLERS */
   const handleReload = async (filter = selectedUnreadOnly) => {
     if (!connected) return;
     setPending(true);
     try {
       setPage(await loadWorkspaceNotifications(role, 20, null, filter));
+      setSelectedUnreadOnly(filter);
       setDisplayedUnreadOnly(filter);
       setError(false);
     } catch {
@@ -98,11 +130,13 @@ export function WorkspaceNotificationsList({
               unreadCount: Math.max(0, current.unreadCount - 1),
             },
         );
+        announceWorkspaceNotificationChange(role, "list");
       } catch {
         setError(true);
       }
     }
-    router.push(workspaceNotificationTarget(locale, role, notice));
+    const target = workspaceNotificationTarget(locale, role, notice);
+    if (target) router.push(target);
   };
 
   const handleMarkAll = async () => {
@@ -110,6 +144,7 @@ export function WorkspaceNotificationsList({
     try {
       await markAllWorkspaceNotificationsRead(role);
       await handleReload();
+      announceWorkspaceNotificationChange(role, "list");
     } catch {
       setError(true);
     } finally {
@@ -119,7 +154,6 @@ export function WorkspaceNotificationsList({
 
   const handleFilterChange = (filter: boolean) => {
     if (filter === selectedUnreadOnly || pending) return;
-    setSelectedUnreadOnly(filter);
     void handleReload(filter);
   };
 
@@ -150,6 +184,9 @@ export function WorkspaceNotificationsList({
             {copy.markAll}
           </button>
         ) : null}
+        {pending && role === "STUDENT" ? (
+          <span className="workspaceNotifications__loading">{copy.loading}</span>
+        ) : null}
       </div>
       <AnimatePresence initial={false} mode="wait">
         <motion.div
@@ -171,33 +208,56 @@ export function WorkspaceNotificationsList({
             </p>
           ) : null}
           {connected && !error && page?.edges.length === 0 ? (
-            <p className="workspaceNotifications__message">{copy.empty}</p>
+            <p className="workspaceNotifications__message">
+              {emptyIcon ? (
+                <span aria-hidden="true" className="workspaceNotifications__emptyIcon">
+                  {emptyIcon}
+                </span>
+              ) : null}
+              {copy.empty}
+            </p>
           ) : null}
           {connected &&
-            page?.edges.map(({ node }) => (
-              <button
-                className="workspaceNotifications__item"
-                data-unread={!node.readAt}
-                key={node.id}
-                onClick={() => void handleSelect(node)}
-                type="button"
-              >
-                <span aria-hidden="true" />
-                <span>
-                  <strong>{getWorkspaceNotificationText(locale, node).title}</strong>
-                  {getWorkspaceNotificationText(locale, node).body ? (
-                    <small>{getWorkspaceNotificationText(locale, node).body}</small>
+            page?.edges.map(({ node }, index) => {
+              const noticeText =
+                getNoticeText?.(locale, node) ?? getWorkspaceNotificationText(locale, node);
+              const group = getDateGroup?.(locale, node.createdAt);
+              const previousGroup =
+                index > 0 && page.edges[index - 1]
+                  ? getDateGroup?.(locale, page.edges[index - 1].node.createdAt)
+                  : null;
+              return (
+                <Fragment key={node.id}>
+                  {group && group !== previousGroup ? (
+                    <h2 className="workspaceNotifications__dateGroup">{group}</h2>
                   ) : null}
-                  <time dateTime={node.createdAt}>
-                    {new Intl.DateTimeFormat(locale, {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                      timeZone: "Asia/Tashkent",
-                    }).format(new Date(node.createdAt))}
-                  </time>
-                </span>
-              </button>
-            ))}
+                  <button
+                    className="workspaceNotifications__item"
+                    data-unread={!node.readAt}
+                    onClick={() => void handleSelect(node)}
+                    type="button"
+                  >
+                    <span aria-hidden="true" className="workspaceNotifications__itemDot" />
+                    {renderNoticeIcon ? (
+                      <span aria-hidden="true" className="workspaceNotifications__itemIcon">
+                        {renderNoticeIcon(node)}
+                      </span>
+                    ) : null}
+                    <span className="workspaceNotifications__itemCopy">
+                      <strong>{noticeText.title}</strong>
+                      {noticeText.body ? <small>{noticeText.body}</small> : null}
+                      <time dateTime={node.createdAt}>
+                        {new Intl.DateTimeFormat(locale, {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                          timeZone: "Asia/Tashkent",
+                        }).format(new Date(node.createdAt))}
+                      </time>
+                    </span>
+                  </button>
+                </Fragment>
+              );
+            })}
           {connected && page?.pageInfo.hasNextPage ? (
             <button
               className="workspaceNotifications__more"

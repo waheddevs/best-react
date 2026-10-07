@@ -1,9 +1,15 @@
 "use client";
 
+import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
 import { useState } from "react";
 
 import type { Locale } from "@/config/Locales";
+import {
+  getStudentNotificationDateGroup,
+  getStudentNotificationText,
+} from "@/dictionaries/student/StudentNotifications";
 import { WorkspaceNotificationsList } from "@/features/notifications/WorkspaceNotificationsList";
+import { StudentNotificationIcon } from "@/features/student/notifications/StudentNotificationIcon";
 import { StudentSectionHero } from "@/features/student/workspace/StudentSectionHero";
 import type { WorkspaceNoticePage } from "@/types/WorkspaceNotification";
 
@@ -27,7 +33,7 @@ export function StudentNotificationsContent({
   const [unreadCount, setUnreadCount] = useState<number | null>(initial?.unreadCount ?? null);
 
   return (
-    <article className="studentWorkspace">
+    <article className="studentWorkspace studentWorkspace--notifications">
       <StudentSectionHero
         description={description}
         eyebrow={eyebrow}
@@ -39,9 +45,13 @@ export function StudentNotificationsContent({
       />
       <WorkspaceNotificationsList
         connected={connected}
+        emptyIcon={<NotificationsNoneRounded />}
+        getDateGroup={getStudentNotificationDateGroup}
+        getNoticeText={getStudentNotificationText}
         initial={initial}
         locale={locale}
         onUnreadCountChange={setUnreadCount}
+        renderNoticeIcon={(notice) => <StudentNotificationIcon kind={notice.kind} />}
         role="STUDENT"
       />
     </article>
