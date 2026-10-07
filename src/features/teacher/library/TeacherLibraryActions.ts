@@ -13,7 +13,8 @@ import {
 } from "@/gql/graphql";
 import { executeApolloMutation, executeApolloQuery } from "@/lib/apollo/ApolloServerClient";
 
-const bookCategoryName = "Books";
+const materialCategories = ["Books", "Guides", "Articles"] as const;
+export type TeacherLibraryCategory = (typeof materialCategories)[number];
 const pageSize = 24;
 
 type BookPage = TeacherLibraryItemsQuery["teacherLibraryItems"];
@@ -23,25 +24,24 @@ async function teacherToken(): Promise<string | null> {
   return session?.bestApi?.role === "TEACHER" ? (session.bestApi.accessToken ?? null) : null;
 }
 
-async function findBookCategory(accessToken: string) {
+async function findBookCategory(accessToken: string, name: TeacherLibraryCategory) {
   const data = await executeApolloQuery<
     { teacherLibraryCategories: { id: string; name: string }[] },
     Record<string, never>
   >(TeacherLibraryCategoriesDocument, {}, { accessToken, cache: "no-store" });
-  return data.teacherLibraryCategories.find((category) => category.name === bookCategoryName);
+  return data.teacherLibraryCategories.find((category) => category.name === name);
 }
 
 async function getBookPage(
   accessToken: string,
-  categoryId: string,
   after?: string,
 ): Promise<BookPage> {
   const data = await executeApolloQuery<
     TeacherLibraryItemsQuery,
-    { after?: string; categoryId: string; first: number }
+    { after?: string; first: number }
   >(
     TeacherLibraryItemsDocument,
-    { after, categoryId, first: pageSize },
+    { after, first: pageSize },
     { accessToken, cache: "no-store" },
   );
   return data.teacherLibraryItems;
@@ -51,10 +51,7 @@ export async function loadTeacherLibraryBooks(after?: string) {
   const accessToken = await teacherToken();
   if (!accessToken) return { ok: false as const, code: "UNAUTHORIZED" };
   try {
-    const category = await findBookCategory(accessToken);
-    const page = category
-      ? await getBookPage(accessToken, category.id, after)
-      : { edges: [], pageInfo: { endCursor: null, hasNextPage: false } };
+    const page = await getBookPage(accessToken, after);
     return { ok: true as const, page };
   } catch {
     return { ok: false as const, code: "LOAD_FAILED" };
@@ -62,6 +59,7 @@ export async function loadTeacherLibraryBooks(after?: string) {
 }
 
 export async function createTeacherLibraryBook(input: {
+  category: TeacherLibraryCategory;
   description: string;
   locale: Locale;
   mediaObjectId: string;
@@ -71,7 +69,8 @@ export async function createTeacherLibraryBook(input: {
   if (!accessToken) return { ok: false as const, code: "UNAUTHORIZED" };
   const title = input.title.trim();
   const description = input.description.trim();
-  if (!title || title.length > 240 || description.length > 2000) {
+  if (!title || title.length > 240 || description.length > 2000 ||
+      !materialCategories.includes(input.category)) {
     return { ok: false as const, code: "INVALID_INPUT" };
   }
 
@@ -97,7 +96,7 @@ export async function createTeacherLibraryBook(input: {
       return { ok: false as const, code: "PDF_NOT_READY" };
     }
 
-    let category = await findBookCategory(accessToken);
+    let category = await findBookCategory(accessToken, input.category);
     if (!category) {
       try {
         const created = await executeApolloMutation<
@@ -105,12 +104,12 @@ export async function createTeacherLibraryBook(input: {
           { input: { name: string } }
         >(
           TeacherLibraryCreateCategoryDocument,
-          { input: { name: bookCategoryName } },
+          { input: { name: input.category } },
           { accessToken, cache: "no-store" },
         );
         category = created.createLibraryCategory.category;
       } catch {
-        category = await findBookCategory(accessToken);
+        category = await findBookCategory(accessToken, input.category);
         if (!category) throw new Error("CATEGORY_FAILED");
       }
     }

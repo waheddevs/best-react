@@ -4,11 +4,14 @@ import AddRounded from "@mui/icons-material/AddRounded";
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import DownloadRounded from "@mui/icons-material/DownloadRounded";
+import ExpandMoreRounded from "@mui/icons-material/ExpandMoreRounded";
 import MenuBookRounded from "@mui/icons-material/MenuBookRounded";
 import OpenInNewRounded from "@mui/icons-material/OpenInNewRounded";
 import PictureAsPdfRounded from "@mui/icons-material/PictureAsPdfRounded";
 import SearchRounded from "@mui/icons-material/SearchRounded";
-import { useMemo, useRef, useState, type FormEvent } from "react";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { useId, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/config/Locales";
@@ -18,6 +21,7 @@ import {
   archiveTeacherLibraryBook,
   createTeacherLibraryBook,
   loadTeacherLibraryBooks,
+  type TeacherLibraryCategory,
 } from "@/features/teacher/library/TeacherLibraryActions";
 import {
   confirmTeacherLessonUpload,
@@ -62,6 +66,9 @@ export function TeacherLibraryCatalog({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [category, setCategory] = useState<TeacherLibraryCategory | "">("");
+  const [categoryAnchor, setCategoryAnchor] = useState<HTMLElement | null>(null);
+  const categoryMenuId = useId();
   const [pending, setPending] = useState(false);
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -85,6 +92,8 @@ export function TeacherLibraryCatalog({
     setTitle("");
     setDescription("");
     setFile(null);
+    setCategory("");
+    setCategoryAnchor(null);
     if (fileInput.current) fileInput.current.value = "";
   };
 
@@ -112,7 +121,7 @@ export function TeacherLibraryCatalog({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!file || pending || preview || !title.trim()) return;
+    if (!file || !category || pending || preview || !title.trim()) return;
     setPending(true);
     try {
       const intent = await createTeacherLessonUploadIntent({
@@ -141,6 +150,7 @@ export function TeacherLibraryCatalog({
         throw new Error("PDF_NOT_READY");
       }
       const saved = await createTeacherLibraryBook({
+        category,
         description,
         locale,
         mediaObjectId: confirmed.mediaObject.id,
@@ -268,43 +278,117 @@ export function TeacherLibraryCatalog({
             <label>
               <span>{copy.name}</span>
               <input
-                autoFocus
                 maxLength={240}
                 onChange={(event) => setTitle(event.target.value)}
                 required
                 value={title}
               />
             </label>
-            <label>
-              <span>{copy.details}</span>
-              <textarea
-                maxLength={2000}
-                onChange={(event) => setDescription(event.target.value)}
-                rows={3}
-                value={description}
-              />
-            </label>
-            <label className="teacherLibrary__fileField">
-              <span>{copy.file}</span>
-              <span className="teacherLibrary__filePicker">
-                <PictureAsPdfRounded aria-hidden="true" /> {file?.name ?? copy.chooseFile}
-              </span>
-              <small>{copy.fileHelp}</small>
-              <input
-                accept=".pdf,application/pdf"
-                onChange={(event) => handleFile(event.target.files?.[0])}
-                ref={fileInput}
-                required
-                type="file"
-              />
-            </label>
+            <div className="teacherLibrary__detailsRow">
+              <label className="teacherLibrary__descriptionField">
+                <span>{copy.details}</span>
+                <textarea
+                  maxLength={2000}
+                  onChange={(event) => setDescription(event.target.value)}
+                  rows={3}
+                  value={description}
+                />
+              </label>
+              <div className="teacherLibrary__uploadRow">
+                <div className="teacherLibrary__categoryField">
+                  <span>{copy.category}</span>
+                  <button
+                    aria-controls={categoryAnchor ? categoryMenuId : undefined}
+                    aria-expanded={Boolean(categoryAnchor)}
+                    aria-haspopup="menu"
+                    aria-label={`${copy.category}: ${category || copy.selectCategory}`}
+                    aria-required="true"
+                    className="teacherLibrary__categoryTrigger"
+                    onClick={(event) => setCategoryAnchor(event.currentTarget)}
+                    type="button"
+                  >
+                    <span>
+                      {category === "Books"
+                        ? copy.categoryBooks
+                        : category === "Guides"
+                          ? copy.categoryGuides
+                          : category === "Articles"
+                            ? copy.categoryArticles
+                            : copy.selectCategory}
+                    </span>
+                    <ExpandMoreRounded aria-hidden="true" />
+                  </button>
+                  <Menu
+                    anchorEl={categoryAnchor}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                    id={categoryMenuId}
+                    onClose={() => setCategoryAnchor(null)}
+                    open={Boolean(categoryAnchor)}
+                    slotProps={{
+                      paper: {
+                        className: "teacherLibrary__categoryMenu",
+                        style: { width: categoryAnchor?.offsetWidth },
+                      },
+                    }}
+                    transformOrigin={{ vertical: "top", horizontal: "left" }}
+                  >
+                    {(["Books", "Guides", "Articles"] as const).map((value) => (
+                      <MenuItem
+                        className="teacherLibrary__categoryOption"
+                        data-active={category === value}
+                        key={value}
+                        onClick={() => {
+                          setCategory(value);
+                          setCategoryAnchor(null);
+                        }}
+                        selected={category === value}
+                      >
+                        {value === "Books"
+                          ? copy.categoryBooks
+                          : value === "Guides"
+                            ? copy.categoryGuides
+                            : copy.categoryArticles}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </div>
+                <label className="teacherLibrary__fileField">
+                  <span>{copy.file}</span>
+                  <span className="teacherLibrary__filePicker">
+                    <PictureAsPdfRounded aria-hidden="true" /> {file?.name ?? copy.chooseFile}
+                  </span>
+                  <small>{copy.fileHelp}</small>
+                  <input
+                    accept=".pdf,application/pdf"
+                    onChange={(event) => handleFile(event.target.files?.[0])}
+                    ref={fileInput}
+                    required
+                    type="file"
+                  />
+                </label>
+              </div>
+            </div>
             <div className="teacherLibrary__formActions">
-              <button disabled={pending} onClick={resetForm} type="button">
+              <Button
+                disabled={pending}
+                onClick={resetForm}
+                shape="soft"
+                size="small"
+                type="button"
+                variant="secondary"
+              >
                 {copy.cancel}
-              </button>
-              <button disabled={pending || !file} type="submit">
+              </Button>
+              <Button
+                disabled={pending || !file || !category}
+                hoverEffect="jump"
+                shape="soft"
+                size="small"
+                type="submit"
+                variant="primary"
+              >
                 {pending ? copy.saving : copy.save}
-              </button>
+              </Button>
             </div>
           </form>
         </section>
@@ -352,9 +436,19 @@ export function TeacherLibraryCatalog({
                     <span>PDF</span>
                   </div>
                   <div className="teacherLibrary__bookBody">
-                    <span className="teacherLibrary__bookMeta">{copy.allGroups}</span>
                     <h3>{text?.title ?? media?.originalName}</h3>
                     {text?.description ? <p>{text.description}</p> : null}
+                    <span className="teacherLibrary__bookMeta">
+                      {book.category.name === "Books"
+                        ? copy.categoryBooks
+                        : book.category.name === "Guides"
+                          ? copy.categoryGuides
+                          : book.category.name === "Articles"
+                            ? copy.categoryArticles
+                            : book.category.name}
+                      {" · "}
+                      {book.visibility === "ALL_GROUPS" ? copy.allGroups : copy.selectedGroups}
+                    </span>
                     <small>
                       {media?.sizeBytes
                         ? `${(media.sizeBytes / 1024 / 1024).toFixed(1)} MB`
