@@ -44,6 +44,7 @@ import {
 } from "@/gql/graphql";
 import { useFragment as readFragment } from "@/gql/fragment-masking";
 import { executeApolloQuery } from "@/lib/apollo/ApolloServerClient";
+import { profileAvatarUrlsFor } from "@/lib/ProfileAvatarIntents";
 import type {
   TeacherGroup,
   TeacherGroupOverviewMetrics,
@@ -133,9 +134,14 @@ function learnerInitials(displayName: string): string {
   return `${names[0]?.[0] ?? "B"}${names[1]?.[0] ?? "L"}`.toUpperCase();
 }
 
-function mapRosterMember(groupId: string, member: RosterNode): TeacherLearner {
+function mapRosterMember(
+  groupId: string,
+  member: RosterNode,
+  avatarUrl: string | null,
+): TeacherLearner {
   const balance = Number(member.outstandingBalanceUzs);
   return {
+    avatarUrl,
     balance: Number.isSafeInteger(balance) ? balance : 0,
     email: member.email,
     endedAt: member.endedAt,
@@ -241,8 +247,14 @@ export async function loadConnectedTeacherGroupRoster(
     after = next;
   } while (true);
   if (!rosterSummary) throw new Error("Teacher group roster summary was not returned");
+  const avatarUrls = await profileAvatarUrlsFor(
+    accessToken,
+    members.filter((member) => member.endedAt === null).map((member) => member.studentId),
+  ).catch(() => new Map<string, string>());
   return {
-    learners: members.map((member) => mapRosterMember(groupId, member)),
+    learners: members.map((member) =>
+      mapRosterMember(groupId, member, avatarUrls.get(member.studentId) ?? null),
+    ),
     summary: {
       active: rosterSummary.active,
       debtor: rosterSummary.debtors,

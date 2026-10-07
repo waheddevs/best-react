@@ -1359,9 +1359,28 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 
 .teacherGroups__lessonPlanFormActions {
   display: flex;
+  align-self: start;
   align-items: center;
   justify-content: flex-end;
   gap: 0.55rem;
+}
+
+.teacherGroups__lessonFileField {
+  display: grid;
+  min-width: 0;
+  gap: 0.4rem;
+}
+
+.teacherGroups__lessonFieldMessage {
+  min-height: 1rem;
+  color: var(--teacher-muted);
+  font-size: 0.65rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.teacherGroups__lessonFieldMessage--error {
+  color: var(--teacher-danger);
 }
 
 .teacherGroups__lessonFilePicker {
@@ -1369,6 +1388,10 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
   display: grid;
   gap: 0.42rem;
   cursor: pointer;
+}
+
+.teacherGroups__lessonFilePicker[data-invalid="true"] .teacherGroups__lessonFileButton {
+  border-color: var(--teacher-danger);
 }
 
 .teacherGroups__lessonFilePicker input,
@@ -1508,7 +1531,7 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 
 .teacherGroups__lessonTable th:last-child,
 .teacherGroups__lessonTable td:last-child {
-  width: 6.5rem;
+  width: 7.5rem;
 }
 
 .teacherGroups__lessonFileCell,
@@ -1549,6 +1572,10 @@ body[data-teacher-theme="dark"] .teacherGroups__createTimeControl input[aria-inv
 .teacherGroups__lessonActions button:hover,
 .teacherGroups__materialActions button:hover {
   background: rgb(33 104 242 / 8%);
+}
+
+.teacherGroups__lessonActions .teacherGroups__lessonActionButton--share {
+  color: var(--teacher-primary);
 }
 
 .teacherGroups__lessonActionButton--delete,
@@ -2582,11 +2609,13 @@ button.teacherGroups__lessonDeleteButton {
     color: var(--teacher-muted);
   }
   &Avatar {
+    position: relative;
     display: grid;
     height: 2.4rem;
     width: 2.4rem;
     flex: none;
     place-items: center;
+    overflow: hidden;
     border-radius: 0.8rem;
     color: var(--teacher-primary);
     background: var(--teacher-primary);
@@ -2595,6 +2624,10 @@ button.teacherGroups__lessonDeleteButton {
     }
     font-size: 0.72rem;
     font-weight: 850;
+
+    img {
+      object-fit: cover;
+    }
   }
   &Identity {
     display: flex;
@@ -2815,16 +2848,22 @@ button.teacherGroups__lessonDeleteButton {
     font-weight: 500;
   }
   &Avatar {
+    position: relative;
     display: grid;
     width: 3rem;
     height: 3rem;
     flex: none;
     place-items: center;
+    overflow: hidden;
     border-radius: 1rem;
     color: var(--teacher-primary);
     background: rgb(37 99 235 / 10%);
     font-size: 0.82rem;
     font-weight: 850;
+
+    img {
+      object-fit: cover;
+    }
   }
   &Body {
     display: grid;

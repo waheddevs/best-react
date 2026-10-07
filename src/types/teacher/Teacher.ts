@@ -60,6 +60,7 @@ export type TeacherPaymentHistoryEntry = {
 };
 
 export type TeacherLearner = {
+  avatarUrl?: string | null;
   balance: number;
   email: string | null;
   endedAt: string | null;

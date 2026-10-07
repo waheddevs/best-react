@@ -15,6 +15,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import type { Locale } from "@/config/Locales";
+import { TeacherLearnerAvatar } from "@/features/teacher/groups/TeacherLearnerAvatar";
 import { setConnectedTeacherStudentParticipationStatus } from "@/features/teacher/groups/TeacherGroupActions";
 import type { GroupMembershipStatus, GroupRosterStatus } from "@/gql/graphql";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
@@ -156,7 +157,11 @@ export function TeacherStudentDetailsDrawer({
       <div className="teacherGroups__studentDetails">
         <header className="teacherGroups__studentDetailsHeader">
           <div className="teacherGroups__studentDetailsIdentity">
-            <span className="teacherGroups__studentDetailsAvatar">{learner.initials}</span>
+            <TeacherLearnerAvatar
+              avatarUrl={learner.avatarUrl}
+              className="teacherGroups__studentDetailsAvatar"
+              initials={learner.initials}
+            />
             <div>
               <span>{copy.groups.studentDetails}</span>
               <h2>{learner.name}</h2>
