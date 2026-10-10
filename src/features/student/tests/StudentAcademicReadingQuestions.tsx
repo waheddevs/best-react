@@ -1,4 +1,6 @@
 import FlagOutlined from "@mui/icons-material/FlagOutlined";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 import type { StudentAttemptFieldsFragment } from "@/gql/graphql";
 
@@ -89,7 +91,11 @@ export function StudentAcademicReadingQuestions({
         if (groupQuestions.length === 0) return null;
 
         return (
-          <section className="studentAcademicReading__group" key={group.label}>
+          <section
+            className="studentAcademicReading__group"
+            data-question-type={group.label}
+            key={group.label}
+          >
             <h2>{copy[group.label]}</h2>
             <div className="connectedTestRunner__questionList">
               {groupQuestions.map((question) => (
@@ -143,6 +149,18 @@ type ReadingQuestionProps = {
   useMatchingSelect: boolean;
 };
 
+function renderCompletionText(text: string) {
+  return text
+    .split(/(\{\{\s*\d+\s*\}\}|_{3,})/g)
+    .map((part, index) =>
+      index % 2 === 1 ? (
+        <span aria-hidden="true" className="studentAcademicReading__blank" key={index} />
+      ) : (
+        part
+      ),
+    );
+}
+
 function ReadingQuestion({
   answer,
   answerLabel,
@@ -163,7 +181,6 @@ function ReadingQuestion({
 }: ReadingQuestionProps) {
   const isCompletion = question.kind === "SHORT_TEXT";
   const isMatching = question.kind === "MATCHING" || useMatchingSelect;
-  const [beforeAnswer, afterAnswer = ""] = question.prompt.split(/_{3,}/, 2);
 
   return (
     <article
@@ -185,7 +202,7 @@ function ReadingQuestion({
 
       {isCompletion ? (
         <label className="connectedTestRunner__inlineAnswer studentAcademicReading__completion">
-          {beforeAnswer.trim() ? <span>{beforeAnswer.trim()}</span> : null}
+          <span>{renderCompletionText(question.prompt.trim())}</span>
           <span aria-hidden="true" className="connectedTestRunner__questionNumber">
             {question.position}
           </span>
@@ -198,7 +215,6 @@ function ReadingQuestion({
             type="text"
             value={answer?.textValue ?? ""}
           />
-          {afterAnswer.trim() ? <span>{afterAnswer.trim()}</span> : null}
         </label>
       ) : (
         <h3>
@@ -207,11 +223,20 @@ function ReadingQuestion({
       )}
 
       {isMatching ? (
-        <label className="studentAcademicReading__matching">
-          <span>{answerLabel}</span>
-          <select
-            aria-label={`${answerLabel} ${String(question.position)}`}
+        <div className="studentAcademicReading__matching">
+          <span id={`reading-answer-${question.id}`}>{answerLabel}</span>
+          <Select
+            className="studentAcademicReading__select"
+            labelId={`reading-answer-${question.id}`}
+            inputProps={{ "aria-label": `${answerLabel} ${String(question.position)}` }}
             disabled={readOnly}
+            displayEmpty
+            size="small"
+            MenuProps={{
+              slotProps: {
+                paper: { className: "studentAcademicReading__menu" },
+              },
+            }}
             onChange={(event) => onMatchingAnswer(question.id, event.target.value)}
             value={
               question.kind === "MATCHING"
@@ -219,16 +244,16 @@ function ReadingQuestion({
                 : (answer?.selectedOptionId ?? "")
             }
           >
-            <option disabled value="">
+            <MenuItem disabled value="">
               {chooseLabel}
-            </option>
-            {question.options.map((option, optionIndex) => (
-              <option key={option.id} value={option.id}>
-                {String.fromCharCode(65 + optionIndex)} · {option.text}
-              </option>
+            </MenuItem>
+            {question.options.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {option.text}
+              </MenuItem>
             ))}
-          </select>
-        </label>
+          </Select>
+        </div>
       ) : null}
 
       {!isCompletion && !isMatching ? (
