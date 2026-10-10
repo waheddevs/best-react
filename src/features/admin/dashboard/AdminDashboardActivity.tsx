@@ -18,27 +18,18 @@ export function AdminDashboardActivity({
   title,
 }: AdminDashboardActivityProps) {
   return (
-    <section aria-label={title} className="adminWorkspace__table" role="table">
-      <div className="adminWorkspace__tableHead" role="row">
-        <span role="columnheader">{common.idRecordLabel}</span>
-        <span role="columnheader">{common.contextLabel}</span>
-        <span role="columnheader">{common.statusLabel}</span>
-        <span role="columnheader" />
-      </div>
+    <div aria-label={title} className="adminDashboard__queueList">
       {records.map((record) => (
-        <div className="adminWorkspace__row" key={record.id} role="row">
-          <div role="cell">
+        <div className="adminDashboard__queueRow" key={record.id}>
+          <div>
             <small>{record.id}</small>
             <strong>{record.title}</strong>
           </div>
-          <p role="cell">{record.meta}</p>
-          <span
-            className={`adminWorkspace__status adminWorkspace__status_${record.status}`}
-            role="cell"
-          >
+          <p>{record.meta}</p>
+          <span className={`adminWorkspace__status adminWorkspace__status_${record.status}`}>
             {record.detail}
           </span>
-          <div role="cell">
+          <div>
             {record.href ? (
               <Link
                 aria-label={`${common.detailLabel}: ${record.title}`}
@@ -53,6 +44,6 @@ export function AdminDashboardActivity({
         </div>
       ))}
       {records.length === 0 ? <p className="adminWorkspace__empty">{common.emptyLabel}</p> : null}
-    </section>
+    </div>
   );
 }
