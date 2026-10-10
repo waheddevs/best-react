@@ -1,19 +1,23 @@
 "use client";
 
-import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import FilterListRounded from "@mui/icons-material/FilterListRounded";
 import SearchRounded from "@mui/icons-material/SearchRounded";
-import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
 import { AdminProvisionUserForm } from "@/features/admin/users/AdminProvisionUserForm";
-import { AdminRecordAvatar } from "@/features/admin/workspace/AdminRecordAvatar";
 import { useAdminWorkspaceRecords } from "@/hooks/admin/useAdminWorkspaceRecords";
 import type {
   AdminProvisionUserCopy,
   ProvisionableUserRole,
 } from "@/types/admin/AdminProvisionUser";
-import type { AdminSectionCopy, AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
+import type {
+  AdminNavigationKey,
+  AdminSectionCopy,
+  AdminWorkspaceCopy,
+} from "@/types/admin/AdminWorkspace";
+
+import { AdminDataTable } from "./AdminDataTable";
+import { AdminSpecializedContent } from "./AdminSpecializedContent";
 
 type AdminSectionPageProps = {
   common: AdminWorkspaceCopy["common"];
@@ -21,6 +25,7 @@ type AdminSectionPageProps = {
   provisionCopy?: AdminProvisionUserCopy;
   provisionRole?: ProvisionableUserRole;
   section: AdminSectionCopy;
+  sectionKey: AdminNavigationKey;
 };
 
 export function AdminSectionPage({
@@ -29,14 +34,22 @@ export function AdminSectionPage({
   provisionCopy,
   provisionRole,
   section,
+  sectionKey,
 }: AdminSectionPageProps) {
   /* HOOKS */
   const {
     attentionOnly,
     handleFilterToggle,
+    handlePageChange,
     handleQueryChange,
+    handleSort,
+    page,
+    pageCount,
     query,
-    visibleRecords: rows,
+    sortDirection,
+    sortKey,
+    totalRecords,
+    visibleRecords,
   } = useAdminWorkspaceRecords(section.records, locale);
 
   return (
@@ -93,47 +106,33 @@ export function AdminSectionPage({
           {attentionOnly ? common.all : common.openQueueLabel}
         </button>
       </div>
-      <section className="adminWorkspace__table" role="table" aria-label={section.title}>
-        <div className="adminWorkspace__tableHead" role="row">
-          <span role="columnheader">{common.idRecordLabel}</span>
-          <span role="columnheader">{common.contextLabel}</span>
-          <span role="columnheader">{common.statusLabel}</span>
-          <span role="columnheader" />
-        </div>
-        {rows.map((record) => (
-          <div className="adminWorkspace__row" key={record.id} role="row">
-            <div role="cell">
-              {record.avatarUrl !== undefined ? (
-                <AdminRecordAvatar avatarUrl={record.avatarUrl} displayName={record.title} />
-              ) : null}
-              <span className="adminWorkspace__recordLabel">
-                <small>{record.id}</small>
-                <strong>{record.title}</strong>
-              </span>
-            </div>
-            <p role="cell">{record.meta}</p>
-            <span
-              className={`adminWorkspace__status adminWorkspace__status_${record.status}`}
-              role="cell"
-            >
-              {record.detail}
-            </span>
-            <div role="cell">
-              {record.href ? (
-                <Link
-                  aria-label={`${common.detailLabel}: ${record.title}`}
-                  href={`/${locale}${record.href}`}
-                >
-                  <ArrowOutwardRounded />
-                </Link>
-              ) : (
-                <span>—</span>
-              )}
-            </div>
-          </div>
-        ))}
-        {rows.length === 0 ? <p className="adminWorkspace__empty">{common.emptyLabel}</p> : null}
-      </section>
+      {["schedule", "tests", "results", "reports", "audit"].includes(sectionKey) ? (
+        <AdminSpecializedContent
+          common={common}
+          locale={locale}
+          onPageChange={handlePageChange}
+          page={page}
+          pageCount={pageCount}
+          records={visibleRecords}
+          sectionKey={sectionKey}
+          totalRecords={totalRecords}
+        />
+      ) : (
+        <AdminDataTable
+          columns={section.records.find((record) => record.fields?.length)?.fields ?? []}
+          common={common}
+          locale={locale}
+          onPageChange={handlePageChange}
+          onSort={handleSort}
+          page={page}
+          pageCount={pageCount}
+          records={visibleRecords}
+          sectionTitle={section.title}
+          sortDirection={sortDirection}
+          sortKey={sortKey}
+          totalRecords={totalRecords}
+        />
+      )}
     </article>
   );
 }

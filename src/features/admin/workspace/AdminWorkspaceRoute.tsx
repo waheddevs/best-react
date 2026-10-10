@@ -23,6 +23,7 @@ export async function AdminWorkspaceRoute({ locale, sectionKey }: AdminWorkspace
       provisionCopy={provisionRole ? getAdminProvisionUserCopy(locale, provisionRole) : undefined}
       provisionRole={provisionRole}
       section={{ ...copy.sections[sectionKey], ...data, metrics: data.metrics ?? [] }}
+      sectionKey={sectionKey}
     />
   );
 }
