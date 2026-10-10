@@ -1,6 +1,11 @@
 import type { Locale } from "@/config/Locales";
 
 export type StudentProgressCopy = {
+  olderTests: string;
+  newerTests: string;
+  chartGrouping: string;
+  gradedSkills: string;
+  testHistory: string;
   comparison: string;
   empty: string;
   errorMessage: string;
@@ -20,7 +25,12 @@ export type StudentProgressCopy = {
 
 const progressCopy: Record<Locale, StudentProgressCopy> = {
   uz: {
-    comparison: "oldingi natijaga nisbatan",
+    olderTests: "Oldingi testlar",
+    newerTests: "Keyingi testlar",
+    chartGrouping: "Har bir nuqta — bitta test. Oylar bo'yicha guruhlangan.",
+    gradedSkills: "baholangan bo'lim",
+    testHistory: "Testlar tarixi",
+    comparison: "oldingi testga nisbatan",
     empty: "Progressni ko'rish uchun test bajaring.",
     errorMessage: "Test natijalarini yuklab bo'lmadi. Qayta urinib ko'ring.",
     errorTitle: "Progress vaqtincha ochilmadi",
@@ -31,13 +41,18 @@ const progressCopy: Record<Locale, StudentProgressCopy> = {
     pending: "O'qituvchi tekshiruvi kutilmoqda",
     retry: "Qayta urinish",
     scoredSkills: "Oxirgi testning baholangan bo'limlari",
-    subtitle: "Oxirgi e'lon qilingan test natijasi",
+    subtitle: "Oxirgi testdagi baholangan bo'limlar o'rtachasi",
     title: "O'sish dinamikasi",
     trend: "oldingi testga nisbatan",
     unavailable: "Hali natija yo'q",
   },
   ru: {
-    comparison: "к предыдущему результату",
+    olderTests: "Предыдущие тесты",
+    newerTests: "Следующие тесты",
+    chartGrouping: "Каждая точка — один тест. Группировка по месяцам.",
+    gradedSkills: "оценённых разделов",
+    testHistory: "История тестов",
+    comparison: "к предыдущему тесту",
     empty: "Пройдите тест, чтобы увидеть прогресс.",
     errorMessage: "Не удалось загрузить результаты тестов. Попробуйте ещё раз.",
     errorTitle: "Прогресс временно недоступен",
@@ -48,13 +63,18 @@ const progressCopy: Record<Locale, StudentProgressCopy> = {
     pending: "Ожидает проверки преподавателя",
     retry: "Повторить",
     scoredSkills: "Оценённые разделы последнего теста",
-    subtitle: "Последний опубликованный результат теста",
+    subtitle: "Средний результат оценённых разделов последнего теста",
     title: "Динамика прогресса",
     trend: "к предыдущему тесту",
     unavailable: "Результата пока нет",
   },
   en: {
-    comparison: "vs previous result",
+    olderTests: "Older tests",
+    newerTests: "Newer tests",
+    chartGrouping: "Each point is one test, grouped by month.",
+    gradedSkills: "skills scored",
+    testHistory: "Test history",
+    comparison: "vs previous test",
     empty: "Complete a test to see your progress.",
     errorMessage: "Test results could not be loaded. Please try again.",
     errorTitle: "Progress is temporarily unavailable",
@@ -65,7 +85,7 @@ const progressCopy: Record<Locale, StudentProgressCopy> = {
     pending: "Awaiting teacher review",
     retry: "Try again",
     scoredSkills: "Latest test skills scored",
-    subtitle: "Latest released test result",
+    subtitle: "Latest test · average of scored skills",
     title: "Learning growth",
     trend: "since previous test",
     unavailable: "No result yet",

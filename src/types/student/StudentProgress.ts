@@ -8,8 +8,13 @@ export type StudentProgressSkill = {
   status: "pending" | "scored" | "unavailable";
 };
 
-export type StudentProgressMonthPoint = {
+export type StudentProgressTestPoint = {
   month: number;
+  paperId: string;
+  practiceNumber: number | null;
+  title: string;
+  submittedAt: string;
+  scoredSkillCount: number;
   percentage: number;
 };
 
@@ -17,7 +22,7 @@ export type StudentProgress = {
   chartChange: number | null;
   chartYear: number;
   latestPercentage: number | null;
-  monthPoints: StudentProgressMonthPoint[];
+  testPoints: StudentProgressTestPoint[];
   scoredSkillCount: number;
   skills: StudentProgressSkill[];
 };
