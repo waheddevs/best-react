@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
 import { getAdminSettingsCopy } from "@/dictionaries/admin/AdminSettings";
+import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import { updateAdminProfile } from "@/features/admin/settings/AdminSettingsActions";
 import type { AdminProfileQuery } from "@/gql/graphql";
 import { getWorkspaceInitials } from "@/lib/WorkspaceIdentity";
@@ -25,6 +26,8 @@ function splitDisplayName(displayName: string) {
 export function AdminSettings({ locale, profile }: AdminSettingsProps) {
   const router = useRouter();
   const copy = getAdminSettingsCopy(locale);
+  const workspaceCopy = getAdminWorkspaceCopy(locale);
+  const section = workspaceCopy.sections.settings;
   const [savedProfile, setSavedProfile] = useState(profile);
   const [name, setName] = useState(() => splitDisplayName(profile.displayName));
   const [saving, setSaving] = useState(false);
@@ -75,7 +78,15 @@ export function AdminSettings({ locale, profile }: AdminSettingsProps) {
   return (
     <article className="adminSettings">
       <header className="adminSettings__heading">
-        <h1>{copy.account}</h1>
+        <div>
+          <span>{section.eyebrow}</span>
+          <h1>{copy.account}</h1>
+          <p>{section.description}</p>
+        </div>
+        <div className="adminWorkspace__health">
+          <i />
+          <span>{workspaceCopy.common.connectedNotice}</span>
+        </div>
       </header>
       <form onSubmit={handleSave}>
         <section aria-label={copy.account} className="adminSettings__account">
@@ -163,10 +174,15 @@ export function AdminSettings({ locale, profile }: AdminSettingsProps) {
           </p>
         </section>
 
-        <section aria-labelledby="admin-settings-password-heading" className="adminSettings__password">
+        <section
+          aria-labelledby="admin-settings-password-heading"
+          className="adminSettings__password"
+        >
           <div>
             <h2 id="admin-settings-password-heading">{copy.password}</h2>
-            <p>{copy.passwordHelp} {copy.passwordUnavailable}</p>
+            <p>
+              {copy.passwordHelp} {copy.passwordUnavailable}
+            </p>
           </div>
           <button
             aria-describedby="admin-settings-password-heading"
@@ -180,7 +196,10 @@ export function AdminSettings({ locale, profile }: AdminSettingsProps) {
 
         <footer className="adminSettings__footer">
           {feedback ? (
-            <p aria-live="polite" className={feedback === "error" ? "adminSettings__error" : "adminSettings__success"}>
+            <p
+              aria-live="polite"
+              className={feedback === "error" ? "adminSettings__error" : "adminSettings__success"}
+            >
               {feedback === "error" ? copy.saveError : copy.saved}
             </p>
           ) : null}
