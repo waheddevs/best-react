@@ -24,6 +24,7 @@ export function Reveal({ children, className, delay = 0, direction = "up" }: Rev
 
   return (
     <motion.div
+      data-reveal-wrapper="true"
       className={className}
       initial={{
         opacity: 0,

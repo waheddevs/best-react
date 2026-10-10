@@ -21,6 +21,7 @@ export function AuthPage({ copy, locale, role, sessionExpired = false }: AuthPag
             <section
               aria-labelledby="auth-role-title"
               className={`${styles.auth__panel} ${styles.auth__rolePanel}`}
+              data-entrance="card"
             >
               <div aria-hidden="true" className={styles.auth__panelGlow} />
               <div className={styles.auth__panelHeader}>
@@ -42,7 +43,7 @@ export function AuthPage({ copy, locale, role, sessionExpired = false }: AuthPag
     <main className={styles.auth}>
       <div className={styles.auth__frame}>
         <div className={styles.auth__layout}>
-          <section aria-labelledby="auth-title" className={styles.auth__panel}>
+          <section aria-labelledby="auth-title" className={styles.auth__panel} data-entrance="card">
             <div aria-hidden="true" className={styles.auth__panelGlow} />
             <AuthCredentialForm
               copy={copy}

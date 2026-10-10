@@ -15,6 +15,7 @@ export function StaggerItem({ children, className, initialScale = 1 }: StaggerIt
 
   return (
     <motion.div
+      data-reveal-wrapper="true"
       className={className}
       variants={{
         hidden: {
