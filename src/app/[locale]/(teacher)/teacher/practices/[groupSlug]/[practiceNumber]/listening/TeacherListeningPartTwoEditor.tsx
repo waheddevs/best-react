@@ -26,6 +26,7 @@ import {
   type TeacherTestAuthoringVersionFieldsFragment,
 } from "@/gql/graphql";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
+import { getTeacherTestAuthoringError } from "@/lib/teacher/TeacherTestAuthoringError";
 
 import { TeacherListeningPartTabs } from "./TeacherListeningPartTabs";
 
@@ -83,6 +84,7 @@ export function TeacherListeningPartTwoEditor({
     [initialVersion, locale, part],
   );
   const [version, setVersion] = useState(initialVersion);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [editor, setEditor] = useState(initialState);
   const [baseline, setBaseline] = useState(() => JSON.stringify(initialState));
   const [savedTranscript, setSavedTranscript] = useState(initialState.transcript.trim());
@@ -213,6 +215,7 @@ export function TeacherListeningPartTwoEditor({
     });
     if (!accepted) return;
 
+    setSaveError(null);
     setSaveState("saving");
     try {
       let workingVersion = version;
@@ -223,6 +226,7 @@ export function TeacherListeningPartTwoEditor({
         const masked = created.data?.createNextTestVersion.testVersion;
         if (!masked) throw new Error("The editable Listening draft was not created");
         workingVersion = readFragment(TeacherTestAuthoringVersionFieldsFragmentDoc, masked);
+        setVersion(workingVersion);
       }
 
       let workingSection = workingVersion.sections.find(({ position }) => position === part);
@@ -278,7 +282,6 @@ export function TeacherListeningPartTwoEditor({
               acceptedAnswers: [],
               answerLimit: null,
               kind: "SINGLE_CHOICE",
-              maxSelections: 1,
               options: optionTexts.map((text, optionIndex) => {
                 const existingOption = question.options[optionIndex];
                 const translations = existingOption
@@ -334,7 +337,8 @@ export function TeacherListeningPartTwoEditor({
         setAudioState("idle");
       }
       setSaveState("saved");
-    } catch {
+    } catch (error: unknown) {
+      setSaveError(getTeacherTestAuthoringError(error, labels.saveError));
       setSaveState("error");
     }
   };
@@ -619,7 +623,7 @@ export function TeacherListeningPartTwoEditor({
           : saveState === "saved"
             ? labels.saved
             : saveState === "error"
-              ? labels.saveError
+              ? saveError ?? labels.saveError
               : saveState === "validation"
                 ? labels.validationError
                 : ""}

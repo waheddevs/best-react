@@ -25,6 +25,7 @@ import {
   type TeacherTestAuthoringVersionFieldsFragment,
 } from "@/gql/graphql";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
+import { getTeacherTestAuthoringError } from "@/lib/teacher/TeacherTestAuthoringError";
 
 import { TeacherListeningPartTabs } from "./TeacherListeningPartTabs";
 
@@ -75,6 +76,7 @@ export function TeacherListeningPartOneEditor({
   const practiceCopy = getTeacherPracticesCopy(locale);
   const confirm = useConfirmDialog();
   const [version, setVersion] = useState(initialVersion);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const initialState = useMemo(() => editorStateFromVersion(initialVersion), [initialVersion]);
   const [editor, setEditor] = useState(initialState);
   const [baseline, setBaseline] = useState(() => JSON.stringify(initialState));
@@ -186,6 +188,7 @@ export function TeacherListeningPartOneEditor({
     });
     if (!accepted) return;
 
+    setSaveError(null);
     setSaveState("saving");
     try {
       let workingVersion = version;
@@ -196,6 +199,7 @@ export function TeacherListeningPartOneEditor({
         const masked = created.data?.createNextTestVersion.testVersion;
         if (!masked) throw new Error("The editable Listening draft was not created");
         workingVersion = readFragment(TeacherTestAuthoringVersionFieldsFragmentDoc, masked);
+        setVersion(workingVersion);
       }
 
       let workingSection = workingVersion.sections.find(({ position }) => position === 1);
@@ -319,7 +323,8 @@ export function TeacherListeningPartOneEditor({
         setAudioState("idle");
       }
       setSaveState("saved");
-    } catch {
+    } catch (error: unknown) {
+      setSaveError(getTeacherTestAuthoringError(error, labels.saveError));
       setSaveState("error");
     }
   };
@@ -560,7 +565,7 @@ export function TeacherListeningPartOneEditor({
           : saveState === "saved"
             ? labels.saved
             : saveState === "error"
-              ? labels.saveError
+              ? saveError ?? labels.saveError
               : saveState === "validation"
                 ? labels.validationError
                 : ""}
