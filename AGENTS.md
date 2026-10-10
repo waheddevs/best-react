@@ -1367,11 +1367,14 @@ do not copy one role shell and merely recolor it.
   compact mobile dock. Prefer visual learning paths, progress rings, deadlines,
   and calm spacious grouping. Do not reuse the Teacher solid-blue rail, Teacher
   dashboard card geometry, or public marketing section alternation.
-- Admin is a precise operations console: use deep navy/slate navigation,
-  emerald and cyan state accents, cool-gray work surfaces, sharper 10-14 px
-  radii, a collapsible dark rail, dense filter toolbars, semantic data tables,
-  split panes, bulk-action bars, and restrained transitions. Do not present the
-  Admin area as a grid of Student/Teacher-style learning cards.
+- Admin is a precise operations console based on the approved 2026-10-11
+  invoice-workspace reference stored in Stitch project
+  `13723603241715613297` as screen `7600431936373024916`. Use deep navy/slate
+  navigation, emerald and cyan state accents, cool-gray work surfaces, sharper
+  8-14 px radii, a collapsible dark rail, compact two-level headers, dense
+  filter toolbars, semantic data tables, split panes, bulk-action bars, and
+  restrained transitions. Do not present the Admin area as a grid of Student/
+  Teacher-style learning cards.
 - Each role owns its shell, semantic CSS variables, MUI theme, Sass entrypoint,
   responsive navigation composition, empty/loading/error visuals, and chart/
   status palette. Cross-role components may share behavior, but role adapters
@@ -1379,6 +1382,60 @@ do not copy one role shell and merely recolor it.
 - Use color semantically and keep WCAG 2.2 AA contrast. Status meaning must stay
   consistent (success, warning, danger, information) even when its exact shade
   is adapted to the role palette.
+
+### Approved Admin reference redesign
+
+The Admin redesign is implemented in `best-react`; Stitch is the visual
+reference and iteration workspace, not the runtime or styling source. Do not
+copy generated Stitch HTML into the application. Translate approved screens
+into the existing Next.js, TypeScript, Sass, MUI, localization, authorization,
+and GraphQL architecture.
+
+- Use an approximately 232 px expanded desktop sidebar and a 72 px collapsed
+  rail. The global top bar is approximately 56 px high and the route header is
+  compact. Keep the content bounded around 1440-1540 px on wide screens.
+- Match the approved invoice reference palette: use `#f5f5f6` for the work
+  canvas, `#f8f8f9` for the light sidebar, white primary surfaces, `#e6e7ea`
+  borders, `#171922` primary text, and `#747982` secondary text. Reserve the
+  near-black navy `#0b0d24` for primary buttons, selected pagination, compact
+  identity tiles, and high-emphasis actions. Use muted cyan-teal `#4aa9b2` for
+  refresh, information, and completed states; use pale amber for warning and
+  pale rose for cancelled or danger states. The desktop sidebar stays light:
+  its active navigation item is a bordered white row with dark text and a
+  minimal shadow, matching the reference rather than a dark navigation rail.
+- Use Geist throughout. Route titles are normally 22-24 px, section titles
+  16-18 px, table content 13-14 px, and supporting metadata 11-12 px. Use
+  tabular numerals for finance, counts, dates, and operational metrics.
+- Use 8 px radii for controls, 10-12 px for cards and tables, and at most 14 px
+  for major structural panels. Prefer one-pixel borders and low-opacity shadows
+  over floating card grids or decorative gradients.
+- Keep global shell actions separate from route actions. Data routes use one
+  reusable toolbar/table language for search, filters, sorting, selection,
+  row actions, pagination, counts, and mobile detail access. Render only
+  controls backed by honest local behavior or an approved server contract.
+- Build the system in this order: semantic Admin tokens and MUI theme; shell,
+  collapsible rail, top bar, and responsive navigation; reusable status,
+  toolbar, table, pagination, bulk-action, drawer, dialog, and state primitives;
+  Dashboard and Groups reference slices; remaining directory and ledger pages;
+  specialized Schedule, Attendance, Tests/Results, Library/Imports,
+  Notifications/Audit, Reports, and Settings layouts; responsive,
+  localization, accessibility, and verification.
+- Add new Admin Sass modules as underscore-prefixed partials, create and verify
+  the partial before adding its extensionless `@use` entry, and compile
+  `src/scss/admin/main.scss` directly after every entrypoint change. This order
+  prevents the running Turbopack watcher from caching a temporarily missing
+  stylesheet.
+- Preserve current backend operations, authorization, route ownership, and
+  persistence behavior during visual slices. Extend frontend view models when
+  richer domain columns are needed; do not weaken them into generated backend
+  DTOs or change GraphQL solely to reproduce a visual.
+- The removed Transfer Requests feature remains absent from navigation,
+  routes, tables, queues, dictionaries, generated contracts, and design mocks.
+- Admin reference redesign stages 1-6 were completed on 2026-10-11: tokens and
+  shell, reusable data surfaces, Dashboard and Groups, directory and ledger
+  pages, specialized operational layouts, responsive behavior, localization,
+  keyboard accessibility, and automated verification. Preserve these patterns
+  when extending an approved Admin contract.
 
 ## 12. Layout system
 
