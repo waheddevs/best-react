@@ -1,5 +1,8 @@
 @use "../workspaceNotifications";
-@use "layout/shell";
-@use "pages/workspace";
-@use "pages/notifications";
-@use "pages/settings";
+@use "./layout/shell";
+@use "./pages/dashboard";
+@use "./pages/groups";
+@use "./pages/operations";
+@use "./pages/workspace";
+@use "./pages/notifications";
+@use "./pages/settings";
