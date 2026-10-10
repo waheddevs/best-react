@@ -1,4 +1,4 @@
-import HeadphonesRounded from "@mui/icons-material/HeadphonesRounded";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import MenuBookRounded from "@mui/icons-material/MenuBookRounded";
 import type { ReactNode } from "react";
 
@@ -14,6 +14,8 @@ type StudentTestSectionMaterialProps = {
   audioReadyLabel: string;
   audioSourceUrl?: string | null;
   children?: ReactNode;
+  generalInstruction?: string;
+  generalInstructionLabel?: string;
   instructions: string;
   mediaObjectId: string | null;
   partLabel: string;
@@ -37,6 +39,8 @@ export function StudentTestSectionMaterial({
   audioReadyLabel,
   audioSourceUrl = null,
   children,
+  generalInstruction,
+  generalInstructionLabel,
   instructions,
   mediaObjectId,
   partLabel,
@@ -54,19 +58,44 @@ export function StudentTestSectionMaterial({
   const isReading = skill === "READING";
 
   return (
-    <section aria-labelledby={headingId} className="connectedTestRunner__stimulus">
-      <div className="connectedTestRunner__sectionHeading">
-        <span>
-          {partLabel} {position}
-        </span>
-        <strong id={headingId}>{title}</strong>
-      </div>
+    <section
+      aria-label={isListening ? instructions : undefined}
+      aria-labelledby={isListening ? undefined : headingId}
+      className="connectedTestRunner__stimulus"
+    >
+      {isListening ? (
+        <div className="studentListeningSectionIntro">
+          <article className="studentListeningSectionIntro__condition">
+            <h2>{instructions}</h2>
+          </article>
+          {generalInstruction && generalInstructionLabel ? (
+            <article
+              aria-label={generalInstructionLabel}
+              className="studentListeningSectionIntro__instruction"
+            >
+              <span className="studentListeningSectionIntro__icon" aria-hidden="true">
+                <InfoOutlined />
+              </span>
+              <p>{generalInstruction}</p>
+            </article>
+          ) : null}
+        </div>
+      ) : (
+        <>
+          <div className="connectedTestRunner__sectionHeading">
+            <span>
+              {partLabel} {position}
+            </span>
+            <strong id={headingId}>{title}</strong>
+          </div>
 
-      <div className="connectedTestRunner__materialTitle">
-        {isListening ? <HeadphonesRounded aria-hidden="true" /> : null}
-        {isReading ? <MenuBookRounded aria-hidden="true" /> : null}
-        <h2>{instructions}</h2>
-      </div>
+          {!isReading ? (
+            <div className="connectedTestRunner__materialTitle">
+              <h2>{instructions}</h2>
+            </div>
+          ) : null}
+        </>
+      )}
 
       {isListening && renderAudio ? (
         <StudentListeningAudioPlayer
@@ -83,7 +112,7 @@ export function StudentTestSectionMaterial({
         />
       ) : null}
 
-      {text ? (
+      {!isListening && text ? (
         <div className="connectedTestRunner__content">
           {text.split(/\n{2,}/).map((paragraph, index) => (
             <p key={`section-${String(position)}-paragraph-${String(index)}`}>{paragraph}</p>

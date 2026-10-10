@@ -8,6 +8,9 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { Locale } from "@/config/Locales";
+import { getStudentListeningSectionCopy } from "@/dictionaries/student/StudentListeningSection";
+import { getStudentListeningTestNavbarCopy } from "@/dictionaries/student/StudentListeningTestNavbar";
+import { getStudentReadingSimulatorCopy } from "@/dictionaries/student/StudentReadingSimulator";
 import {
   SaveStudentAttemptNoteDocument,
   SaveStudentTestAnswerDocument,
@@ -17,6 +20,8 @@ import {
   SubmitStudentTestAttemptDocument,
 } from "@/gql/graphql";
 import { resolveDynamicTestLayout } from "@/lib/tests/DynamicTestLayout";
+import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
+import { useStudentTestExit } from "@/hooks/student/tests/useStudentTestExit";
 
 import { StudentAudioRecorder } from "./StudentAudioRecorder";
 import {
@@ -30,6 +35,7 @@ import { StudentListeningPartFourCompletion } from "./StudentListeningPartFourCo
 import { StudentListeningPartThreeList } from "./StudentListeningPartThreeList";
 import { StudentTestSectionMaterial } from "./StudentTestSectionMaterial";
 import { StudentTestShell } from "./StudentTestShell";
+import { StudentReadingSectionIntro } from "./StudentReadingSectionIntro";
 
 type StudentTestRunnerProps = {
   attempt: StudentAttemptFieldsFragment;
@@ -58,7 +64,7 @@ const runnerCopy = {
     audio: "Listening audio",
     audioError: "Audio ochilmadi. Internetni tekshiring.",
     audioFinished: "Audio tugadi. Javoblaringizni tekshiring.",
-    audioPlay: "Audioni bir marta ijro etish",
+    audioPlay: "Audioni ko‘pi bilan ikki marta ijro etish",
     audioPlaying: "Audio ijro etilmoqda...",
     audioPreparing: "Audio tayyorlanmoqda...",
     audioReady: "Audio test uchun biriktirilgan",
@@ -76,6 +82,9 @@ const runnerCopy = {
     saved: "Saqlandi",
     saving: "Saqlanmoqda...",
     submit: "Testni topshirish",
+    submitTitle: "Ogohlantirish",
+    submitCancel: "Bekor qilish",
+    submitContinue: "Davom etish",
     submitConfirm: "Topshirgandan keyin javoblarni o'zgartira olmaysiz. Davom etilsinmi?",
     secureAudio: "Audio xavfsiz test sessiyasi orqali ochiladi",
     section: "Bo‘lim",
@@ -86,7 +95,7 @@ const runnerCopy = {
     audio: "Аудиозапись Listening",
     audioError: "Не удалось открыть аудио. Проверьте подключение.",
     audioFinished: "Аудио завершено. Проверьте ответы.",
-    audioPlay: "Воспроизвести аудио один раз",
+    audioPlay: "Воспроизвести аудио не более двух раз",
     audioPlaying: "Аудио воспроизводится...",
     audioPreparing: "Подготавливаем аудио...",
     audioReady: "Аудиозапись прикреплена к тесту",
@@ -107,6 +116,9 @@ const runnerCopy = {
     saved: "Сохранено",
     saving: "Сохраняем...",
     submit: "Отправить тест",
+    submitTitle: "Предупреждение",
+    submitCancel: "Отмена",
+    submitContinue: "Продолжить",
     submitConfirm: "После отправки ответы нельзя изменить. Продолжить?",
     time: "Осталось",
   },
@@ -116,7 +128,7 @@ const runnerCopy = {
     audio: "Listening audio",
     audioError: "The audio could not be opened. Check your connection.",
     audioFinished: "Audio finished. Check your answers.",
-    audioPlay: "Play the audio once",
+    audioPlay: "Play the audio up to two times",
     audioPlaying: "Audio is playing...",
     audioPreparing: "Preparing audio...",
     audioReady: "Audio is attached to this test",
@@ -134,7 +146,10 @@ const runnerCopy = {
     saved: "Saved",
     saving: "Saving...",
     submit: "Submit",
-    submitConfirm: "You cannot change answers after submission. Continue?",
+    submitTitle: "Warning",
+    submitCancel: "Cancel",
+    submitContinue: "Continue",
+    submitConfirm: "You cannot change answers after submission. Do you want to continue?",
     secureAudio: "Audio opens through the secure test session",
     section: "Section",
     time: "Time left",
@@ -222,8 +237,13 @@ const academicReadingCopy: Record<Locale, StudentAcademicReadingCopy> = {
 export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunnerProps) {
   const copy = runnerCopy[locale];
   const dynamicCopy = dynamicRunnerCopy[locale];
+  const listeningSectionCopy = getStudentListeningSectionCopy(locale);
+  const listeningNavbarCopy = getStudentListeningTestNavbarCopy(locale);
+  const readingCopy = getStudentReadingSimulatorCopy(locale);
   const readOnly = attempt.status !== "IN_PROGRESS";
   const router = useRouter();
+  const confirm = useConfirmDialog();
+  const submissionPendingRef = useRef(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, LocalAnswer>>(() =>
     Object.fromEntries(
@@ -262,6 +282,14 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
     fetchPolicy: "no-cache",
   });
   const autoSubmittedRef = useRef(false);
+  const { exit, exiting, exitingRef, trackWrite } = useStudentTestExit({
+    attemptId: attempt.id,
+    locale,
+    returnHref: `/${locale}/student/tests/${paperId}`,
+    active: !readOnly,
+    reading: attempt.skill === "READING",
+    canExit: () => !autoSubmittedRef.current && !submissionPendingRef.current,
+  });
   const question = attempt.questions[currentIndex];
   const section = attempt.sections.find((item) => item.id === question?.sectionId) ?? null;
   const currentSectionNumber = section?.position ?? 1;
@@ -350,18 +378,21 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
     const text = notes[section.id] ?? "";
     if (savedNotesRef.current[section.id] === text) return;
     const timeout = window.setTimeout(() => {
-      void saveNote({
-        variables: {
-          input: { attemptId: attempt.id, sectionId: section.id, text },
-        },
-      })
+      if (exitingRef.current) return;
+      void trackWrite(
+        saveNote({
+          variables: {
+            input: { attemptId: attempt.id, sectionId: section.id, text },
+          },
+        }),
+      )
         .then(() => {
           savedNotesRef.current[section.id] = text;
         })
         .catch(() => setSaveState("error"));
     }, 700);
     return () => window.clearTimeout(timeout);
-  }, [attempt.id, attempt.skill, notes, readOnly, saveNote, section]);
+  }, [attempt.id, attempt.skill, notes, readOnly, saveNote, section, exitingRef, trackWrite]);
 
   useEffect(() => {
     if (readOnly) return;
@@ -373,13 +404,30 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
   }, [readOnly]);
 
   useEffect(() => {
-    if (readOnly || remainingSeconds !== 0 || autoSubmittedRef.current) return;
+    if (readOnly || remainingSeconds !== 0 || autoSubmittedRef.current || exitingRef.current)
+      return;
     autoSubmittedRef.current = true;
-    void submitAttempt({ variables: { input: { attemptId: attempt.id } } }).finally(() => {
-      router.push(`/${locale}/student/tests/${paperId}`);
-      router.refresh();
-    });
-  }, [attempt.id, locale, paperId, readOnly, remainingSeconds, router, submitAttempt]);
+    void submitAttempt({ variables: { input: { attemptId: attempt.id } } })
+      .then(() => {
+        router.replace(
+          attempt.skill === "LISTENING" || attempt.skill === "READING"
+            ? `/${locale}/student/results/${attempt.id}`
+            : `/${locale}/student/tests/${paperId}`,
+        );
+      })
+      .catch(() => setSaveState("error"));
+  }, [
+    attempt.id,
+    attempt.skill,
+    locale,
+    paperId,
+    readOnly,
+    remainingSeconds,
+    router,
+    submitAttempt,
+    exitingRef,
+    exiting,
+  ]);
 
   if (!question) return null;
 
@@ -387,12 +435,14 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
     questionId: string,
     input: Omit<SaveAttemptAnswerInput, "attemptId" | "questionId">,
   ) => {
-    if (readOnly) return;
+    if (readOnly || exitingRef.current) return;
     setSaveState("saving");
     try {
-      await saveAnswer({
-        variables: { input: { ...input, attemptId: attempt.id, questionId } },
-      });
+      await trackWrite(
+        saveAnswer({
+          variables: { input: { ...input, attemptId: attempt.id, questionId } },
+        }),
+      );
       setSaveState("saved");
     } catch {
       setSaveState("error");
@@ -474,14 +524,34 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
   };
 
   const handleSubmit = async () => {
+    if (readOnly || submitting || submissionPendingRef.current || exitingRef.current) return;
     if (attempt.skill === "SPEAKING" && answeredIds.size < attempt.questions.length) {
       setSaveState("error");
       return;
     }
-    if (!window.confirm(copy.submitConfirm)) return;
-    await submitAttempt({ variables: { input: { attemptId: attempt.id } } });
-    router.push(`/${locale}/student/tests/${paperId}`);
-    router.refresh();
+    submissionPendingRef.current = true;
+    try {
+      const confirmed = await confirm({
+        brand: attempt.skill === "READING" ? "student-reading" : "student",
+        cancelLabel: copy.submitCancel,
+        confirmLabel: copy.submitContinue,
+        icon: "tone",
+        message: copy.submitConfirm,
+        title: copy.submitTitle,
+        tone: "warning",
+      });
+      if (!confirmed || autoSubmittedRef.current || exitingRef.current) return;
+      await submitAttempt({ variables: { input: { attemptId: attempt.id } } });
+      router.replace(
+        attempt.skill === "LISTENING" || attempt.skill === "READING"
+          ? `/${locale}/student/results/${attempt.id}`
+          : `/${locale}/student/tests/${paperId}`,
+      );
+    } catch {
+      setSaveState("error");
+    } finally {
+      submissionPendingRef.current = false;
+    }
   };
 
   return (
@@ -490,23 +560,28 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
       answeredLabel={copy.answered}
       backHref={`/${locale}/student/tests/${paperId}`}
       backLabel={copy.exit}
+      exiting={exiting}
       currentSection={currentSectionNumber}
       density={layout.density}
       layout={layout.preset}
+      listeningNavbarCopy={listeningNavbarCopy}
+      nextSectionDisabled={currentSectionIndex >= attempt.sections.length - 1}
       notesLabel={copy.notes}
       notesPlaceholder={copy.notesPlaceholder}
       notesReadOnly={readOnly}
       notesValue={section ? (notes[section.id] ?? "") : ""}
+      onNextSection={() => moveSection(1)}
+      onExit={() => void exit()}
       onNotesChange={(value) => {
         if (!section) return;
         setNotes((current) => ({ ...current, [section.id]: value }));
       }}
       onSubmit={() => void handleSubmit()}
       partsLabel={copy.parts}
-      sectionLabel={copy.section}
+      sectionLabel={attempt.skill === "READING" ? readingCopy.passage : copy.section}
       skill={attempt.skill ?? "READING"}
       submitLabel={readOnly ? copy.completed : copy.submit}
-      submitting={submitting || readOnly}
+      submitting={submitting || readOnly || exiting}
       timeLabel={copy.time}
       timeValue={formatTime(remainingSeconds)}
       title={attempt.title}
@@ -518,6 +593,7 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
             errorLabel={copy.audioError}
             finishedLabel={copy.audioFinished}
             lockedLabel={section?.mediaObjectId ? copy.audioReady : copy.secureAudio}
+            maximumPlays={2}
             playLabel={copy.audioPlay}
             playingLabel={copy.audioPlaying}
             preparingLabel={copy.audioPreparing}
@@ -530,6 +606,13 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
       totalQuestions={attempt.questions.length}
       totalSections={attempt.sections.length}
     >
+      {attempt.skill === "READING" && section ? (
+        <StudentReadingSectionIntro
+          instructions={section.instructions}
+          generalInstruction={readingCopy.instruction.replace("{range}", questionRange)}
+          generalInstructionLabel={readingCopy.instructionLabel}
+        />
+      ) : null}
       <div className="connectedTestRunner__body">
         {section ? (
           <StudentTestSectionMaterial
@@ -540,9 +623,19 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
             audioPlayingLabel={copy.audioPlaying}
             audioPreparingLabel={copy.audioPreparing}
             audioReadyLabel={copy.audioReady}
+            generalInstruction={
+              attempt.skill === "LISTENING"
+                ? listeningSectionCopy.generalInstruction.replace("{range}", questionRange)
+                : undefined
+            }
+            generalInstructionLabel={
+              attempt.skill === "LISTENING"
+                ? listeningSectionCopy.generalInstructionLabel
+                : undefined
+            }
             instructions={section.instructions}
             mediaObjectId={section.mediaObjectId}
-            partLabel={dynamicCopy.part}
+            partLabel={attempt.skill === "READING" ? readingCopy.passage : dynamicCopy.part}
             position={section.position}
             renderAudio={false}
             requestAudioSource={requestAudioSource}
@@ -573,7 +666,13 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
         ) : null}
 
         <section className="connectedTestRunner__questionCanvas">
+          {attempt.skill === "LISTENING" ? (
+            <h2 className="studentListeningSectionTitle">
+              {listeningFormBlock?.caption || section?.title || attempt.title}
+            </h2>
+          ) : null}
           {listeningFormBlock ||
+          listeningPartThreeQuestions ||
           listeningPartFourQuestions ||
           attempt.skill === "READING" ? null : (
             <header className="connectedTestRunner__questionGroupHeading">
@@ -623,6 +722,7 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
               }}
               questions={sectionQuestions}
               readOnly={readOnly}
+              showCaption={false}
             />
           ) : listeningMultipleChoiceQuestions ? (
             <StudentListeningMultipleChoiceList
@@ -819,24 +919,26 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
             </div>
           )}
 
-          <footer className="connectedTestRunner__sectionActions">
-            <button
-              aria-label={copy.previous}
-              disabled={currentSectionIndex <= 0}
-              onClick={() => moveSection(-1)}
-              type="button"
-            >
-              <ArrowBackIosNewRounded aria-hidden="true" />
-            </button>
-            <button
-              aria-label={copy.next}
-              disabled={currentSectionIndex >= attempt.sections.length - 1}
-              onClick={() => moveSection(1)}
-              type="button"
-            >
-              <ArrowForwardIosRounded aria-hidden="true" />
-            </button>
-          </footer>
+          {attempt.skill !== "LISTENING" && attempt.skill !== "READING" ? (
+            <footer className="connectedTestRunner__sectionActions">
+              <button
+                aria-label={copy.previous}
+                disabled={currentSectionIndex <= 0}
+                onClick={() => moveSection(-1)}
+                type="button"
+              >
+                <ArrowBackIosNewRounded aria-hidden="true" />
+              </button>
+              <button
+                aria-label={copy.next}
+                disabled={currentSectionIndex >= attempt.sections.length - 1}
+                onClick={() => moveSection(1)}
+                type="button"
+              >
+                <ArrowForwardIosRounded aria-hidden="true" />
+              </button>
+            </footer>
+          ) : null}
         </section>
       </div>
 
@@ -846,7 +948,7 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
       >
         {saveState === "saving"
           ? copy.saving
-          : saveState === "saved"
+          : saveState === "saved" && attempt.skill !== "LISTENING" && attempt.skill !== "READING"
             ? copy.saved
             : saveState === "error"
               ? copy.saveError
@@ -870,13 +972,19 @@ export function StudentTestRunner({ attempt, locale, paperId }: StudentTestRunne
                 type="button"
               >
                 <strong>
-                  {dynamicCopy.part} {item.position}:
+                  {attempt.skill === "READING"
+                    ? readingCopy.passage
+                    : attempt.skill === "LISTENING"
+                      ? copy.section
+                      : dynamicCopy.part}{" "}
+                  {item.position}
+                  {attempt.skill === "LISTENING" || attempt.skill === "READING" ? null : ":"}
                 </strong>
                 <span>
-                  {answeredInSection} / {questionIds.length} {copy.question.toLowerCase()}
+                  {answeredInSection}/{questionIds.length} {copy.question.toLowerCase()}
                 </span>
               </button>
-              {active ? (
+              {active || attempt.skill === "LISTENING" || attempt.skill === "READING" ? (
                 <div>
                   {questionIds.map((questionId) => {
                     const index = attempt.questions.findIndex(({ id }) => id === questionId);
