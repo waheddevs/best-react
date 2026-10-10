@@ -12,7 +12,7 @@ import { StudentSectionHero } from "@/features/student/workspace/StudentSectionH
 import type { StudentProgress } from "@/types/student/StudentProgress";
 
 import { StudentProgressChart } from "./StudentProgressChart";
-import { StudentProgressLiveRefresh } from "./StudentProgressLiveRefresh";
+import { StudentProgressLiveRefresh } from "@/features/student/workspace/StudentProgressLiveRefresh";
 
 type StudentProgressOverviewProps = { locale: Locale; progress: StudentProgress };
 
