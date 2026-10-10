@@ -237,6 +237,10 @@
   }
 }
 
+.studentShell__back {
+  margin-right: auto;
+}
+
 .studentShell__menuButton,
 .studentShell__bell,
 .studentShell__signOut {
@@ -394,8 +398,14 @@
   gap: 2px;
 
   & strong {
+    color: var(--student-ink);
     font-size: 13px;
     line-height: 1.2;
+    transition: color 150ms ease-out;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   & small {

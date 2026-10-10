@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { WorkspaceNotificationBell } from "@/features/notifications/WorkspaceNotificationBell";
+import { StudentBackButton } from "@/features/student/workspace/StudentBackButton";
 import type { Locale } from "@/config/Locales";
 import { studentNavigationItems } from "@/config/StudentNavigation";
 import { getStudentNotificationText } from "@/dictionaries/student/StudentNotifications";
@@ -51,6 +52,7 @@ export function StudentWorkspaceShell({
   const displayName = profile?.displayName || copy.common.accountLabel;
   const shortName = studentShortName(displayName, locale);
   const examMode = /\/student\/tests\/[^/]+\/[^/]+\/[^/]+\/?$/.test(pathname);
+  const testOverviewMode = /\/student\/tests\/[^/]+\/?$/.test(pathname);
   const handleLogout = useWorkspaceLogout({
     confirmation: {
       brand: "student",
@@ -127,6 +129,11 @@ export function StudentWorkspaceShell({
           <div className="studentShell__mobileBrand">
             <strong>BEST LC</strong>
           </div>
+          {testOverviewMode ? (
+            <div className="studentShell__back">
+              <StudentBackButton href={`/${locale}/student/tests`} label={copy.navigation.tests} />
+            </div>
+          ) : null}
           <div className="studentShell__topActions">
             <StudentLocaleMenu label={copy.common.languageLabel} locale={locale} />
             <button
