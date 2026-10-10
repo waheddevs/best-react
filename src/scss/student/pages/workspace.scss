@@ -54,6 +54,21 @@
   text-transform: uppercase;
 }
 
+a.studentHero__eyebrow {
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+}
+
 .studentHero {
   & h1 {
     max-width: 720px;
