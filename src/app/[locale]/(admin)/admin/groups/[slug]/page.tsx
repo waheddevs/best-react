@@ -1,13 +1,7 @@
-import { AdminWorkspaceDetailRoute } from "@/features/admin/workspace/AdminWorkspaceDetailRoute";
+import { AdminGroupDetailRoute } from "@/features/admin/groups/AdminGroupDetailRoute";
+
 type PageProps = { params: Promise<{ locale: string; slug: string }> };
 export default async function AdminGroupDetailPage({ params }: PageProps) {
   const { locale, slug } = await params;
-  return (
-    <AdminWorkspaceDetailRoute
-      backHref="/admin/groups"
-      id={slug}
-      locale={locale}
-      sectionKey="groups"
-    />
-  );
+  return <AdminGroupDetailRoute locale={locale} slug={slug} />;
 }
