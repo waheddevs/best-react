@@ -1,4 +1,4 @@
-import type { AdminNavigationKey } from "@/types/admin/AdminWorkspace";
+import type { AdminNavigationGroupKey, AdminNavigationKey } from "@/types/admin/AdminWorkspace";
 
 export const adminNavigationItems: ReadonlyArray<{
   href: string;
@@ -31,4 +31,17 @@ export const adminDockNavigationKeys: ReadonlyArray<AdminNavigationKey> = [
   "groups",
   "payments",
   "settings",
+];
+
+export const adminNavigationGroups: ReadonlyArray<{
+  key: AdminNavigationGroupKey;
+  items: ReadonlyArray<AdminNavigationKey>;
+}> = [
+  { key: "overview", items: ["dashboard", "requests"] },
+  { key: "people", items: ["students", "teachers", "groups"] },
+  { key: "academics", items: ["courses", "schedule", "attendance", "tests", "results"] },
+  { key: "operations", items: ["events", "locations", "payments"] },
+  { key: "content", items: ["library", "imports"] },
+  { key: "insights", items: ["reports", "audit"] },
+  { key: "system", items: ["notifications", "settings"] },
 ];
