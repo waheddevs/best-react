@@ -4,6 +4,8 @@ import type { DocumentNode } from "graphql";
 
 import { auth } from "@/Auth";
 import type { Locale } from "@/config/Locales";
+import { getAdminDirectoryCopy } from "@/dictionaries/admin/AdminDirectory";
+import { getAdminOperationsCopy } from "@/dictionaries/admin/AdminOperations";
 import { getAdminStatusLabel, getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import {
   AdminAttendanceDocument,
@@ -30,7 +32,14 @@ import {
 } from "@/gql/graphql";
 import { executePublicApi } from "@/lib/PublicApi";
 import { profileAvatarUrlsFor } from "@/lib/ProfileAvatarIntents";
-import type { AdminNavigationKey, AdminWorkspaceRecord } from "@/types/admin/AdminWorkspace";
+import { formatAdminGroupSchedule } from "@/lib/admin/AdminGroupPresentation";
+import type {
+  AdminGroupRecordDetails,
+  AdminNavigationKey,
+  AdminWorkspaceMetric,
+  AdminWorkspaceRecord,
+  AdminWorkspaceRecordField,
+} from "@/types/admin/AdminWorkspace";
 
 type Connection<T> = {
   edges: Array<{ node: T }>;
@@ -39,7 +48,7 @@ type Connection<T> = {
 type Status = AdminWorkspaceRecord["status"];
 type DataResult = {
   records: AdminWorkspaceRecord[];
-  metrics?: Array<{ label: string; value: string }>;
+  metrics?: AdminWorkspaceMetric[];
 };
 
 async function adminQuery<T>(
@@ -99,6 +108,22 @@ function date(value: string, locale: Locale): string {
   }).format(new Date(value));
 }
 
+function dateTime(value: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "uz" ? "uz-UZ" : locale === "ru" ? "ru-RU" : "en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Tashkent",
+  }).format(new Date(value));
+}
+
+function time(value: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "uz" ? "uz-UZ" : locale === "ru" ? "ru-RU" : "en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Tashkent",
+  }).format(new Date(value));
+}
+
 function uzs(value: string, locale: Locale): string {
   const numberLocale = locale === "uz" ? "uz-UZ" : locale === "ru" ? "ru-RU" : "en-GB";
   return `${new Intl.NumberFormat(numberLocale).format(BigInt(value))} UZS`;
@@ -112,8 +137,24 @@ function record(
   status: Status,
   href?: string,
   avatarUrl?: string | null,
+  group?: AdminGroupRecordDetails,
 ): AdminWorkspaceRecord {
-  return { id, title, meta, detail, status, href, avatarUrl };
+  return { id, title, meta, detail, status, href, avatarUrl, group };
+}
+
+function field(key: string, label: string, value: string): AdminWorkspaceRecordField {
+  return { key, label, value };
+}
+
+function withFields(
+  workspaceRecord: AdminWorkspaceRecord,
+  fields: AdminWorkspaceRecordField[],
+): AdminWorkspaceRecord {
+  return {
+    ...workspaceRecord,
+    fields,
+    searchText: fields.map(({ value }) => value).join(" "),
+  };
 }
 
 async function adminAvatarUrlsFor(userIds: string[]): Promise<Map<string, string>> {
@@ -134,6 +175,8 @@ export async function loadAdminWorkspaceData(
   locale: Locale,
 ): Promise<DataResult> {
   const language = locale.toUpperCase();
+  const directory = getAdminDirectoryCopy(locale);
+  const operations = getAdminOperationsCopy(locale);
   switch (sectionKey) {
     case "dashboard": {
       const labels = getAdminWorkspaceCopy(locale);
@@ -156,11 +199,28 @@ export async function loadAdminWorkspaceData(
       const academic = data.adminAcademicOverview;
       return {
         metrics: [
-          { label: labels.navigation.groups, value: String(op.activeGroups) },
-          { label: labels.navigation.students, value: String(academic.activeStudentCount) },
-          { label: labels.navigation.teachers, value: String(academic.activeTeacherCount) },
           {
+            href: "/admin/groups",
+            label: labels.navigation.groups,
+            tone: "emerald",
+            value: String(op.activeGroups),
+          },
+          {
+            href: "/admin/students",
+            label: labels.navigation.students,
+            tone: "cyan",
+            value: String(academic.activeStudentCount),
+          },
+          {
+            href: "/admin/teachers",
+            label: labels.navigation.teachers,
+            tone: "navy",
+            value: String(academic.activeTeacherCount),
+          },
+          {
+            href: "/admin/requests",
             label: labels.common.openQueueLabel,
+            tone: "amber",
             value: String(op.pendingIntakes + op.pendingMedia),
           },
         ],
@@ -207,10 +267,21 @@ export async function loadAdminWorkspaceData(
         allNodes<Intake>(AdminEventRegistrationsDocument, "adminEventRegistrations"),
         allNodes<Intake>(AdminExamRegistrationsDocument, "adminExamRegistrations"),
       ]);
+      const items = [
+        ...contacts.map((item) => ({ ...item, sourceLabel: directory.contactRequestsLabel })),
+        ...events.map((item) => ({ ...item, sourceLabel: directory.eventRegistrationsLabel })),
+        ...exams.map((item) => ({ ...item, sourceLabel: directory.examRegistrationsLabel })),
+      ].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
       return {
-        records: [...contacts, ...events, ...exams]
-          .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-          .map((item) =>
+        metrics: [
+          { label: directory.contactRequestsLabel, value: String(contacts.length) },
+          {
+            label: directory.eventRegistrationsLabel,
+            value: String(events.length + exams.length),
+          },
+        ],
+        records: items.map((item) =>
+          withFields(
             record(
               item.id,
               item.name,
@@ -218,7 +289,13 @@ export async function loadAdminWorkspaceData(
               getAdminStatusLabel(locale, item.status),
               tone(item.status),
             ),
+            [
+              field("kind", directory.kindLabel, item.sourceLabel),
+              field("contact", directory.contactLabel, item.email ?? item.phone ?? "—"),
+              field("received", directory.receivedLabel, date(item.createdAt, locale)),
+            ],
           ),
+        ),
       };
     }
     case "students": {
@@ -232,16 +309,43 @@ export async function loadAdminWorkspaceData(
       };
       const nodes = await allNodes<Student>(AdminStudentsDocument, "adminStudents");
       const avatarUrls = await adminAvatarUrlsFor(nodes.map((item) => item.studentId));
+      const scoredStudents = nodes.filter(
+        (item): item is Student & { averagePercentage: number } =>
+          item.averagePercentage !== null && item.averagePercentage !== undefined,
+      );
+      const average = scoredStudents.length
+        ? `${Math.round(scoredStudents.reduce((sum, item) => sum + item.averagePercentage, 0) / scoredStudents.length)}%`
+        : "—";
       return {
+        metrics: [
+          {
+            label: directory.activeLabel,
+            value: String(nodes.filter((item) => item.status === "ACTIVE").length),
+          },
+          { label: directory.averageLabel, value: average },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.studentId,
-            item.displayName,
-            item.currentGroupName ?? "—",
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
-            `/admin/students/${encodeURIComponent(item.studentId)}`,
-            avatarUrls.get(item.studentId) ?? null,
+          withFields(
+            record(
+              item.studentId,
+              item.displayName,
+              item.currentGroupName ?? "—",
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+              `/admin/students/${encodeURIComponent(item.studentId)}`,
+              avatarUrls.get(item.studentId) ?? null,
+            ),
+            [
+              field("group", directory.groupLabel, item.currentGroupName ?? "—"),
+              field(
+                "average",
+                directory.averageLabel,
+                item.averagePercentage === null || item.averagePercentage === undefined
+                  ? "—"
+                  : `${Math.round(item.averagePercentage)}%`,
+              ),
+              field("tests", directory.scoredTestsLabel, String(item.scoredTestCount)),
+            ],
           ),
         ),
       };
@@ -252,83 +356,193 @@ export async function loadAdminWorkspaceData(
         displayName: string;
         email?: string | null;
         branchName?: string | null;
+        phone?: string | null;
         teacherSubject?: string | null;
         status: string;
       };
       const nodes = await allNodes<User>(AdminUsersDocument, "adminUsers", { role: "TEACHER" });
       const avatarUrls = await adminAvatarUrlsFor(nodes.map((item) => item.id));
       return {
+        metrics: [
+          {
+            label: directory.activeLabel,
+            value: String(nodes.filter((item) => item.status === "ACTIVE").length),
+          },
+          {
+            label: directory.branchesLabel,
+            value: String(new Set(nodes.map((item) => item.branchName).filter(Boolean)).size),
+          },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.id,
-            item.displayName,
-            [item.teacherSubject, item.branchName].filter(Boolean).join(" · ") || item.email || "—",
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
-            `/admin/teachers/${encodeURIComponent(item.id)}`,
-            avatarUrls.get(item.id) ?? null,
+          withFields(
+            record(
+              item.id,
+              item.displayName,
+              [item.teacherSubject, item.branchName].filter(Boolean).join(" · ") ||
+                item.email ||
+                "—",
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+              `/admin/teachers/${encodeURIComponent(item.id)}`,
+              avatarUrls.get(item.id) ?? null,
+            ),
+            [
+              field("subject", directory.subjectLabel, item.teacherSubject ?? "—"),
+              field("branch", directory.branchLabel, item.branchName ?? "—"),
+              field("email", directory.emailLabel, item.email ?? "—"),
+              field("phone", directory.phoneLabel, item.phone ?? "—"),
+            ],
           ),
         ),
       };
     }
     case "groups": {
-      type Group = { id: string; slug: string; name: string; room?: string | null; status: string };
-      const nodes = await allNodes<Group>(AdminGroupsDocument, "adminGroups");
+      type Group = {
+        activeStudentCount: number;
+        category: "CEFR" | "GENERAL_ENGLISH" | "IELTS" | null;
+        endsAtMinutes?: number | null;
+        id: string;
+        monthlyTuitionUzs?: string | null;
+        name: string;
+        room?: string | null;
+        scheduleDays: number[];
+        slug: string;
+        startsAtMinutes?: number | null;
+        status: string;
+        teacherId: string;
+        timeZone: string;
+      };
+      type Teacher = {
+        branchName?: string | null;
+        displayName: string;
+        id: string;
+      };
+      const [nodes, teachers] = await Promise.all([
+        allNodes<Group>(AdminGroupsDocument, "adminGroups"),
+        allNodes<Teacher>(AdminUsersDocument, "adminUsers", { role: "TEACHER" }),
+      ]);
+      const teachersById = new Map(teachers.map((teacher) => [teacher.id, teacher]));
       return {
-        records: nodes.map((item) =>
-          record(
+        records: nodes.map((item) => {
+          const teacher = teachersById.get(item.teacherId);
+          const startsAtMinutes = item.startsAtMinutes ?? null;
+          const endsAtMinutes = item.endsAtMinutes ?? null;
+          const groupDetails: AdminGroupRecordDetails = {
+            activeStudentCount: item.activeStudentCount,
+            branchName: teacher?.branchName ?? null,
+            capacity: 15,
+            category: item.category,
+            endsAtMinutes,
+            monthlyTuitionUzs: item.monthlyTuitionUzs ? uzs(item.monthlyTuitionUzs, locale) : null,
+            room: item.room ?? null,
+            scheduleDays: item.scheduleDays,
+            slug: item.slug,
+            startsAtMinutes,
+            teacherName: teacher?.displayName ?? item.teacherId,
+            timeZone: item.timeZone,
+          };
+          const schedule = formatAdminGroupSchedule(groupDetails, locale);
+          return record(
             item.id,
             item.name,
-            item.room ?? "—",
+            `${teacher?.displayName ?? item.teacherId} · ${schedule}`,
             getAdminStatusLabel(locale, item.status),
             tone(item.status),
             `/admin/groups/${encodeURIComponent(item.slug)}`,
-          ),
-        ),
+            undefined,
+            groupDetails,
+          );
+        }),
       };
     }
     case "courses": {
       type Course = {
+        category: string;
+        featured: boolean;
+        formatLabel?: string | null;
         id: string;
         slug: string;
         title: string;
         level?: string | null;
         status: string;
         duration?: string | null;
+        schedule?: string | null;
       };
       const nodes = await allNodes<Course>(AdminCoursesDocument, "adminCourses", { language });
       return {
+        metrics: [
+          {
+            label: directory.publishedLabel,
+            value: String(nodes.filter((item) => item.status === "PUBLISHED").length),
+          },
+          {
+            label: directory.featuredLabel,
+            value: String(nodes.filter((item) => item.featured).length),
+          },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.id,
-            item.title,
-            [item.level, item.duration].filter(Boolean).join(" · ") || "—",
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
-            `/admin/courses/${encodeURIComponent(item.slug)}`,
+          withFields(
+            record(
+              item.id,
+              item.title,
+              [item.level, item.duration].filter(Boolean).join(" · ") || "—",
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+              `/admin/courses/${encodeURIComponent(item.slug)}`,
+            ),
+            [
+              field("level", directory.levelLabel, item.level ?? "—"),
+              field("duration", directory.durationLabel, item.duration ?? "—"),
+              field("format", directory.formatLabel, item.formatLabel ?? "—"),
+              field("schedule", directory.scheduleLabel, item.schedule ?? "—"),
+            ],
           ),
         ),
       };
     }
     case "events": {
       type Event = {
+        capacity?: number | null;
         id: string;
         slug: string;
         title: string;
         location?: string | null;
         startsAt: string;
         status: string;
+        timelineStatus: string;
       };
       const nodes = await allNodes<Event>(AdminEventsDocument, "adminEvents", { language });
       return {
+        metrics: [
+          {
+            label: directory.upcomingLabel,
+            value: String(nodes.filter((item) => item.timelineStatus === "UPCOMING").length),
+          },
+          {
+            label: directory.capacityLabel,
+            value: String(nodes.reduce((sum, item) => sum + (item.capacity ?? 0), 0)),
+          },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.id,
-            item.title,
-            `${date(item.startsAt, locale)} · ${item.location ?? "—"}`,
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
-            `/admin/events/${encodeURIComponent(item.slug)}`,
+          withFields(
+            record(
+              item.id,
+              item.title,
+              `${date(item.startsAt, locale)} · ${item.location ?? "—"}`,
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+              `/admin/events/${encodeURIComponent(item.slug)}`,
+            ),
+            [
+              field("date", directory.dateLabel, date(item.startsAt, locale)),
+              field("location", directory.locationLabel, item.location ?? "—"),
+              field("capacity", directory.capacityLabel, item.capacity?.toString() ?? "—"),
+              field(
+                "timeline",
+                directory.timelineLabel,
+                getAdminStatusLabel(locale, item.timelineStatus),
+              ),
+            ],
           ),
         ),
       };
@@ -342,14 +556,37 @@ export async function loadAdminWorkspaceData(
           nextLessonAt?: string | null;
         }>;
       }>(AdminLocationsDocument);
+      const activeGroupTotal = data.adminLocations.reduce(
+        (sum, item) => sum + item.activeGroupCount,
+        0,
+      );
+      const scheduledLessonTotal = data.adminLocations.reduce(
+        (sum, item) => sum + item.scheduledLessonCount,
+        0,
+      );
       return {
+        metrics: [
+          { label: directory.activeGroupsLabel, value: String(activeGroupTotal) },
+          { label: directory.scheduledLessonsLabel, value: String(scheduledLessonTotal) },
+        ],
         records: data.adminLocations.map((item) =>
-          record(
-            item.room,
-            item.room,
-            String(item.scheduledLessonCount),
-            String(item.activeGroupCount),
-            "info",
+          withFields(
+            record(
+              item.room,
+              item.room,
+              String(item.scheduledLessonCount),
+              getAdminStatusLabel(locale, item.activeGroupCount ? "ACTIVE" : "INACTIVE"),
+              item.activeGroupCount ? "success" : "neutral",
+            ),
+            [
+              field("groups", directory.activeGroupsLabel, String(item.activeGroupCount)),
+              field("lessons", directory.scheduledLessonsLabel, String(item.scheduledLessonCount)),
+              field(
+                "nextLesson",
+                directory.nextLessonLabel,
+                item.nextLessonAt ? date(item.nextLessonAt, locale) : "—",
+              ),
+            ],
           ),
         ),
       };
@@ -391,27 +628,74 @@ export async function loadAdminWorkspaceData(
                 AdminAttendanceDocument,
                 { lessonId: lesson.id },
               );
+              const lessonTitle =
+                lesson.translations.find((translation) => translation.language === language)
+                  ?.title ?? lesson.groupId;
               return result.adminAttendance.map((entry) =>
-                record(
-                  entry.id,
-                  entry.studentName,
-                  `${lesson.translations.find((translation) => translation.language === language)?.title ?? lesson.groupId} · ${date(lesson.startsAt, locale)}`,
-                  getAdminStatusLabel(locale, entry.status),
-                  tone(entry.status),
+                withFields(
+                  record(
+                    entry.id,
+                    entry.studentName,
+                    `${lessonTitle} · ${dateTime(lesson.startsAt, locale)}`,
+                    getAdminStatusLabel(locale, entry.status),
+                    tone(entry.status),
+                  ),
+                  [
+                    field("lesson", operations.lessonLabel, lessonTitle),
+                    field("date", directory.dateLabel, dateTime(lesson.startsAt, locale)),
+                    field("recorded", operations.recordedLabel, dateTime(entry.recordedAt, locale)),
+                    field("note", operations.noteLabel, entry.note ?? "—"),
+                  ],
                 ),
               );
             }),
         );
-        return { records: rows.flat() };
+        const records = rows.flat();
+        return {
+          metrics: [
+            {
+              label: getAdminStatusLabel(locale, "PRESENT"),
+              value: String(records.filter((item) => item.status === "success").length),
+            },
+            {
+              label: getAdminStatusLabel(locale, "ABSENT"),
+              value: String(records.filter((item) => item.status === "danger").length),
+            },
+          ],
+          records,
+        };
       }
+      const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tashkent" }).format(now);
       return {
+        metrics: [
+          { label: operations.totalLessonsLabel, value: String(data.adminSchedule.length) },
+          {
+            label: operations.todayLabel,
+            value: String(
+              data.adminSchedule.filter(
+                (item) =>
+                  new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tashkent" }).format(
+                    new Date(item.startsAt),
+                  ) === today,
+              ).length,
+            ),
+          },
+        ],
         records: data.adminSchedule.map((item) =>
-          record(
-            item.id,
-            item.translations.find((entry) => entry.language === language)?.title ?? item.groupId,
-            `${date(item.startsAt, locale)} · ${item.room ?? "—"}`,
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
+          withFields(
+            record(
+              item.id,
+              item.translations.find((entry) => entry.language === language)?.title ?? item.groupId,
+              `${dateTime(item.startsAt, locale)} · ${item.room ?? "—"}`,
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+            ),
+            [
+              field("date", directory.dateLabel, date(item.startsAt, locale)),
+              field("start", operations.startTimeLabel, time(item.startsAt, locale)),
+              field("end", operations.endTimeLabel, time(item.endsAt, locale)),
+              field("room", directory.roomLabel, item.room ?? "—"),
+            ],
           ),
         ),
       };
@@ -428,15 +712,37 @@ export async function loadAdminWorkspaceData(
         status: string;
       };
       const nodes = await allNodes<Charge>(AdminTuitionLedgerDocument, "adminTuitionLedger");
+      const totalAmount = nodes.reduce((sum, item) => sum + BigInt(item.amountUzs), BigInt(0));
+      const outstandingAmount = nodes.reduce(
+        (sum, item) => sum + BigInt(item.outstandingAmountUzs),
+        BigInt(0),
+      );
       return {
+        metrics: [
+          { label: directory.totalAmountLabel, value: uzs(totalAmount.toString(), locale) },
+          { label: directory.outstandingLabel, value: uzs(outstandingAmount.toString(), locale) },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.chargeId,
-            item.studentDisplayName,
-            `${item.groupName} · ${uzs(item.amountUzs, locale)} · ${date(item.billingMonth, locale)}`,
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
-            `/admin/payments/${encodeURIComponent(item.chargeId)}`,
+          withFields(
+            record(
+              item.chargeId,
+              item.studentDisplayName,
+              `${item.groupName} · ${uzs(item.amountUzs, locale)} · ${date(item.billingMonth, locale)}`,
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+              `/admin/payments/${encodeURIComponent(item.chargeId)}`,
+            ),
+            [
+              field("group", directory.groupLabel, item.groupName),
+              field("month", directory.billingMonthLabel, date(item.billingMonth, locale)),
+              field("due", directory.dueDateLabel, date(item.dueDate, locale)),
+              field("amount", directory.amountLabel, uzs(item.amountUzs, locale)),
+              field(
+                "outstanding",
+                directory.outstandingLabel,
+                uzs(item.outstandingAmountUzs, locale),
+              ),
+            ],
           ),
         ),
       };
@@ -454,16 +760,34 @@ export async function loadAdminWorkspaceData(
       };
       const nodes = await allNodes<Test>(AdminTestsDocument, "adminTests", { language });
       return {
+        metrics: [
+          {
+            label: operations.totalAttemptsLabel,
+            value: String(nodes.reduce((sum, item) => sum + item.attemptCount, 0)),
+          },
+          {
+            label: operations.awaitingReviewLabel,
+            value: String(nodes.reduce((sum, item) => sum + item.awaitingReviewCount, 0)),
+          },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.id,
-            item.title,
-            `${item.groupName} · ${item.questionCount}`,
-            item.awaitingReviewCount
-              ? String(item.awaitingReviewCount)
-              : getAdminStatusLabel(locale, item.status),
-            item.awaitingReviewCount ? "warning" : tone(item.status),
-            `/admin/tests/${encodeURIComponent(item.id)}`,
+          withFields(
+            record(
+              item.id,
+              item.title,
+              `${item.groupName} · ${item.questionCount}`,
+              item.awaitingReviewCount
+                ? `${operations.awaitingReviewLabel}: ${item.awaitingReviewCount}`
+                : getAdminStatusLabel(locale, item.status),
+              item.awaitingReviewCount ? "warning" : tone(item.status),
+              `/admin/tests/${encodeURIComponent(item.id)}`,
+            ),
+            [
+              field("group", directory.groupLabel, item.groupName),
+              field("teacher", operations.teacherLabel, item.teacherDisplayName),
+              field("questions", operations.questionCountLabel, String(item.questionCount)),
+              field("attempts", operations.attemptCountLabel, String(item.attemptCount)),
+            ],
           ),
         ),
       };
@@ -479,14 +803,41 @@ export async function loadAdminWorkspaceData(
         groupStatus: string;
       };
       const nodes = await allNodes<Progress>(AdminGroupProgressesDocument, "adminGroupProgresses");
+      const averageCompletion = nodes.length
+        ? Math.round(nodes.reduce((sum, item) => sum + item.completionPercentage, 0) / nodes.length)
+        : 0;
+      const scored = nodes.filter(
+        (item): item is Progress & { averagePercentage: number } =>
+          item.averagePercentage !== null && item.averagePercentage !== undefined,
+      );
+      const averageScore = scored.length
+        ? Math.round(scored.reduce((sum, item) => sum + item.averagePercentage, 0) / scored.length)
+        : 0;
       return {
+        metrics: [
+          { label: operations.completionLabel, value: `${averageCompletion}%` },
+          { label: operations.averageScoreLabel, value: `${averageScore}%` },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.groupId,
-            item.groupName,
-            item.teacherDisplayName,
-            `${item.completionPercentage}%`,
-            tone(item.groupStatus),
+          withFields(
+            record(
+              item.groupId,
+              item.groupName,
+              item.teacherDisplayName,
+              `${item.completionPercentage}%`,
+              tone(item.groupStatus),
+            ),
+            [
+              field("teacher", operations.teacherLabel, item.teacherDisplayName),
+              field("completion", operations.completionLabel, `${item.completionPercentage}%`),
+              field(
+                "average",
+                operations.averageScoreLabel,
+                item.averagePercentage === null || item.averagePercentage === undefined
+                  ? "—"
+                  : `${Math.round(item.averagePercentage)}%`,
+              ),
+            ],
           ),
         ),
       };
@@ -501,14 +852,30 @@ export async function loadAdminWorkspaceData(
       };
       const nodes = await allNodes<Item>(AdminLibraryItemsDocument, "adminLibraryItems");
       return {
+        metrics: [
+          {
+            label: directory.publishedLabel,
+            value: String(nodes.filter((item) => item.status === "PUBLISHED").length),
+          },
+          {
+            label: operations.ownerLabel,
+            value: String(new Set(nodes.map((item) => item.ownerName)).size),
+          },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.id,
-            item.title,
-            `${item.ownerName} · ${date(item.updatedAt, locale)}`,
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
-            `/admin/library/${encodeURIComponent(item.id)}`,
+          withFields(
+            record(
+              item.id,
+              item.title,
+              `${item.ownerName} · ${date(item.updatedAt, locale)}`,
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+              `/admin/library/${encodeURIComponent(item.id)}`,
+            ),
+            [
+              field("owner", operations.ownerLabel, item.ownerName),
+              field("updated", operations.updatedLabel, dateTime(item.updatedAt, locale)),
+            ],
           ),
         ),
       };
@@ -524,14 +891,35 @@ export async function loadAdminWorkspaceData(
       };
       const nodes = await allNodes<Media>(AdminMediaObjectsDocument, "adminMediaObjects");
       return {
+        metrics: [
+          {
+            label: operations.cleanFilesLabel,
+            value: String(nodes.filter((item) => item.malwareStatus === "CLEAN").length),
+          },
+          {
+            label: getAdminStatusLabel(locale, "VERIFYING"),
+            value: String(nodes.filter((item) => item.malwareStatus === "VERIFYING").length),
+          },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.id,
-            item.originalName,
-            `${item.mimeType} · ${date(item.createdAt, locale)}`,
-            getAdminStatusLabel(locale, item.status),
-            tone(item.status),
-            `/admin/imports/${encodeURIComponent(item.id)}`,
+          withFields(
+            record(
+              item.id,
+              item.originalName,
+              `${item.mimeType} · ${date(item.createdAt, locale)}`,
+              getAdminStatusLabel(locale, item.status),
+              tone(`${item.status} ${item.malwareStatus}`),
+              `/admin/imports/${encodeURIComponent(item.id)}`,
+            ),
+            [
+              field("mime", operations.mimeTypeLabel, item.mimeType),
+              field(
+                "malware",
+                operations.malwareStatusLabel,
+                getAdminStatusLabel(locale, item.malwareStatus),
+              ),
+              field("created", operations.createdLabel, dateTime(item.createdAt, locale)),
+            ],
           ),
         ),
       };
@@ -570,13 +958,31 @@ export async function loadAdminWorkspaceData(
       };
       const nodes = await allNodes<Audit>(AdminAuditLogsDocument, "adminAuditLogs");
       return {
+        metrics: [
+          {
+            label: operations.actorLabel,
+            value: String(new Set(nodes.map((item) => item.actorId).filter(Boolean)).size),
+          },
+          {
+            label: operations.targetLabel,
+            value: String(new Set(nodes.map((item) => item.targetType)).size),
+          },
+        ],
         records: nodes.map((item) =>
-          record(
-            item.id,
-            item.action,
-            `${item.targetType} · ${item.targetId} · ${date(item.createdAt, locale)}`,
-            item.reason ?? "—",
-            "neutral",
+          withFields(
+            record(
+              item.id,
+              item.action,
+              `${item.targetType} · ${item.targetId} · ${dateTime(item.createdAt, locale)}`,
+              item.reason ?? "—",
+              "neutral",
+            ),
+            [
+              field("target", operations.targetLabel, `${item.targetType} · ${item.targetId}`),
+              field("actor", operations.actorLabel, item.actorId ?? "—"),
+              field("created", operations.createdLabel, dateTime(item.createdAt, locale)),
+              field("reason", operations.noteLabel, item.reason ?? "—"),
+            ],
           ),
         ),
       };
