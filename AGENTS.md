@@ -554,9 +554,6 @@ src/
           reception/
             ReceptionSchedule.tsx
             page.tsx
-          transfer-requests/
-            TransferRequestList.tsx
-            page.tsx
           profile/
             TeacherProfile.tsx
             TeacherSettings.tsx
@@ -580,7 +577,6 @@ src/
           results/
           library/
           imports/
-          transfer-requests/
           notifications/
           audit/
           reports/
@@ -1512,7 +1508,6 @@ The approved Teacher Workspace route map is:
 /uz/teacher/tasks
 /uz/teacher/finance
 /uz/teacher/reception
-/uz/teacher/transfer-requests
 /uz/teacher/profile
 ```
 
@@ -1841,7 +1836,7 @@ admin template.
   current route, respect safe areas, remain keyboard accessible, and never hide
   focused content.
 - The full navigation drawer contains the teacher preview identity card plus:
-  Dashboard, Groups, Tasks, Finance, Transfer Requests, and Settings. Keep the
+  Dashboard, Groups, Tasks, Finance, and Settings. Keep the
   Reception route accessible through its contextual Dashboard schedule link,
   but do not duplicate it in the side rail. The drawer also contains the Uzbek,
   Russian, and English locale control shown in the recording. Keep Log out
@@ -2023,15 +2018,6 @@ admin template.
   that no remote schedule was fetched. Backend-driven loading, empty, error,
   and unavailable schedule states are deferred to backend integration.
 
-### Transfer Requests
-
-- Provide the dedicated localized Transfer Requests route and the reference
-  empty state with directional-transfer icon, title, and supporting message.
-- Also define typed pending, approved, and declined preview request states so
-  the page is structurally ready when fictional rows are added, but do not add
-  approval/rejection mutations or claim a request was submitted in this
-  frontend milestone.
-
 ### Profile and settings
 
 - Use a centred desktop profile workspace capped at approximately 1200 px with
@@ -2076,8 +2062,8 @@ admin template.
 
 ### Teacher data, interaction, and ownership rules
 
-- Centralize replaceable teacher, group, learner, task, finance,
-  schedule, transfer-request, profile, notification, and resource preview data
+- Centralize replaceable teacher, group, learner, task, finance, schedule,
+  profile, notification, and resource preview data
   under `data/teacher/`, with explicit types under `types/teacher/`.
 - Centralize all Uzbek, Russian, and English Teacher Workspace copy under
   `dictionaries/teacher/`. No teacher UI string may be hardcoded in a component.
@@ -2449,7 +2435,6 @@ Create these localized routes:
 /[locale]/admin/library/[resourceId]
 /[locale]/admin/imports
 /[locale]/admin/imports/[jobId]
-/[locale]/admin/transfer-requests
 /[locale]/admin/notifications
 /[locale]/admin/audit
 /[locale]/admin/reports
@@ -2482,8 +2467,8 @@ of public navigation and sitemap and mark them `noindex, nofollow`.
 ### Admin dashboard
 
 - Show operational summaries for active learners, active teachers, groups,
-  today’s lessons, attendance exceptions, overdue payment status, pending
-  transfers, tests awaiting review, and Library/import review items.
+  today’s lessons, attendance exceptions, overdue payment status, tests
+  awaiting review, and Library/import review items.
 - Include today’s schedule/room occupancy, urgent task queue, recent operational
   events, and direct links to owning routes.
 - Use semantic status icons/text and restrained color; avoid a rainbow metric
@@ -2655,17 +2640,6 @@ of public navigation and sitemap and mark them `noindex, nofollow`.
 - Unknown, unsafe, incomplete, rights-unverified, or untranslated content must
   never appear in the Student-visible fixture set.
 
-### Transfer requests
-
-- Provide Pending, Approved, Declined, Cancelled, and Completed views with
-  learner, source/destination group, reason, capacity, schedule-conflict,
-  payment/attendance note, requester, reviewer, and timestamps.
-- Detail review shows the learner and both group summaries before any decision.
-- Preview approval/decline may update mounted fictional state only after a
-  confirmation and unsaved notice. Real transfer requires one server
-  transaction, capacity validation, membership update, schedule checks, and
-  audit event.
-
 ### Admin notifications
 
 - Provide template and audience-selection UI for operational notices such as
@@ -2737,7 +2711,7 @@ Before the Admin frontend milestone can be presented as complete:
 - Tables, cards, filters, sorting, selection, detail views, dialogs, forms,
   confirmations, focus behavior, and interaction-generated empty states work.
 - Cross-links among requests, learners, teachers, courses, groups, schedule,
-  attendance, payments, tests/results, Library/imports, transfers, and reports
+  attendance, payments, tests/results, Library/imports, and reports
   use consistent ids.
 - Preview actions never claim account, attendance, payment, publication,
   notification, result, or audit persistence.
@@ -2864,7 +2838,6 @@ src/
         results/
         library/
         imports/
-        transfer-requests/
         notifications/
         audit/
         reports/
@@ -2908,7 +2881,6 @@ This table defines product intent; backend authorization is the source of truth.
 | Results/progress | View permitted own results | View permitted assigned learners | Moderate, withhold, audit, and report |
 | Payments | View own ledger status | View approved aggregate analytics | Manage invoice/ledger status, not provider checkout |
 | Library | Consume published resources | Use linked teaching resources | Curate, review, and publish |
-| Transfers | View resulting membership/status | View assigned-group requests | Review and execute authorized transfers |
 | Notifications | Receive permitted notices | Receive operational notices | Draft audiences and send when backend-approved |
 | Public requests | No dashboard management | No dashboard management | Triage enquiries, event registrations, and exam requests |
 | Audit/reports | Own summaries only | Assigned-scope summaries | Read permitted operational history and reports |
@@ -2958,7 +2930,7 @@ rules with the user before schema or API implementation.
    contracts.
 10. Build Admin Dashboard, Requests, Students, Teachers, Courses, Groups,
     Events, Locations, and Schedule.
-11. Build Attendance, Payments, Tests/Results, Library/Imports, Transfers,
+11. Build Attendance, Payments, Tests/Results, Library/Imports,
     Notifications, Audit, Reports, and Settings.
 12. Verify the complete Admin frontend at all target widths and locales.
 13. Run cross-role relational review and freeze the first backend contract map.
@@ -4008,7 +3980,7 @@ Follow this sequence unless the existing repository requires a safer order:
     desktop side rail/top bar and mobile drawer/bottom navigation together.
 14. Build Teacher Dashboard and Groups catalogue/detail route by route, finishing
     desktop and mobile compositions for each before moving to dependent flows.
-15. Build Tasks, Finance, Reception, Transfer Requests, and Profile/settings
+15. Build Tasks, Finance, Reception, and Profile/settings
     with desktop and mobile feature parity, required preview states, and actions
     in the same iteration.
 16. Verify every Teacher route and in-scope reference-video function at mobile,
@@ -4065,7 +4037,7 @@ Also verify manually:
   complete Teacher destination set and preserve equivalent route state.
 - Dashboard cards and resource previews, group search/debtor filter, learner
   actions, add-learner preview, task filtering and completion preview, finance
-  month tabs, reception grid refresh, transfer-request states, and all
+  month tabs, reception grid refresh, and all
   profile/settings rows behave as specified in section 20A.
 - Teacher session-local preview mutations reset on refresh, no business or
   personal data is persisted or transmitted, and unavailable server actions do
