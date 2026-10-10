@@ -29,9 +29,13 @@ export type StudentTestsCopy = {
   continueLabel: string;
   emptyLabel: string;
   eyebrow: string;
+  instructionsTitle: string;
+  instructionsText: string;
   minutesLabel: string;
   moduleLabel: string;
   nextPage: string;
+  openErrorTitle: string;
+  openErrorMessage: string;
   pageLabel: string;
   paginationLabel: string;
   practiceTestLabel: string;
