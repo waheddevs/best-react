@@ -1,0 +1,323 @@
+/* ADMIN DASHBOARD PARTIAL */
+
+.adminDashboard__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  > a,
+  > div {
+    display: grid;
+    min-height: 112px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 13px;
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    background: var(--admin-surface);
+    padding: 18px;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgb(17 28 47 / 3%);
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      transform 150ms ease;
+  }
+
+  > a:hover {
+    border-color: #cad3dd;
+    box-shadow: 0 8px 24px rgb(17 28 47 / 7%);
+    transform: translateY(-1px);
+  }
+
+  > a:focus-visible {
+    outline: 2px solid rgb(74 169 178 / 35%);
+    outline-offset: 2px;
+  }
+}
+
+.adminDashboard__metricIcon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 10px;
+  background: #eaf6f7;
+  color: var(--admin-emerald);
+
+  svg {
+    font-size: 20px;
+  }
+}
+
+.adminDashboard__metricIcon_cyan {
+  background: #e7f3f5;
+  color: var(--admin-cyan);
+}
+
+.adminDashboard__metricIcon_navy {
+  background: #e9edf3;
+  color: var(--admin-navy-soft);
+}
+
+.adminDashboard__metricIcon_amber {
+  background: #fff4dc;
+  color: #9b6812;
+}
+
+.adminDashboard__metricCopy {
+  display: grid;
+  gap: 5px;
+
+  small {
+    color: var(--admin-muted);
+    font-size: 10px;
+    font-weight: 650;
+  }
+
+  strong {
+    color: var(--admin-text);
+    font-size: 25px;
+    letter-spacing: -0.035em;
+  }
+}
+
+.adminDashboard__metricTrend {
+  align-self: start;
+  color: #b1bac6;
+  font-size: 16px !important;
+}
+
+.adminDashboard__contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(250px, 0.65fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.adminDashboard__queuePanel,
+.adminDashboard__statusPanel {
+  overflow: hidden;
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface);
+  box-shadow: 0 1px 2px rgb(17 28 47 / 3%);
+}
+
+.adminDashboard__panelHeader {
+  display: flex;
+  min-height: 68px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--admin-border);
+  padding: 13px 16px;
+
+  > div {
+    display: grid;
+    gap: 4px;
+  }
+
+  span {
+    color: var(--admin-muted);
+    font-size: 8px;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--admin-text);
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+
+  > strong {
+    display: grid;
+    min-width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 8px;
+    background: #eaf6f7;
+    color: var(--admin-emerald);
+    font-size: 12px;
+  }
+
+  > i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #4aa9b2;
+    box-shadow: 0 0 0 5px rgb(24 174 133 / 12%);
+  }
+}
+
+.adminDashboard__queuePanel .adminWorkspace__toolbar {
+  border: 0;
+  border-bottom: 1px solid var(--admin-border);
+  border-radius: 0;
+}
+
+.adminDashboard__queueList {
+  display: grid;
+}
+
+.adminDashboard__queueRow {
+  display: grid;
+  min-height: 72px;
+  grid-template-columns: minmax(155px, 1.35fr) minmax(70px, 0.55fr) auto 36px;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid #edf0f3;
+  padding: 10px 16px;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  > div:first-child {
+    display: grid;
+    min-width: 0;
+    gap: 4px;
+  }
+
+  small {
+    color: #919ba9;
+    font-size: 8px;
+    font-family: ui-monospace, monospace;
+  }
+
+  strong {
+    overflow: hidden;
+    color: var(--admin-text);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  p {
+    margin: 0;
+    color: var(--admin-muted);
+    font-size: 12px;
+  }
+
+  > div:last-child {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  a {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 1px solid var(--admin-border);
+    border-radius: 7px;
+    color: var(--admin-emerald);
+  }
+
+  a:hover {
+    border-color: #c8e2e5;
+    background: #f3fafb;
+  }
+
+  svg {
+    font-size: 17px;
+  }
+}
+
+.adminDashboard__statusPanel {
+  dl {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0;
+    border-bottom: 1px solid var(--admin-border);
+  }
+
+  dl div {
+    display: grid;
+    gap: 5px;
+    padding: 16px;
+  }
+
+  dl div + div {
+    border-left: 1px solid var(--admin-border);
+  }
+
+  dt {
+    color: var(--admin-muted);
+    font-size: 9px;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--admin-text);
+    font-size: 20px;
+    font-weight: 750;
+  }
+
+  nav {
+    display: grid;
+    padding: 8px;
+  }
+
+  nav a {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-radius: 7px;
+    padding: 8px 10px;
+    color: var(--admin-muted);
+    font-size: 10px;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    background: var(--admin-surface-subtle);
+    color: var(--admin-text);
+  }
+
+  nav strong {
+    color: var(--admin-text);
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .adminDashboard__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .adminDashboard__contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .adminDashboard__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .adminDashboard__metrics > a,
+  .adminDashboard__metrics > div {
+    min-height: 88px;
+  }
+
+  .adminDashboard__queueRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    > p,
+    > span {
+      grid-column: 1;
+    }
+
+    > div:last-child {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+    }
+  }
+}

@@ -1,0 +1,293 @@
+.adminSettings {
+  width: min(100%, 1080px);
+  overflow: hidden;
+  border: 1px solid var(--admin-border);
+  border-radius: 13px;
+  background: var(--admin-surface);
+  box-shadow: 0 12px 28px rgb(21 34 56 / 5%);
+}
+
+.adminSettings__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--admin-border);
+  padding: 25px clamp(22px, 3vw, 36px);
+
+  & > div:first-child > span {
+    color: var(--admin-emerald);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 5px 0 6px;
+    color: var(--admin-text);
+    font-size: clamp(26px, 2.5vw, 34px);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+  }
+
+  p {
+    max-width: 620px;
+    margin: 0;
+    color: var(--admin-muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+.adminSettings__account {
+  display: grid;
+  gap: 27px;
+  padding: 31px clamp(22px, 3vw, 36px) 36px;
+}
+
+.adminSettings__pictureRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.adminSettings__avatar {
+  display: grid;
+  width: 86px;
+  height: 86px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #cce7e9;
+  border-radius: 50%;
+  background: #eaf6f7;
+  color: #3b7f86;
+  font-size: 26px;
+  font-weight: 750;
+}
+
+.adminSettings__pictureContent {
+  min-width: 0;
+
+  h2 {
+    margin: 0 0 11px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 10px 0 0;
+    color: var(--admin-muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+.adminSettings__pictureActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.adminSettings__nameFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.adminSettings__nameFields label,
+.adminSettings__emailField label {
+  display: grid;
+  min-width: 0;
+  gap: 9px;
+  color: var(--admin-text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.adminSettings__nameFields input,
+.adminSettings__emailField input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #d8e1e8;
+  border-radius: 9px;
+  background: #fff;
+  padding: 0 14px;
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+
+  &:focus-visible {
+    border-color: #4aa9b2;
+    outline: 3px solid rgb(74 169 178 / 18%);
+    outline-offset: 1px;
+  }
+
+  &[readonly] {
+    background: #f6f8fa;
+    color: #526176;
+  }
+}
+
+.adminSettings__emailField {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  max-width: 650px;
+
+  label {
+    flex: 1;
+  }
+}
+
+.adminSettings__emailHelp,
+.adminSettings__password p {
+  margin: -19px 0 0;
+  color: var(--admin-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.adminSettings__password {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--admin-border);
+  padding: 30px clamp(22px, 3vw, 36px);
+
+  h2 {
+    margin: 0 0 7px;
+    font-size: 18px;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.adminSettings__button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 0 17px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+
+  &:focus-visible {
+    outline: 3px solid rgb(74 169 178 / 28%);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
+
+.adminSettings__button_secondary {
+  border-color: #d8e1e8;
+  background: white;
+  color: #26364b;
+
+  &:not(:disabled):hover {
+    border-color: #b8dadd;
+    background: #f3fafb;
+  }
+}
+
+.adminSettings__button_primary {
+  min-width: 120px;
+  background: #0b0d24;
+  color: white;
+
+  &:not(:disabled):hover {
+    background: #20233d;
+  }
+}
+
+.adminSettings__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 11px;
+  min-height: 96px;
+  border-top: 1px solid var(--admin-border);
+  padding: 20px clamp(22px, 3vw, 36px);
+}
+
+.adminSettings__success,
+.adminSettings__error {
+  margin: 0 auto 0 0;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.adminSettings__success {
+  color: #3b7f86;
+}
+
+.adminSettings__error {
+  color: #b42330;
+}
+
+.adminSettings__account > .adminSettings__error {
+  margin: -16px 0 0;
+}
+
+@media (max-width: 640px) {
+  .adminSettings__heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .adminSettings__account {
+    gap: 22px;
+  }
+
+  .adminSettings__nameFields {
+    grid-template-columns: 1fr;
+  }
+
+  .adminSettings__pictureRow {
+    align-items: flex-start;
+  }
+
+  .adminSettings__avatar {
+    width: 62px;
+    height: 62px;
+    font-size: 20px;
+  }
+
+  .adminSettings__password,
+  .adminSettings__emailField {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .adminSettings__password .adminSettings__button,
+  .adminSettings__emailField .adminSettings__button {
+    align-self: flex-start;
+  }
+
+  .adminSettings__footer {
+    flex-wrap: wrap;
+  }
+
+  .adminSettings__footer p {
+    width: 100%;
+  }
+}
