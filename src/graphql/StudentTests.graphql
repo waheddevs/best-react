@@ -274,3 +274,6 @@ fragment StudentAttemptFields on StudentAttempt {
     passed
   }
 }
+mutation DiscardStudentTestAttempt($attemptId: ID!) {
+  discardTestAttempt(attemptId: $attemptId)
+}

@@ -100,6 +100,7 @@ query AdminUsers($after: String, $first: Int, $role: UserRole) {
         id
         displayName
         email
+        phone
         branchName
         teacherSubject
         status
@@ -117,11 +118,19 @@ query AdminGroups($after: String, $first: Int) {
   adminGroups(after: $after, first: $first) {
     edges {
       node {
+        activeStudentCount
+        category
+        endsAtMinutes
         id
+        monthlyTuitionUzs
         slug
         name
         room
+        scheduleDays
+        startsAtMinutes
         status
+        teacherId
+        timeZone
       }
     }
     pageInfo {
@@ -135,12 +144,16 @@ query AdminCourses($after: String, $first: Int, $language: Language!) {
   adminCourses(after: $after, first: $first, language: $language) {
     edges {
       node {
+        category
+        featured
+        formatLabel
         id
         slug
         title
         level
         status
         duration
+        schedule
       }
     }
     pageInfo {
@@ -154,12 +167,14 @@ query AdminEvents($after: String, $first: Int, $language: Language!) {
   adminEvents(after: $after, first: $first, language: $language) {
     edges {
       node {
+        capacity
         id
         slug
         title
         location
         startsAt
         status
+        timelineStatus
       }
     }
     pageInfo {
