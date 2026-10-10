@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { isLocale } from "@/config/Locales";
+import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import { getWorkspaceNotificationsCopy } from "@/dictionaries/WorkspaceNotifications";
 import { loadWorkspaceNotifications } from "@/features/notifications/WorkspaceNotificationActions";
 import { WorkspaceNotificationsList } from "@/features/notifications/WorkspaceNotificationsList";
@@ -11,6 +12,8 @@ export default async function AdminNotificationsPage({ params }: PageProps) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const connected = !isDashboardPreviewEnabled();
+  const adminCopy = getAdminWorkspaceCopy(locale);
+  const section = adminCopy.sections.notifications;
   const initial = connected
     ? await loadWorkspaceNotifications("ADMIN", 20).catch(() => null)
     : null;
@@ -18,7 +21,13 @@ export default async function AdminNotificationsPage({ params }: PageProps) {
     <article className="adminWorkspace">
       <header className="adminWorkspace__header">
         <div>
+          <span>{section.eyebrow}</span>
           <h1>{getWorkspaceNotificationsCopy(locale).title}</h1>
+          <p>{section.description}</p>
+        </div>
+        <div className="adminWorkspace__health">
+          <i />
+          <span>{adminCopy.common.connectedNotice}</span>
         </div>
       </header>
       <WorkspaceNotificationsList
