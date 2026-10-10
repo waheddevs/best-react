@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import type { Locale } from "@/config/Locales";
 import { getStudentHeroCopy, type StudentHeroKind } from "@/dictionaries/student/StudentHero";
@@ -6,6 +7,8 @@ import { getStudentHeroCopy, type StudentHeroKind } from "@/dictionaries/student
 type StudentSectionHeroProps = {
   description: string;
   eyebrow: string;
+  eyebrowHref?: string;
+  eyebrowLinkLabel?: string;
   kind: StudentHeroKind;
   label?: string;
   locale: Locale;
@@ -31,6 +34,8 @@ const iconImages = {
 export function StudentSectionHero({
   description,
   eyebrow,
+  eyebrowHref,
+  eyebrowLinkLabel,
   kind,
   label,
   locale,
@@ -45,7 +50,13 @@ export function StudentSectionHero({
     <header className="studentHero">
       <span aria-hidden="true" className="studentHero__orbit" />
       <div className="studentHero__copy">
-        <span className="studentHero__eyebrow">{eyebrow}</span>
+        {eyebrowHref ? (
+          <Link className="studentHero__eyebrow" href={eyebrowHref} aria-label={eyebrowLinkLabel} title={eyebrowLinkLabel}>
+            {eyebrow}
+          </Link>
+        ) : (
+          <span className="studentHero__eyebrow">{eyebrow}</span>
+        )}
         <h1>{title}</h1>
         <p>{description}</p>
       </div>

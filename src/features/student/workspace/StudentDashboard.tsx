@@ -4,32 +4,18 @@ import { getStudentWorkspaceCopy } from "@/dictionaries/student/StudentWorkspace
 import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
 import { loadStudentSettingsIdentity } from "@/lib/student/StudentSettingsData";
 import { getStudentTestPapers } from "@/lib/student/StudentTestData";
-import type { StudentWorkspaceRecord } from "@/types/student/StudentWorkspace";
+import {
+  loadStudentDashboardGroup,
+  loadStudentDashboardProgress,
+} from "@/lib/student/StudentDashboardData";
 
-import { StudentSectionPage } from "./StudentSectionPage";
+import { StudentSectionHero } from "./StudentSectionHero";
+import { StudentDashboardGroup } from "./StudentDashboardGroup";
+import { StudentDashboardTests } from "./StudentDashboardTests";
+import { StudentDashboardProgress } from "./StudentDashboardProgress";
+import { StudentProgressLiveRefresh } from "./StudentProgressLiveRefresh";
 
 type StudentDashboardProps = { locale: Locale };
-
-const writingCopy = {
-  uz: {
-    available: "Writing test",
-    inProgress: "Davom etish",
-    submitted: "Tekshirilmoqda",
-    tasks: "ta task",
-  },
-  ru: {
-    available: "Writing тест",
-    inProgress: "Продолжить",
-    submitted: "На проверке",
-    tasks: "задания",
-  },
-  en: {
-    available: "Writing test",
-    inProgress: "Continue",
-    submitted: "Awaiting review",
-    tasks: "tasks",
-  },
-} as const;
 
 export async function StudentDashboard({ locale }: StudentDashboardProps) {
   const copy = getStudentWorkspaceCopy(locale);
@@ -37,46 +23,45 @@ export async function StudentDashboard({ locale }: StudentDashboardProps) {
     ? studentSettingsPreview
     : await loadStudentSettingsIdentity().catch(() => null);
   const firstName = identity?.displayName.trim().split(/\s+/)[0];
-  const papers = await getStudentTestPapers(locale);
-  const labels = writingCopy[locale];
-  const writingRecords: StudentWorkspaceRecord[] = papers.flatMap((paper) =>
-    paper.skills
-      .filter((skill) => skill.skill === "WRITING")
-      .map((skill) => ({
-        detail:
-          skill.attemptStatus === "IN_PROGRESS"
-            ? labels.inProgress
-            : skill.attemptStatus === "SUBMITTED" ||
-                skill.attemptStatus === "REVIEW_REQUIRED" ||
-                skill.attemptStatus === "SCORED"
-              ? labels.submitted
-              : labels.available,
-        href: `/student/tests/${paper.id}`,
-        id: `writing-${skill.testId}`,
-        meta: `${paper.title} · ${skill.questionCount} ${labels.tasks}`,
-        status:
-          skill.attemptStatus === "SUBMITTED" ||
-          skill.attemptStatus === "REVIEW_REQUIRED" ||
-          skill.attemptStatus === "SCORED"
-            ? "neutral"
-            : "info",
-        title: skill.title,
-      })),
+  const [papers, groupState] = await Promise.all([
+    getStudentTestPapers(locale),
+    loadStudentDashboardGroup()
+      .then((group) => ({ group, failed: false }))
+      .catch(() => ({ group: null, failed: true })),
+  ]);
+  const progress = await loadStudentDashboardProgress(locale, papers)
+    .then((rows) => ({ rows, failed: false }))
+    .catch(() => ({ rows: [], failed: true }));
+  const writingCount = papers.reduce(
+    (count, paper) => count + paper.skills.filter((skill) => skill.skill === "WRITING").length,
+    0,
   );
+  const section = copy.sections.dashboard;
 
   return (
-    <StudentSectionPage
-      common={copy.common}
-      heroKind="dashboard"
-      heroValue={writingRecords.length}
-      locale={locale}
-      section={{
-        ...copy.sections.dashboard,
-        records: [...writingRecords, ...copy.sections.dashboard.records],
-        title: firstName
-          ? `${copy.sections.dashboard.title}, ${firstName}`
-          : copy.sections.dashboard.title,
-      }}
-    />
+    <article className="studentDashboard">
+      <StudentProgressLiveRefresh />
+      <StudentSectionHero
+        description={section.description}
+        eyebrow={section.eyebrow}
+        kind="dashboard"
+        locale={locale}
+        title={firstName ? `${section.title}, ${firstName}` : section.title}
+        value={writingCount}
+      />
+      <div className="studentDashboard__cards">
+        <StudentDashboardGroup
+          locale={locale}
+          group={groupState.group}
+          failed={groupState.failed}
+        />
+        <StudentDashboardProgress
+          locale={locale}
+          rows={progress.rows.slice(0, 1)}
+          failed={progress.failed}
+        />
+        <StudentDashboardTests locale={locale} papers={papers} />
+      </div>
+    </article>
   );
 }
