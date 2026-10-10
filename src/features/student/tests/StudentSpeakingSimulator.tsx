@@ -1,15 +1,17 @@
 "use client";
 
-import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
-import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
 import MicRounded from "@mui/icons-material/MicRounded";
 import { useMutation } from "@apollo/client/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { Locale } from "@/config/Locales";
+import { getStudentListeningTestNavbarCopy } from "@/dictionaries/student/StudentListeningTestNavbar";
+import { getStudentSpeakingSimulatorCopy } from "@/dictionaries/student/StudentSpeakingSimulator";
+import { useStudentTestExit } from "@/hooks/student/tests/useStudentTestExit";
+import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
+import { parseStudentSpeakingCueCard } from "@/lib/student/StudentSpeakingCueCard";
 import {
   SaveStudentAttemptNoteDocument,
   SaveStudentTestAnswerDocument,
@@ -18,6 +20,8 @@ import {
 } from "@/gql/graphql";
 
 import { StudentAudioRecorder, type StudentAudioRecorderState } from "./StudentAudioRecorder";
+import { StudentListeningTestNavbar } from "./StudentListeningTestNavbar";
+import { StudentTestSectionIntro } from "./StudentTestSectionIntro";
 
 type StudentSpeakingSimulatorProps = {
   attempt: StudentAttemptFieldsFragment;
@@ -32,7 +36,6 @@ const copy = {
     completeDescription: "Audio javoblaringiz yuborildi va teacher tekshiruvi uchun saqlandi.",
     completeTitle: "Speaking practice yakunlandi",
     discussion: "Muhokama",
-    examinerQuestion: "Examiner savoli",
     finish: "Testni yakunlash",
     finishConfirm: "Speaking javoblarini yuborasizmi? Keyin ularni o'zgartirib bo'lmaydi.",
     introduction: "Kirish va suhbat",
@@ -59,7 +62,6 @@ const copy = {
     completeDescription: "Аудиоответы отправлены и сохранены для проверки преподавателем.",
     completeTitle: "Практика Speaking завершена",
     discussion: "Обсуждение",
-    examinerQuestion: "Вопрос экзаменатора",
     finish: "Завершить тест",
     finishConfirm: "Отправить ответы Speaking? После отправки их нельзя изменить.",
     introduction: "Введение и интервью",
@@ -86,7 +88,6 @@ const copy = {
     completeDescription: "Your audio responses were submitted and saved for teacher review.",
     completeTitle: "Speaking practice complete",
     discussion: "Discussion",
-    examinerQuestion: "Examiner question",
     finish: "Finish test",
     finishConfirm: "Submit your Speaking responses? You cannot change them afterwards.",
     introduction: "Introduction and interview",
@@ -115,6 +116,9 @@ export function StudentSpeakingSimulator({
   paperId,
 }: StudentSpeakingSimulatorProps) {
   const labels = copy[locale];
+  const confirm = useConfirmDialog();
+  const navbarCopy = getStudentListeningTestNavbarCopy(locale);
+  const speakingCopy = getStudentSpeakingSimulatorCopy(locale);
   const router = useRouter();
   const orderedQuestions = useMemo(
     () =>
@@ -131,6 +135,7 @@ export function StudentSpeakingSimulator({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState("");
+  const [notesOpen, setNotesOpen] = useState(false);
   const [notes, setNotes] = useState<Record<string, string>>(() =>
     Object.fromEntries(attempt.notes.map((note) => [note.sectionId, note.text])),
   );
@@ -153,7 +158,7 @@ export function StudentSpeakingSimulator({
     Object.fromEntries(attempt.notes.map((note) => [note.sectionId, note.text])),
   );
   const autoSubmittedRef = useRef(false);
-  const autoStopPartTwoRef = useRef(false);
+  const confirmingSubmitRef = useRef(false);
   const advancedFromPartTwoRef = useRef(false);
   const question = orderedQuestions[currentIndex];
   const section = attempt.sections.find((item) => item.id === question?.sectionId) ?? null;
@@ -175,30 +180,44 @@ export function StudentSpeakingSimulator({
   });
 
   const returnHref = `/${locale}/student/tests/${paperId}`;
+  const testsHref = `/${locale}/student/tests`;
+  const { exit, exiting, exitingRef, trackWrite } = useStudentTestExit({
+    attemptId: attempt.id,
+    locale,
+    returnHref,
+    active: !completed && attempt.status === "IN_PROGRESS",
+    speaking: true,
+    canExit: () => !autoSubmittedRef.current && !submitting && !confirmingSubmitRef.current,
+  });
 
   const moveToNext = useCallback(() => {
     setError("");
     setAutoStopPartTwo(false);
-    autoStopPartTwoRef.current = false;
     setRecorderState("idle");
     setCurrentIndex((current) => Math.min(orderedQuestions.length - 1, current + 1));
   }, [orderedQuestions.length]);
 
   const advanceFromPartTwo = useCallback(() => {
-    if (advancedFromPartTwoRef.current) return;
+    if (
+      advancedFromPartTwoRef.current ||
+      exitingRef.current ||
+      !isPartTwo ||
+      !question ||
+      !recordedIds.has(question.id) ||
+      recorderState !== "idle"
+    )
+      return;
     advancedFromPartTwoRef.current = true;
     moveToNext();
-  }, [moveToNext]);
+  }, [exitingRef, isPartTwo, moveToNext, question, recordedIds, recorderState]);
 
-  const handleRecorderStateChange = useCallback(
-    (nextState: StudentAudioRecorderState) => {
-      setRecorderState(nextState);
-      if (autoStopPartTwoRef.current && nextState !== "recording" && nextState !== "uploading") {
-        advanceFromPartTwo();
-      }
-    },
-    [advanceFromPartTwo],
-  );
+  const handleRecorderStateChange = useCallback((nextState: StudentAudioRecorderState) => {
+    setRecorderState(nextState);
+  }, []);
+
+  useEffect(() => {
+    if (autoStopPartTwo) advanceFromPartTwo();
+  }, [advanceFromPartTwo, autoStopPartTwo]);
 
   useEffect(() => {
     if (completed) return;
@@ -210,29 +229,57 @@ export function StudentSpeakingSimulator({
   }, [completed]);
 
   useEffect(() => {
-    if (remainingSeconds !== 0 || autoSubmittedRef.current) return;
+    if (remainingSeconds !== 0 || autoSubmittedRef.current || exitingRef.current) return;
     autoSubmittedRef.current = true;
-    void submitAttempt({ variables: { input: { attemptId: attempt.id } } }).finally(() => {
-      router.push(returnHref);
-      router.refresh();
-    });
-  }, [attempt.id, remainingSeconds, returnHref, router, submitAttempt]);
+    void submitAttempt({ variables: { input: { attemptId: attempt.id } } })
+      .then(() => {
+        setCompleted(true);
+        router.push(testsHref);
+        router.refresh();
+      })
+      .catch(() => {
+        autoSubmittedRef.current = false;
+        setError(labels.submitError);
+      });
+  }, [
+    attempt.id,
+    remainingSeconds,
+    testsHref,
+    router,
+    submitAttempt,
+    exiting,
+    exitingRef,
+    labels.submitError,
+  ]);
 
   useEffect(() => {
-    if (!isPartTwo || !section || partTwoStage !== "preparation") return;
+    if (!section || (isPartTwo && partTwoStage !== "preparation")) return;
     const text = notes[section.id] ?? "";
     if (savedNotesRef.current[section.id] === text) return;
     const timeout = window.setTimeout(() => {
-      void saveNote({
-        variables: { input: { attemptId: attempt.id, sectionId: section.id, text } },
-      })
+      if (exitingRef.current) return;
+      void trackWrite(
+        saveNote({
+          variables: { input: { attemptId: attempt.id, sectionId: section.id, text } },
+        }),
+      )
         .then(() => {
           savedNotesRef.current[section.id] = text;
         })
         .catch(() => setError(labels.saveError));
     }, 700);
     return () => window.clearTimeout(timeout);
-  }, [attempt.id, isPartTwo, labels.saveError, notes, partTwoStage, saveNote, section]);
+  }, [
+    attempt.id,
+    isPartTwo,
+    labels.saveError,
+    notes,
+    partTwoStage,
+    saveNote,
+    section,
+    exitingRef,
+    trackWrite,
+  ]);
 
   useEffect(() => {
     if (!isPartTwo || partTwoSeconds <= 0) return;
@@ -246,25 +293,25 @@ export function StudentSpeakingSimulator({
         setPartTwoSeconds(120);
         return;
       }
-      autoStopPartTwoRef.current = true;
+      setPartTwoSeconds(0);
       setAutoStopPartTwo(true);
-      if (recorderState !== "recording" && recorderState !== "uploading") {
-        advanceFromPartTwo();
-      }
     }, 1_000);
     return () => window.clearTimeout(timeout);
-  }, [advanceFromPartTwo, isPartTwo, partTwoSeconds, partTwoStage, recorderState]);
+  }, [isPartTwo, partTwoSeconds, partTwoStage]);
 
   if (!question || !section) return null;
 
   const handleUploaded = async (responseMediaObjectId: string) => {
+    if (exitingRef.current) return;
     setError("");
     try {
-      await saveAnswer({
-        variables: {
-          input: { attemptId: attempt.id, questionId: question.id, responseMediaObjectId },
-        },
-      });
+      await trackWrite(
+        saveAnswer({
+          variables: {
+            input: { attemptId: attempt.id, questionId: question.id, responseMediaObjectId },
+          },
+        }),
+      );
       setRecordedIds((current) => new Set(current).add(question.id));
     } catch {
       setError(labels.saveError);
@@ -273,6 +320,8 @@ export function StudentSpeakingSimulator({
   };
 
   const handleNext = () => {
+    if (exitingRef.current || recorderState === "recording" || recorderState === "uploading")
+      return;
     if (!recordedIds.has(question.id)) {
       setError(labels.audioRequired);
       return;
@@ -281,19 +330,34 @@ export function StudentSpeakingSimulator({
   };
 
   const handleSubmit = async () => {
+    if (exitingRef.current || autoSubmittedRef.current || confirmingSubmitRef.current) return;
     if (!recordedIds.has(question.id) || recordedIds.size < orderedQuestions.length) {
       setError(labels.audioRequired);
       return;
     }
-    if (!window.confirm(labels.finishConfirm)) return;
-    setError("");
-    autoSubmittedRef.current = true;
+    confirmingSubmitRef.current = true;
     try {
+      const confirmed = await confirm({
+        brand: "student-speaking",
+        cancelLabel: navbarCopy.cancelExitLabel,
+        confirmLabel: navbarCopy.completeLabel,
+        icon: "tone",
+        message: labels.finishConfirm,
+        title: labels.finish,
+        tone: "warning",
+      });
+      if (!confirmed || exitingRef.current || autoSubmittedRef.current) return;
+      setError("");
+      autoSubmittedRef.current = true;
       await submitAttempt({ variables: { input: { attemptId: attempt.id } } });
       setCompleted(true);
+      router.push(testsHref);
+      router.refresh();
     } catch {
       autoSubmittedRef.current = false;
       setError(labels.submitError);
+    } finally {
+      confirmingSubmitRef.current = false;
     }
   };
 
@@ -302,148 +366,189 @@ export function StudentSpeakingSimulator({
     setPartTwoSeconds(120);
   };
 
-  if (completed) {
-    return (
-      <main className="studentSpeakingSimulator">
-        <section className="studentSpeakingSimulator__complete">
-          <span>
-            <CheckCircleRounded aria-hidden="true" />
-          </span>
-          <h1>{labels.completeTitle}</h1>
-          <p>{labels.completeDescription}</p>
-          <Link href={returnHref}>
-            {labels.return}
-            <ArrowForwardRounded aria-hidden="true" />
-          </Link>
-        </section>
-      </main>
-    );
-  }
+  if (completed) return null;
 
   const partLabel =
     part === 1 ? labels.introduction : part === 2 ? labels.longTurn : labels.discussion;
   const lastQuestion = currentIndex === orderedQuestions.length - 1;
+  const cueCard = parseStudentSpeakingCueCard(question.prompt);
 
   return (
-    <main className="studentSpeakingSimulator">
-      <header className="studentSpeakingSimulator__header">
-        <Link aria-label={labels.back} href={returnHref}>
-          <ArrowBackRounded aria-hidden="true" />
-        </Link>
-        <div>
-          <span>{labels.part.replace("{part}", String(part))}</span>
-          <h1>{attempt.title}</h1>
-          <p>{partLabel}</p>
-        </div>
-        <div className="studentSpeakingSimulator__totalTime">
-          <span>{labels.totalTime}</span>
-          <strong>{formatTime(remainingSeconds)}</strong>
-        </div>
-      </header>
+    <main className="studentSpeakingSimulator studentSpeakingSimulator--exam" inert={exiting}>
+      <StudentListeningTestNavbar
+        backLabel={labels.back}
+        onExit={() => void exit()}
+        copy={navbarCopy}
+        currentSection={part}
+        completeDisabled={
+          submitting || recorderState === "recording" || recorderState === "uploading"
+        }
+        nextSectionDisabled={
+          submitting || recorderState === "recording" || recorderState === "uploading"
+        }
+        notesLabel={labels.notes}
+        notesOpen={notesOpen}
+        onNextSection={handleNext}
+        onComplete={() => void handleSubmit()}
+        onNotesToggle={() => setNotesOpen((current) => !current)}
+        sectionLabel={partLabel}
+        sectionNavigation={<strong>{labels.part.replace("{part}", String(part))}</strong>}
+        timeLabel={labels.totalTime}
+        timeValue={formatTime(remainingSeconds)}
+        title={attempt.title}
+        totalSections={3}
+      />
 
-      <div className="studentSpeakingSimulator__progress" aria-hidden="true">
-        {[1, 2, 3].map((item) => (
-          <span data-active={item <= part ? "true" : undefined} key={item} />
-        ))}
-      </div>
-
-      {isPartTwo ? (
-        <section className="studentSpeakingSimulator__partTwo">
-          <article className="studentSpeakingSimulator__cueCard">
-            <span>{partTwoStage === "preparation" ? labels.preparation : labels.speaking}</span>
-            <h2>{question.prompt}</h2>
-            {section.instructions ? <p>{section.instructions}</p> : null}
-            {section.content ? <div>{section.content}</div> : null}
-            <div className="studentSpeakingSimulator__partTime" role="timer">
-              <span>{labels.timeRemaining}</span>
-              <strong>{formatTime(partTwoSeconds)}</strong>
-            </div>
-          </article>
-
-          <aside className="studentSpeakingSimulator__notes">
-            <label htmlFor="student-speaking-notes">{labels.notes}</label>
-            <textarea
-              disabled={partTwoStage === "speaking"}
-              id="student-speaking-notes"
-              maxLength={4000}
-              onChange={(event) =>
-                setNotes((current) => ({ ...current, [section.id]: event.target.value }))
-              }
-              placeholder={labels.notesPlaceholder}
-              value={notes[section.id] ?? ""}
-            />
-            <p>{partTwoStage === "preparation" ? labels.preparationHint : labels.notesHint}</p>
-            {partTwoStage === "speaking" ? (
-              <StudentAudioRecorder
-                attemptId={attempt.id}
-                autoStop={autoStopPartTwo}
-                locale={locale}
-                onStateChange={handleRecorderStateChange}
-                onUploaded={handleUploaded}
-                questionId={question.id}
-                saved={recordedIds.has(question.id)}
-              />
-            ) : null}
-          </aside>
-
-          {partTwoStage === "preparation" ? (
-            <button
-              className="studentSpeakingSimulator__primaryAction"
-              onClick={startPartTwoSpeaking}
-              type="button"
-            >
-              {labels.startSpeaking}
-              <ArrowForwardRounded aria-hidden="true" />
-            </button>
-          ) : recordedIds.has(question.id) ? (
-            <button
-              className="studentSpeakingSimulator__primaryAction"
-              onClick={handleNext}
-              type="button"
-            >
-              {labels.next}
-              <ArrowForwardRounded aria-hidden="true" />
-            </button>
-          ) : null}
-        </section>
-      ) : (
-        <section className="studentSpeakingSimulator__questionCard">
+      {notesOpen ? (
+        <aside className="connectedTestRunner__notesPanel">
           <div>
-            <span>{section.title}</span>
-            <strong>
+            <strong>{labels.notes}</strong>
+            <button aria-label={labels.notes} onClick={() => setNotesOpen(false)} type="button">
+              ×
+            </button>
+          </div>
+          <textarea
+            aria-label={labels.notes}
+            autoFocus
+            maxLength={4000}
+            onChange={(event) =>
+              setNotes((current) => ({ ...current, [section.id]: event.target.value }))
+            }
+            readOnly={submitting || (isPartTwo && partTwoStage === "speaking")}
+            value={notes[section.id] ?? ""}
+          />
+        </aside>
+      ) : null}
+
+      <div
+        className={`studentSpeakingSimulator__workspace${isPartTwo ? " studentSpeakingSimulator__workspace--partTwo" : ""}`}
+      >
+        <StudentTestSectionIntro
+          question={section.title}
+          instruction={section.instructions || speakingCopy.instruction}
+          instructionLabel={speakingCopy.instructionLabel}
+        />
+
+        <div className="studentSpeakingSimulator__progress" aria-hidden="true">
+          {[1, 2, 3].map((item) => (
+            <span data-active={item <= part ? "true" : undefined} key={item} />
+          ))}
+        </div>
+
+        {isPartTwo ? (
+          <section className="studentSpeakingSimulator__partTwo">
+            <article className="studentSpeakingSimulator__cueCard">
+              <span>{partTwoStage === "preparation" ? labels.preparation : labels.speaking}</span>
+              <h2>{cueCard.title}</h2>
+              {cueCard.points.length > 0 ? (
+                <ul className="studentSpeakingSimulator__cuePoints">
+                  {cueCard.points.map((point, index) => (
+                    <li key={index}>{point}</li>
+                  ))}
+                </ul>
+              ) : null}
+              <footer className="studentSpeakingSimulator__cueFooter">
+                {section.content ? <p>{section.content}</p> : null}
+                <div className="studentSpeakingSimulator__partTime" role="timer">
+                  <span>{labels.timeRemaining}</span>
+                  <strong>{formatTime(partTwoSeconds)}</strong>
+                </div>
+              </footer>
+            </article>
+
+            <aside className="studentSpeakingSimulator__notes">
+              <label htmlFor="student-speaking-notes">{labels.notes}</label>
+              <textarea
+                disabled={partTwoStage === "speaking"}
+                id="student-speaking-notes"
+                maxLength={4000}
+                onChange={(event) =>
+                  setNotes((current) => ({ ...current, [section.id]: event.target.value }))
+                }
+                placeholder={labels.notesPlaceholder}
+                value={notes[section.id] ?? ""}
+              />
+              <p>{partTwoStage === "preparation" ? labels.preparationHint : labels.notesHint}</p>
+              {partTwoStage === "speaking" ? (
+                <StudentAudioRecorder
+                  attemptId={attempt.id}
+                  autoStop={autoStopPartTwo}
+                  locale={locale}
+                  onStateChange={handleRecorderStateChange}
+                  onUploaded={handleUploaded}
+                  questionId={question.id}
+                  saved={recordedIds.has(question.id)}
+                />
+              ) : null}
+            </aside>
+
+            {partTwoStage === "preparation" ? (
+              <button
+                className="studentSpeakingSimulator__primaryAction"
+                onClick={startPartTwoSpeaking}
+                type="button"
+              >
+                {labels.startSpeaking}
+                <ArrowForwardRounded aria-hidden="true" />
+              </button>
+            ) : recordedIds.has(question.id) ? (
+              <button
+                className="studentSpeakingSimulator__nextQuestion"
+                disabled={
+                  submitting || recorderState === "recording" || recorderState === "uploading"
+                }
+                onClick={handleNext}
+                type="button"
+              >
+                {labels.next}
+                <ArrowForwardRounded aria-hidden="true" />
+              </button>
+            ) : null}
+          </section>
+        ) : (
+          <section className="studentSpeakingSimulator__questionCard">
+            <p>
               {labels.question
                 .replace("{current}", String(questionInPart + 1))
                 .replace("{total}", String(questionsInPart.length))}
-            </strong>
-          </div>
-          <p>{labels.examinerQuestion}</p>
-          <h2>{question.prompt}</h2>
-          <StudentAudioRecorder
-            attemptId={attempt.id}
-            locale={locale}
-            onStateChange={handleRecorderStateChange}
-            onUploaded={handleUploaded}
-            questionId={question.id}
-            saved={recordedIds.has(question.id)}
-          />
-          <button
-            className="studentSpeakingSimulator__primaryAction"
-            disabled={submitting || recorderState === "recording" || recorderState === "uploading"}
-            onClick={lastQuestion ? () => void handleSubmit() : handleNext}
-            type="button"
-          >
-            {lastQuestion ? labels.finish : labels.next}
-            <ArrowForwardRounded aria-hidden="true" />
-          </button>
-        </section>
-      )}
+            </p>
+            <h2>{question.prompt}</h2>
+            <StudentAudioRecorder
+              attemptId={attempt.id}
+              locale={locale}
+              onStateChange={handleRecorderStateChange}
+              onUploaded={handleUploaded}
+              questionId={question.id}
+              saved={recordedIds.has(question.id)}
+            />
+            <button
+              className={
+                lastQuestion
+                  ? "studentSpeakingSimulator__primaryAction"
+                  : "studentSpeakingSimulator__nextQuestion"
+              }
+              disabled={
+                exiting ||
+                submitting ||
+                recorderState === "recording" ||
+                recorderState === "uploading"
+              }
+              onClick={lastQuestion ? () => void handleSubmit() : handleNext}
+              type="button"
+            >
+              {lastQuestion ? labels.finish : labels.next}
+              <ArrowForwardRounded aria-hidden="true" />
+            </button>
+          </section>
+        )}
 
-      {error ? (
-        <p className="studentSpeakingSimulator__error" role="alert">
-          <MicRounded aria-hidden="true" />
-          {error}
-        </p>
-      ) : null}
+        {error ? (
+          <p className="studentSpeakingSimulator__error" role="alert">
+            <MicRounded aria-hidden="true" />
+            {error}
+          </p>
+        ) : null}
+      </div>
     </main>
   );
 }

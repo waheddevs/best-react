@@ -188,7 +188,22 @@ export function StudentAudioRecorder({
         {state === "recording" ? labels.stop : labels.record}
       </button>
       <span aria-live="polite" data-error={state === "error" || undefined}>
-        {message || (saved ? labels.recorded : "")}
+        {state === "recording" ? (
+          <>
+            <span aria-hidden="true" className="connectedTestRunner__recordingWave">
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="connectedTestRunner__recordingLabel">{labels.recording}</span>
+          </>
+        ) : (
+          message || (saved ? labels.recorded : "")
+        )}
       </span>
     </div>
   );
