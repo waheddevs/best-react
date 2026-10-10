@@ -178,63 +178,21 @@ body[data-student-theme="dark"] {
     color: var(--student-ink);
   }
 
-  .studentTests__overviewHeader {
-    border-color: var(--student-border);
-    background: linear-gradient(135deg, #342d63, #24213d);
-  }
-
-  .studentTests__overviewHeader p,
-  .studentTests__skillCopy div {
-    color: var(--student-muted);
-  }
-
-  .studentTests__overviewHeader a,
-  .studentTests__skillCopy > span {
-    color: var(--student-primary);
-  }
-
   .studentTests__paper,
-  .studentTests__skill,
-  .studentTests__empty,
-  .studentTestResult__answers,
-  .studentTestResult__evidence,
-  .studentTestResult__answers button,
-  .studentResultsList__card,
-  .studentResultsList__empty,
-  .studentWritingResult__tasks > section,
-  .studentWritingResult__overall {
+  .studentTests__empty {
     border-color: var(--student-border);
     background: var(--student-surface);
     color: var(--student-ink);
   }
 
-  .studentTestResult__layout {
-    border-color: var(--student-border);
-    background: var(--student-surface);
+  .studentTestResult {
+    --result-success: #80dbc0;
+    --result-error: #ff9aac;
   }
 
-  .studentTestResult__answers {
-    border-color: var(--student-border);
-  }
-
-  .studentTests__skillIcon,
-  .studentTests__skillAction_secondary,
-  .studentTestResult__sourceFallback {
+  .studentTests__skillAction_secondary {
     background: #302b51;
     color: var(--student-primary);
-  }
-
-  .studentTestResult__answers,
-  .studentTestResult__sourceFallback,
-  .studentWritingResult__answer,
-  .studentWritingResult__criteria {
-    background: #1b1931;
-  }
-
-  .studentTests__skillCopy p,
-  .studentResultsList__card p,
-  .studentWritingResult__criteria p {
-    color: var(--student-muted);
   }
 
   .testRunner__navigator,
