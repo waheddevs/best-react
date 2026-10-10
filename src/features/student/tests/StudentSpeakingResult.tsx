@@ -1,8 +1,6 @@
-import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
-import Link from "next/link";
-
 import type { Locale } from "@/config/Locales";
 import type { StudentSpeakingResultQuery } from "@/gql/graphql";
+import { StudentResultHeader } from "./StudentResultHeader";
 
 type SpeakingResult = NonNullable<StudentSpeakingResultQuery["studentSpeakingResult"]>;
 
@@ -28,15 +26,15 @@ export function StudentSpeakingResult({
   ] as const;
   return (
     <article className="studentSpeakingResult">
-      <Link href={`/${locale}/student/results`}>
-        <ArrowBackRounded aria-hidden="true" />
-        {labels.back}
-      </Link>
-      <header>
-        <span>{labels.title}</span>
-        <h1>{result.title}</h1>
-        <strong>{result.practiceBand.toFixed(1)}</strong>
-      </header>
+      <StudentResultHeader
+        locale={locale}
+        backHref={`/${locale}/student/results`}
+        backLabel={labels.back}
+        eyebrow="SPEAKING"
+        title={result.title}
+        score={result.practiceBand.toFixed(1)}
+        scoreLabel={labels.title}
+      />
       <div className="studentSpeakingResult__criteria">
         {criteria.map(([label, score]) => (
           <section key={label}>

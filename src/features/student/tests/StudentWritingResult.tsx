@@ -1,8 +1,6 @@
-import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
-import Link from "next/link";
-
 import type { Locale } from "@/config/Locales";
 import type { StudentWritingResultQuery } from "@/gql/graphql";
+import { StudentResultHeader } from "./StudentResultHeader";
 
 type Result = NonNullable<StudentWritingResultQuery["studentWritingResult"]>;
 
@@ -61,19 +59,17 @@ const criterionKeys = [
 export function StudentWritingResult({ locale, result }: { locale: Locale; result: Result }) {
   const labels = copy[locale];
   return (
-    <main className="studentWritingResult">
-      <Link href={`/${locale}/student/results`}>
-        <ArrowBackRounded aria-hidden="true" />
-        {labels.back}
-      </Link>
-      <header>
-        <span>WRITING</span>
-        <h1>{result.title}</h1>
-        <strong>
-          {labels.band}: {result.practiceBand.toFixed(1)}
-        </strong>
-        <p>{labels.note}</p>
-      </header>
+    <article className="studentWritingResult">
+      <StudentResultHeader
+        locale={locale}
+        backHref={`/${locale}/student/results`}
+        backLabel={labels.back}
+        eyebrow="WRITING"
+        title={result.title}
+        score={result.practiceBand.toFixed(1)}
+        scoreLabel={labels.band}
+        note={labels.note}
+      />
       <div className="studentWritingResult__tasks">
         {([result.task1, result.task2] as const).map((task, index) => {
           const answer = result.answers.find((item) => item.sectionPosition === index + 1);
@@ -110,6 +106,6 @@ export function StudentWritingResult({ locale, result }: { locale: Locale; resul
           <p>{result.feedback}</p>
         </section>
       ) : null}
-    </main>
+    </article>
   );
 }
