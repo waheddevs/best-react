@@ -1,9 +1,11 @@
 @use "../workspaceNotifications";
 @use "layout/shell";
 @use "pages/workspace";
+@use "pages/dashboard";
 @use "./pages/notifications";
 @use "pages/library";
 @use "./pages/group.scss";
+@use "pages/payments";
 @use "./pages/progress.scss";
 @use "pages/testRunner";
 @use "pages/tests";

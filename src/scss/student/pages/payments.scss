@@ -1,0 +1,325 @@
+.studentPayments {
+  display: grid;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+.studentPayments__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 20px;
+}
+
+.studentPayments__card {
+  min-width: 0;
+  border: 1px solid var(--student-border);
+  border-radius: 24px;
+  background: var(--student-surface);
+  padding: 28px;
+  box-shadow: 0 18px 48px rgb(53 43 103 / 7%);
+}
+
+.studentPayments__heading {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+
+  h2 {
+    margin: 0;
+    color: var(--student-ink);
+    font-size: 18px;
+    font-weight: 740;
+  }
+}
+
+.studentPayments__historyCard {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.studentPayments__headingIcon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--student-primary) 11%, var(--student-surface));
+  color: var(--student-primary);
+}
+
+.studentPayments__fields {
+  display: grid;
+  gap: 18px;
+
+  @keyframes studentPaymentsAutofillDetected {
+    from {
+      opacity: 0.99;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  label {
+    display: grid;
+    min-width: 0;
+    gap: 8px;
+    color: var(--student-ink);
+    font-size: 13px;
+    font-weight: 680;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    min-height: 50px;
+    border: 1px solid var(--student-border);
+    border-radius: 13px;
+    outline: 0;
+    background: var(--student-surface);
+    padding: 0 15px;
+    color: var(--student-ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 480;
+
+    &::placeholder {
+      color: var(--student-muted);
+      opacity: 0.75;
+    }
+
+    &:focus-visible {
+      border-color: var(--student-primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--student-primary) 16%, transparent);
+    }
+
+    &[aria-invalid="true"] {
+      border-color: #bf354c;
+    }
+
+    &:is(:-webkit-autofill, :autofill) {
+      animation: studentPaymentsAutofillDetected 10ms;
+      box-shadow: 0 0 0 1000px var(--student-surface) inset !important;
+      -webkit-text-fill-color: var(--student-ink);
+      caret-color: var(--student-ink);
+    }
+
+    &:is(:-webkit-autofill, :autofill):focus-visible {
+      box-shadow:
+        0 0 0 1000px var(--student-surface) inset,
+        0 0 0 3px color-mix(in srgb, var(--student-primary) 16%, transparent) !important;
+    }
+  }
+}
+
+.studentPayments__field {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.studentPayments__inputWrap {
+  position: relative;
+  min-width: 0;
+
+  input[aria-invalid="true"] {
+    padding-right: 48px;
+  }
+}
+
+.studentPayments__validationIcon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  display: grid;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: #fff5f6;
+  color: #bf354c;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: help;
+  transform: translateY(-50%);
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+.studentPayments__tooltip {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: max-content;
+  max-width: min(220px, calc(100vw - 48px));
+  border: 1px solid #ffd5dd;
+  border-radius: 9px;
+  background: #fff7f8;
+  padding: 8px 10px;
+  color: #a9243f;
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 8px 22px rgb(92 35 49 / 12%);
+  transition: opacity 150ms ease;
+}
+
+.studentPayments__validationIcon:hover + .studentPayments__tooltip,
+.studentPayments__validationIcon:focus + .studentPayments__tooltip {
+  opacity: 1;
+}
+
+.studentPayments__fieldPair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.studentPayments__fieldPair--card {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+}
+
+.studentPayments__pay {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 24px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(115deg, #6555d8, #8071ed);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+
+  &:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--student-primary);
+    outline-offset: 3px;
+  }
+}
+
+.studentPayments__history {
+  width: calc(100% - 8px);
+  height: 0;
+  min-height: 0;
+  flex: 1 1 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: 0 12px 0 0;
+  list-style: none;
+  scrollbar-color: #bcb4ee transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+
+  li {
+    display: flex;
+    min-height: 25%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--student-border);
+    padding: 19px 0;
+  }
+}
+
+.studentPayments__historyCopy {
+  display: grid;
+  gap: 5px;
+
+  strong {
+    color: var(--student-ink);
+    font-size: 16px;
+  }
+
+  time {
+    color: var(--student-muted);
+    font-size: 12px;
+  }
+}
+
+.studentPayments__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  svg {
+    font-size: 16px;
+  }
+}
+
+.studentPayments__status--paid {
+  background: #e6f7ee;
+  color: #167747;
+}
+
+.studentPayments__status--failed {
+  background: #ffebee;
+  color: #bf354c;
+}
+
+body[data-student-theme="dark"] {
+  .studentPayments__status--paid {
+    background: #204739;
+    color: #8ce5b1;
+  }
+
+  .studentPayments__status--failed {
+    background: #4d2937;
+    color: #ff9eac;
+  }
+
+  .studentPayments__validationIcon {
+    background: #4d2937;
+    color: #ff9eac;
+  }
+
+  .studentPayments__tooltip {
+    border-color: #704052;
+    background: #402735;
+    color: #ffb3c0;
+  }
+}
+
+@media (max-width: 900px) {
+  .studentPayments__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .studentPayments__card {
+    padding: 20px;
+  }
+
+  .studentPayments__fieldPair {
+    grid-template-columns: 1fr;
+  }
+}
