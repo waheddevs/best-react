@@ -53,7 +53,7 @@ export function StudentListeningPartFourCompletion({
         </div>
       </section>
 
-      <section>
+      <section className="studentListeningPartFour__table">
         <h2>{copy.tableCompletion}</h2>
         {tableBlock ? (
           <StudentListeningFormTable
@@ -65,6 +65,7 @@ export function StudentListeningPartFourCompletion({
             onQuestionFocus={onQuestionFocus}
             questions={tableQuestions}
             readOnly={readOnly}
+            showCaption={false}
           />
         ) : (
           <div className="connectedTestRunner__questionList studentListeningPartFour__tableFallback">

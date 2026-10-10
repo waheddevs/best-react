@@ -1,4 +1,6 @@
 import FlagOutlined from "@mui/icons-material/FlagOutlined";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 import type { StudentAttemptFieldsFragment } from "@/gql/graphql";
 
@@ -79,25 +81,34 @@ export function StudentListeningPartThreeList({
                   <FlagOutlined aria-hidden="true" />
                 </button>
               </div>
-              <label className="studentListeningPartThree__matchRow">
-                <span>
+              <div className="studentListeningPartThree__matchRow">
+                <span id={`speaker-question-${question.id}`}>
                   <strong>{question.position}.</strong> {question.prompt}
                 </span>
-                <select
+                <Select
+                  className="studentListeningPartThree__select"
                   disabled={readOnly}
+                  displayEmpty
+                  labelId={`speaker-question-${question.id}`}
+                  MenuProps={{
+                    slotProps: {
+                      paper: { className: "studentListeningPartThree__menu" },
+                    },
+                  }}
                   onChange={(event) => onAnswer(question.id, event.target.value)}
+                  size="small"
                   value={answers[question.id]?.selectedOptionId ?? ""}
                 >
-                  <option disabled value="">
+                  <MenuItem disabled value="">
                     {copy.select}
-                  </option>
+                  </MenuItem>
                   {question.options.map((option, index) => (
-                    <option key={option.id} value={option.id}>
+                    <MenuItem key={option.id} value={option.id}>
                       {String.fromCharCode(65 + index)} · {option.text}
-                    </option>
+                    </MenuItem>
                   ))}
-                </select>
-              </label>
+                </Select>
+              </div>
             </article>
           ))}
         </div>

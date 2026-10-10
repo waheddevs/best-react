@@ -14,6 +14,7 @@ type StudentListeningAudioPlayerProps = {
   errorLabel: string;
   finishedLabel: string;
   lockedLabel: string;
+  maximumPlays?: number;
   playLabel: string;
   playingLabel: string;
   preparingLabel: string;
@@ -27,6 +28,7 @@ export function StudentListeningAudioPlayer({
   errorLabel,
   finishedLabel,
   lockedLabel,
+  maximumPlays = 1,
   playLabel,
   playingLabel,
   preparingLabel,
@@ -34,9 +36,12 @@ export function StudentListeningAudioPlayer({
   sourceUrl,
   title,
 }: StudentListeningAudioPlayerProps) {
+  /* HOOKS */
+  const [completedPlayCount, setCompletedPlayCount] = useState(0);
   const [playbackStatus, setPlaybackStatus] = useState<PlaybackStatus>("idle");
   const [volume, setVolume] = useState(0.72);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playbackLimit = Math.max(1, maximumPlays);
   const status: AudioStatus = sourceUrl || requestSource ? playbackStatus : "locked";
 
   useEffect(() => {
@@ -46,8 +51,15 @@ export function StudentListeningAudioPlayer({
     };
   }, [sourceUrl]);
 
-  const play = async () => {
-    if ((!sourceUrl && !requestSource) || status !== "idle") return;
+  /* HANDLERS */
+  const handlePlay = async () => {
+    if (
+      (!sourceUrl && !requestSource) ||
+      status !== "idle" ||
+      completedPlayCount >= playbackLimit
+    ) {
+      return;
+    }
 
     setPlaybackStatus("loading");
     try {
@@ -60,8 +72,26 @@ export function StudentListeningAudioPlayer({
       audio.preload = "metadata";
       audio.volume = volume;
       audioRef.current = audio;
-      audio.addEventListener("ended", () => setPlaybackStatus("done"), { once: true });
-      audio.addEventListener("error", () => setPlaybackStatus("error"), { once: true });
+      audio.addEventListener(
+        "ended",
+        () => {
+          audioRef.current = null;
+          setCompletedPlayCount((current) => {
+            const nextCount = current + 1;
+            setPlaybackStatus(nextCount < playbackLimit ? "idle" : "done");
+            return nextCount;
+          });
+        },
+        { once: true },
+      );
+      audio.addEventListener(
+        "error",
+        () => {
+          audioRef.current = null;
+          setPlaybackStatus("error");
+        },
+        { once: true },
+      );
       await audio.play();
       setPlaybackStatus("playing");
     } catch {
@@ -89,8 +119,8 @@ export function StudentListeningAudioPlayer({
     >
       <button
         aria-label={playLabel}
-        disabled={status !== "idle"}
-        onClick={() => void play()}
+        disabled={status !== "idle" || completedPlayCount >= playbackLimit}
+        onClick={() => void handlePlay()}
         type="button"
       >
         {status === "locked" ? (

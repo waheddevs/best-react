@@ -9,6 +9,7 @@ type StudentListeningFormTableProps = {
   onQuestionFocus: (questionId: string) => void;
   questions: StudentAttemptFieldsFragment["questions"];
   readOnly: boolean;
+  showCaption?: boolean;
 };
 
 const questionToken = /\{\{(\d+)\}\}/;
@@ -22,10 +23,11 @@ export function StudentListeningFormTable({
   onQuestionFocus,
   questions,
   readOnly,
+  showCaption = true,
 }: StudentListeningFormTableProps) {
   return (
     <div className="studentListeningForm">
-      {block.caption ? <h2>{block.caption}</h2> : null}
+      {showCaption && block.caption ? <h2>{block.caption}</h2> : null}
       <div className="studentListeningForm__tableWrap">
         <table>
           {block.tableHeaderRows.length > 0 ? (
@@ -33,53 +35,61 @@ export function StudentListeningFormTable({
               {block.tableHeaderRows.map((row, rowIndex) => (
                 <tr key={`header-${String(rowIndex)}`}>
                   {row.cells.map((cell, cellIndex) => (
-                    <th key={`header-${String(rowIndex)}-${String(cellIndex)}`}>{cell}</th>
+                    <th key={`header-${String(rowIndex)}-${String(cellIndex)}`} scope="col">
+                      {cell}
+                    </th>
                   ))}
                 </tr>
               ))}
             </thead>
           ) : null}
           <tbody>
-            {block.tableRows.map((row, rowIndex) => {
-              const label = row.cells[0] ?? "";
-              const value = row.cells[1] ?? "";
-              const token = questionToken.exec(value);
-              const position = token ? Number(token[1]) : null;
-              const question =
-                position === null
-                  ? null
-                  : (questions.find((item) => item.position === position) ?? null);
-              const [prefix = "", suffix = ""] = token ? value.split(token[0], 2) : [value, ""];
+            {block.tableRows.map((row, rowIndex) => (
+              <tr key={`row-${String(rowIndex)}`}>
+                {row.cells.map((value, cellIndex) => {
+                  const token = questionToken.exec(value);
+                  const position = token ? Number(token[1]) : null;
+                  const question =
+                    position === null
+                      ? null
+                      : (questions.find((item) => item.position === position) ?? null);
+                  const [prefix = "", suffix = ""] = token ? value.split(token[0], 2) : [value, ""];
+                  const Cell = cellIndex === 0 && !question ? "th" : "td";
 
-              return (
-                <tr key={`${label}-${String(rowIndex)}`}>
-                  <th scope="row">{label}</th>
-                  <td>
-                    {question ? (
-                      <label className="studentListeningForm__answer">
-                        {prefix.trim() ? <span>{prefix.trim()}</span> : null}
-                        <span aria-hidden="true" className="studentListeningForm__number">
-                          {question.position}
-                        </span>
-                        <input
-                          aria-label={`${answerLabel} ${String(question.position)}`}
-                          maxLength={160}
-                          onBlur={() => onAnswerBlur(question.id)}
-                          onChange={(event) => onAnswerChange(question.id, event.target.value)}
-                          onFocus={() => onQuestionFocus(question.id)}
-                          readOnly={readOnly}
-                          type="text"
-                          value={answers[question.id]?.textValue ?? ""}
-                        />
-                        {suffix.trim() ? <span>{suffix.trim()}</span> : null}
-                      </label>
-                    ) : (
-                      value
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+                  return (
+                    <Cell
+                      key={`cell-${String(cellIndex)}`}
+                      id={question ? `student-question-${question.id}` : undefined}
+                      scope={Cell === "th" ? "row" : undefined}
+                    >
+                      {question ? (
+                        <label className="studentListeningForm__answer">
+                          {prefix.trim() ? <span>{prefix.trim()}</span> : null}
+                          <span aria-hidden="true" className="studentListeningForm__number">
+                            {question.position}
+                          </span>
+                          <input
+                            aria-label={`${answerLabel} ${String(question.position)}`}
+                            className="studentListeningForm__input"
+                            maxLength={160}
+                            onBlur={() => onAnswerBlur(question.id)}
+                            onChange={(event) => onAnswerChange(question.id, event.target.value)}
+                            onFocus={() => onQuestionFocus(question.id)}
+                            placeholder={readOnly ? undefined : `${answerLabel}…`}
+                            readOnly={readOnly}
+                            type="text"
+                            value={answers[question.id]?.textValue ?? ""}
+                          />
+                          {suffix.trim() ? <span>{suffix.trim()}</span> : null}
+                        </label>
+                      ) : (
+                        value
+                      )}
+                    </Cell>
+                  );
+                })}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
