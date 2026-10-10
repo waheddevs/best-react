@@ -1,20 +1,25 @@
 "use client";
 
-import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import CheckCircleRounded from "@mui/icons-material/CheckCircleRounded";
-import EditNoteRounded from "@mui/icons-material/EditNoteRounded";
 import { useMutation } from "@apollo/client/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { Locale } from "@/config/Locales";
+import { getStudentListeningTestNavbarCopy } from "@/dictionaries/student/StudentListeningTestNavbar";
+import { getStudentWritingSimulatorCopy } from "@/dictionaries/student/StudentWritingSimulator";
+import { useStudentTestExit } from "@/hooks/student/tests/useStudentTestExit";
 import {
   SaveStudentTestAnswerDocument,
+  SaveStudentAttemptNoteDocument,
   type StudentAttemptFieldsFragment,
   SubmitStudentTestAttemptDocument,
 } from "@/gql/graphql";
+
+import { StudentListeningTestNavbar } from "./StudentListeningTestNavbar";
+import { StudentTestSectionIntro } from "./StudentTestSectionIntro";
 
 type StudentWritingSimulatorProps = {
   attempt: StudentAttemptFieldsFragment;
@@ -97,6 +102,8 @@ export function StudentWritingSimulator({
   paperId,
 }: StudentWritingSimulatorProps) {
   const labels = copy[locale];
+  const writingCopy = getStudentWritingSimulatorCopy(locale);
+  const navbarCopy = getStudentListeningTestNavbarCopy(locale);
   const router = useRouter();
   const tasks = useMemo(
     () =>
@@ -122,6 +129,11 @@ export function StudentWritingSimulator({
     [attempt],
   );
   const [currentTask, setCurrentTask] = useState(0);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [notes, setNotes] = useState<Record<string, string>>(() =>
+    Object.fromEntries(attempt.notes.map((note) => [note.sectionId, note.text])),
+  );
+  const savedNotesRef = useRef({ ...notes });
   const [answers, setAnswers] = useState<Record<string, string>>(() =>
     Object.fromEntries(
       attempt.answers.map((answer) => [answer.questionId, answer.textValue ?? ""]),
@@ -145,14 +157,26 @@ export function StudentWritingSimulator({
   const [saveAnswer] = useMutation(SaveStudentTestAnswerDocument, {
     context: { authenticated: true },
   });
+  const [saveNote] = useMutation(SaveStudentAttemptNoteDocument, {
+    context: { authenticated: true },
+  });
   const [submitAttempt, { loading: submitting }] = useMutation(SubmitStudentTestAttemptDocument, {
     context: { authenticated: true },
   });
   const task = tasks[currentTask];
   const returnHref = `/${locale}/student/tests/${paperId}`;
+  const { exit, exiting, exitingRef, trackWrite } = useStudentTestExit({
+    attemptId: attempt.id,
+    locale,
+    returnHref,
+    active: !completed,
+    writing: true,
+    canExit: () => !autoSubmittedRef.current && !finalizing && !submitting,
+  });
 
   const persistTask = useCallback(
     async (taskIndex: number) => {
+      if (exitingRef.current) return false;
       const target = tasks[taskIndex];
       if (!target) return false;
       const questionId = target.question.id;
@@ -161,16 +185,18 @@ export function StudentWritingSimulator({
 
       setSaveState("saving");
       const previous = saveQueueRef.current[questionId] ?? Promise.resolve();
-      const next = previous
-        .catch(() => undefined)
-        .then(async () => {
-          if (savedAnswersRef.current[questionId] === value) return;
-          await saveAnswer({
-            variables: { input: { attemptId: attempt.id, questionId, textValue: value } },
-          });
-          savedAnswersRef.current[questionId] = value;
-          if (answersRef.current[questionId]?.trim() === value) setSaveState("saved");
-        });
+      const next = trackWrite(
+        previous
+          .catch(() => undefined)
+          .then(async () => {
+            if (exitingRef.current || savedAnswersRef.current[questionId] === value) return;
+            await saveAnswer({
+              variables: { input: { attemptId: attempt.id, questionId, textValue: value } },
+            });
+            savedAnswersRef.current[questionId] = value;
+            if (answersRef.current[questionId]?.trim() === value) setSaveState("saved");
+          }),
+      );
       saveQueueRef.current[questionId] = next;
       try {
         await next;
@@ -180,7 +206,7 @@ export function StudentWritingSimulator({
         return false;
       }
     },
-    [attempt.id, saveAnswer, tasks],
+    [attempt.id, saveAnswer, tasks, exitingRef, trackWrite, setSaveState],
   );
 
   useEffect(() => {
@@ -193,7 +219,8 @@ export function StudentWritingSimulator({
   }, [completed]);
 
   useEffect(() => {
-    if (completed || remainingSeconds !== 0 || autoSubmittedRef.current) return;
+    if (completed || remainingSeconds !== 0 || autoSubmittedRef.current || exitingRef.current)
+      return;
     autoSubmittedRef.current = true;
     setFinalizing(true);
     void (async () => {
@@ -215,6 +242,8 @@ export function StudentWritingSimulator({
     returnHref,
     router,
     submitAttempt,
+    exitingRef,
+    exiting,
   ]);
 
   useEffect(() => {
@@ -226,6 +255,26 @@ export function StudentWritingSimulator({
     }, 800);
     return () => window.clearTimeout(timeout);
   }, [answers, currentTask, persistTask, task]);
+
+  useEffect(() => {
+    if (!task || completed) return;
+    const sectionId = task.section.id;
+    const note = notes[sectionId] ?? "";
+    if ((savedNotesRef.current[sectionId] ?? "") === note) return;
+    const timeout = window.setTimeout(() => {
+      if (exitingRef.current) return;
+      void trackWrite(
+        saveNote({
+          variables: { input: { attemptId: attempt.id, sectionId, text: note } },
+        }),
+      )
+        .then(() => {
+          savedNotesRef.current[sectionId] = note;
+        })
+        .catch(() => setError(labels.saveError));
+    }, 700);
+    return () => window.clearTimeout(timeout);
+  }, [attempt.id, completed, exitingRef, labels.saveError, notes, saveNote, task, trackWrite]);
 
   if (!task || tasks.length === 0) return null;
 
@@ -244,20 +293,8 @@ export function StudentWritingSimulator({
     setCurrentTask(nextTask);
   };
 
-  const leave = async (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-      return;
-    }
-    event.preventDefault();
-    const saved = await persistTask(currentTask);
-    if (!saved && answersRef.current[task.question.id]?.trim()) {
-      setError(labels.saveError);
-      return;
-    }
-    router.push(returnHref);
-  };
-
   const finish = async () => {
+    if (exitingRef.current) return;
     setError("");
     if (tasks.some(({ question }) => !(answersRef.current[question.id] ?? "").trim())) {
       setError(labels.emptyTasks);
@@ -301,55 +338,88 @@ export function StudentWritingSimulator({
   }
 
   return (
-    <main className="studentWritingSimulator">
-      <header className="studentWritingSimulator__header">
-        <Link aria-label={labels.back} href={returnHref} onClick={(event) => void leave(event)}>
-          <ArrowBackRounded aria-hidden="true" />
-        </Link>
-        <div>
-          <span>{labels.task.replace("{number}", String(task.section.position))}</span>
-          <h1>{attempt.title}</h1>
-          <p>{task.section.title}</p>
-        </div>
-        <div className="studentWritingSimulator__timer">
-          <span>{labels.totalTime}</span>
-          <strong>{formatTime(remainingSeconds)}</strong>
-        </div>
-      </header>
+    <main className="studentWritingSimulator studentWritingSimulator--exam" inert={exiting}>
+      <StudentListeningTestNavbar
+        backLabel={labels.back}
+        onExit={() => void exit()}
+        copy={navbarCopy}
+        currentSection={currentTask + 1}
+        completeDisabled={finalizing || submitting}
+        nextSectionDisabled={finalizing || submitting}
+        notesLabel={writingCopy.notes}
+        notesOpen={notesOpen}
+        onNextSection={() => void changeTask(currentTask + 1)}
+        onComplete={() => void finish()}
+        onNotesToggle={() => setNotesOpen((current) => !current)}
+        sectionLabel={writingCopy.task}
+        sectionNavigation={
+          <nav aria-label={attempt.title} className="studentWritingSimulator__tasks">
+            {tasks.map(({ section }, index) => (
+              <button
+                aria-current={index === currentTask ? "step" : undefined}
+                disabled={finalizing || submitting}
+                key={section.id}
+                onClick={() => void changeTask(index)}
+                type="button"
+              >
+                {writingCopy.task} {section.position}
+              </button>
+            ))}
+          </nav>
+        }
+        timeLabel={labels.totalTime}
+        timeValue={formatTime(remainingSeconds)}
+        title={attempt.title}
+        totalSections={tasks.length}
+      />
 
-      <nav aria-label={attempt.title} className="studentWritingSimulator__tasks">
-        {tasks.map(({ section }, index) => (
-          <button
-            aria-current={index === currentTask ? "step" : undefined}
-            disabled={finalizing}
-            key={section.id}
-            onClick={() => void changeTask(index)}
-            type="button"
-          >
-            <span>{labels.task.replace("{number}", String(section.position))}</span>
-            <small>{getSuggestedMinutes(section.position)} min</small>
-          </button>
-        ))}
-      </nav>
-
-      <section className="studentWritingSimulator__workspace">
-        <article className="studentWritingSimulator__source">
-          <div className="studentWritingSimulator__sourceHeading">
-            <span>{labels.source}</span>
-            <strong>{labels.minimum.replace("{count}", String(minimumWords))}</strong>
+      {notesOpen ? (
+        <aside className="connectedTestRunner__notesPanel">
+          <div>
+            <strong>{writingCopy.notes}</strong>
+            <button
+              aria-label={writingCopy.notes}
+              onClick={() => setNotesOpen(false)}
+              type="button"
+            >
+              ×
+            </button>
           </div>
+          <textarea
+            aria-label={writingCopy.notes}
+            autoFocus
+            maxLength={4000}
+            onChange={(event) =>
+              setNotes((current) => ({ ...current, [task.section.id]: event.target.value }))
+            }
+            placeholder={writingCopy.notesPlaceholder}
+            readOnly={finalizing}
+            value={notes[task.section.id] ?? ""}
+          />
+        </aside>
+      ) : null}
+
+      <div className="studentWritingSimulator__workspace">
+        <StudentTestSectionIntro
+          question={task.question.prompt}
+          instruction={
+            task.section.instructions ||
+            writingCopy.instruction
+              .replace("{minutes}", String(getSuggestedMinutes(task.section.position)))
+              .replace("{words}", String(minimumWords))
+          }
+          instructionLabel={writingCopy.instructionLabel}
+        />
+        <article className="studentWritingSimulator__source">
           <h2>{task.section.title}</h2>
-          <p className="studentWritingSimulator__instructions">{task.section.instructions}</p>
           {task.section.content ? (
             <div className="studentWritingSimulator__content">{task.section.content}</div>
           ) : null}
-          <blockquote>{task.question.prompt}</blockquote>
         </article>
 
         <div className="studentWritingSimulator__editor">
           <label htmlFor={`writing-answer-${task.question.id}`}>{labels.answer}</label>
           <textarea
-            autoFocus
             disabled={finalizing}
             id={`writing-answer-${task.question.id}`}
             onChange={(event) => {
@@ -369,53 +439,17 @@ export function StudentWritingSimulator({
               ) : null}
             </div>
             <span aria-live="polite" data-state={saveState}>
-              {saveState === "saving"
-                ? labels.saving
-                : saveState === "saved"
-                  ? labels.saved
-                  : saveState === "error"
-                    ? labels.saveError
-                    : ""}
+              {saveState === "error" ? labels.saveError : ""}
             </span>
           </footer>
         </div>
-      </section>
 
-      <div className="studentWritingSimulator__actions">
-        {currentTask > 0 ? (
-          <button
-            disabled={finalizing}
-            onClick={() => void changeTask(currentTask - 1)}
-            type="button"
-          >
-            <ArrowBackRounded aria-hidden="true" />
-            {labels.previous}
-          </button>
-        ) : (
-          <span />
-        )}
-        {currentTask < tasks.length - 1 ? (
-          <button
-            disabled={finalizing}
-            onClick={() => void changeTask(currentTask + 1)}
-            type="button"
-          >
-            {labels.next}
-            <ArrowForwardRounded aria-hidden="true" />
-          </button>
-        ) : (
-          <button disabled={finalizing || submitting} onClick={() => void finish()} type="button">
-            <EditNoteRounded aria-hidden="true" />
-            {labels.finish}
-          </button>
-        )}
+        {error ? (
+          <p className="studentWritingSimulator__error" role="alert">
+            {error}
+          </p>
+        ) : null}
       </div>
-
-      {error ? (
-        <p className="studentWritingSimulator__error" role="alert">
-          {error}
-        </p>
-      ) : null}
     </main>
   );
 }
