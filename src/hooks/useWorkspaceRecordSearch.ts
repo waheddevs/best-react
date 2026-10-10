@@ -7,6 +7,7 @@ import type { Locale } from "@/config/Locales";
 export type SearchableWorkspaceRecord = {
   detail: string;
   meta: string;
+  searchText?: string;
   title: string;
 };
 
@@ -21,7 +22,7 @@ export function useWorkspaceRecordSearch<TRecord extends SearchableWorkspaceReco
     if (!normalized) return records;
 
     return records.filter((record) =>
-      `${record.title} ${record.meta} ${record.detail}`
+      `${record.title} ${record.meta} ${record.detail} ${record.searchText ?? ""}`
         .toLocaleLowerCase(locale)
         .includes(normalized),
     );

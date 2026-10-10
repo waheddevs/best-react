@@ -39,7 +39,18 @@ export function AdminDetailPage({ backHref, common, locale, record }: AdminDetai
         <section>
           <span>{common.connectedNotice}</span>
           <h2>{record.title}</h2>
-          <p>{record.detail}</p>
+          {record.fields?.length ? (
+            <dl className="adminWorkspace__detailFacts">
+              {record.fields.map((field) => (
+                <div key={field.key}>
+                  <dt>{field.label}</dt>
+                  <dd>{field.value}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : (
+            <p>{record.detail}</p>
+          )}
         </section>
         <aside>
           <span>{common.detailLabel}</span>
