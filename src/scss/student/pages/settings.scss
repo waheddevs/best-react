@@ -161,7 +161,8 @@
   color: var(--student-ink);
 }
 
-.studentSettings__save {
+.studentSettings__save,
+.studentListeningTestNavbar__complete {
   --gradient-cta: linear-gradient(115deg, #6555d8, #8071ed);
   --tw-shadow-color: rgb(102 88 217 / 22%);
   --action-blue: var(--student-primary);
