@@ -11,7 +11,7 @@ type WorkspaceLogoutOptions = {
   confirmation: ConfirmDialogInput;
   locale: Locale;
   onConfirmed?: () => void;
-  role: "student" | "teacher";
+  role: "admin" | "student" | "teacher";
 };
 
 export function useWorkspaceLogout({
