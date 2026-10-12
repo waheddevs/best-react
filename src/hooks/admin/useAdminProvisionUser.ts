@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
 import {
@@ -10,15 +11,23 @@ import {
 } from "@/gql/graphql";
 import { executePublicApi } from "@/lib/PublicApi";
 import type {
+  AdminProvisionGroupCategory,
   AdminProvisionUserCopy,
   AdminProvisionUserValues,
   ProvisionableUserRole,
 } from "@/types/admin/AdminProvisionUser";
 
-const initialValues: AdminProvisionUserValues = { displayName: "", email: "", password: "" };
+const initialValues: AdminProvisionUserValues = {
+  displayName: "",
+  email: "",
+  groupCategory: "",
+  groupId: "",
+  password: "",
+};
 
 export function useAdminProvisionUser(copy: AdminProvisionUserCopy, role: ProvisionableUserRole) {
   /* HOOKS */
+  const router = useRouter();
   const session = useSession();
   const [message, setMessage] = useState<{ kind: "error" | "success"; text: string }>();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,12 +37,23 @@ export function useAdminProvisionUser(copy: AdminProvisionUserCopy, role: Provis
     values.displayName.trim().length > 0 &&
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email) &&
     values.password.length >= 12 &&
-    values.password.length <= 128;
+    values.password.length <= 128 &&
+    (role !== "STUDENT" || (values.groupCategory.length > 0 && values.groupId.length > 0));
 
   /* HANDLERS */
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const field = event.target.name as keyof AdminProvisionUserValues;
     setValues((current) => ({ ...current, [field]: event.target.value }));
+    setMessage(undefined);
+  };
+
+  const handleGroupCategoryChange = (groupCategory: AdminProvisionGroupCategory) => {
+    setValues((current) => ({ ...current, groupCategory, groupId: "" }));
+    setMessage(undefined);
+  };
+
+  const handleGroupChange = (groupId: string) => {
+    setValues((current) => ({ ...current, groupId }));
     setMessage(undefined);
   };
 
@@ -54,6 +74,7 @@ export function useAdminProvisionUser(copy: AdminProvisionUserCopy, role: Provis
           input: {
             displayName: values.displayName.trim(),
             email: values.email.trim(),
+            ...(role === "STUDENT" ? { groupId: values.groupId } : {}),
             password: values.password,
             role,
           },
@@ -62,6 +83,7 @@ export function useAdminProvisionUser(copy: AdminProvisionUserCopy, role: Provis
       );
       setValues(initialValues);
       setMessage({ kind: "success", text: copy.success });
+      router.refresh();
     } catch {
       setMessage({ kind: "error", text: copy.error });
     } finally {
@@ -69,5 +91,14 @@ export function useAdminProvisionUser(copy: AdminProvisionUserCopy, role: Provis
     }
   };
 
-  return { handleChange, handleSubmit, isSubmitting, isValid, message, values };
+  return {
+    handleChange,
+    handleGroupCategoryChange,
+    handleGroupChange,
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    message,
+    values,
+  };
 }
