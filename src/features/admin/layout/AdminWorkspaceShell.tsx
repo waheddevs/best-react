@@ -13,7 +13,8 @@ import { adminDockNavigationKeys, adminNavigationItems } from "@/config/AdminNav
 import type { Locale } from "@/config/Locales";
 import { useWorkspaceShellNavigation } from "@/hooks/navigation/useWorkspaceShellNavigation";
 import { useBestApiConnection } from "@/hooks/useBestApiConnection";
-import { getWorkspaceInitials } from "@/lib/WorkspaceIdentity";
+import { useAdminProfile } from "@/hooks/admin/useAdminProfile";
+import { AdminRecordAvatar } from "@/features/admin/workspace/AdminRecordAvatar";
 import type { AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
 
 import { AdminProfileCard } from "./AdminProfileCard";
@@ -28,12 +29,14 @@ type AdminWorkspaceShellProps = {
 };
 
 export function AdminWorkspaceShell({
-  adminName,
+  adminName: initialAdminName,
   children,
   copy,
   locale,
 }: AdminWorkspaceShellProps) {
   /* HOOKS */
+  const { profile, avatarUrl } = useAdminProfile();
+  const adminName = profile?.displayName ?? initialAdminName;
   const connectionState = useBestApiConnection("ADMIN");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -44,7 +47,6 @@ export function AdminWorkspaceShell({
       items: adminNavigationItems,
       locale,
     });
-  const adminInitials = getWorkspaceInitials(adminName, locale);
   const dockItems = navigationItems.filter((item) => adminDockNavigationKeys.includes(item.key));
 
   useEffect(() => {
@@ -121,7 +123,7 @@ export function AdminWorkspaceShell({
         <div className="adminShell__profileSlot">
           <AdminProfileCard
             adminName={adminName}
-            initials={adminInitials}
+            avatarUrl={avatarUrl}
             locale={locale}
             logoutCopy={copy.common}
           />
@@ -161,7 +163,19 @@ export function AdminWorkspaceShell({
                 locale={locale}
                 role="ADMIN"
               />
-              <span>{adminInitials}</span>
+              <Link
+                className="adminShell__settingsLink"
+                href={`/${locale}/admin/settings`}
+                aria-label={copy.sections.settings.title}
+                title={copy.sections.settings.title}
+                onClick={handleNavigation}
+              >
+                <AdminRecordAvatar
+                  avatarUrl={avatarUrl}
+                  displayName={adminName}
+                  className="adminShell__topAvatar"
+                />
+              </Link>
             </div>
           </header>
         </div>
@@ -198,7 +212,7 @@ export function AdminWorkspaceShell({
               </nav>
               <AdminProfileCard
                 adminName={adminName}
-                initials={adminInitials}
+                avatarUrl={avatarUrl}
                 locale={locale}
                 logoutCopy={copy.common}
                 onNavigate={handleNavigation}

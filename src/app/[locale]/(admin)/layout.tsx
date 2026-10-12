@@ -7,6 +7,7 @@ import { DashboardServiceUnavailable } from "@/components/ui/DashboardServiceUna
 import { isLocale } from "@/config/Locales";
 import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import { AdminWorkspaceShell } from "@/features/admin/layout/AdminWorkspaceShell";
+import { AdminProfileProvider } from "@/features/admin/layout/AdminProfileProvider";
 import { getDashboardAccessState } from "@/lib/DashboardAccess";
 import { AdminThemeProvider } from "@/theme/AdminThemeProvider";
 
@@ -30,13 +31,15 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const copy = getAdminWorkspaceCopy(locale);
   return (
     <AdminThemeProvider>
-      <AdminWorkspaceShell
-        adminName={session?.user?.name ?? copy.common.workspaceLabel}
-        copy={copy}
-        locale={locale}
-      >
-        {children}
-      </AdminWorkspaceShell>
+      <AdminProfileProvider>
+        <AdminWorkspaceShell
+          adminName={session?.user?.name ?? copy.common.workspaceLabel}
+          copy={copy}
+          locale={locale}
+        >
+          {children}
+        </AdminWorkspaceShell>
+      </AdminProfileProvider>
     </AdminThemeProvider>
   );
 }

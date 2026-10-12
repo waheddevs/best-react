@@ -134,11 +134,11 @@ const seeds: Record<AdminNavigationKey, AdminSeed> = {
   },
   settings: {
     eyebrow: ["Tizim afzalliklari", "Системные настройки", "System preferences"],
-    title: ["Admin sozlamalari", "Настройки администратора", "Admin settings"],
+    title: ["Sozlamalar", "Настройки", "Settings"],
     description: [
-      "Profil, til, operatsion bildirishnoma va standart ko'rinishlar.",
-      "Профиль, язык, операционные уведомления и представления по умолчанию.",
-      "Profile, language, operational alerts, and default views.",
+      "Profil va hisob xavfsizligi.",
+      "Профиль и безопасность аккаунта.",
+      "Profile and account security.",
     ],
   },
 };

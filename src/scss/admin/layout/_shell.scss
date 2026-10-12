@@ -235,7 +235,7 @@ body[data-admin-theme="dark"]:has(.adminShell) {
   }
 }
 
-.adminShell__profileAvatar {
+.adminShell .adminShell__profileAvatar {
   display: grid;
   width: 34px;
   height: 34px;
@@ -519,19 +519,31 @@ body[data-admin-theme="dark"]:has(.adminShell) {
   align-items: center;
   gap: 12px;
 
-  > span:last-child {
+  .adminShell__topAvatar {
     width: 40px;
     height: 40px;
     border-radius: 9px;
-  }
-
-  > span:last-child {
-    display: grid;
-    place-items: center;
+    border: 0;
     background: var(--admin-solid);
     color: var(--admin-on-solid);
     font-size: 11px;
     font-weight: 750;
+  }
+}
+
+.adminShell__settingsLink {
+  display: inline-flex;
+  flex-shrink: 0;
+  border-radius: 9px;
+  transition: box-shadow 150ms ease;
+
+  &:hover {
+    box-shadow: 0 0 0 2px var(--admin-border);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--admin-solid);
+    outline-offset: 4px;
   }
 }
 

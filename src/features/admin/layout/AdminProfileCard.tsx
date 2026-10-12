@@ -7,10 +7,11 @@ import { usePathname } from "next/navigation";
 import type { Locale } from "@/config/Locales";
 import { useWorkspaceLogout } from "@/hooks/navigation/useWorkspaceLogout";
 import type { AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
+import { AdminRecordAvatar } from "@/features/admin/workspace/AdminRecordAvatar";
 
 type AdminProfileCardProps = {
   adminName: string;
-  initials: string;
+  avatarUrl: string | null;
   locale: Locale;
   logoutCopy: Pick<
     AdminWorkspaceCopy["common"],
@@ -27,7 +28,7 @@ function getCompactAdminName(adminName: string) {
 
 export function AdminProfileCard({
   adminName,
-  initials,
+  avatarUrl,
   locale,
   logoutCopy,
   onNavigate,
@@ -67,9 +68,11 @@ export function AdminProfileCard({
         onClick={onNavigate}
         title={`${adminName} - Admin`}
       >
-        <span aria-hidden="true" className="adminShell__profileAvatar">
-          {initials}
-        </span>
+        <AdminRecordAvatar
+          avatarUrl={avatarUrl}
+          displayName={adminName}
+          className="adminShell__profileAvatar"
+        />
         <span className="adminShell__profileCopy">
           <strong>{compactName}</strong>
           <small>Admin</small>

@@ -7,6 +7,325 @@
   box-shadow: 0 12px 28px rgb(21 34 56 / 5%);
 }
 
+.adminSettingsPage {
+  &__layout {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 20px;
+  }
+  &__card {
+    min-width: 0;
+    border: 1px solid var(--admin-border);
+    border-radius: 16px;
+    background: var(--admin-surface);
+    overflow: hidden;
+  }
+  &__identity {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 24px;
+    border-right: 1px solid var(--admin-border);
+    background: color-mix(in srgb, var(--admin-accent-soft) 30%, var(--admin-surface));
+    text-align: center;
+    > div {
+      min-width: 0;
+    }
+    h2 {
+      margin: 4px 0;
+      font-size: 18px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    p {
+      margin: 4px 0 0;
+      color: var(--admin-muted);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+    .adminSettings__avatar {
+      width: 104px;
+      height: 104px;
+      font-size: 32px;
+      border: 3px solid var(--admin-surface);
+      box-shadow: 0 0 0 1px var(--admin-border);
+    }
+  }
+  &__profileCard {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+  &__role {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--admin-muted);
+    font-weight: 600;
+  }
+  &__formTitle {
+    margin: 0 0 24px;
+    font-size: 17px;
+    font-weight: 650;
+  }
+  &__cardHeading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--admin-border);
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 650;
+    }
+    svg {
+      color: var(--admin-muted);
+      font-size: 21px;
+    }
+  }
+  &__body {
+    padding: 22px 24px;
+  }
+  &__form {
+    min-width: 0;
+    padding: 28px;
+  }
+  &__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 18px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    min-width: 0;
+    &_single {
+      grid-template-columns: 1fr;
+    }
+    label {
+      display: grid;
+      align-content: start;
+      gap: 8px;
+      min-width: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--admin-muted);
+    }
+    input {
+      min-width: 0;
+      width: 100%;
+      height: 46px;
+      padding: 0 13px;
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: 9px;
+      color: var(--admin-text);
+      font: inherit;
+      font-size: 13px;
+      transition: border-color 150ms ease;
+      &:hover:not(:disabled) {
+        border-color: var(--admin-muted);
+      }
+      &[aria-invalid="true"] {
+        border-color: #d56565;
+      }
+    }
+    small {
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+  }
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--admin-border);
+  }
+  &__form > &__actions {
+    margin: 28px -28px -28px;
+  }
+  &__actions button,
+  &__imageActions button,
+  &__camera,
+  &__expand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 15px;
+    border: 1px solid var(--admin-border);
+    border-radius: 9px;
+    background: var(--admin-surface);
+    color: var(--admin-text);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      transform 150ms ease;
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--admin-solid) 6%, var(--admin-surface));
+      border-color: var(--admin-muted);
+    }
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+  }
+  &__actions button.adminSettingsPage__primary {
+    background: var(--admin-solid);
+    color: var(--admin-on-solid, var(--admin-solid-contrast));
+    border-color: var(--admin-solid);
+    &:hover:not(:disabled) {
+      background: var(--admin-solid);
+      transform: translateY(-1px);
+    }
+  }
+  &__help {
+    margin: 0 0 16px;
+    color: var(--admin-muted);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  &__imageUpload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%;
+    p {
+      font-size: 11px;
+      line-height: 1.6;
+      margin: 0;
+      max-width: 210px;
+    }
+    p.adminSettingsPage__error {
+      color: #b42330;
+    }
+  }
+  &__imageActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    svg {
+      font-size: 18px;
+    }
+    &:empty {
+      display: none;
+    }
+    button {
+      min-height: 32px;
+      border-color: color-mix(
+        in srgb,
+        var(--admin-remove-color, #b42330) 35%,
+        var(--admin-surface)
+      );
+      background: color-mix(in srgb, var(--admin-remove-color, #b42330) 6%, var(--admin-surface));
+      color: var(--admin-remove-color, #b42330);
+
+      &:hover:not(:disabled) {
+        border-color: var(--admin-remove-color, #b42330);
+        background: color-mix(
+          in srgb,
+          var(--admin-remove-color, #b42330) 12%,
+          var(--admin-surface)
+        );
+      }
+    }
+  }
+  &__avatarControl {
+    position: relative;
+  }
+  &__camera {
+    position: absolute;
+    bottom: -2px;
+    right: -4px;
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+    padding: 0;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 10%);
+    svg {
+      font-size: 19px;
+    }
+  }
+  &__expand {
+    width: 100%;
+    justify-content: space-between;
+    svg {
+      transition: transform 150ms ease;
+    }
+    &[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+    }
+  }
+  &__passwordForm {
+    border-top: 1px solid var(--admin-border);
+    padding: 20px 24px 0;
+  }
+  &__passwordForm > &__actions {
+    margin: 22px -24px 0;
+  }
+  &__error {
+    color: #b42330;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--admin-solid);
+    outline-offset: 3px;
+  }
+}
+body[data-admin-theme="dark"] .adminSettingsPage .adminSettingsPage__error {
+  color: #ff9c9c;
+}
+body[data-admin-theme="dark"] .adminSettingsPage__imageActions {
+  --admin-remove-color: #ff9c9c;
+}
+@media (max-width: 760px) {
+  .adminSettingsPage__profileCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .adminSettingsPage__identity {
+    border-right: 0;
+    border-bottom: 1px solid var(--admin-border);
+    padding: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .adminSettingsPage__fields {
+    grid-template-columns: 1fr;
+  }
+  .adminSettingsPage__identity,
+  .adminSettingsPage__form,
+  .adminSettingsPage__body {
+    padding: 20px;
+  }
+  .adminSettingsPage__form > .adminSettingsPage__actions {
+    margin: 24px -20px -20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adminSettingsPage button,
+  .adminSettingsPage input,
+  .adminSettingsPage__expand svg {
+    transition: none;
+  }
+  .adminSettingsPage__actions button.adminSettingsPage__primary:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
 .adminSettings__heading {
   display: flex;
   align-items: center;

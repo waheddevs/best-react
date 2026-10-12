@@ -1,0 +1,32 @@
+mutation AdminProfileUploadIntent($input: CreateMediaUploadIntentInput!) {
+  createMediaUploadIntent(input: $input) {
+    uploadIntent {
+      mediaObjectId
+      method
+      url
+      requiredHeaders {
+        name
+        value
+      }
+    }
+  }
+}
+
+mutation AdminConfirmProfileUpload($input: MediaObjectReferenceInput!) {
+  confirmMediaUpload(input: $input) {
+    mediaObject {
+      id
+      mediaType
+      status
+      malwareStatus
+    }
+  }
+}
+
+mutation AdminProfileImageDownload($input: MediaObjectReferenceInput!) {
+  createMediaDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+    }
+  }
+}
