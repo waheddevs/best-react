@@ -1,0 +1,285 @@
+/* Admin-only dark mode. Public, Student, and Teacher palettes remain independent. */
+
+body[data-admin-theme="dark"] {
+  color-scheme: dark;
+  background: #111318;
+
+  .adminShell__sidebar,
+  .adminShell__mobilePanel {
+    border-color: var(--admin-border);
+    background: #15181e;
+    box-shadow: 0 24px 70px rgb(0 0 0 / 28%);
+  }
+
+  .adminShell__topbar,
+  .adminShell__dock {
+    border-color: var(--admin-border);
+    background: rgb(25 28 35 / 96%);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 18%);
+  }
+
+  .adminShell__topbar {
+    box-shadow: 0 1px 2px rgb(0 0 0 / 18%);
+  }
+
+  .adminShell__navLink:hover,
+  .adminShell__navLink:focus-visible {
+    background: #20242c;
+  }
+
+  .adminShell__navLinkActive {
+    border-color: #3a414d;
+    background: #252a33;
+  }
+
+  .adminStudentStatusCards__card[data-tone="active"] {
+    --student-status-color: #80d3da;
+  }
+
+  .adminStudentStatusCards__card[data-tone="paused"] {
+    --student-status-color: #efbd63;
+  }
+
+  .adminStudentStatusCards__card[data-tone="debtor"] {
+    --student-status-color: #ff8a83;
+  }
+
+  .adminStudentStatusCards__card[data-tone="departed"] {
+    --student-status-color: #a0a7b2;
+  }
+
+  .adminStudentFilters__menuItem.MuiMenuItem-root {
+    color: #f1f3f5;
+
+    svg {
+      color: #eef0ff;
+    }
+
+    &:hover {
+      background: #20242c;
+    }
+
+    &:focus-visible,
+    &.Mui-focusVisible {
+      outline: 0;
+      background: #20242c;
+      box-shadow: inset 0 0 0 2px #80d3da;
+    }
+  }
+
+  .adminStudentFilters__menuPaper.MuiPaper-root {
+    border-color: #303641;
+    background: #191c23;
+    color: #f1f3f5;
+  }
+
+  .adminStudentFilters__menuItem.MuiMenuItem-root.Mui-selected,
+  .adminStudentFilters__menuItem.MuiMenuItem-root.Mui-selected:hover {
+    background: #292d3c;
+    color: #eef0ff;
+  }
+
+  .adminWorkspace__error,
+  .adminWorkspace__detailPanels section,
+  .adminWorkspace__detailPanels aside {
+    border-color: var(--admin-border);
+    background: var(--admin-surface);
+    color: var(--admin-text);
+  }
+
+  .adminWorkspace__bulkBar,
+  .adminDashboard__queueRow a:hover,
+  .adminWorkspace__actionCell a:hover {
+    border-color: var(--admin-accent-border);
+    background: var(--admin-accent-soft);
+    color: var(--admin-accent-text);
+  }
+
+  .adminWorkspace__metrics div,
+  .adminWorkspace__table th,
+  .adminWorkspace__table td,
+  .adminWorkspace__row,
+  .adminDashboard__queueRow,
+  .adminMessages__card,
+  .adminOperations__lesson {
+    border-color: var(--admin-row-border);
+  }
+
+  table.adminWorkspace__table tbody tr:hover,
+  table.adminWorkspace__table .adminWorkspace__rowSelected,
+  .adminWorkspace__row:hover {
+    background: var(--admin-surface-subtle);
+  }
+
+  table.adminWorkspace__table_students tbody tr:hover {
+    background: #20242c;
+    box-shadow: inset 3px 0 var(--admin-accent-text);
+  }
+
+  table.adminWorkspace__table_students th {
+    color: var(--admin-muted);
+  }
+
+  table.adminWorkspace__table_students .adminWorkspace__recordLabel strong {
+    color: var(--admin-text);
+  }
+
+  .adminWorkspace__studentAction_details:hover {
+    border-color: var(--admin-accent-border) !important;
+    background: var(--admin-accent-soft) !important;
+  }
+
+  .adminWorkspace__studentAction_delete {
+    color: #ef9a9a;
+
+    &:hover:not(:disabled) {
+      border-color: #693f45;
+      background: #352328;
+    }
+  }
+
+  .adminWorkspace__provision {
+    border-color: var(--admin-border);
+    background: var(--admin-surface);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 18%);
+  }
+
+  .adminWorkspace__provisionHeader h2,
+  .adminWorkspace__provisionForm input,
+  .adminWorkspace__row strong,
+  .adminWorkspace__dataCell,
+  .adminMessages__content p,
+  .adminSettings__button_secondary {
+    color: var(--admin-text);
+  }
+
+  .adminWorkspace__provisionHeader p,
+  .adminWorkspace__provisionForm label,
+  .adminWorkspace__provisionForm small,
+  .adminWorkspace__empty,
+  .adminWorkspace__detailPanels p {
+    color: var(--admin-muted);
+  }
+
+  .adminWorkspace__provisionForm label > div,
+  .adminSettings__nameFields input,
+  .adminSettings__emailField input,
+  .adminSettings__button_secondary,
+  .adminWorkspace__pagination button,
+  .adminWorkspace__bulkBar button {
+    border-color: var(--admin-border);
+    background: var(--admin-surface-subtle);
+  }
+
+  .adminSettings__nameFields input[readonly],
+  .adminSettings__emailField input[readonly],
+  .adminWorkspace__toolbar button:hover {
+    background: #252a33;
+    color: var(--admin-muted);
+  }
+
+  .adminWorkspace__detailPanels aside {
+    background: #18282a;
+  }
+
+  .adminWorkspace__avatar,
+  .adminWorkspace__avatar--detail,
+  .adminMessages__avatar,
+  .adminSettings__avatar,
+  .adminDashboard__metricIcon,
+  .adminDashboard__panelHeader > strong {
+    border-color: var(--admin-accent-border);
+    background: var(--admin-accent-soft);
+    color: var(--admin-accent-text);
+  }
+
+  .adminDashboard__metricIcon_navy {
+    background: #292d3c;
+    color: #c8cbee;
+  }
+
+  .adminDashboard__metricIcon_amber {
+    background: #3a301c;
+    color: #f0c56f;
+  }
+
+  .adminWorkspace__status_success {
+    border-color: #28545b;
+    background: #18343a;
+    color: #80d3da;
+  }
+
+  .adminWorkspace__status_warning {
+    border-color: #665426;
+    background: #3a301c;
+    color: #f0c56f;
+  }
+
+  .adminWorkspace__status_danger {
+    border-color: #684047;
+    background: #3d252b;
+    color: #f1a4ae;
+  }
+
+  .adminWorkspace__status_info,
+  .adminWorkspace__status_neutral {
+    border-color: #3b4654;
+    background: #252d37;
+    color: #b8c8d9;
+  }
+
+  .workspaceBell[data-role="admin"],
+  .workspaceNoticePanel[data-role="admin"],
+  .workspaceNotifications[data-role="admin"] {
+    --notice-accent: #63c3cc;
+    --notice-soft: #202f33;
+    --notice-border: #303641;
+    --notice-text: #f1f3f5;
+    --notice-muted: #a0a7b2;
+  }
+
+  .workspaceNoticePanel__paper,
+  .workspaceNoticePanel__drawerPaper {
+    border-color: #303641;
+    background: #191c23 !important;
+    color: #f1f3f5;
+  }
+
+  .workspaceNoticePanel[data-role="admin"] .workspaceNoticePanel__item,
+  .workspaceNotifications[data-role="admin"] .workspaceNotifications__item {
+    background: #191c23;
+
+    &:hover,
+    &:focus-visible,
+    &[data-unread="true"] {
+      background: #20242c;
+    }
+  }
+
+  .workspaceNotifications[data-role="admin"] {
+    .workspaceNotifications__filters,
+    .workspaceNotifications__item:hover,
+    .workspaceNotifications__item:focus-visible,
+    .workspaceNotifications__item[data-unread="true"] {
+      background: #20242c;
+    }
+
+    .workspaceNotifications__filters button[aria-pressed="true"],
+    .workspaceNotifications__toolbar > button,
+    .workspaceNotifications__more {
+      border-color: var(--notice-border);
+      background: #252a33;
+      color: var(--notice-text);
+    }
+
+    .workspaceNotifications__itemCopy strong {
+      color: var(--notice-text);
+    }
+
+    .workspaceNotifications__itemCopy small,
+    .workspaceNotifications__itemCopy time,
+    .workspaceNotifications__dateGroup {
+      color: var(--notice-muted);
+    }
+  }
+}
