@@ -24,7 +24,7 @@ export function AdminPayments({ locale }: { locale: Locale }) {
   const deferred = useDeferredValue(input);
   const [detail, setDetail] = useState<AdminPaymentRecord | null>(null);
   const query = useQuery(AdminOperationsDocument, {
-    variables: { input: deferred, groups: false, schedule: false, payments: true, salary: false },
+    variables: { input: deferred, groups: false, schedule: false, payments: true },
     context: { authenticated: true },
     fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,

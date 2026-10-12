@@ -30,7 +30,6 @@ export function useAdminSchedule(from: string, to: string) {
               groups: false,
               schedule: true,
               payments: false,
-              salary: false,
             },
             context: { authenticated: true },
             fetchPolicy: "network-only",

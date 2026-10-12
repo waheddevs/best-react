@@ -23,7 +23,6 @@ export const registryColumns: Record<AdminRegistrySection, string[]> = {
   groups: ["group", "teacher", "date", "time", "room", "students", "status"],
   schedule: ["lessonDate", "time", "group", "teacher", "room", "students", "status"],
   payments: ["student", "group", "month", "dueDate", "amount", "paid", "balance", "status"],
-  salary: ["teacher", "month", "groups", "students", "base", "bonus", "deduction", "net", "status"],
 };
 export function registryRows(
   data: AdminOperationsQuery | undefined,
@@ -144,33 +143,5 @@ export function registryRows(
         })),
       ],
     }));
-  return (data.adminSalaryDirectory?.nodes ?? []).map((r) => ({
-    id: r.id,
-    name: r.teacherName,
-    status: r.status,
-    version: r.version,
-    cells: [
-      r.teacherName,
-      r.month,
-      String(r.groupCount),
-      String(r.studentCount),
-      money(r.baseUzs),
-      money(r.bonusUzs),
-      money(r.deductionUzs),
-      money(r.netUzs),
-      t(r.status),
-    ],
-    values: {
-      teacherId: r.teacherId,
-      month: r.month,
-      base: r.baseUzs,
-      bonus: r.bonusUzs,
-      deduction: r.deductionUzs,
-      note: r.note ?? "",
-    },
-    details: [
-      { label: t("note"), value: r.note ?? "—" },
-      { label: t("students"), value: t("currentCounts") },
-    ],
-  }));
+  return [];
 }

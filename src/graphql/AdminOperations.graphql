@@ -3,7 +3,6 @@ query AdminOperations(
   $groups: Boolean!
   $schedule: Boolean!
   $payments: Boolean!
-  $salary: Boolean!
 ) {
   adminDirectoryOptions {
     teachers {
@@ -105,30 +104,6 @@ query AdminOperations(
       }
     }
   }
-  adminSalaryDirectory(input: $input) @include(if: $salary) {
-    totalCount
-    page
-    pageCount
-    metrics {
-      key
-      value
-    }
-    nodes {
-      id
-      teacherId
-      teacherName
-      month
-      baseUzs
-      bonusUzs
-      deductionUzs
-      netUzs
-      note
-      status
-      version
-      groupCount
-      studentCount
-    }
-  }
 }
 
 mutation AdminSaveGroup($input: AdminSaveGroupInput!) {
@@ -154,20 +129,6 @@ mutation AdminSaveLesson($input: AdminSaveLessonInput!) {
 mutation AdminSetLessonStatus($lessonId: ID!, $status: String!, $reason: String!) {
   adminSetLessonStatus(lessonId: $lessonId, status: $status, reason: $reason) {
     id
-    status
-  }
-}
-mutation AdminSaveSalary($input: AdminSaveSalaryInput!) {
-  adminSaveSalary(input: $input) {
-    id
-    version
-    status
-  }
-}
-mutation AdminFinalizeSalary($id: ID!, $version: Int!) {
-  adminFinalizeSalary(id: $id, version: $version) {
-    id
-    version
     status
   }
 }

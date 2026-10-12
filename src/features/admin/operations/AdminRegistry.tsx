@@ -24,7 +24,6 @@ import {
   AdminOperationsDocument,
   AdminSetGroupStatusDocument,
   AdminSetLessonStatusDocument,
-  AdminFinalizeSalaryDocument,
   type AdminDirectoryInput,
 } from "@/gql/graphql";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
@@ -81,7 +80,6 @@ export function AdminRegistry({
       groups: section === "groups",
       schedule: section === "schedule",
       payments: section === "payments",
-      salary: section === "salary",
     },
     context: { authenticated: true },
     fetchPolicy: "network-only",
@@ -93,16 +91,13 @@ export function AdminRegistry({
   const [setLessonStatus] = useMutation(AdminSetLessonStatusDocument, {
     context: { authenticated: true },
   });
-  const [finalize] = useMutation(AdminFinalizeSalaryDocument, { context: { authenticated: true } });
   const data = query.data;
   const page =
     section === "groups"
       ? data?.adminGroupDirectory
       : section === "schedule"
         ? data?.adminLessonDirectory
-        : section === "payments"
-          ? data?.adminPaymentDirectory
-          : data?.adminSalaryDirectory;
+        : data?.adminPaymentDirectory;
   const rows = registryRows(data, section, locale);
   const columns = registryColumns[section];
   const options = data?.adminDirectoryOptions ?? { teachers: [], groups: [], students: [] };
@@ -127,10 +122,8 @@ export function AdminRegistry({
         title: t(groupConfirmation?.title ?? "confirm"),
         message: groupConfirmation
           ? t(`${groupConfirmation.title}Message`).replace("{name}", () => row.name)
-          : `${row.name}. ${t(section === "salary" ? "confirmMessage" : "confirmChange")}`,
-        confirmLabel: t(
-          groupConfirmation?.confirm ?? (status === "FINALIZED" ? "finalize" : "save"),
-        ),
+          : `${row.name}. ${t("confirmChange")}`,
+        confirmLabel: t(groupConfirmation?.confirm ?? "save"),
         cancelLabel: t("cancel"),
         tone: status === "DELETED" ? "danger" : "default",
         icon: status === "DELETED" ? "delete" : "tone",
@@ -142,7 +135,6 @@ export function AdminRegistry({
       if (section === "groups") await setGroupStatus({ variables: { groupId: row.id, status } });
       else if (section === "schedule")
         await setLessonStatus({ variables: { lessonId: row.id, status, reason: actionReason } });
-      else await finalize({ variables: { id: row.id, version: row.version ?? 0 } });
       notifications.success({ message: t("saved") });
       setPending(null);
       setReason("");
@@ -182,12 +174,9 @@ export function AdminRegistry({
       ? ["ACTIVE", "ARCHIVED"]
       : section === "schedule"
         ? ["SCHEDULED", "DRAFT", "COMPLETED", "CANCELLED"]
-        : section === "payments"
-          ? ["PAID", "UNPAID"]
-          : ["DRAFT", "FINALIZED"];
-  const title =
-    section === "groups" ? "newGroup" : section === "schedule" ? "newLesson" : "newSalary";
-  const moneyKeys = new Set(["billed", "paid", "outstanding", "payable", "bonus", "deduction"]);
+        : ["PAID", "UNPAID"];
+  const title = section === "groups" ? "newGroup" : "newLesson";
+  const moneyKeys = new Set(["billed", "paid", "outstanding"]);
   const iconButton = (label: string, click: () => void, icon: ReactNode, danger = false) => (
     <button
       type="button"
@@ -310,7 +299,7 @@ export function AdminRegistry({
             ? filter("groupId", "group", options.groups)
             : null}
           {section === "payments" ? filter("studentId", "student", options.students) : null}
-          {section === "payments" || section === "salary" ? (
+          {section === "payments" ? (
             <label className="adminRegistryFilters__date">
               <span>{t("month")}</span>
               <input
@@ -393,7 +382,7 @@ export function AdminRegistry({
                       <td key={columns[i]} data-label={t(columns[i])}>
                         {i === row.cells.length - 1 ? (
                           <span
-                            className={`adminRegistry__status adminRegistry__status_${["ACTIVE", "PAID", "FINALIZED", "COMPLETED"].includes(row.status) ? "success" : ["CANCELLED", "UNPAID"].includes(row.status) ? "danger" : "neutral"}`}
+                            className={`adminRegistry__status adminRegistry__status_${["ACTIVE", "PAID", "COMPLETED"].includes(row.status) ? "success" : ["CANCELLED", "UNPAID"].includes(row.status) ? "danger" : "neutral"}`}
                           >
                             {value}
                           </span>
@@ -423,7 +412,7 @@ export function AdminRegistry({
                           )
                         )}
                         {section !== "payments" &&
-                        !["FINALIZED", "COMPLETED", "CANCELLED", "ARCHIVED"].includes(row.status)
+                        !["COMPLETED", "CANCELLED", "ARCHIVED"].includes(row.status)
                           ? iconButton(
                               "edit",
                               () => {
@@ -468,13 +457,6 @@ export function AdminRegistry({
                           ? iconButton(
                               "COMPLETED",
                               () => action(row, "COMPLETED"),
-                              <CheckRounded aria-hidden="true" />,
-                            )
-                          : null}
-                        {section === "salary" && row.status === "DRAFT"
-                          ? iconButton(
-                              "finalize",
-                              () => action(row, "FINALIZED"),
                               <CheckRounded aria-hidden="true" />,
                             )
                           : null}

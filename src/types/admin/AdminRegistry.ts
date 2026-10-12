@@ -1,4 +1,4 @@
-export type AdminRegistrySection = "groups" | "schedule" | "payments" | "salary";
+export type AdminRegistrySection = "groups" | "schedule" | "payments";
 export type AdminRegistryRow = {
   id: string;
   name: string;
@@ -6,7 +6,6 @@ export type AdminRegistryRow = {
   cells: string[];
   href?: string;
   values: Record<string, string>;
-  version?: number;
   updatedAt?: string;
   details: Array<{ label: string; value: string }>;
 };

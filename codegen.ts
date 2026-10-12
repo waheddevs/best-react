@@ -4,6 +4,7 @@ const config: CodegenConfig = {
   schema: "../best-server/packages/graphql/schema.graphql",
   documents: ["src/graphql/**/*.graphql"],
   config: {
+    useTypeImports: true,
     scalars: { DateTime: "string" },
   },
   generates: {

@@ -6,7 +6,6 @@ import { getAdminRegistryText } from "@/dictionaries/admin/AdminRegistry";
 import {
   AdminSaveGroupDocument,
   AdminSaveLessonDocument,
-  AdminSaveSalaryDocument,
   type AdminOperationsQuery,
 } from "@/gql/graphql";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
@@ -44,24 +43,12 @@ export function AdminRegistryEditor({
         start: "09:00",
         end: "10:30",
         rate: "300000",
-        month: new Intl.DateTimeFormat("en-CA", {
-          timeZone: "Asia/Tashkent",
-          year: "numeric",
-          month: "2-digit",
-        })
-          .format(new Date())
-          .slice(0, 7),
-        base: "0",
-        bonus: "0",
-        deduction: "0",
-        note: "",
       },
   );
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [saveGroup] = useMutation(AdminSaveGroupDocument, { context: { authenticated: true } });
   const [saveLesson] = useMutation(AdminSaveLessonDocument, { context: { authenticated: true } });
-  const [saveSalary] = useMutation(AdminSaveSalaryDocument, { context: { authenticated: true } });
   const update = (key: string, value: string) => {
     setValues((v) => ({ ...v, [key]: value }));
     setError("");
@@ -129,22 +116,6 @@ export function AdminRegistryEditor({
                 { language: "EN", title: values.titleEn || values.name, summary: values.summaryEn },
               ],
               ...(row ? { lessonId: row.id, expectedUpdatedAt: row.updatedAt } : {}),
-            },
-          },
-        });
-        if (!result.data) throw new Error("Save failed");
-      } else {
-        if (!values.teacherId) throw new Error("Invalid form");
-        const result = await saveSalary({
-          variables: {
-            input: {
-              teacherId: values.teacherId,
-              month: values.month,
-              baseUzs: values.base,
-              bonusUzs: values.bonus,
-              deductionUzs: values.deduction,
-              note: values.note,
-              ...(row ? { id: row.id, version: row.version } : {}),
             },
           },
         });
@@ -266,25 +237,6 @@ export function AdminRegistryEditor({
                   />
                 </label>
               ))}
-            </>
-          ) : null}
-          {section === "salary" ? (
-            <>
-              {pick("teacherId", "teacher", options.teachers, Boolean(row))}
-              <label>
-                <span>{t("month")}</span>
-                <input
-                  type="month"
-                  required
-                  disabled={Boolean(row)}
-                  value={values.month}
-                  onChange={(e) => update("month", e.target.value)}
-                />
-              </label>
-              {input("base", "number")}
-              {input("bonus", "number")}
-              {input("deduction", "number")}
-              {input("note", "text", false)}
             </>
           ) : null}
         </div>
