@@ -124,7 +124,7 @@ export function registryRows(
       id: r.id,
       name: r.studentName,
       status: r.status,
-      href: `/${locale}/admin/payments/${r.id}`,
+      href: `/${locale}/admin/payments`,
       cells: [
         r.studentName,
         r.groupName,

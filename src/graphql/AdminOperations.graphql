@@ -131,30 +131,6 @@ query AdminOperations(
   }
 }
 
-query AdminLedgerDetail($id: ID!) {
-  adminPaymentDetail(id: $id) {
-    id
-    studentId
-    studentName
-    groupName
-    groupId
-    month
-    dueDate
-    amountUzs
-    paidUzs
-    balanceUzs
-    adjustmentUzs
-    status
-    events {
-      id
-      kind
-      amountUzs
-      date
-      note
-    }
-  }
-}
-
 mutation AdminSaveGroup($input: AdminSaveGroupInput!) {
   adminSaveGroup(input: $input) {
     id

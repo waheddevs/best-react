@@ -1,0 +1,48 @@
+.adminSalary {
+  &__table {
+    min-width: 960px;
+  }
+  &__overview {
+    align-items: flex-start;
+  }
+  &__disclosure {
+    color: var(--admin-muted);
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 16px 0 0;
+  }
+}
+.adminRegistry__dialog.adminPaymentHistory.adminSalaryHistory.MuiPaper-root {
+  width: min(1080px, calc(100% - 32px));
+  max-width: 1080px;
+  max-height: min(780px, calc(100% - 32px));
+  overflow: hidden;
+  .adminPaymentHistory__body {
+    overflow-y: auto;
+    min-height: 0;
+  }
+  h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  section + section {
+    margin-top: 24px;
+  }
+  .adminPayments__table {
+    min-width: 660px;
+  }
+  .adminPayments__table td {
+    padding: 14px 16px;
+  }
+}
+.adminSalaryHistory__note {
+  display: block;
+  margin-top: 6px;
+  max-width: 230px;
+  color: var(--admin-muted);
+  font-weight: 400;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

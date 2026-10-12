@@ -1,0 +1,58 @@
+query AdminSalaryReport($input: AdminDirectoryInput!) {
+  adminDirectoryOptions {
+    teachers {
+      id
+      label
+    }
+    groups {
+      id
+      label
+    }
+  }
+  adminSalaryReport(input: $input) {
+    totalCount
+    page
+    pageCount
+    receivedUzs
+    teacherUzs
+    centerUzs
+    previousMonth
+    previousReceivedUzs
+    nodes {
+      id
+      teacherId
+      teacherName
+      month
+      receivedUzs
+      teacherUzs
+      centerUzs
+      groupCount
+      studentCount
+      paymentCount
+    }
+  }
+}
+query AdminSalaryHistory($input: AdminDirectoryInput!) {
+  adminSalaryHistory(input: $input) {
+    totalCount
+    page
+    pageCount
+    groups {
+      id
+      name
+      receivedUzs
+      teacherUzs
+      centerUzs
+    }
+    nodes {
+      id
+      studentName
+      groupName
+      paidAt
+      receivedUzs
+      teacherUzs
+      centerUzs
+      note
+    }
+  }
+}

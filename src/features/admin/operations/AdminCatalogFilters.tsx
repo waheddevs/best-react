@@ -11,9 +11,11 @@ import type { Locale } from "@/config/Locales";
 import type { AdminDirectoryInput } from "@/gql/graphql";
 import { getAdminContentText } from "@/dictionaries/admin/AdminContent";
 import { AdminDateFilter } from "./AdminDateFilter";
+import { AdminMonthFilter } from "./AdminMonthFilter";
+import { adminPaymentMonth } from "@/lib/admin/AdminPayments";
 
 type CatalogFilter = {
-  key: "status" | "category" | "teacherId" | "groupId";
+  key: "status" | "category" | "teacherId" | "groupId" | "room" | "studentId";
   label: string;
   options: Array<{ id: string; label: string }>;
   wide?: boolean;
@@ -91,12 +93,14 @@ export function AdminCatalogFilters({
   input,
   filters,
   dates = false,
+  month = false,
   onChange,
 }: {
   locale: Locale;
   input: AdminDirectoryInput;
   filters: CatalogFilter[];
   dates?: boolean;
+  month?: boolean;
   onChange: (value: Partial<AdminDirectoryInput>) => void;
 }) {
   const t = getAdminContentText(locale);
@@ -112,11 +116,17 @@ export function AdminCatalogFilters({
         .filter((key) => input[key])
         .map((key) => ({ key, label: `${t(key)}: ${input[key]!.slice(0, 10)}` }))
     : [];
-  const chips = [...selected, ...selectedDates];
+  const chips = [
+    ...selected,
+    ...selectedDates,
+    ...(month && input.month
+      ? [{ key: "month", label: adminPaymentMonth(input.month, locale) }]
+      : []),
+  ];
   return (
     <section
       className="adminStudentFilters adminCatalogFilters"
-      data-filter-count={filters.length + (dates ? 2 : 0)}
+      data-filter-count={filters.length + (dates ? 2 : 0) + (month ? 1 : 0)}
       aria-label={t("search")}
     >
       <div className="adminStudentFilters__row">
@@ -140,6 +150,13 @@ export function AdminCatalogFilters({
               onChange={(value) => onChange({ [filter.key]: value || undefined })}
             />
           ))}
+          {month && (
+            <AdminMonthFilter
+              locale={locale}
+              value={input.month ?? ""}
+              onChange={(value) => onChange({ month: value || undefined })}
+            />
+          )}
           {dates &&
             (["from", "to"] as const).map((key) => (
               <AdminDateFilter
@@ -175,6 +192,7 @@ export function AdminCatalogFilters({
               onChange({
                 ...Object.fromEntries(filters.map((filter) => [filter.key, undefined])),
                 ...(dates ? { from: undefined, to: undefined } : {}),
+                ...(month ? { month: undefined } : {}),
               })
             }
           >

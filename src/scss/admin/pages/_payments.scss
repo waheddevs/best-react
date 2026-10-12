@@ -1,0 +1,226 @@
+.adminPaymentSummary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.adminPayments {
+  &__overview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 14px 0 22px;
+    color: var(--admin-muted);
+    font-size: 12px;
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+    }
+    strong {
+      margin-left: 6px;
+      color: var(--admin-text);
+      font-size: 14px;
+    }
+  }
+  &__panel {
+    margin-top: 18px;
+    overflow: hidden;
+    border: 1px solid var(--admin-border);
+    border-radius: 14px;
+    background: var(--admin-surface);
+  }
+  &__scroll {
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  &__table {
+    width: 100%;
+    min-width: 1080px;
+    border-collapse: collapse;
+    text-align: left;
+    th {
+      padding: 16px;
+      background: var(--admin-surface-subtle, var(--admin-surface));
+      color: var(--admin-muted);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      white-space: nowrap;
+      small {
+        display: block;
+        margin-top: 4px;
+        font-size: 10px;
+        font-weight: 500;
+      }
+      button {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-transform: inherit;
+        letter-spacing: inherit;
+        cursor: pointer;
+        svg {
+          font-size: 16px;
+        }
+      }
+    }
+    td {
+      padding: 20px 16px;
+      border-top: 1px solid var(--admin-border);
+      font-size: 13px;
+      font-weight: 550;
+    }
+    th:last-child:not(.adminPayments__money) {
+      width: 1%;
+      text-align: left;
+    }
+    tbody tr {
+      transition: background-color 140ms ease;
+    }
+    tbody tr:hover {
+      background: #f8fafb;
+      box-shadow: inset 3px 0 #347a82;
+    }
+  }
+  &__table &__money {
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  &__money[data-balance] {
+    color: #ba4242;
+  }
+  &__nowrap {
+    white-space: nowrap;
+  }
+  &__actions {
+    width: 1%;
+    white-space: nowrap;
+  }
+  &__student {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 650;
+    text-align: left;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  &__empty {
+    padding: 34px 20px;
+    margin: 0;
+    text-align: center;
+    color: var(--admin-muted);
+    font-size: 14px;
+  }
+}
+
+.adminPaymentMonth.MuiPaper-root {
+  margin-top: 6px;
+}
+.adminPaymentMonth .adminCalendar__months {
+  min-height: 188px;
+}
+.adminPaymentMonth .adminCalendar__header > strong {
+  text-align: center;
+  font-size: 14px;
+}
+
+.adminRegistry__dialog.adminPaymentHistory.MuiPaper-root {
+  --admin-surface-subtle: #f8f8f9;
+  width: min(760px, calc(100% - 32px));
+  max-width: 760px;
+  max-height: calc(100% - 32px);
+  margin: 16px;
+  padding: 0;
+  border-radius: 18px;
+}
+.adminPaymentHistory {
+  &__body {
+    padding: 22px;
+  }
+  .adminPayments__scroll {
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+  }
+  .adminPayments__table {
+    min-width: 520px;
+    th:last-child {
+      width: auto;
+    }
+    td {
+      padding: 16px;
+    }
+  }
+  &__note {
+    overflow-wrap: anywhere;
+    min-width: 140px;
+    white-space: pre-wrap;
+  }
+  &__adjustment {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 16px 0 0;
+    color: var(--admin-muted);
+    font-size: 12px;
+    strong {
+      color: var(--admin-text);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+.adminPayments,
+.adminPaymentHistory {
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--admin-solid);
+    outline-offset: 3px;
+  }
+}
+body[data-admin-theme="dark"] {
+  .adminPayments__table tbody tr:hover {
+    background: #20242c;
+    box-shadow: inset 3px 0 var(--admin-accent-text, #80d3da);
+  }
+  .adminPayments__money[data-balance] {
+    color: #ff9c9c;
+  }
+  .adminRegistry__dialog.adminPaymentHistory.MuiPaper-root {
+    --admin-surface-subtle: #20242c;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adminPayments__table tbody tr {
+    transition: none;
+  }
+}
+@media (max-width: 900px) {
+  .adminPaymentSummary {
+    gap: 10px;
+  }
+}
+@media (max-width: 600px) {
+  .adminPaymentSummary {
+    grid-template-columns: 1fr;
+  }
+  .adminPaymentHistory__body {
+    padding: 16px;
+  }
+}

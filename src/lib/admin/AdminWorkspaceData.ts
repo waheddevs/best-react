@@ -728,7 +728,7 @@ export async function loadAdminWorkspaceData(
               `${item.groupName} · ${uzs(item.amountUzs, locale)} · ${date(item.billingMonth, locale)}`,
               getAdminStatusLabel(locale, item.status),
               tone(item.status),
-              `/admin/payments/${encodeURIComponent(item.chargeId)}`,
+              "/admin/payments",
             ),
             [
               field("group", directory.groupLabel, item.groupName),

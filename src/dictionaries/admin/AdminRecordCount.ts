@@ -31,8 +31,8 @@ const forms: Record<AdminCountSection, CountForms> = {
   payments: { uz: "to‘lov", en: ["payment", "payments"], ru: ["платёж", "платежа", "платежей"] },
   salary: {
     uz: "ish haqi hisoboti",
-    en: ["salary statement", "salary statements"],
-    ru: ["расчётный лист", "расчётных листа", "расчётных листов"],
+    en: ["salary record", "salary records"],
+    ru: ["расчёт", "расчёта", "расчётов"],
   },
   requests: { uz: "ariza", en: ["request", "requests"], ru: ["заявка", "заявки", "заявок"] },
   messages: {

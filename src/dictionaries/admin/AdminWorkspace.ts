@@ -118,9 +118,9 @@ const seeds: Record<AdminNavigationKey, AdminSeed> = {
     eyebrow: ["Moliya", "Финансы", "Finance"],
     title: ["Ish haqi", "Заработная плата", "Salary"],
     description: [
-      "Oylik ish haqi hisoblarini tayyorlang va tasdiqlang.",
-      "Подготовьте и утвердите ежемесячные расчёты зарплаты.",
-      "Prepare and finalize monthly salary statements.",
+      "O‘quvchi to‘lovlaridan avtomatik hisoblangan ulushlar.",
+      "Автоматическое распределение платежей учеников.",
+      "Automatic revenue shares from student payments.",
     ],
   },
   notifications: {
