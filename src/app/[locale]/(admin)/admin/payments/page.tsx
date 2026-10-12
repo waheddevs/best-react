@@ -1,6 +1,6 @@
-import { AdminWorkspaceRoute } from "@/features/admin/workspace/AdminWorkspaceRoute";
+import { AdminRegistryRoute } from "@/features/admin/operations/AdminRegistryRoute";
 type PageProps = { params: Promise<{ locale: string }> };
 export default async function AdminPaymentsPage({ params }: PageProps) {
   const { locale } = await params;
-  return <AdminWorkspaceRoute locale={locale} sectionKey="payments" />;
+  return <AdminRegistryRoute locale={locale} section="payments" />;
 }
