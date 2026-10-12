@@ -20,11 +20,15 @@ export function AdminDateFilter({
   value,
   locale,
   onChange,
+  disabled = false,
+  variant = "filter",
 }: {
   label: string;
   value: string;
   locale: Locale;
   onChange: (value: string) => void;
+  disabled?: boolean;
+  variant?: "filter" | "field";
 }) {
   const copy = getAdminCalendarCopy(locale);
   const id = useId();
@@ -78,20 +82,26 @@ export function AdminDateFilter({
     <>
       <button
         type="button"
-        className="adminRegistryFilters__card adminDateFilter"
+        className={
+          variant === "field" ? "adminDateField" : "adminRegistryFilters__card adminDateFilter"
+        }
+        disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={Boolean(anchor)}
         aria-controls={anchor ? id : undefined}
         onClick={(event) => {
           const now = new Date();
-          const current = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+          const current =
+            variant === "field"
+              ? new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tashkent" }).format(now)
+              : `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
           setToday(current);
           setActiveDate(value || current);
           setView("days");
           setAnchor(event.currentTarget);
         }}
       >
-        <span>{label}</span>
+        <span className={variant === "field" ? "adminWorkspace__srOnly" : undefined}>{label}</span>
         <strong>
           {value
             ? format(value, { day: "2-digit", month: "2-digit", year: "numeric" })
@@ -100,11 +110,17 @@ export function AdminDateFilter({
         <CalendarMonthOutlined aria-hidden="true" />
       </button>
       <Popover
-        open={Boolean(anchor)}
+        open={Boolean(anchor) && !disabled}
         anchorEl={anchor}
         onClose={() => setAnchor(null)}
-        anchorOrigin={{ horizontal: "center", vertical: "center" }}
-        transformOrigin={{ horizontal: "center", vertical: "center" }}
+        anchorOrigin={{
+          horizontal: variant === "field" ? "left" : "center",
+          vertical: variant === "field" ? "bottom" : "center",
+        }}
+        transformOrigin={{
+          horizontal: variant === "field" ? "left" : "center",
+          vertical: variant === "field" ? "top" : "center",
+        }}
         slotProps={{
           paper: { className: "adminCalendar" },
           transition: { onEntered: () => focusedDay.current?.focus() },

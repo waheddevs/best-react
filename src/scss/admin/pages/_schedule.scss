@@ -1,0 +1,356 @@
+.adminSchedule__toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 12px;
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface);
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    background: transparent;
+    color: var(--admin-text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease;
+    &:hover {
+      background: var(--admin-surface-subtle);
+      border-color: var(--admin-muted);
+    }
+    svg {
+      font-size: 19px;
+    }
+  }
+}
+.adminSchedule__navigation {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 6px;
+  button:has(svg) {
+    padding: 7px;
+  }
+}
+.adminSchedule__range {
+  margin-inline: 8px;
+  font-size: 15px;
+  font-weight: 650;
+}
+.adminSchedule__views {
+  display: flex;
+  gap: 3px;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  padding: 3px;
+  button {
+    border: 0;
+    min-height: 32px;
+    padding: 5px 14px;
+  }
+  button[aria-pressed="true"] {
+    background: var(--admin-solid);
+    color: var(--admin-on-solid);
+  }
+}
+.adminSchedule__date .adminDateField {
+  gap: 14px;
+}
+.adminSchedule__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 0 10px;
+  color: var(--admin-muted);
+  font-size: 13px;
+}
+.adminSchedule__content {
+  overflow: hidden;
+  border: 1px solid var(--admin-border);
+  border-radius: 14px;
+  background: var(--admin-surface);
+}
+.adminSchedule__empty {
+  margin: 0;
+  padding: 68px 20px;
+  color: var(--admin-muted);
+  font-size: 15px;
+  text-align: center;
+  button {
+    padding: 9px 16px;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    background: var(--admin-surface-subtle);
+    color: var(--admin-text);
+    font: inherit;
+    cursor: pointer;
+  }
+}
+.adminScheduleWeek {
+  max-height: 72vh;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--admin-border) transparent;
+}
+.adminScheduleWeek__grid {
+  display: grid;
+  grid-template-columns: 62px repeat(7, minmax(145px, 1fr));
+  min-width: 1080px;
+}
+.adminScheduleWeek__corner,
+.adminScheduleWeek__heading {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  display: grid;
+  place-content: center;
+  gap: 5px;
+  height: 70px;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface-subtle);
+  color: var(--admin-muted);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 650;
+  strong {
+    font-size: 20px;
+    color: var(--admin-text);
+  }
+}
+.adminScheduleWeek__heading[data-today="true"] strong {
+  border-radius: 8px;
+  background: var(--admin-solid);
+  color: var(--admin-on-solid);
+  min-width: 32px;
+  padding: 2px 6px;
+}
+.adminScheduleWeek__corner {
+  left: 0;
+  z-index: 4;
+}
+.adminScheduleWeek__hours {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--admin-surface);
+  color: var(--admin-muted);
+  span {
+    position: absolute;
+    inset-inline: 0;
+    padding: 5px;
+    font-size: 11px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+}
+.adminScheduleWeek__day {
+  position: relative;
+  border-left: 1px solid var(--admin-border);
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 99px,
+    var(--admin-border) 99px,
+    var(--admin-border) 100px
+  );
+  &[data-today="true"] {
+    background-color: color-mix(in srgb, var(--admin-accent-text) 3%, transparent);
+  }
+}
+.adminScheduleWeek__lesson {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  border: 1px solid var(--admin-border);
+  border-left: 3px solid var(--admin-accent-text);
+  border-radius: 7px;
+  background: var(--admin-surface-subtle);
+  padding: 8px;
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 12px;
+  text-align: start;
+  cursor: pointer;
+  > * {
+    flex: 0 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  strong {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  small,
+  em {
+    color: var(--admin-muted);
+    font-size: 11px;
+    font-style: normal;
+  }
+  > span {
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+  &:hover {
+    background: var(--admin-surface);
+    border-color: var(--admin-accent-text);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 10%);
+  }
+  &[data-state="live"] {
+    background: var(--admin-accent-soft);
+  }
+  &[data-state="CANCELLED"] {
+    border-left-color: #e58181;
+    opacity: 0.7;
+  }
+  &[data-state="DRAFT"] {
+    border-style: dashed;
+    border-left-color: var(--admin-muted);
+  }
+  &[data-conflict="true"] {
+    border-left-color: #d69b37;
+  }
+}
+.adminScheduleWeek__now {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  height: 2px;
+  background: #f07878;
+  pointer-events: none;
+  &::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: inherit;
+  }
+}
+.adminScheduleDay {
+  overflow-x: auto;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 820px;
+    text-align: start;
+  }
+  th {
+    padding: 18px 20px;
+    background: var(--admin-surface-subtle);
+    color: var(--admin-muted);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: start;
+  }
+  td {
+    border-top: 1px solid var(--admin-border);
+    padding: 18px 20px;
+    font-size: 14px;
+    font-weight: 550;
+  }
+  th:last-child,
+  td:last-child {
+    width: 1%;
+    white-space: nowrap;
+  }
+  tbody tr:hover {
+    background: var(--admin-surface-subtle);
+  }
+}
+.adminScheduleDay__time {
+  white-space: nowrap;
+  width: 1%;
+  font-variant-numeric: tabular-nums;
+}
+.adminScheduleDay__name {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  text-align: start;
+  &:hover {
+    color: var(--admin-accent-text);
+  }
+}
+.adminSchedule__status {
+  display: inline-flex;
+  white-space: nowrap;
+  border: 1px solid var(--admin-border);
+  border-radius: 7px;
+  background: var(--admin-surface-subtle);
+  color: var(--admin-muted);
+  padding: 6px 9px;
+  font-size: 12px;
+  font-weight: 650;
+  &[data-state="live"],
+  &[data-state="SCHEDULED"] {
+    color: var(--admin-accent-text);
+    background: var(--admin-accent-soft);
+  }
+  &[data-state="CANCELLED"] {
+    color: #e58181;
+  }
+}
+.adminSchedule__conflict {
+  display: block;
+  color: #b98226;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.adminScheduleDetails__summary {
+  color: var(--admin-muted);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.adminSchedule :focus-visible {
+  outline: 2px solid var(--admin-solid);
+  outline-offset: 2px;
+}
+@media (max-width: 760px) {
+  .adminSchedule__navigation {
+    flex-basis: 100%;
+  }
+  .adminSchedule__range {
+    font-size: 13px;
+  }
+  .adminSchedule__toolbar {
+    gap: 10px;
+  }
+  .adminSchedule__date {
+    margin-left: auto;
+  }
+  .adminScheduleWeek {
+    max-height: 65vh;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adminSchedule__toolbar button {
+    transition: none;
+  }
+}

@@ -20,6 +20,7 @@ import { courseSlug } from "@/lib/admin/AdminCourseDraft";
 import { eventTranslations } from "@/lib/admin/AdminEventDraft";
 import type { AdminContentEntry } from "@/types/admin/AdminContent";
 import { AdminRegistrySelect } from "../operations/AdminRegistrySelect";
+import { AdminDateTimeField } from "../operations/AdminDateTimeField";
 import { AdminCourseImageUpload } from "./AdminCourseImageUpload";
 
 export function AdminEventEditor({
@@ -326,8 +327,22 @@ export function AdminEventEditor({
         <section className="adminEventEditor__schedule">
           <h3>{t("schedule")}</h3>
           <div className="adminRegistry__formGrid">
-            {field("startsAt", "datetime-local", true)}
-            {field("endsAt", "datetime-local")}
+            <AdminDateTimeField
+              label={t("startsAt")}
+              locale={locale}
+              value={f.startsAt ?? ""}
+              required
+              disabled={disabled}
+              onChange={(value) => change("startsAt", value)}
+            />
+            <AdminDateTimeField
+              label={t("endsAt")}
+              locale={locale}
+              value={f.endsAt ?? ""}
+              after={f.startsAt}
+              disabled={disabled}
+              onChange={(value) => change("endsAt", value)}
+            />
           </div>
           <p>Asia/Tashkent · UTC+05:00</p>
         </section>
