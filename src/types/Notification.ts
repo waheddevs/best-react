@@ -41,7 +41,8 @@ export type ResolvedCenterAlertOptions = NotificationMessage & {
 };
 
 export type ConfirmDialogInput = Partial<NotificationMessage> & {
-  brand?: "default" | "student" | "student-reading" | "student-writing" | "student-speaking";
+  brand?:
+    "admin" | "default" | "student" | "student-reading" | "student-writing" | "student-speaking";
   confirmLabel?: string;
   cancelLabel?: string;
   icon?: NotificationIcon;
@@ -49,7 +50,8 @@ export type ConfirmDialogInput = Partial<NotificationMessage> & {
 };
 
 export type ResolvedConfirmDialogOptions = NotificationMessage & {
-  brand: "default" | "student" | "student-reading" | "student-writing" | "student-speaking";
+  brand:
+    "admin" | "default" | "student" | "student-reading" | "student-writing" | "student-speaking";
   confirmLabel: string;
   cancelLabel: string;
   icon: NotificationIcon;
