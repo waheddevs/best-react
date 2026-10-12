@@ -1,6 +1,13 @@
-import { AdminWorkspaceRoute } from "@/features/admin/workspace/AdminWorkspaceRoute";
-type PageProps = { params: Promise<{ locale: string }> };
-export default async function AdminCoursesPage({ params }: PageProps) {
+import type { Metadata } from "next";
+import { isLocale } from "@/config/Locales";
+import { createAdminMetadata } from "@/features/admin/layout/AdminMetadata";
+import { AdminContentRoute } from "@/features/admin/content/AdminContentRoute";
+type Props = { params: Promise<{ locale: string }> };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  return <AdminWorkspaceRoute locale={locale} sectionKey="courses" />;
+  return isLocale(locale) ? createAdminMetadata(locale, "courses") : {};
+}
+export default async function Page({ params }: Props) {
+  const { locale } = await params;
+  return <AdminContentRoute locale={locale} section="courses" />;
 }

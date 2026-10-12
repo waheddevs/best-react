@@ -1,0 +1,665 @@
+@media (min-width: 701px) {
+  .adminContent:is(
+      [data-section="courses"],
+      [data-section="exams"],
+      [data-section="events"],
+      [data-section="requests"]
+    )
+    table.adminRegistry__table
+    .adminRegistry__actionHeading {
+    width: 1%;
+  }
+
+  .adminContent:is(
+      [data-section="courses"],
+      [data-section="exams"],
+      [data-section="events"],
+      [data-section="requests"]
+    )
+    .adminRegistry__actionCell
+    .adminRegistry__actions {
+    width: max-content;
+  }
+}
+// Existing Admin registry cards, tables and menus retain their copied directory styles.
+.adminCourseEditor,
+.adminExamEditor,
+.adminEventEditor {
+  padding: 26px;
+
+  h3 {
+    margin: 0 0 18px;
+    color: var(--admin-text);
+    font-size: 16px;
+    font-weight: 650;
+  }
+  .adminRegistry__formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    align-items: start;
+  }
+  .adminRegistry__formGrid label,
+  .adminRegistry__selectField {
+    font-size: 13px;
+  }
+  .adminRegistry__formGrid input,
+  textarea,
+  .adminRegistryFilters__card {
+    font-size: 14px;
+  }
+  .adminRegistryFilters__card {
+    min-height: 46px;
+  }
+  &.adminContent__editor textarea {
+    resize: none;
+  }
+  textarea {
+    min-height: 126px;
+  }
+  .adminRegistry__formActions {
+    margin-top: 26px;
+  }
+  button:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--admin-solid);
+    outline-offset: 3px;
+  }
+}
+.adminCourseEditor__basics {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
+  gap: 32px;
+  > section {
+    min-width: 0;
+  }
+}
+.adminExamEditor {
+  > fieldset > .adminRegistry__formGrid + .adminRegistry__formGrid {
+    margin-top: 22px;
+  }
+  .adminRegistry__formGrid.adminExamEditor__metadata {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.adminCourseEditor__imagePreview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px dashed var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface-subtle);
+  color: var(--admin-muted);
+  > img {
+    object-fit: cover;
+  }
+  > svg {
+    font-size: 36px;
+  }
+}
+.adminCourseEditor__imageActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  button {
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 1px solid var(--admin-border);
+    border-radius: 9px;
+    background: var(--admin-surface);
+    color: var(--admin-text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    &:hover:not(:disabled) {
+      background: var(--admin-surface-subtle);
+      border-color: var(--admin-solid);
+    }
+    &:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+  }
+}
+.adminCourseEditor__image > p {
+  margin: 12px 0 0;
+  color: var(--admin-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.adminCourseEditor__image > .adminRegistry__error {
+  color: var(--admin-danger, #e65b65);
+}
+.adminCourseEditor__section,
+.adminExamEditor__section,
+.adminEventEditor__section {
+  margin-top: 26px;
+  border-top: 1px solid var(--admin-border);
+  > summary {
+    padding: 20px 0;
+    color: var(--admin-text);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  &[open] > summary {
+    margin-bottom: 4px;
+  }
+}
+@media (max-width: 900px) {
+  .adminCourseEditor__basics {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .adminCourseEditor__image {
+    max-width: 420px;
+  }
+}
+@media (max-width: 600px) {
+  .adminExamEditor .adminRegistry__formGrid.adminExamEditor__metadata {
+    grid-template-columns: 1fr;
+  }
+  .adminCourseEditor,
+  .adminExamEditor,
+  .adminEventEditor {
+    padding: 18px;
+    .adminRegistry__formGrid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+}
+.adminCourseTracks {
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid var(--admin-border);
+
+  &__header,
+  &__cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  &__header {
+    margin-bottom: 18px;
+    h3 {
+      margin: 0 0 8px;
+    }
+    p {
+      margin: 0;
+      max-width: 620px;
+      color: var(--admin-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  }
+  &__add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex-shrink: 0;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--admin-border);
+    border-radius: 9px;
+    background: var(--admin-surface);
+    color: var(--admin-text);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    svg {
+      font-size: 20px;
+    }
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--admin-solid) 6%, var(--admin-surface));
+      border-color: color-mix(in srgb, var(--admin-solid) 24%, var(--admin-border));
+    }
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  &__list {
+    display: grid;
+    gap: 18px;
+  }
+  &__card {
+    padding: 20px;
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    background: var(--admin-surface);
+    min-width: 0;
+  }
+  &__cardHeader {
+    margin-bottom: 20px;
+    h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      color: var(--admin-text);
+      font-size: 15px;
+      font-weight: 650;
+    }
+    h4 > span {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--admin-surface-subtle);
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+  }
+  &__empty {
+    margin: 0;
+    padding: 18px 20px;
+    border: 1px dashed var(--admin-border);
+    border-radius: 12px;
+    color: var(--admin-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+.adminCourseEditor .adminCourseTracks__fields {
+  gap: 18px 22px;
+  textarea {
+    min-height: 96px;
+    resize: none;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--admin-muted);
+    opacity: 0.7;
+    font-weight: 400;
+  }
+  small {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+@media (max-width: 600px) {
+  .adminCourseTracks__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .adminCourseTracks__card {
+    padding: 16px;
+  }
+  .adminCourseEditor .adminCourseTracks__fields {
+    grid-template-columns: 1fr;
+  }
+}
+.adminContent .adminRegistryMetrics {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+}
+.adminContent__detail {
+  padding: 24px;
+}
+.adminContent__detailBody {
+  color: var(--admin-text);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.adminContent__detailBody > p {
+  margin: 0 0 20px;
+  white-space: pre-wrap;
+}
+.adminContent__detailBody dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+.adminContent__detailBody dl > div {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(0, 2fr);
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--admin-border);
+}
+.adminContent__detailBody dt {
+  color: var(--admin-muted);
+}
+.adminContent__detailBody dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.adminContent__detailBody section {
+  margin-top: 24px;
+}
+.adminContent__detailBody h3 {
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+.adminContent__detailBody ul {
+  display: grid;
+  gap: 12px;
+  padding-left: 20px;
+}
+.adminContent .adminRegistryMetrics {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+}
+.adminContent__detail {
+  padding: 24px;
+}
+.adminContent__detailBody {
+  color: var(--admin-text);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.adminContent__detailBody > p {
+  margin: 0 0 20px;
+  white-space: pre-wrap;
+}
+.adminContent__detailBody dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+.adminContent__detailBody dl > div {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(0, 2fr);
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--admin-border);
+}
+.adminContent__detailBody dt {
+  color: var(--admin-muted);
+}
+.adminContent__detailBody dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.adminContent__detailBody section {
+  margin-top: 24px;
+}
+.adminContent__detailBody h3 {
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+.adminContent__detailBody ul {
+  display: grid;
+  gap: 12px;
+  padding-left: 20px;
+}
+.adminContent__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 5px;
+  width: fit-content;
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface);
+}
+.adminContent__tabs button,
+.adminContent__nested button,
+.adminContent__notices > header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--admin-border);
+  border-radius: 9px;
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.adminContent__tabs button[aria-selected="true"] {
+  color: var(--admin-solid-contrast, #fff);
+  border-color: transparent;
+  background: var(--admin-solid);
+}
+.adminContent__help {
+  margin: 16px 0;
+  color: var(--admin-muted);
+  font-size: 12px;
+}
+.adminContent__editor .adminContent__tabs {
+  margin-top: 24px;
+}
+.adminContent__editor textarea {
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  border: 1px solid var(--admin-border);
+  border-radius: 9px;
+  background: transparent;
+  padding: 12px;
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.adminContent__editor small {
+  font-weight: 450;
+}
+.adminContent__wide {
+  grid-column: 1 / -1;
+}
+.adminContent__nested {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+}
+.adminContent__nested h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--admin-text);
+}
+.adminContent__nested > .adminRegistry__formGrid {
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.adminContent__nested > button {
+  justify-self: start;
+}
+.adminContent__review {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.adminContent__statusTrigger {
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter 180ms ease;
+
+  svg {
+    font-size: 15px;
+  }
+  &:hover:not(:disabled) {
+    filter: brightness(0.95);
+  }
+}
+
+body[data-admin-theme="dark"] .adminContent__statusTrigger:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+.adminRegistryFilters__menuItem.MuiMenuItem-root {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.adminRegistryFilters__menuItem.MuiMenuItem-root > span {
+  min-width: 0;
+}
+.adminContent__overview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.adminContent__overview > section:first-child {
+  grid-column: 1 / -1;
+}
+.adminContent__overview header,
+.adminContent__notices > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-bottom: 1px solid var(--admin-border);
+}
+.adminContent__overview h2,
+.adminContent__notices h2 {
+  margin: 0;
+  color: var(--admin-text);
+  font-size: 17px;
+  font-weight: 700;
+}
+.adminContent__overview header a {
+  color: var(--admin-muted);
+}
+.adminContent__overviewRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 20px;
+  color: var(--admin-text);
+  border-bottom: 1px solid var(--admin-border);
+  font-size: 13px;
+}
+.adminContent__overviewRow > span {
+  display: grid;
+  gap: 7px;
+}
+.adminContent__overviewRow small,
+.adminContent__overviewRow time {
+  color: var(--admin-muted);
+  font-size: 12px;
+}
+.adminContent__overviewRow:hover,
+.adminContent__notice:hover {
+  background: var(--admin-surface-subtle);
+}
+.adminContent__notice {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  padding: 20px;
+  border: 0;
+  border-bottom: 1px solid var(--admin-border);
+  background: transparent;
+  color: var(--admin-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.adminContent__notice > span:nth-child(2) {
+  display: grid;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+}
+.adminContent__notice strong {
+  font-size: 14px;
+}
+.adminContent__notice time,
+.adminContent__notice span > span {
+  color: var(--admin-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.adminContent__notice[data-unread="true"] {
+  background: var(--admin-surface-subtle);
+  box-shadow: inset 3px 0 var(--admin-solid);
+}
+.adminContent__notice > i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--admin-solid);
+  flex: 0 0 auto;
+}
+@media (max-width: 760px) {
+  .adminContent__overview {
+    grid-template-columns: 1fr;
+  }
+  .adminContent__overviewRow {
+    align-items: start;
+  }
+  .adminContent__overviewRow time {
+    text-align: right;
+  }
+  .adminContent__notices > header {
+    flex-wrap: wrap;
+  }
+}
+
+.adminEventEditor__schedule {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid var(--admin-border);
+  p {
+    margin: 10px 0 0;
+    color: var(--admin-muted);
+    font-size: 13px;
+  }
+}
+.adminEventEditor__items {
+  display: grid;
+  gap: 16px;
+}
+.adminEventEditor__item {
+  padding: 20px;
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+    h3 {
+      margin: 0;
+    }
+  }
+}
+.adminEventEditor__add {
+  display: inline-flex;
+  justify-self: start;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid var(--admin-border);
+  border-radius: 9px;
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  &:hover:not(:disabled) {
+    background: var(--admin-surface-subtle);
+    border-color: var(--admin-muted);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  svg {
+    font-size: 18px;
+  }
+}

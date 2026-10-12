@@ -1,0 +1,386 @@
+query AdminContentCatalog(
+  $input: AdminDirectoryInput!
+  $courses: Boolean!
+  $events: Boolean!
+  $exams: Boolean!
+) {
+  adminCourseCatalog(input: $input) @include(if: $courses) {
+    page
+    pageCount
+    totalCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      updatedAt
+      registrations
+      versions {
+        id
+        slug
+        language
+        status
+        category
+        accent
+        symbol
+        featured
+        position
+        heroVariant
+        imagePath
+        coverMediaId
+        posterImagePath
+        title
+        description
+        audience
+        comparisonTitle
+        duration
+        focus
+        formatLabel
+        imageAlt
+        level
+        posterAlt
+        posterTitle
+        prerequisites
+        schedule
+        overview
+        highlights
+        outcomes
+        curriculum
+        tracks {
+          title
+          summary
+          level
+          highlights
+        }
+      }
+    }
+  }
+  adminEventCatalog(input: $input) @include(if: $events) {
+    page
+    pageCount
+    totalCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      updatedAt
+      registrations
+      versions {
+        id
+        slug
+        language
+        status
+        timelineStatus
+        position
+        coverMediaId
+        imagePath
+        startsAt
+        endsAt
+        location
+        capacity
+        title
+        description
+        imageAlt
+        formatLabel
+        dateLabel
+        timeLabel
+        durationLabel
+        locationLabel
+        topics
+        overview
+        audience
+        takeaways
+        practicalInfo
+        programme {
+          timeLabel
+          title
+          description
+        }
+        faq {
+          question
+          answer
+        }
+      }
+    }
+  }
+  adminExamCatalog(input: $input) @include(if: $exams) {
+    page
+    pageCount
+    totalCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      key
+      revision
+      position
+      status
+      registrations
+      translations {
+        language
+        title
+        description
+        formatLabel
+        duration
+        level
+        highlights
+      }
+      sessions {
+        id
+        offeringId
+        revision
+        startsAt
+        capacity
+        active
+        registrations
+      }
+    }
+  }
+}
+mutation AdminRemoveCourse($input: AdminRemoveCourseInput!) {
+  adminRemoveCourse(input: $input)
+}
+mutation AdminSaveCourseContent($input: AdminSaveCourseContentInput!) {
+  adminSaveCourseContent(input: $input)
+}
+mutation AdminSaveEventContent($input: AdminSaveEventContentInput!) {
+  adminSaveEventContent(input: $input)
+}
+mutation AdminContentCourseStatus($input: SetPublicCourseStatusInput!) {
+  setCourseStatus(input: $input) {
+    course {
+      id
+      status
+    }
+  }
+}
+mutation AdminContentEventStatus($input: SetPublicEventStatusInput!) {
+  setEventStatus(input: $input) {
+    event {
+      id
+      status
+    }
+  }
+}
+mutation AdminSaveExam($input: AdminSaveExamInput!) {
+  adminSaveExam(input: $input)
+}
+mutation AdminRemoveExam($input: AdminRemoveExamInput!) {
+  adminRemoveExam(input: $input)
+}
+mutation AdminRemoveExam($input: AdminRemoveExamInput!) {
+  adminRemoveExam(input: $input)
+}
+mutation AdminSaveExamSession($input: AdminSaveExamSessionInput!) {
+  adminSaveExamSession(input: $input)
+}
+query AdminExamSessionDirectory($input: AdminDirectoryInput!, $language: Language!) {
+  adminExamSessionDirectory(input: $input, language: $language) {
+    page
+    pageCount
+    totalCount
+    metrics {
+      key
+      value
+    }
+    offerings {
+      id
+      label
+    }
+    nodes {
+      id
+      offeringId
+      revision
+      title
+      startsAt
+      capacity
+      active
+      registrations
+    }
+  }
+}
+
+query AdminRequestDirectory($input: AdminDirectoryInput!, $language: Language!) {
+  adminRequestDirectory(input: $input, language: $language) {
+    page
+    pageCount
+    totalCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      kind
+      name
+      email
+      phone
+      subject
+      message
+      status
+      reviewNote
+      createdAt
+      updatedAt
+      subjectName
+      subjectId
+      currentLevel
+      participantCount
+      sessionAt
+    }
+  }
+}
+mutation AdminReviewRequest($input: AdminReviewRequestInput!) {
+  adminReviewRequest(input: $input)
+}
+mutation AdminRemoveRequest($input: AdminRemoveRequestInput!) {
+  adminRemoveRequest(input: $input)
+}
+
+query AdminNoticeDirectory($input: AdminDirectoryInput!) {
+  adminNoticeDirectory(input: $input) {
+    page
+    pageCount
+    totalCount
+    unreadCount
+    allCount
+    kinds
+    nodes {
+      id
+      kind
+      title
+      body
+      createdAt
+      readAt
+      taskId
+      attemptId
+      groupId
+      studentId
+    }
+  }
+}
+query AdminOverview($language: Language!) {
+  adminOverview(language: $language) {
+    metrics {
+      key
+      value
+    }
+    lessons {
+      id
+      title
+      subtitle
+      href
+      date
+    }
+    requests {
+      id
+      title
+      subtitle
+      href
+      date
+    }
+    upcoming {
+      id
+      title
+      subtitle
+      href
+      date
+    }
+  }
+}
+query AdminPublicContentDetail(
+  $slug: String!
+  $language: Language!
+  $course: Boolean!
+  $event: Boolean!
+) {
+  adminCourse(slug: $slug, language: $language) @include(if: $course) {
+    id
+    slug
+    title
+    description
+    status
+    category
+    accent
+    symbol
+    featured
+    position
+    heroVariant
+    imagePath
+    coverMediaId
+    posterImagePath
+    audience
+    comparisonTitle
+    duration
+    focus
+    formatLabel
+    imageAlt
+    level
+    posterAlt
+    posterTitle
+    prerequisites
+    schedule
+    overview
+    highlights
+    outcomes
+    curriculum
+    tracks {
+      title
+      summary
+      level
+      highlights
+    }
+  }
+  adminEvent(slug: $slug, language: $language) @include(if: $event) {
+    id
+    slug
+    title
+    description
+    status
+    timelineStatus
+    position
+    imagePath
+    startsAt
+    endsAt
+    location
+    capacity
+    imageAlt
+    formatLabel
+    dateLabel
+    timeLabel
+    durationLabel
+    locationLabel
+    topics
+    overview
+    audience
+    takeaways
+    practicalInfo
+    programme {
+      timeLabel
+      title
+      description
+    }
+    faq {
+      question
+      answer
+    }
+  }
+}
+
+mutation AdminRemoveEvent($input: AdminRemoveEventInput!) {
+  adminRemoveEvent(input: $input)
+}
+query AdminEventCover($eventId: String!) {
+  adminEventCover(eventId: $eventId) {
+    url
+  }
+}
+query PublicEventCover($eventId: String!) {
+  publicEventCover(eventId: $eventId) {
+    url
+  }
+}
