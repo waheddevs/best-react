@@ -3,10 +3,7 @@
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import KeyboardDoubleArrowLeftRounded from "@mui/icons-material/KeyboardDoubleArrowLeftRounded";
 import KeyboardDoubleArrowRightRounded from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
-import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import MenuOpenRounded from "@mui/icons-material/MenuOpenRounded";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
@@ -19,7 +16,8 @@ import { useBestApiConnection } from "@/hooks/useBestApiConnection";
 import { getWorkspaceInitials } from "@/lib/WorkspaceIdentity";
 import type { AdminWorkspaceCopy } from "@/types/admin/AdminWorkspace";
 
-import { AdminCommandSearch } from "./AdminCommandSearch";
+import { AdminProfileCard } from "./AdminProfileCard";
+import { AdminThemeToggle } from "./AdminThemeToggle";
 import { AdminWorkspaceNavigation } from "./AdminWorkspaceNavigation";
 
 type AdminWorkspaceShellProps = {
@@ -90,29 +88,28 @@ export function AdminWorkspaceShell({
         {copy.common.skipToContentLabel}
       </a>
       <aside className="adminShell__sidebar">
-        <Link className="adminShell__brand" href={`/${locale}/admin`}>
-          <span className="adminShell__logoTile">
-            <Image alt="BEST LC" height={34} src="/icons/logo.svg" width={34} />
-          </span>
-          <span className="adminShell__brandCopy">
-            <strong>BEST LC</strong>
-            <small>{copy.common.workspaceLabel}</small>
-          </span>
-        </Link>
-        <button
-          aria-expanded={!sidebarCollapsed}
-          aria-label={sidebarCollapsed ? copy.common.sidebarExpand : copy.common.sidebarCollapse}
-          className="adminShell__collapseButton"
-          onClick={handleSidebarToggle}
-          title={sidebarCollapsed ? copy.common.sidebarExpand : copy.common.sidebarCollapse}
-          type="button"
-        >
-          {sidebarCollapsed ? (
-            <KeyboardDoubleArrowRightRounded />
-          ) : (
-            <KeyboardDoubleArrowLeftRounded />
-          )}
-        </button>
+        <div className="adminShell__brandRow">
+          <Link className="adminShell__brand" href={`/${locale}/admin`}>
+            <span aria-hidden="true" className="adminShell__logoMark" />
+            <span className="adminShell__brandCopy">
+              <strong>BEST LC</strong>
+            </span>
+          </Link>
+          <button
+            aria-expanded={!sidebarCollapsed}
+            aria-label={sidebarCollapsed ? copy.common.sidebarExpand : copy.common.sidebarCollapse}
+            className="adminShell__collapseButton"
+            onClick={handleSidebarToggle}
+            title={sidebarCollapsed ? copy.common.sidebarExpand : copy.common.sidebarCollapse}
+            type="button"
+          >
+            {sidebarCollapsed ? (
+              <KeyboardDoubleArrowRightRounded />
+            ) : (
+              <KeyboardDoubleArrowLeftRounded />
+            )}
+          </button>
+        </div>
         <nav aria-label={copy.common.workspaceLabel} className="adminShell__navigation">
           <AdminWorkspaceNavigation
             copy={copy.navigation}
@@ -121,66 +118,53 @@ export function AdminWorkspaceShell({
             onNavigate={handleNavigation}
           />
         </nav>
-        <div className="adminShell__environment">
-          <span />
-          <div>
-            <strong>
-              {connectionState === "connected"
-                ? copy.common.connectedNotice
-                : copy.common.unavailableNotice}
-            </strong>
-            <small>{copy.common.stackLabel}</small>
-          </div>
+        <div className="adminShell__profileSlot">
+          <AdminProfileCard
+            adminName={adminName}
+            initials={adminInitials}
+            locale={locale}
+            logoutCopy={copy.common}
+          />
         </div>
       </aside>
       <div className="adminShell__workspace">
-        <header className="adminShell__topbar">
-          <button
-            aria-controls="admin-mobile-navigation"
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? copy.common.menuClose : copy.common.menuOpen}
-            className="adminShell__menuButton"
-            onClick={handleMenuToggle}
-            ref={menuButtonRef}
-            type="button"
-          >
-            {menuOpen ? <CloseRounded /> : <MenuOpenRounded />}
-          </button>
-          <div className="adminShell__breadcrumb">
-            <span>{copy.common.workspaceLabel}</span>
-            <strong>{adminName}</strong>
-          </div>
-          <AdminCommandSearch
-            emptyLabel={copy.common.emptyLabel}
-            items={navigationItems}
-            label={copy.common.searchLabel}
-            navigationCopy={copy.navigation}
-            placeholder={copy.common.searchPlaceholder}
-          />
-          <div className="adminShell__topActions">
-            <WorkspaceLocaleNavigation
-              className="adminShell__locales"
-              label={copy.common.languageLabel}
-              onNavigate={handleNavigation}
-              options={localeOptions}
-            />
-            <WorkspaceNotificationBell
-              connected={connectionState === "connected"}
-              locale={locale}
-              role="ADMIN"
-            />
+        <div className="adminShell__topbarLayer">
+          <header className="adminShell__topbar">
             <button
-              aria-label={copy.common.logoutLabel}
-              className="adminShell__signOut"
-              onClick={() => void signOut({ redirectTo: `/${locale}/login` })}
-              title={copy.common.logoutLabel}
+              aria-controls="admin-mobile-navigation"
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? copy.common.menuClose : copy.common.menuOpen}
+              className="adminShell__menuButton"
+              onClick={handleMenuToggle}
+              ref={menuButtonRef}
               type="button"
             >
-              <LogoutRounded />
+              {menuOpen ? <CloseRounded /> : <MenuOpenRounded />}
             </button>
-            <span>{adminInitials}</span>
-          </div>
-        </header>
+            <div className="adminShell__breadcrumb">
+              <span>{copy.common.welcomeLabel}</span>
+              <strong>{adminName}</strong>
+            </div>
+            <div className="adminShell__topActions">
+              <WorkspaceLocaleNavigation
+                className="adminShell__locales"
+                label={copy.common.languageLabel}
+                onNavigate={handleNavigation}
+                options={localeOptions}
+              />
+              <AdminThemeToggle
+                darkModeLabel={copy.common.darkModeLabel}
+                lightModeLabel={copy.common.lightModeLabel}
+              />
+              <WorkspaceNotificationBell
+                connected={connectionState === "connected"}
+                locale={locale}
+                role="ADMIN"
+              />
+              <span>{adminInitials}</span>
+            </div>
+          </header>
+        </div>
         {menuOpen ? (
           <>
             <button
@@ -212,6 +196,13 @@ export function AdminWorkspaceShell({
                   onNavigate={handleNavigation}
                 />
               </nav>
+              <AdminProfileCard
+                adminName={adminName}
+                initials={adminInitials}
+                locale={locale}
+                logoutCopy={copy.common}
+                onNavigate={handleNavigation}
+              />
             </div>
           </>
         ) : null}

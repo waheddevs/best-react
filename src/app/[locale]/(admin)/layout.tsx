@@ -10,6 +10,7 @@ import { AdminWorkspaceShell } from "@/features/admin/layout/AdminWorkspaceShell
 import { getDashboardAccessState } from "@/lib/DashboardAccess";
 import { AdminThemeProvider } from "@/theme/AdminThemeProvider";
 
+import "@fontsource-variable/inter";
 import "@/scss/admin/main.scss";
 
 export const metadata: Metadata = { robots: { follow: false, index: false } };
