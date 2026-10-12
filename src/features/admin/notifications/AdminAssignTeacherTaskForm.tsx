@@ -1,5 +1,6 @@
 "use client";
 
+import { AdminRegistrySelect } from "../operations/AdminRegistrySelect";
 import { useState, type FormEvent } from "react";
 
 import type { Locale } from "@/config/Locales";
@@ -55,20 +56,14 @@ export function AdminAssignTeacherTaskForm({ locale, teachers }: AdminAssignTeac
         <p>{copy.noTeachers}</p>
       ) : (
         <form onSubmit={(event) => void handleSubmit(event)}>
-          <label>
-            <span>{copy.teacher}</span>
-            <select
-              onChange={(event) => setTeacherId(event.target.value)}
-              required
-              value={teacherId}
-            >
-              {teachers.map((teacher) => (
-                <option key={teacher.id} value={teacher.id}>
-                  {teacher.name}
-                </option>
-              ))}
-            </select>
-          </label>
+          <AdminRegistrySelect
+            label={copy.teacher}
+            value={teacherId}
+            options={teachers.map((t) => ({ id: t.id, label: t.name }))}
+            onChange={setTeacherId}
+            wide
+            disabled={pending}
+          />
           <label>
             <span>{copy.title}</span>
             <input
@@ -79,19 +74,21 @@ export function AdminAssignTeacherTaskForm({ locale, teachers }: AdminAssignTeac
               value={title}
             />
           </label>
-          <label>
-            <span>{copy.kind}</span>
-            <select
-              onChange={(event) => setKind(event.target.value as TeacherTaskKind)}
-              value={kind}
-            >
-              {(["ADMINISTRATIVE", "FOLLOW_UP", "PREPARATION"] as const).map((value) => (
-                <option key={value} value={value}>
-                  {copy.kinds[value]}
-                </option>
-              ))}
-            </select>
-          </label>
+          <AdminRegistrySelect
+            label={copy.kind}
+            value={kind}
+            options={(["ADMINISTRATIVE", "FOLLOW_UP", "PREPARATION"] as const).map((id) => ({
+              id,
+              label: copy.kinds[id],
+            }))}
+            onChange={(v) => {
+              const next = (["ADMINISTRATIVE", "FOLLOW_UP", "PREPARATION"] as const).find(
+                (k) => k === v,
+              );
+              if (next) setKind(next);
+            }}
+            disabled={pending}
+          />
           <label>
             <span>{copy.dueAt}</span>
             <input

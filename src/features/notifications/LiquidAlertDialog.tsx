@@ -59,7 +59,7 @@ export function LiquidAlertDialog({ options, onCancel, onConfirm }: LiquidAlertD
       slotProps={{
         backdrop: { className: "publicShared__notificationDialogBackdrop" },
         paper: {
-          className: `publicShared__notificationDialog ${toneClassNames[options.tone]}${options.brand === "student" || options.brand === "student-reading" || options.brand === "student-writing" || options.brand === "student-speaking" ? " publicShared__notificationDialogStudent" : ""}${options.brand === "student-reading" ? " studentReadingWarning" : ""}${options.brand === "student-writing" ? " studentWritingWarning" : ""}${options.brand === "student-speaking" ? " studentSpeakingWarning" : ""}`,
+          className: `publicShared__notificationDialog ${toneClassNames[options.tone]}${options.brand === "admin" ? " publicShared__notificationDialogAdmin" : ""}${options.brand === "student" || options.brand === "student-reading" || options.brand === "student-writing" || options.brand === "student-speaking" ? " publicShared__notificationDialogStudent" : ""}${options.brand === "student-reading" ? " studentReadingWarning" : ""}${options.brand === "student-writing" ? " studentWritingWarning" : ""}${options.brand === "student-speaking" ? " studentSpeakingWarning" : ""}`,
         },
       }}
     >

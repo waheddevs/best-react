@@ -1,41 +1,13 @@
-import { notFound } from "next/navigation";
-
+import type { Metadata } from "next";
 import { isLocale } from "@/config/Locales";
-import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
-import { getWorkspaceNotificationsCopy } from "@/dictionaries/WorkspaceNotifications";
-import { loadWorkspaceNotifications } from "@/features/notifications/WorkspaceNotificationActions";
-import { WorkspaceNotificationsList } from "@/features/notifications/WorkspaceNotificationsList";
-import { isDashboardPreviewEnabled } from "@/lib/DashboardAccess";
-
-type PageProps = { params: Promise<{ locale: string }> };
-export default async function AdminNotificationsPage({ params }: PageProps) {
+import { createAdminMetadata } from "@/features/admin/layout/AdminMetadata";
+import { AdminContentRoute } from "@/features/admin/content/AdminContentRoute";
+type Props = { params: Promise<{ locale: string }> };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-  const connected = !isDashboardPreviewEnabled();
-  const adminCopy = getAdminWorkspaceCopy(locale);
-  const section = adminCopy.sections.notifications;
-  const initial = connected
-    ? await loadWorkspaceNotifications("ADMIN", 20).catch(() => null)
-    : null;
-  return (
-    <article className="adminWorkspace">
-      <header className="adminWorkspace__header">
-        <div>
-          <span>{section.eyebrow}</span>
-          <h1>{getWorkspaceNotificationsCopy(locale).title}</h1>
-          <p>{section.description}</p>
-        </div>
-        <div className="adminWorkspace__health">
-          <i />
-          <span>{adminCopy.common.connectedNotice}</span>
-        </div>
-      </header>
-      <WorkspaceNotificationsList
-        connected={connected}
-        initial={initial}
-        locale={locale}
-        role="ADMIN"
-      />
-    </article>
-  );
+  return isLocale(locale) ? createAdminMetadata(locale, "notifications") : {};
+}
+export default async function Page({ params }: Props) {
+  const { locale } = await params;
+  return <AdminContentRoute locale={locale} section="notifications" />;
 }
