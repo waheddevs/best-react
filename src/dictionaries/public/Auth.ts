@@ -119,7 +119,7 @@ const uz: AuthCopy = {
   login: {
     description: "Admin bergan hisob ma’lumotlari bilan tizimga kiring.",
     eyebrow: "XUSH KELIBSIZ",
-    metadataDescription: "BEST LC hisobingizga email, parol va tasdiqlash kodi bilan kiring.",
+    metadataDescription: "BEST LC hisobingizga email va parol bilan kiring.",
     metadataTitle: "Kirish",
     submitLabel: "Davom etish",
     title: "Kirish",
@@ -299,7 +299,7 @@ const en: AuthCopy = {
   login: {
     description: "Sign in with the account details issued by your administrator.",
     eyebrow: "WELCOME BACK",
-    metadataDescription: "Access BEST LC with your email, password, and verification code.",
+    metadataDescription: "Access BEST LC with your email and password.",
     metadataTitle: "Login",
     submitLabel: "Continue",
     title: "Log in",

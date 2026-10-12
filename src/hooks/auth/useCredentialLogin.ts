@@ -14,9 +14,9 @@ import {
 import type { Locale } from "@/config/Locales";
 import type { AuthCopy } from "@/dictionaries/public/Auth";
 import {
-  BeginCredentialLoginDocument,
-  type BeginCredentialLoginMutation,
-  type BeginCredentialLoginMutationVariables,
+  CredentialLoginDocument,
+  type CredentialLoginMutation,
+  type CredentialLoginMutationVariables,
   ResendCredentialLoginCodeDocument,
   type ResendCredentialLoginCodeMutation,
   type ResendCredentialLoginCodeMutationVariables,
@@ -24,6 +24,7 @@ import {
   type VerifyCredentialLoginMutation,
   type VerifyCredentialLoginMutationVariables,
 } from "@/gql/graphql";
+import { isValidLoginEmail } from "@/lib/auth/LoginEmail";
 import { executePublicApi, PublicApiError } from "@/lib/PublicApi";
 import {
   getAuthRoleFromBackend,
@@ -135,7 +136,7 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
     if (!values.lastName.trim()) nextErrors.lastName = copy.errors.lastNameRequired;
     if (!values.email.trim()) {
       nextErrors.email = copy.errors.emailRequired;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+    } else if (!isValidLoginEmail(values.email, process.env.NODE_ENV !== "production")) {
       nextErrors.email = copy.errors.invalidEmail;
     }
     if (!values.password) nextErrors.password = copy.errors.passwordRequired;
@@ -199,6 +200,41 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
     codeInputRefs.current[Math.min(index + digits.length, 5)]?.focus();
   };
 
+  const completeLogin = async (
+    session: VerifyCredentialLoginMutation["verifyCredentialLogin"],
+    pendingWindow: Window | null,
+  ) => {
+    const authenticatedRole = getAuthRoleFromBackend(session.user.role);
+    if (!authenticatedRole || authenticatedRole !== selectedRole) {
+      pendingWindow?.close();
+      setErrors({ form: copy.errors.generic });
+      return;
+    }
+    const result = await signIn("credentials", {
+      accessToken: session.accessToken,
+      expiresInSeconds: String(session.expiresInSeconds),
+      refreshExpiresAt: session.refreshExpiresAt,
+      refreshToken: session.refreshToken,
+      redirect: false,
+    });
+    if (result?.error) {
+      pendingWindow?.close();
+      setErrors({ form: copy.errors.session });
+      return;
+    }
+    const href = `/${locale}/${authenticatedRole}`;
+    setValues(initialValues);
+    setDashboardHref(href);
+    setStep("complete");
+    if (pendingWindow && !pendingWindow.closed) {
+      try {
+        pendingWindow.location.replace(new URL(href, window.location.origin).href);
+      } catch {
+        pendingWindow.close();
+      }
+    }
+  };
+
   const handleCredentialSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -208,14 +244,15 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
       focusFirstCredentialError(form, validationErrors);
       return;
     }
+    const pendingWindow = openPendingDashboard(copy, locale);
     setIsSubmitting(true);
     setErrors({});
     try {
       const data = await executePublicApi<
-        BeginCredentialLoginMutation,
-        BeginCredentialLoginMutationVariables
+        CredentialLoginMutation,
+        CredentialLoginMutationVariables
       >(
-        BeginCredentialLoginDocument,
+        CredentialLoginDocument,
         {
           input: {
             email: values.email.trim(),
@@ -228,11 +265,20 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
         },
         { cache: "no-store" },
       );
-      setChallenge(data.beginCredentialLogin);
       setValues((current) => ({ ...current, code: "", password: "" }));
-      setNow(Date.now());
-      setStep("verification");
+      if (data.credentialLogin.session) {
+        await completeLogin(data.credentialLogin.session, pendingWindow);
+      } else if (data.credentialLogin.challenge) {
+        pendingWindow?.close();
+        setChallenge(data.credentialLogin.challenge);
+        setNow(Date.now());
+        setStep("verification");
+      } else {
+        pendingWindow?.close();
+        setErrors({ form: copy.errors.generic });
+      }
     } catch (error) {
+      pendingWindow?.close();
       const nextErrors = credentialLoginErrors(error, copy);
       setErrors(nextErrors);
       focusFirstCredentialError(form, nextErrors);
@@ -259,35 +305,7 @@ export function useCredentialLogin(copy: AuthCopy, locale: Locale, selectedRole:
         { input: { challengeId: challenge.challengeId, code: values.code } },
         { cache: "no-store" },
       );
-      const authenticatedRole = getAuthRoleFromBackend(data.verifyCredentialLogin.user.role);
-      if (!authenticatedRole || authenticatedRole !== selectedRole) {
-        pendingWindow?.close();
-        setErrors({ form: copy.errors.generic });
-        return;
-      }
-      const result = await signIn("credentials", {
-        accessToken: data.verifyCredentialLogin.accessToken,
-        expiresInSeconds: String(data.verifyCredentialLogin.expiresInSeconds),
-        refreshExpiresAt: data.verifyCredentialLogin.refreshExpiresAt,
-        refreshToken: data.verifyCredentialLogin.refreshToken,
-        redirect: false,
-      });
-      if (result?.error) {
-        pendingWindow?.close();
-        setErrors({ form: copy.errors.session });
-        return;
-      }
-      const href = `/${locale}/${authenticatedRole}`;
-      setValues(initialValues);
-      setDashboardHref(href);
-      setStep("complete");
-      if (pendingWindow && !pendingWindow.closed) {
-        try {
-          pendingWindow.location.replace(new URL(href, window.location.origin).href);
-        } catch {
-          pendingWindow.close();
-        }
-      }
+      await completeLogin(data.verifyCredentialLogin, pendingWindow);
     } catch (error) {
       pendingWindow?.close();
       setErrors(

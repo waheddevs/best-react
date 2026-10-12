@@ -57,3 +57,25 @@ mutation AdminProvisionUser($input: AdminProvisionUserInput!) {
     }
   }
 }
+
+mutation CredentialLogin($input: BeginCredentialLoginInput!) {
+  credentialLogin(input: $input) {
+    challenge {
+      challengeId
+      maskedEmail
+      expiresAt
+      resendAvailableAt
+    }
+    session {
+      accessToken
+      expiresInSeconds
+      refreshToken
+      refreshExpiresAt
+      user {
+        id
+        displayName
+        role
+      }
+    }
+  }
+}
