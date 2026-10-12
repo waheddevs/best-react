@@ -1,29 +1,13 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-
 import { isLocale } from "@/config/Locales";
-import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
-import { AdminDashboard } from "@/features/admin/dashboard/AdminDashboard";
 import { createAdminMetadata } from "@/features/admin/layout/AdminMetadata";
-import { loadAdminWorkspaceData } from "@/lib/admin/AdminWorkspaceData";
-
-type PageProps = { params: Promise<{ locale: string }> };
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+import { AdminContentRoute } from "@/features/admin/content/AdminContentRoute";
+type Props = { params: Promise<{ locale: string }> };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   return isLocale(locale) ? createAdminMetadata(locale, "dashboard") : {};
 }
-
-export default async function AdminPage({ params }: PageProps) {
+export default async function Page({ params }: Props) {
   const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-  const copy = getAdminWorkspaceCopy(locale);
-  const data = await loadAdminWorkspaceData("dashboard", locale);
-  return (
-    <AdminDashboard
-      common={copy.common}
-      locale={locale}
-      section={{ ...copy.sections.dashboard, ...data, metrics: data.metrics ?? [] }}
-    />
-  );
+  return <AdminContentRoute locale={locale} section="overview" />;
 }

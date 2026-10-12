@@ -28,13 +28,8 @@ export function AdminDashboard({ common, locale, section }: AdminDashboardProps)
     <article className="adminWorkspace">
       <header className="adminWorkspace__header">
         <div>
-          <span>{section.eyebrow}</span>
           <h1>{section.title}</h1>
           <p>{section.description}</p>
-        </div>
-        <div className="adminWorkspace__health">
-          <i />
-          <span>{common.connectedNotice}</span>
         </div>
       </header>
 
