@@ -930,6 +930,134 @@ table.adminRegistry__table td {
   gap: 12px;
   min-width: 0;
 }
+.adminGroupTime {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  color: var(--admin-muted);
+  font-size: 11px;
+  font-weight: 650;
+}
+.adminGroupTime__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--admin-border);
+  border-radius: 9px;
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+
+  svg {
+    color: var(--admin-muted);
+    font-size: 18px;
+  }
+  &:hover:not(:disabled),
+  &[aria-expanded="true"] {
+    border-color: var(--admin-accent-text);
+    background: var(--admin-surface-subtle);
+  }
+}
+.adminGroupTime__menu.MuiPaper-root {
+  --admin-surface: #fff;
+  --admin-surface-subtle: #f5f5f6;
+  --admin-border: #e6e7ea;
+  --admin-text: #171922;
+  --admin-muted: #747982;
+  --admin-solid: #0b0d24;
+  --admin-on-solid: #fff;
+  width: 208px;
+  max-width: calc(100vw - 32px);
+  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  background: var(--admin-surface);
+  background-image: none;
+  color: var(--admin-text);
+  box-shadow: 0 14px 34px rgb(17 28 47 / 13%);
+  font-family: "Inter Variable", Inter, sans-serif;
+
+  :focus-visible {
+    outline: 2px solid var(--admin-solid);
+    outline-offset: -2px;
+  }
+}
+.adminGroupTime__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+
+  > div > span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--admin-muted);
+    font-size: 11px;
+    font-weight: 650;
+    text-align: center;
+  }
+  .adminGroupTime__list.MuiList-root {
+    position: relative;
+    height: 160px;
+    max-height: max(64px, calc(100dvh - 160px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--admin-border) transparent;
+    padding: 0 4px;
+  }
+  .MuiMenuItem-root {
+    min-height: 32px;
+    justify-content: center;
+    margin-bottom: 0;
+    border-radius: 7px;
+    color: var(--admin-text);
+    font: inherit;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    transition: background-color 220ms ease;
+    &:hover,
+    &.Mui-focusVisible {
+      background: var(--admin-surface-subtle);
+    }
+    &.Mui-selected {
+      background: var(--admin-solid);
+      color: var(--admin-on-solid);
+    }
+    &.Mui-selected:hover {
+      background: color-mix(in srgb, var(--admin-solid) 88%, var(--admin-surface));
+    }
+  }
+}
+body[data-admin-theme="dark"] .adminGroupTime__menu.MuiPaper-root {
+  --admin-surface: #191c23;
+  --admin-surface-subtle: #20242c;
+  --admin-border: #303641;
+  --admin-text: #f1f3f5;
+  --admin-muted: #a0a7b2;
+  --admin-solid: #eef0ff;
+  --admin-on-solid: #111318;
+  box-shadow: 0 18px 45px rgb(0 0 0 / 34%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .adminRegistry__creation
+    .adminRegistry__editor:is([data-section="groups"], [data-section="courses"])
+    .adminRegistry__primary {
+    transition: none;
+    &:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+  .adminRegistry__creation button,
+  .adminGroupTime__columns .MuiMenuItem-root {
+    transition: none;
+  }
+}
 .adminRegistry__days {
   display: flex;
   flex-wrap: wrap;
