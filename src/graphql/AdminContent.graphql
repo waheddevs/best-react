@@ -269,21 +269,7 @@ query AdminOverview($language: Language!) {
       key
       value
     }
-    lessons {
-      id
-      title
-      subtitle
-      href
-      date
-    }
     requests {
-      id
-      title
-      subtitle
-      href
-      date
-    }
-    upcoming {
       id
       title
       subtitle

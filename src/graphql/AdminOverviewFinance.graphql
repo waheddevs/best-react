@@ -1,0 +1,13 @@
+query AdminOverviewFinance($input: AdminDirectoryInput!) {
+  adminSalaryReport(input: $input) {
+    receivedUzs
+    centerUzs
+    teacherUzs
+  }
+  adminPaymentDirectory(input: { page: 1, pageSize: 1 }) {
+    metrics {
+      key
+      value
+    }
+  }
+}

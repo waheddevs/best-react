@@ -25,5 +25,7 @@
 @use "./pages/_message-filters.scss";
 @use "./pages/_message-details.scss";
 
+@use "./pages/overview";
+@use "./pages/overview-finance";
 @use "./cards";
 @use "./metric-cards";

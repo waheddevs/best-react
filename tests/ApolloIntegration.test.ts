@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 
 import { ApolloClient, gql, HttpLink, InMemoryCache } from "@apollo/client";
 
@@ -81,6 +82,26 @@ test("Apollo preserves backend authorization for Teacher operations", async () =
       fetchPolicy: "no-cache",
       query: TeacherGroupsDocument,
       variables: { after: null, first: 1 },
+    }),
+    (error: unknown) =>
+      error instanceof Error &&
+      "errors" in error &&
+      Array.isArray(error.errors) &&
+      error.errors.some(
+        (item: { extensions?: { code?: string } }) => item.extensions?.code === "UNAUTHENTICATED",
+      ),
+  );
+});
+
+test("overview finance totals require an authenticated Admin", async () => {
+  const query = gql(
+    readFileSync(new URL("../src/graphql/AdminOverviewFinance.graphql", import.meta.url), "utf8"),
+  );
+  await assert.rejects(
+    integrationClient().query({
+      query,
+      variables: { input: { page: 1, pageSize: 1, month: "2026-09" } },
+      fetchPolicy: "no-cache",
     }),
     (error: unknown) =>
       error instanceof Error &&
