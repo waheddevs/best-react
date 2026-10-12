@@ -1,0 +1,202 @@
+query AdminOperations(
+  $input: AdminDirectoryInput!
+  $groups: Boolean!
+  $schedule: Boolean!
+  $payments: Boolean!
+  $salary: Boolean!
+) {
+  adminDirectoryOptions {
+    teachers {
+      id
+      label
+      status
+    }
+    groups {
+      id
+      label
+      status
+    }
+    students {
+      id
+      label
+      status
+    }
+  }
+  adminGroupDirectory(input: $input) @include(if: $groups) {
+    totalCount
+    page
+    pageCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      name
+      slug
+      teacherId
+      teacherName
+      category
+      room
+      scheduleDays
+      startsAtMinutes
+      endsAtMinutes
+      monthlyTuitionUzs
+      status
+      activeStudentCount
+      updatedAt
+    }
+  }
+  adminLessonDirectory(input: $input) @include(if: $schedule) {
+    totalCount
+    page
+    pageCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      groupId
+      groupName
+      teacherId
+      teacherName
+      room
+      startsAt
+      endsAt
+      status
+      studentCount
+      hasConflict
+      updatedAt
+      translations {
+        language
+        title
+        summary
+      }
+    }
+  }
+  adminPaymentDirectory(input: $input) @include(if: $payments) {
+    totalCount
+    page
+    pageCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      studentId
+      studentName
+      groupName
+      groupId
+      month
+      dueDate
+      amountUzs
+      paidUzs
+      balanceUzs
+      adjustmentUzs
+      status
+      events {
+        id
+        kind
+        amountUzs
+        date
+        note
+      }
+    }
+  }
+  adminSalaryDirectory(input: $input) @include(if: $salary) {
+    totalCount
+    page
+    pageCount
+    metrics {
+      key
+      value
+    }
+    nodes {
+      id
+      teacherId
+      teacherName
+      month
+      baseUzs
+      bonusUzs
+      deductionUzs
+      netUzs
+      note
+      status
+      version
+      groupCount
+      studentCount
+    }
+  }
+}
+
+query AdminLedgerDetail($id: ID!) {
+  adminPaymentDetail(id: $id) {
+    id
+    studentId
+    studentName
+    groupName
+    groupId
+    month
+    dueDate
+    amountUzs
+    paidUzs
+    balanceUzs
+    adjustmentUzs
+    status
+    events {
+      id
+      kind
+      amountUzs
+      date
+      note
+    }
+  }
+}
+
+mutation AdminSaveGroup($input: AdminSaveGroupInput!) {
+  adminSaveGroup(input: $input) {
+    id
+    updatedAt
+    status
+  }
+}
+mutation AdminSetGroupStatus($groupId: ID!, $status: String!) {
+  adminSetGroupStatus(groupId: $groupId, status: $status) {
+    id
+    status
+  }
+}
+mutation AdminSaveLesson($input: AdminSaveLessonInput!) {
+  adminSaveLesson(input: $input) {
+    id
+    updatedAt
+    status
+  }
+}
+mutation AdminSetLessonStatus($lessonId: ID!, $status: String!, $reason: String!) {
+  adminSetLessonStatus(lessonId: $lessonId, status: $status, reason: $reason) {
+    id
+    status
+  }
+}
+mutation AdminSaveSalary($input: AdminSaveSalaryInput!) {
+  adminSaveSalary(input: $input) {
+    id
+    version
+    status
+  }
+}
+mutation AdminFinalizeSalary($id: ID!, $version: Int!) {
+  adminFinalizeSalary(id: $id, version: $version) {
+    id
+    version
+    status
+  }
+}
+mutation AdminChangePassword($input: ChangeMyPasswordInput!) {
+  changeMyPassword(input: $input) {
+    changed
+  }
+}

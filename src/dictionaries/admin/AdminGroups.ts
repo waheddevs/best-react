@@ -3,6 +3,7 @@ import type { AdminGroupsCopy } from "@/types/admin/AdminGroups";
 
 const copy: Record<Locale, AdminGroupsCopy> = {
   uz: {
+    backLabel: "Orqaga",
     availableSeatsLabel: "Bo‘sh joylar",
     branchLabel: "Filial",
     capacityLabel: "Sig‘im",
@@ -16,6 +17,7 @@ const copy: Record<Locale, AdminGroupsCopy> = {
     totalLearnersLabel: "Faol o‘quvchilar",
   },
   ru: {
+    backLabel: "Назад",
     availableSeatsLabel: "Свободные места",
     branchLabel: "Филиал",
     capacityLabel: "Вместимость",
@@ -29,6 +31,7 @@ const copy: Record<Locale, AdminGroupsCopy> = {
     totalLearnersLabel: "Активные ученики",
   },
   en: {
+    backLabel: "Back",
     availableSeatsLabel: "Available seats",
     branchLabel: "Branch",
     capacityLabel: "Capacity",

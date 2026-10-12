@@ -28,11 +28,10 @@ export function AdminGroupDetailPage({ common, copy, locale, record }: AdminGrou
     <article className="adminGroupDetail">
       <Link className="adminGroupDetail__back" href={`/${locale}/admin/groups`}>
         <ArrowBackRounded aria-hidden="true" />
-        {common.all}
+        {copy.backLabel}
       </Link>
       <header className="adminGroupDetail__hero">
         <div>
-          <span>{getAdminGroupCategoryLabel(locale, group.category)}</span>
           <h1>{record.title}</h1>
           <p>
             {group.teacherName} · {group.branchName ?? copy.branchLabel}

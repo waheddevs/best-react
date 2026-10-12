@@ -3,6 +3,7 @@
 import FilterListRounded from "@mui/icons-material/FilterListRounded";
 import SearchRounded from "@mui/icons-material/SearchRounded";
 
+import { getAdminRecordLabel } from "@/dictionaries/admin/AdminRecordCount";
 import type { Locale } from "@/config/Locales";
 import { useAdminWorkspaceRecords } from "@/hooks/admin/useAdminWorkspaceRecords";
 import type { AdminGroupsCopy } from "@/types/admin/AdminGroups";
@@ -32,6 +33,11 @@ export function AdminGroups({ common, copy, locale, section }: AdminGroupsProps)
     totalRecords,
     visibleRecords,
   } = useAdminWorkspaceRecords(section.records, locale);
+  const paginationCommon = {
+    ...common,
+    recordsLabel: getAdminRecordLabel(locale, "groups", totalRecords),
+  };
+
   const groupRecords = section.records.filter((record) => record.group);
   const totalLearners = groupRecords.reduce(
     (total, record) => total + (record.group?.activeStudentCount ?? 0),
@@ -50,13 +56,8 @@ export function AdminGroups({ common, copy, locale, section }: AdminGroupsProps)
     <article className="adminWorkspace adminGroups">
       <header className="adminWorkspace__header">
         <div>
-          <span>{section.eyebrow}</span>
           <h1>{section.title}</h1>
           <p>{section.description}</p>
-        </div>
-        <div className="adminWorkspace__health">
-          <i />
-          <span>{common.connectedNotice}</span>
         </div>
       </header>
       <section aria-label={copy.groupsSummaryLabel} className="adminWorkspace__metrics">
@@ -94,7 +95,7 @@ export function AdminGroups({ common, copy, locale, section }: AdminGroupsProps)
         </button>
       </div>
       <AdminGroupsTable
-        common={common}
+        common={paginationCommon}
         copy={copy}
         locale={locale}
         onPageChange={handlePageChange}
