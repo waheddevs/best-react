@@ -31,6 +31,7 @@ export async function AdminContentRoute({
       />
     );
   if (section === "notifications") return <AdminNotices locale={locale} />;
-  if (section === "overview") return <AdminOverview locale={locale} />;
+  if (section === "overview")
+    return <AdminOverview locale={locale} initialNow={new Date().getTime()} />;
   return <AdminContentCatalog locale={locale} section={section} />;
 }

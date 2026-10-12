@@ -233,6 +233,21 @@ const copy: Record<string, [string, string, string]> = {
     "Check the fields and all translations.",
   ],
   reason: ["Sabab", "Причина", "Reason"],
+  archiveCourseMessage: [
+    "{name} kursini arxivlaysizmi? Kurs public saytda yashiriladi, mavjud arizalar saqlanadi.",
+    "Архивировать курс «{name}»? Курс будет скрыт на сайте, существующие заявки сохранятся.",
+    "Archive {name}? The course will be hidden from the public website; existing registrations will be kept.",
+  ],
+  archiveEventMessage: [
+    "{name} tadbirini arxivlaysizmi? Tadbir public saytda yashiriladi, mavjud arizalar saqlanadi.",
+    "Архивировать мероприятие «{name}»? Оно будет скрыто на сайте, существующие заявки сохранятся.",
+    "Archive {name}? The event will be hidden from the public website; existing registrations will be kept.",
+  ],
+  archiveSystemNote: [
+    "Administrator katalog jadvalidagi arxivlash amalini tasdiqladi.",
+    "Администратор подтвердил архивирование из таблицы каталога.",
+    "Administrator confirmed archiving from the catalog table.",
+  ],
   confirmPublish: [
     "Bu o‘zgarish public saytda aks etadi. Davom etasizmi?",
     "Изменение отразится на сайте. Продолжить?",

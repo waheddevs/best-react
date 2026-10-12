@@ -3,10 +3,8 @@
 import { useMutation } from "@apollo/client/react";
 import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import type { Locale } from "@/config/Locales";
 import { AdminDeleteTeacherDocument } from "@/gql/graphql";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
@@ -14,8 +12,7 @@ import type { AdminTeachersCopy } from "@/types/admin/AdminTeachers";
 
 type AdminTeacherActionsProps = {
   copy: AdminTeachersCopy;
-  href: string;
-  locale: Locale;
+  onDetails: () => void;
   name: string;
   onDeleted: (teacherId: string) => void;
   teacherId: string;
@@ -23,8 +20,7 @@ type AdminTeacherActionsProps = {
 
 export function AdminTeacherActions({
   copy,
-  href,
-  locale,
+  onDetails,
   name,
   onDeleted,
   teacherId,
@@ -70,14 +66,15 @@ export function AdminTeacherActions({
 
   return (
     <div className="adminTeachers__actions">
-      <Link
+      <button
+        type="button"
         aria-label={`${copy.detailsLabel}: ${name}`}
         className="adminTeachers__action adminTeachers__action_details"
-        href={`/${locale}${href}`}
+        onClick={onDetails}
         title={copy.detailsLabel}
       >
         <InfoOutlined aria-hidden="true" />
-      </Link>
+      </button>
       <button
         aria-label={`${copy.deleteLabel}: ${name}`}
         className="adminTeachers__action adminTeachers__action_delete"

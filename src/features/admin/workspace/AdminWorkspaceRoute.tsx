@@ -10,9 +10,17 @@ import type { AdminNavigationKey } from "@/types/admin/AdminWorkspace";
 import { AdminMessages } from "./AdminMessages";
 import { AdminSectionPage } from "./AdminSectionPage";
 
-type AdminWorkspaceRouteProps = { locale: string; sectionKey: AdminNavigationKey };
+type AdminWorkspaceRouteProps = {
+  locale: string;
+  sectionKey: AdminNavigationKey;
+  initialDetailId?: string;
+};
 
-export async function AdminWorkspaceRoute({ locale, sectionKey }: AdminWorkspaceRouteProps) {
+export async function AdminWorkspaceRoute({
+  locale,
+  sectionKey,
+  initialDetailId,
+}: AdminWorkspaceRouteProps) {
   if (!isLocale(locale)) notFound();
   const session = await auth();
   if (session?.bestApi?.role !== "ADMIN" || !session.bestApi.accessToken) {
@@ -22,6 +30,7 @@ export async function AdminWorkspaceRoute({ locale, sectionKey }: AdminWorkspace
     return <AdminMessages locale={locale} initialMessages={await loadAdminMessages()} />;
   const copy = getAdminWorkspaceCopy(locale);
   const data = await loadAdminWorkspaceData(sectionKey, locale);
+  if (initialDetailId && !data.records.some((record) => record.id === initialDetailId)) notFound();
   const provisionRole =
     sectionKey === "students" ? "STUDENT" : sectionKey === "teachers" ? "TEACHER" : undefined;
   return (
@@ -33,6 +42,7 @@ export async function AdminWorkspaceRoute({ locale, sectionKey }: AdminWorkspace
       provisionRole={provisionRole}
       section={{ ...copy.sections[sectionKey], ...data, metrics: data.metrics ?? [] }}
       sectionKey={sectionKey}
+      initialDetailId={initialDetailId}
     />
   );
 }

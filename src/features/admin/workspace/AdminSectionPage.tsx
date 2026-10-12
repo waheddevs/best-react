@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import FilterListRounded from "@mui/icons-material/FilterListRounded";
 import SearchRounded from "@mui/icons-material/SearchRounded";
 import { useMemo, useState } from "react";
@@ -28,6 +29,8 @@ import type {
 import type { AdminStudentFilterState, AdminStudentStatus } from "@/types/admin/AdminStudents";
 import type { AdminTeacherStatus, AdminTeacherStatusFilter } from "@/types/admin/AdminTeachers";
 
+import { AdminPersonDetails } from "./AdminPersonDetails";
+import type { AdminWorkspaceRecord } from "@/types/admin/AdminWorkspace";
 import { AdminDataTable } from "./AdminDataTable";
 import { AdminSpecializedContent } from "./AdminSpecializedContent";
 
@@ -39,6 +42,7 @@ type AdminSectionPageProps = {
   provisionRole?: ProvisionableUserRole;
   section: AdminSectionCopy;
   sectionKey: AdminNavigationKey;
+  initialDetailId?: string;
 };
 
 export function AdminSectionPage({
@@ -49,7 +53,16 @@ export function AdminSectionPage({
   provisionRole,
   section,
   sectionKey,
+  initialDetailId,
 }: AdminSectionPageProps) {
+  const [detail, setDetail] = useState<AdminWorkspaceRecord | null>(
+    () => section.records.find((record) => record.id === initialDetailId) ?? null,
+  );
+  const router = useRouter();
+  const closeDetails = () => {
+    setDetail(null);
+    if (initialDetailId) router.replace(`/${locale}/admin/${sectionKey}`, { scroll: false });
+  };
   /* HOOKS */
   const studentCopy = getAdminStudentsCopy(locale);
   const teacherCopy = getAdminTeachersCopy(locale);
@@ -276,6 +289,7 @@ export function AdminSectionPage({
           locale={locale}
           onPageChange={handlePageChange}
           onTeacherDeleted={handleTeacherDeleted}
+          onDetails={setDetail}
           onSort={handleSort}
           page={page}
           pageCount={pageCount}
@@ -295,6 +309,7 @@ export function AdminSectionPage({
           onPageChange={handlePageChange}
           onSort={handleSort}
           onStudentDeleted={sectionKey === "students" ? handleStudentDeleted : undefined}
+          onStudentDetails={setDetail}
           page={page}
           pageCount={pageCount}
           records={visibleRecords}
@@ -306,6 +321,7 @@ export function AdminSectionPage({
           variant={sectionKey === "students" ? "students" : "default"}
         />
       )}
+      {detail && <AdminPersonDetails record={detail} locale={locale} onClose={closeDetails} />}
     </article>
   );
 }

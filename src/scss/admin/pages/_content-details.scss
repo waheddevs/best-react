@@ -1,0 +1,289 @@
+.adminRegistry__dialog.adminContentDetails.MuiPaper-root {
+  --admin-surface-subtle: #f8f8f9;
+  --admin-on-solid: #fff;
+  width: min(960px, calc(100% - 32px));
+  max-width: 960px;
+  max-height: min(760px, calc(100dvh - 48px));
+  margin: 24px 16px;
+  padding: 0;
+  border-radius: 18px;
+
+  .adminContentDetails__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 20px;
+  }
+  .adminContentDetails__body {
+    padding: 24px;
+  }
+  .adminContentDetails__overview {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 28px;
+  }
+  .adminContentDetails__intro {
+    > p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    h3 {
+      margin: 20px 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  }
+  .adminContentDetails__topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      border: 1px solid var(--admin-border);
+      border-radius: 8px;
+      background: var(--admin-surface-subtle);
+      padding: 7px 10px;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+  }
+  dl.adminContentDetails__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 18px 20px;
+    margin: 0;
+    padding: 18px;
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    background: var(--admin-surface-subtle);
+    > div {
+      display: block;
+      min-width: 0;
+      border: 0;
+      padding: 0;
+    }
+    dt {
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+    dd {
+      margin: 0;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+  }
+  .adminContentDetails__sections {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 10px;
+    &:not(:empty) {
+      margin-top: 22px;
+    }
+    details {
+      border: 1px solid var(--admin-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      &::-webkit-details-marker {
+        display: none;
+      }
+      &:hover {
+        background: var(--admin-surface-subtle);
+      }
+      svg {
+        font-size: 19px;
+        color: var(--admin-muted);
+      }
+    }
+    details[open] summary svg {
+      transform: rotate(180deg);
+    }
+    ul {
+      margin: 0;
+      padding: 0 20px 16px 32px;
+    }
+    li {
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+    li + li {
+      margin-top: 8px;
+    }
+  }
+  .adminContentDetails__text {
+    margin: 0;
+    padding: 0 16px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .adminContentDetails__tracks {
+    margin: 0;
+    padding: 0 16px 16px;
+    list-style: none;
+    > li + li {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--admin-border);
+    }
+    h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    p {
+      margin: 6px 0 0;
+      white-space: pre-wrap;
+    }
+    .adminContentDetails__trackLevel {
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+    ul {
+      padding: 0 0 0 18px;
+      margin-top: 10px;
+    }
+  }
+  .adminContentDetails__programme {
+    list-style: none;
+    padding: 0 16px 16px;
+    margin: 0;
+    li {
+      display: flex;
+      gap: 12px;
+    }
+    li > span {
+      flex: 0 0 48px;
+      color: var(--admin-muted);
+    }
+    p {
+      margin: 4px 0 0;
+    }
+  }
+  dl.adminContentDetails__faq {
+    padding: 0 16px 16px;
+    > div {
+      display: block;
+      border: 0;
+      padding: 0;
+    }
+    dt {
+      color: var(--admin-text);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    dd {
+      margin-top: 5px;
+      color: var(--admin-muted);
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  }
+  .adminContentDetails__footer {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 26px;
+    border-top: 1px solid var(--admin-border);
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border: 1px solid var(--admin-border);
+      border-radius: 9px;
+      color: var(--admin-text);
+      font-size: 14px;
+      font-weight: 650;
+      text-decoration: none;
+      transition: transform 150ms ease;
+      &:hover {
+        background: var(--admin-surface-subtle);
+        transform: translateY(-1px);
+      }
+      svg {
+        font-size: 18px;
+      }
+    }
+    .adminContentDetails__public {
+      background: var(--admin-solid);
+      color: var(--admin-on-solid);
+      border-color: var(--admin-solid);
+      &:hover {
+        background: var(--admin-solid);
+      }
+    }
+  }
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--admin-solid);
+    outline-offset: 3px;
+  }
+  summary:focus-visible {
+    outline: 2px solid var(--admin-solid);
+    outline-offset: -3px;
+  }
+}
+body[data-admin-theme="dark"] .adminRegistry__dialog.adminContentDetails.MuiPaper-root {
+  --admin-surface-subtle: #20242c;
+  --admin-on-solid: #111318;
+}
+@media (max-width: 700px) {
+  .adminRegistry__dialog.adminContentDetails.MuiPaper-root {
+    max-height: calc(100dvh - 32px);
+    margin: 16px;
+    .adminContentDetails__body {
+      padding: 18px;
+    }
+    .adminContentDetails__overview,
+    .adminContentDetails__sections {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .adminContentDetails__footer {
+      padding: 14px 18px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .adminRegistry__dialog.adminContentDetails.MuiPaper-root .adminContentDetails__footer {
+    padding: 16px 20px;
+    a {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adminRegistry__dialog.adminContentDetails.MuiPaper-root .adminContentDetails__footer a {
+    transition: none;
+    &:hover {
+      transform: none;
+    }
+  }
+}

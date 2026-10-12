@@ -1,4 +1,5 @@
 import "server-only";
+import { getAdminStudentFinancials } from "./AdminStudentFinancials";
 
 import type { DocumentNode } from "graphql";
 
@@ -23,6 +24,7 @@ import {
   type AdminProfileQuery,
   AdminScheduleDocument,
   AdminTuitionLedgerDocument,
+  type AdminTuitionLedgerQuery,
   AdminUsersDocument,
 } from "@/gql/graphql";
 import { executePublicApi } from "@/lib/PublicApi";
@@ -332,11 +334,7 @@ export async function loadAdminWorkspaceData(
         branchName?: string | null;
         status: string;
       };
-      type TuitionEntry = {
-        outstandingAmountUzs: string;
-        status: string;
-        studentId: string;
-      };
+      type TuitionEntry = AdminTuitionLedgerQuery["adminTuitionLedger"]["edges"][number]["node"];
       type ProvisionGroup = {
         activeStudentCount: number;
         category: AdminProvisionGroupOption["category"] | null;
@@ -413,6 +411,7 @@ export async function loadAdminWorkspaceData(
                 field("payment", studentCopy.paymentLabel, payment.label, payment.tone),
               ],
             ),
+            studentFinancials: getAdminStudentFinancials(studentTuition),
             studentDirectory: {
               activeGroupId: item.activeGroupId ?? null,
               activeGroupName: item.activeGroupName ?? null,
@@ -435,6 +434,8 @@ export async function loadAdminWorkspaceData(
         status: string;
       };
       type Group = {
+        id: string;
+        name: string;
         status: string;
         teacherId: string;
       };
@@ -484,6 +485,9 @@ export async function loadAdminWorkspaceData(
                 ),
               ],
             ),
+            teacherGroups: groups
+              .filter((group) => group.teacherId === item.id && group.status === "ACTIVE")
+              .map(({ id, name }) => ({ id, name })),
             teacherStatus,
           };
         }),
@@ -581,7 +585,7 @@ export async function loadAdminWorkspaceData(
               [item.level, item.duration].filter(Boolean).join(" · ") || "—",
               getAdminStatusLabel(locale, item.status),
               tone(item.status),
-              `/admin/courses/${encodeURIComponent(item.slug)}`,
+              "/admin/courses",
             ),
             [
               field("level", directory.levelLabel, item.level ?? "—"),

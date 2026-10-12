@@ -15,6 +15,7 @@ import UnfoldMoreRounded from "@mui/icons-material/UnfoldMoreRounded";
 import GroupsOutlined from "@mui/icons-material/GroupsOutlined";
 import Dialog from "@mui/material/Dialog";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useDeferredValue, useState, type ReactNode } from "react";
 import type { Locale } from "@/config/Locales";
 import { AdminContentPagination } from "../content/AdminContentPagination";
@@ -30,6 +31,7 @@ import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
 import { adminMoney, registryColumns, registryRows } from "@/lib/admin/AdminRegistryPresentation";
 import type { AdminRegistryRow, AdminRegistrySection } from "@/types/admin/AdminRegistry";
+import { AdminDirectoryDetails } from "../workspace/AdminDirectoryDetails";
 import { AdminRegistryEditor } from "./AdminRegistryEditor";
 import { AdminRegistrySelect } from "./AdminRegistrySelect";
 import { AdminDateFilter } from "./AdminDateFilter";
@@ -38,10 +40,13 @@ import { AdminCatalogFilters } from "./AdminCatalogFilters";
 export function AdminRegistry({
   locale,
   section,
+  initialDetail = null,
 }: {
   locale: Locale;
   section: AdminRegistrySection;
+  initialDetail?: AdminRegistryRow | null;
 }) {
+  const router = useRouter();
   const t = getAdminRegistryText(locale);
   const confirm = useConfirmDialog();
   const notifications = useNotifications();
@@ -62,7 +67,11 @@ export function AdminRegistry({
   const [input, setInput] = useState<AdminDirectoryInput>(initialInput);
   const deferred = useDeferredValue(input);
   const [editor, setEditor] = useState<{ row: AdminRegistryRow | null } | null>(null);
-  const [detail, setDetail] = useState<AdminRegistryRow | null>(null);
+  const [detail, setDetail] = useState<AdminRegistryRow | null>(initialDetail);
+  const closeDetails = () => {
+    setDetail(null);
+    if (initialDetail) router.replace(`/${locale}/admin/${section}`, { scroll: false });
+  };
   const [pending, setPending] = useState<{ row: AdminRegistryRow; status: string } | null>(null);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
@@ -397,7 +406,7 @@ export function AdminRegistry({
                     ))}
                     <td className="adminRegistry__actionCell" data-label={t("actions")}>
                       <div className="adminRegistry__actions">
-                        {row.href ? (
+                        {row.href && section !== "groups" ? (
                           <Link
                             className="adminRegistry__action"
                             href={row.href}
@@ -492,33 +501,52 @@ export function AdminRegistry({
           onChange={(nextPage) => setInput((current) => ({ ...current, page: nextPage }))}
         />
       </section>
-      <Dialog
-        open={Boolean(detail)}
-        onClose={() => setDetail(null)}
-        slotProps={{ paper: { className: "adminRegistry__dialog" } }}
-        aria-labelledby="admin-registry-detail"
-      >
-        <header>
-          <h2 id="admin-registry-detail">{detail?.name}</h2>
-          <button type="button" onClick={() => setDetail(null)} aria-label={t("close")}>
-            <CloseRounded />
-          </button>
-        </header>
-        <dl>
-          {detail?.cells.map((value, i) => (
-            <div key={i}>
-              <dt>{t(columns[i])}</dt>
-              <dd>{value}</dd>
-            </div>
-          ))}
-          {detail?.details.map((d, i) => (
-            <div key={"d" + i}>
-              <dt>{d.label}</dt>
-              <dd>{d.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </Dialog>
+      {section === "groups" ? (
+        detail && (
+          <AdminDirectoryDetails
+            locale={locale}
+            title={detail.name}
+            icon={<GroupsOutlined />}
+            status={detail.cells.at(-1) ?? t(detail.status)}
+            tone={detail.status === "ACTIVE" ? "success" : "neutral"}
+            fields={[
+              ...detail.cells
+                .slice(1, -1)
+                .map((value, index) => ({ label: t(columns[index + 1]), value })),
+              ...detail.details,
+            ]}
+            onClose={closeDetails}
+          />
+        )
+      ) : (
+        <Dialog
+          open={Boolean(detail)}
+          onClose={closeDetails}
+          slotProps={{ paper: { className: "adminRegistry__dialog" } }}
+          aria-labelledby="admin-registry-detail"
+        >
+          <header>
+            <h2 id="admin-registry-detail">{detail?.name}</h2>
+            <button type="button" onClick={() => setDetail(null)} aria-label={t("close")}>
+              <CloseRounded />
+            </button>
+          </header>
+          <dl>
+            {detail?.cells.map((value, i) => (
+              <div key={i}>
+                <dt>{t(columns[i])}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+            {detail?.details.map((d, i) => (
+              <div key={"d" + i}>
+                <dt>{d.label}</dt>
+                <dd>{d.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Dialog>
+      )}
       <Dialog
         open={Boolean(pending)}
         onClose={() => !busy && setPending(null)}

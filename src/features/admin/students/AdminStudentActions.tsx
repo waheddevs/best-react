@@ -3,10 +3,8 @@
 import { useMutation } from "@apollo/client/react";
 import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import type { Locale } from "@/config/Locales";
 import { AdminDeleteStudentDocument } from "@/gql/graphql";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
@@ -14,8 +12,7 @@ import type { AdminStudentsCopy } from "@/types/admin/AdminStudents";
 
 type AdminStudentActionsProps = {
   copy: AdminStudentsCopy;
-  href: string;
-  locale: Locale;
+  onDetails: () => void;
   name: string;
   onDeleted: (studentId: string) => void;
   studentId: string;
@@ -23,8 +20,7 @@ type AdminStudentActionsProps = {
 
 export function AdminStudentActions({
   copy,
-  href,
-  locale,
+  onDetails,
   name,
   onDeleted,
   studentId,
@@ -70,14 +66,15 @@ export function AdminStudentActions({
 
   return (
     <div className="adminWorkspace__studentActions">
-      <Link
+      <button
+        type="button"
         aria-label={`${copy.detailsLabel}: ${name}`}
         className="adminWorkspace__studentAction adminWorkspace__studentAction_details"
-        href={`/${locale}${href}`}
+        onClick={onDetails}
         title={copy.detailsLabel}
       >
         <InfoOutlined aria-hidden="true" />
-      </Link>
+      </button>
       <button
         aria-label={`${copy.deleteLabel}: ${name}`}
         className="adminWorkspace__studentAction adminWorkspace__studentAction_delete"

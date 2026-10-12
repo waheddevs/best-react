@@ -1,31 +1,48 @@
 import { notFound } from "next/navigation";
-
 import { isLocale } from "@/config/Locales";
-import { getAdminGroupsCopy } from "@/dictionaries/admin/AdminGroups";
-import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
+import { getAdminRegistryText } from "@/dictionaries/admin/AdminRegistry";
+import { getAdminGroupCategoryLabel } from "@/dictionaries/admin/AdminGroups";
 import { loadAdminWorkspaceData } from "@/lib/admin/AdminWorkspaceData";
+import { adminTime } from "@/lib/admin/AdminRegistryPresentation";
+import { AdminRegistry } from "../operations/AdminRegistry";
 
-import { AdminGroupDetailPage } from "./AdminGroupDetailPage";
-
-type AdminGroupDetailRouteProps = {
-  locale: string;
-  slug: string;
-};
-
-export async function AdminGroupDetailRoute({ locale, slug }: AdminGroupDetailRouteProps) {
+export async function AdminGroupDetailRoute({ locale, slug }: { locale: string; slug: string }) {
   if (!isLocale(locale)) notFound();
-  const workspaceCopy = getAdminWorkspaceCopy(locale);
   const data = await loadAdminWorkspaceData("groups", locale);
-  const record = data.records.find(
-    (item) => item.id === slug || item.group?.slug === slug || item.href?.endsWith(`/${slug}`),
-  );
+  const record = data.records.find((item) => item.id === slug || item.group?.slug === slug);
   if (!record?.group) notFound();
+  const group = record.group;
+  const t = getAdminRegistryText(locale);
+  const days = group.scheduleDays
+    .map((day) =>
+      new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" }).format(
+        new Date(Date.UTC(2024, 0, day)),
+      ),
+    )
+    .join(", ");
   return (
-    <AdminGroupDetailPage
-      common={workspaceCopy.common}
-      copy={getAdminGroupsCopy(locale)}
+    <AdminRegistry
       locale={locale}
-      record={record}
+      section="groups"
+      initialDetail={{
+        id: record.id,
+        name: record.title,
+        status: record.status === "success" ? "ACTIVE" : "ARCHIVED",
+        values: {},
+        cells: [
+          record.title,
+          group.teacherName,
+          days,
+          `${adminTime(group.startsAtMinutes)}–${adminTime(group.endsAtMinutes)}`,
+          group.room ?? "—",
+          `${group.activeStudentCount}/${group.capacity}`,
+          record.detail,
+        ],
+        details: [
+          { label: t("category"), value: getAdminGroupCategoryLabel(locale, group.category) },
+          { label: t("rate"), value: group.monthlyTuitionUzs ?? "—" },
+        ],
+      }}
     />
   );
 }

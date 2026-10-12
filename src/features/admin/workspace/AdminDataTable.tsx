@@ -34,6 +34,7 @@ type AdminDataTableProps = {
   sortKey: SortKey;
   totalRecords: number;
   onStudentDeleted?: (studentId: string) => void;
+  onStudentDetails?: (record: AdminWorkspaceRecord) => void;
   studentCopy?: AdminStudentsCopy;
   variant?: "default" | "students";
 };
@@ -54,6 +55,7 @@ export function AdminDataTable({
   sortKey,
   totalRecords,
   onStudentDeleted,
+  onStudentDetails,
   studentCopy,
   variant = "default",
 }: AdminDataTableProps) {
@@ -179,11 +181,10 @@ export function AdminDataTable({
                     </td>
                   )}
                   <td className="adminWorkspace__actionCell">
-                    {isStudentTable && record.href && studentCopy && onStudentDeleted ? (
+                    {isStudentTable && studentCopy && onStudentDeleted && onStudentDetails ? (
                       <AdminStudentActions
                         copy={studentCopy}
-                        href={record.href}
-                        locale={locale}
+                        onDetails={() => onStudentDetails(record)}
                         name={record.title}
                         onDeleted={onStudentDeleted}
                         studentId={record.id}

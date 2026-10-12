@@ -5,6 +5,7 @@ import { getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import { loadAdminWorkspaceData } from "@/lib/admin/AdminWorkspaceData";
 import type { AdminNavigationKey } from "@/types/admin/AdminWorkspace";
 
+import { AdminWorkspaceRoute } from "./AdminWorkspaceRoute";
 import { AdminDetailPage } from "./AdminDetailPage";
 
 type AdminWorkspaceDetailRouteProps = {
@@ -21,6 +22,8 @@ export async function AdminWorkspaceDetailRoute({
   sectionKey,
 }: AdminWorkspaceDetailRouteProps) {
   if (!isLocale(locale)) notFound();
+  if (sectionKey === "students" || sectionKey === "teachers")
+    return <AdminWorkspaceRoute locale={locale} sectionKey={sectionKey} initialDetailId={id} />;
   const copy = getAdminWorkspaceCopy(locale);
   const data = await loadAdminWorkspaceData(sectionKey, locale);
   const record = data.records.find(

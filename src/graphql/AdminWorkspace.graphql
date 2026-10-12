@@ -217,6 +217,7 @@ query AdminTuitionLedger($after: String, $first: Int) {
         billingMonth
         dueDate
         amountUzs
+        allocatedAmountUzs
         outstandingAmountUzs
         status
       }
@@ -264,6 +265,7 @@ query AdminProfile {
 mutation AdminUpdateProfile($input: UpdateMyProfileInput!) {
   updateMyProfile(input: $input) {
     profile {
+      id
       displayName
       email
       phone

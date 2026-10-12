@@ -23,6 +23,7 @@ type AdminTeachersTableProps = {
   locale: Locale;
   onPageChange: (page: number) => void;
   onTeacherDeleted: (teacherId: string) => void;
+  onDetails: (record: AdminWorkspaceRecord) => void;
   onSort: (key: SortKey) => void;
   page: number;
   pageCount: number;
@@ -39,9 +40,9 @@ export function AdminTeachersTable({
   columns,
   common,
   copy,
-  locale,
   onPageChange,
   onTeacherDeleted,
+  onDetails,
   onSort,
   page,
   pageCount,
@@ -135,8 +136,7 @@ export function AdminTeachersTable({
                     {record.href ? (
                       <AdminTeacherActions
                         copy={copy}
-                        href={record.href}
-                        locale={locale}
+                        onDetails={() => onDetails(record)}
                         name={record.title}
                         onDeleted={onTeacherDeleted}
                         teacherId={record.id}

@@ -75,7 +75,16 @@ export function registryRows(
         end: adminTime(r.endsAtMinutes),
         rate: r.monthlyTuitionUzs ?? "300000",
       },
-      details: [{ label: t("rate"), value: money(r.monthlyTuitionUzs ?? "0") }],
+      details: [
+        {
+          label: t("category"),
+          value: r.category === "GENERAL_ENGLISH" ? "General English" : (r.category ?? "—"),
+        },
+        {
+          label: t("rate"),
+          value: r.monthlyTuitionUzs === null ? "—" : money(r.monthlyTuitionUzs),
+        },
+      ],
     }));
   if (section === "schedule")
     return (data.adminLessonDirectory?.nodes ?? []).map((r) => ({

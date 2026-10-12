@@ -13,7 +13,10 @@
 @use "./pages/registry";
 @use "./pages/content";
 @use "./pages/exam-details";
+@use "./pages/_content-details.scss";
 @use "./pages/calendar";
+@use "./pages/_details-header.scss";
+@use "./pages/directory-details";
 @use "./pages/request-filters";
 @use "./pages/request-details";
 @use "./pages/_message-filters.scss";

@@ -24,11 +24,12 @@ import {
 import type { AdminContentEntry, AdminContentSection } from "@/types/admin/AdminContent";
 import { useConfirmDialog } from "@/hooks/notifications/useConfirmDialog";
 import { useNotifications } from "@/hooks/notifications/useNotifications";
-import { AdminContentDetailBody } from "./AdminContentDetailBody";
+import { AdminCourseDetails } from "./AdminCourseDetails";
 import { AdminEventEditor } from "./AdminEventEditor";
 import { AdminCourseEditor } from "./AdminCourseEditor";
 import { AdminExamEditor } from "./AdminExamEditor";
 import { AdminExamDetails } from "./AdminExamDetails";
+import { AdminEventDetails } from "./AdminEventDetails";
 import { getAdminCourseEditorText } from "@/dictionaries/admin/AdminCourseEditor";
 import { AdminContentMetrics } from "./AdminContentMetrics";
 import { AdminCatalogFilters } from "../operations/AdminCatalogFilters";
@@ -53,8 +54,6 @@ export function AdminContentCatalog({
   const [input, setInput] = useState<AdminDirectoryInput>({ page: 1, pageSize: 15 }),
     deferred = useDeferredValue(input);
   const [editor, setEditor] = useState<{ row?: AdminContentEntry } | null>(null),
-    [archive, setArchive] = useState<{ id: string } | null>(null),
-    [reason, setReason] = useState(""),
     [busy, setBusy] = useState(false),
     [detail, setDetail] = useState<AdminContentEntry | null>(null);
   const query = useQuery(AdminContentCatalogDocument, {
@@ -115,7 +114,6 @@ export function AdminContentCatalog({
       if (removedId !== id) throw new Error("Content removal failed");
       if (detail?.id === id) setDetail(null);
       if (editor?.row?.id === id) setEditor(null);
-      if (archive?.id === id) setArchive(null);
       const refreshed = await query.refetch();
       const directory =
         section === "events"
@@ -159,25 +157,31 @@ export function AdminContentCatalog({
       hour12: false,
       timeZone: "Asia/Tashkent",
     }).format(new Date(v));
-  const setStatus = async (id: string, status: "PUBLISHED" | "ARCHIVED") => {
+  const setStatus = async (id: string, status: "PUBLISHED" | "ARCHIVED", name: string) => {
     if (busy) return;
-    if (
-      !(await confirm({
-        brand: "admin",
-        title: t(status === "PUBLISHED" ? "publish" : "archive"),
-        message: t("confirmPublish"),
-        confirmLabel: t("save"),
-        cancelLabel: t("cancel"),
-      }))
-    )
-      return;
     setBusy(true);
     try {
+      const archiving = status === "ARCHIVED";
+      if (
+        !(await confirm({
+          brand: "admin",
+          title: t(archiving ? "archive" : "publish"),
+          message: archiving
+            ? t(section === "courses" ? "archiveCourseMessage" : "archiveEventMessage").replace(
+                "{name}",
+                () => name,
+              )
+            : t("confirmPublish"),
+          confirmLabel: t(archiving ? "archive" : "save"),
+          cancelLabel: t("cancel"),
+          tone: archiving ? "warning" : "default",
+        }))
+      )
+        return;
+      const reason = archiving ? t("archiveSystemNote") : undefined;
       if (section === "courses")
         await courseStatus({ variables: { input: { courseId: id, status, reason } } });
       else await eventStatus({ variables: { input: { eventId: id, status, reason } } });
-      setArchive(null);
-      setReason("");
       notifications.success({ message: t("savedPublic") });
       await reload();
     } catch {
@@ -324,7 +328,7 @@ export function AdminContentCatalog({
                     <button
                       disabled={busy}
                       className="adminRegistry__action"
-                      onClick={() => void setStatus(row.id, "PUBLISHED")}
+                      onClick={() => void setStatus(row.id, "PUBLISHED", v?.title ?? slug ?? "")}
                       aria-label={t("publish")}
                       title={t("publish")}
                     >
@@ -335,10 +339,7 @@ export function AdminContentCatalog({
                     <button
                       disabled={busy}
                       className="adminRegistry__action"
-                      onClick={() => {
-                        setReason("");
-                        setArchive({ id: row.id });
-                      }}
+                      onClick={() => void setStatus(row.id, "ARCHIVED", v?.title ?? slug ?? "")}
                       aria-label={t("archive")}
                       title={t("archive")}
                     >
@@ -423,36 +424,6 @@ export function AdminContentCatalog({
         onChange={(page) => setInput((i) => ({ ...i, page }))}
       />
       <Dialog
-        open={Boolean(archive)}
-        onClose={() => !busy && setArchive(null)}
-        aria-labelledby="admin-content-archive"
-        slotProps={{ paper: { className: "adminRegistry__dialog" } }}
-      >
-        <h2 id="admin-content-archive">{t("archive")}</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (archive) void setStatus(archive.id, "ARCHIVED");
-          }}
-        >
-          <label>
-            {t("reason")}
-            <textarea
-              required
-              maxLength={1000}
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-            />
-          </label>
-          <div className="adminRegistry__formActions">
-            <button type="button" disabled={busy} onClick={() => setArchive(null)}>
-              {t("cancel")}
-            </button>
-            <button disabled={busy || !reason.trim()}>{t("archive")}</button>
-          </div>
-        </form>
-      </Dialog>
-      <Dialog
         open={Boolean(detail)}
         onClose={() => setDetail(null)}
         aria-labelledby="admin-content-detail"
@@ -461,9 +432,9 @@ export function AdminContentCatalog({
             className:
               section === "exams"
                 ? "adminRegistry__dialog adminExamDetails"
-                : "adminRegistry__dialog",
+                : "adminRegistry__dialog adminContentDetails",
           },
-          backdrop: { className: section === "exams" ? "adminExamDetails__backdrop" : undefined },
+          backdrop: { className: "publicShared__notificationDialogBackdrop" },
         }}
       >
         {detail
@@ -475,31 +446,23 @@ export function AdminContentCatalog({
               const v =
                 detail.versions.find((x) => x.language === locale.toUpperCase()) ??
                 detail.versions[0];
-              return (
-                <>
-                  <header>
-                    <h2 id="admin-content-detail">{v?.title}</h2>
-                    <button onClick={() => setDetail(null)} aria-label={t("close")}>
-                      <CloseRounded />
-                    </button>
-                  </header>
-                  {v ? <AdminContentDetailBody locale={locale} content={v} /> : null}
-                  <div className="adminRegistry__formActions">
-                    {"versions" in detail ? (
-                      <Link href={`/${locale}/admin/${section}/${detail.versions[0]?.slug}`}>
-                        {t("details")}
-                      </Link>
-                    ) : null}
-                    {detail.versions[0]?.status === "PUBLISHED" ? (
-                      <Link
-                        href={`/${locale}/${section}${"versions" in detail ? "/" + detail.versions[0]?.slug : ""}`}
-                      >
-                        {t("viewPublic")}
-                      </Link>
-                    ) : null}
-                  </div>
-                </>
-              );
+              if (v && "timelineStatus" in v)
+                return (
+                  <AdminEventDetails
+                    event={v}
+                    registrations={detail.registrations}
+                    locale={locale}
+                    onClose={() => setDetail(null)}
+                  />
+                );
+              return v ? (
+                <AdminCourseDetails
+                  course={v}
+                  registrations={detail.registrations}
+                  locale={locale}
+                  onClose={() => setDetail(null)}
+                />
+              ) : null;
             })()
           : null}
       </Dialog>

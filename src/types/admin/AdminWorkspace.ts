@@ -30,6 +30,8 @@ export type AdminWorkspaceRecord = {
   id: string;
   meta: string;
   searchText?: string;
+  studentFinancials?: { paidUzs: string; balanceUzs: string; chargeCount: number };
+  teacherGroups?: Array<{ id: string; name: string }>;
   studentDirectory?: AdminStudentDirectoryValues;
   studentStatus?: AdminStudentStatus;
   teacherStatus?: AdminTeacherStatus;
