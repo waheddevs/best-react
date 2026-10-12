@@ -44,7 +44,7 @@ const seeds: Record<AdminNavigationKey, AdminSeed> = {
   },
   students: {
     eyebrow: ["O'quvchilar", "Ученики", "Learners"],
-    title: ["Talabalar reyestri", "Реестр учеников", "Student registry"],
+    title: ["Talabalar", "Ученики", "Students"],
     description: [
       "Guruh, holat va akademik ko'rsatkichlar bo'yicha izlang.",
       "Ищите по группе, статусу и учебным показателям.",

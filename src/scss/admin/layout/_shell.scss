@@ -303,19 +303,33 @@ body[data-admin-theme="dark"]:has(.adminShell) {
 .adminShell__navGroup {
   display: grid;
   gap: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .adminShell__navGroupLabel {
+  display: flex;
+  min-width: 0;
+  align-items: center;
   overflow: hidden;
-  padding: 2px 11px 5px;
-  color: var(--admin-muted);
-  font-size: 8px;
-  font-weight: 750;
-  letter-spacing: 0.09em;
-  text-overflow: ellipsis;
+  padding: 0 11px 1px;
+  color: color-mix(in srgb, var(--admin-muted) 55%, transparent);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   white-space: nowrap;
+
+  > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-block: 1px;
+  }
 }
 
 .adminShell__navLink,

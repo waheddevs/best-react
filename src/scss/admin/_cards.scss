@@ -1,0 +1,49 @@
+// Entry motion for Admin content cards; shell chrome stays stationary.
+@keyframes adminCardFadeIn {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+.adminWorkspace__provision,
+.adminMetricCard,
+.adminRegistry__creation,
+.adminDashboard__metrics > a,
+.adminDashboard__metrics > div,
+.adminDashboard__queuePanel,
+.adminDashboard__statusPanel,
+.adminOverview__metrics > a,
+.adminOverview__panel,
+.adminOverviewFinance__outstanding,
+.adminWorkspace__metrics,
+.adminWorkspace__tablePanel,
+.adminTeachers__tablePanel,
+.adminRegistry__tablePanel,
+.adminPayments__panel,
+.adminOperations,
+.adminSchedule__content,
+.adminScheduleWeek__lesson,
+.adminSettings,
+.adminSettingsPage__card,
+.adminWorkspace__error,
+.adminWorkspace__detail > header,
+.adminWorkspace__detailPanels > section,
+.adminWorkspace__detailPanels > aside,
+.adminGroupDetail__hero,
+.adminGroupDetail__metrics,
+.adminGroupDetail__grid > section,
+.adminGroupDetail__grid > aside,
+.adminDirectoryDetails__facts,
+.adminDirectoryDetails__totals > div,
+.workspaceNotifications[data-role="admin"] {
+  animation: adminCardFadeIn 320ms ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}

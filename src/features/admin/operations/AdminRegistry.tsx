@@ -1,4 +1,6 @@
 "use client";
+import { AdminMetricCard } from "@/features/admin/workspace/AdminMetricCard";
+import { adminMetricDetail } from "@/dictionaries/admin/AdminMetricDetails";
 import { useMutation, useQuery } from "@apollo/client/react";
 import AddCircleOutlineRounded from "@mui/icons-material/AddCircleOutlineRounded";
 import ArchiveOutlined from "@mui/icons-material/ArchiveOutlined";
@@ -200,29 +202,21 @@ export function AdminRegistry({
         </div>
       </header>
       <section className="adminRegistryMetrics" aria-label={t(section)}>
-        {page?.metrics.map((metric, i) => (
-          <div
-            className="adminRegistryMetrics__card"
-            data-tone={["all", "active", "paused", "debtor", "all"][i]}
+        {page?.metrics.map((metric) => (
+          <AdminMetricCard
             key={metric.key}
-          >
-            <span className="adminRegistryMetrics__icon">
-              <GroupsOutlined aria-hidden="true" />
-            </span>
-            <div className="adminRegistryMetrics__content">
-              <span>{t(metric.key)}</span>
-              <strong>
-                {moneyKeys.has(metric.key)
-                  ? adminMoney(metric.value, locale)
-                  : metric.key === "collection"
-                    ? metric.value + "%"
-                    : metric.value}
-              </strong>
-            </div>
-            <div className="adminRegistryMetrics__progress">
-              <i style={{ width: "100%" }} />
-            </div>
-          </div>
+            metricKey={metric.key}
+            label={t(metric.key)}
+            badge={!moneyKeys.has(metric.key) ? { label: metric.value } : undefined}
+            hint={adminMetricDetail(locale, metric.key)}
+            value={
+              moneyKeys.has(metric.key)
+                ? adminMoney(metric.value, locale)
+                : metric.key === "collection"
+                  ? metric.value + "%"
+                  : metric.value
+            }
+          />
         ))}
       </section>
       {section !== "payments" ? (

@@ -32,22 +32,6 @@ body[data-admin-theme="dark"] {
     background: #252a33;
   }
 
-  .adminStudentStatusCards__card[data-tone="active"] {
-    --student-status-color: #80d3da;
-  }
-
-  .adminStudentStatusCards__card[data-tone="paused"] {
-    --student-status-color: #efbd63;
-  }
-
-  .adminStudentStatusCards__card[data-tone="debtor"] {
-    --student-status-color: #ff8a83;
-  }
-
-  .adminStudentStatusCards__card[data-tone="departed"] {
-    --student-status-color: #a0a7b2;
-  }
-
   .adminStudentFilters__menuItem.MuiMenuItem-root {
     color: #f1f3f5;
 

@@ -4,102 +4,6 @@
   gap: 12px;
 }
 
-.adminTeacherStatusCards__card {
-  --teacher-status-color: var(--admin-solid);
-
-  display: grid;
-  min-width: 0;
-  min-height: 138px;
-  grid-template-columns: 42px minmax(0, 1fr);
-  grid-template-rows: 1fr 4px;
-  gap: 13px;
-  border: 1px solid var(--admin-border);
-  border-radius: 13px;
-  background:
-    linear-gradient(
-      to top,
-      color-mix(in srgb, var(--teacher-status-color) 7%, transparent) 0%,
-      transparent 68%
-    ),
-    var(--admin-surface);
-  padding: 17px;
-  color: var(--admin-text);
-  box-shadow: 0 1px 2px rgb(17 28 47 / 3%);
-
-  &[data-tone="active"] {
-    --teacher-status-color: #347a82;
-  }
-
-  &[data-tone="paused"] {
-    --teacher-status-color: #9a6700;
-  }
-
-  &[data-tone="debtor"] {
-    --teacher-status-color: #b42318;
-  }
-}
-
-.adminTeacherStatusCards__icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--teacher-status-color) 11%, var(--admin-surface));
-  color: var(--teacher-status-color);
-
-  svg {
-    font-size: 21px;
-  }
-}
-
-.adminTeacherStatusCards__content {
-  display: grid;
-  min-width: 0;
-  gap: 2px;
-
-  > span {
-    color: var(--admin-muted);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-  }
-
-  strong {
-    color: var(--admin-text);
-    font-size: 30px;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1.05;
-  }
-
-  small {
-    overflow: hidden;
-    color: var(--admin-muted);
-    font-size: 10px;
-    font-weight: 500;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-.adminTeacherStatusCards__progress {
-  height: 4px;
-  grid-column: 1 / -1;
-  align-self: end;
-  overflow: hidden;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--admin-border) 78%, transparent);
-
-  i {
-    display: block;
-    height: 100%;
-    border-radius: inherit;
-    background: var(--teacher-status-color);
-    transition: width 220ms ease;
-  }
-}
-
 .adminTeacherFilters {
   display: grid;
   grid-template-columns: minmax(260px, 1fr) 148px;
@@ -536,16 +440,6 @@ table.adminTeachers__table {
 }
 
 body[data-admin-theme="dark"] {
-  .adminTeacherStatusCards__card[data-tone="active"] {
-    --teacher-status-color: #80d3da;
-  }
-  .adminTeacherStatusCards__card[data-tone="paused"] {
-    --teacher-status-color: #efbd63;
-  }
-  .adminTeacherStatusCards__card[data-tone="debtor"] {
-    --teacher-status-color: #ff8a83;
-  }
-
   .adminTeacherFilters__menuPaper.MuiPaper-root {
     border-color: #303641;
     background: #191c23;
@@ -655,9 +549,6 @@ body[data-admin-theme="dark"] {
     scroll-snap-type: x proximity;
   }
 
-  .adminTeacherStatusCards__card {
-    scroll-snap-align: start;
-  }
   .adminTeacherFilters {
     grid-template-columns: minmax(0, 1fr) 132px;
   }

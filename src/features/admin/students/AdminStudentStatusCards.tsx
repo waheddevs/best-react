@@ -1,3 +1,4 @@
+import { AdminMetricCard } from "@/features/admin/workspace/AdminMetricCard";
 import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
 import PauseCircleOutlineRounded from "@mui/icons-material/PauseCircleOutlineRounded";
 import PaymentsRounded from "@mui/icons-material/PaymentsRounded";
@@ -20,40 +21,33 @@ type AdminStudentStatusCardsProps = {
 type StatusCard = {
   icon: ComponentType<{ "aria-hidden"?: boolean }>;
   status: AdminStudentStatusFilter;
-  tone: "all" | "active" | "paused" | "debtor" | "departed";
 };
 
 const cards: StatusCard[] = [
-  { icon: PeopleAltRounded, status: "ALL", tone: "all" },
-  { icon: CheckCircleOutlineRounded, status: "ACTIVE", tone: "active" },
-  { icon: PauseCircleOutlineRounded, status: "PAUSED", tone: "paused" },
-  { icon: PaymentsRounded, status: "DEBTOR", tone: "debtor" },
-  { icon: PersonOffRounded, status: "DEPARTED", tone: "departed" },
+  { icon: PeopleAltRounded, status: "ALL" },
+  { icon: CheckCircleOutlineRounded, status: "ACTIVE" },
+  { icon: PauseCircleOutlineRounded, status: "PAUSED" },
+  { icon: PaymentsRounded, status: "DEBTOR" },
+  { icon: PersonOffRounded, status: "DEPARTED" },
 ];
 
 export function AdminStudentStatusCards({ copy, counts, total }: AdminStudentStatusCardsProps) {
   return (
     <section aria-label={copy.summaryLabel} className="adminStudentStatusCards">
-      {cards.map(({ icon: Icon, status, tone }) => {
+      {cards.map(({ icon: Icon, status }) => {
         const count = status === "ALL" ? total : counts[status];
         const percentage = total === 0 ? 0 : Number(((count / total) * 100).toFixed(1));
 
         return (
-          <article className="adminStudentStatusCards__card" data-tone={tone} key={status}>
-            <span aria-hidden="true" className="adminStudentStatusCards__icon">
-              <Icon />
-            </span>
-            <span className="adminStudentStatusCards__content">
-              <span>{copy.statusLabels[status]}</span>
-              <strong>{count}</strong>
-              <small>
-                {percentage}% {copy.shareLabel}
-              </small>
-            </span>
-            <span aria-hidden="true" className="adminStudentStatusCards__progress">
-              <i style={{ width: `${percentage}%` }} />
-            </span>
-          </article>
+          <AdminMetricCard
+            key={status}
+            metricKey={status}
+            label={copy.statusLabels[status]}
+            value={count}
+            icon={<Icon />}
+            badge={{ label: `${percentage}%` }}
+            hint={copy.shareLabel}
+          />
         );
       })}
     </section>

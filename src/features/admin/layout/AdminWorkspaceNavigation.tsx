@@ -52,7 +52,9 @@ export function AdminWorkspaceNavigation({
     if (groupItems.length === 0) return null;
     return (
       <div className="adminShell__navGroup" key={group.key}>
-        <span className="adminShell__navGroupLabel">{groupCopy[group.key]}</span>
+        <span className="adminShell__navGroupLabel">
+          <span>{groupCopy[group.key]}</span>
+        </span>
         {groupItems.map(renderItem)}
       </div>
     );
