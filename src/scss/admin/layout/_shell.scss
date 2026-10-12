@@ -564,6 +564,119 @@ body[data-admin-theme="dark"]:has(.adminShell) {
   }
 }
 
+.adminLocaleMenu {
+  min-width: 174px;
+  margin-top: 7px;
+  border-radius: 10px !important;
+}
+
+.adminLocaleMenu__list {
+  padding: 5px !important;
+}
+
+.adminLocaleMenu__item {
+  display: grid !important;
+  min-height: 40px !important;
+  grid-template-columns: minmax(0, 1fr) auto 18px;
+  gap: 10px;
+  border-radius: 7px !important;
+  padding: 7px 9px !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+
+  small {
+    color: #8b9099;
+    font-size: 8px;
+    font-weight: 750;
+  }
+
+  svg {
+    color: #0b0d24;
+    font-size: 16px;
+  }
+}
+
+.adminLocaleMenu__item.Mui-selected,
+.adminLocaleMenu__item.Mui-selected:hover {
+  background: #eef0f6 !important;
+  color: #0b0d24;
+}
+
+.adminLocaleMenu__item:not(.Mui-selected):hover {
+  background: #f5f5f7 !important;
+}
+
+.adminLocaleMenu__item.Mui-focusVisible {
+  outline: 0;
+  background: #f5f5f7 !important;
+  box-shadow: inset 0 0 0 1px #d7d9de;
+}
+
+.adminLocaleMenu__item.Mui-selected.Mui-focusVisible {
+  background: #eef0f6 !important;
+}
+
+body[data-admin-theme="dark"] {
+  .adminLocaleMenu__item small {
+    color: #a0a7b2;
+  }
+
+  .adminLocaleMenu__item svg {
+    color: #eef0ff;
+  }
+
+  .adminLocaleMenu__item.Mui-selected,
+  .adminLocaleMenu__item.Mui-selected:hover {
+    background: #292d3c !important;
+    color: #eef0ff;
+  }
+
+  .adminLocaleMenu__item:not(.Mui-selected):hover {
+    background: #20242c !important;
+  }
+
+  .adminLocaleMenu__item.Mui-focusVisible {
+    background: #20242c !important;
+    box-shadow: inset 0 0 0 1px #3a414d;
+  }
+
+  .adminLocaleMenu__item.Mui-selected.Mui-focusVisible {
+    background: #292d3c !important;
+  }
+}
+
+.adminShell__locales .adminLocaleTrigger {
+  min-width: 82px;
+  padding: 0 9px;
+  font-size: 10px;
+  font-weight: 750;
+
+  .MuiButton-startIcon,
+  .MuiButton-endIcon {
+    margin: 0;
+  }
+
+  .MuiButton-startIcon {
+    margin-right: 7px;
+  }
+
+  .MuiButton-endIcon {
+    margin-left: 5px;
+  }
+
+  svg {
+    font-size: 17px;
+  }
+}
+
+.adminShell__themeToggle {
+  width: 40px;
+
+  svg {
+    font-size: 19px;
+  }
+}
+
 .adminShell__menuButton {
   display: none;
   width: 40px;
