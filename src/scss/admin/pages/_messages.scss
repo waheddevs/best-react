@@ -1,0 +1,16 @@
+// Messages uses the approved Admin table and pagination styling.
+@media (min-width: 701px) {
+  .adminMessages table.adminRegistry__table .adminRegistry__actionHeading {
+    // Two 32px actions, their 6px gap and the cell's horizontal padding.
+    width: 104px;
+  }
+}
+
+.adminMessages__subject,
+.adminMessages__cell {
+  display: block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

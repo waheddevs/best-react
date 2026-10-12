@@ -2,6 +2,7 @@
 @use "./layout/shell";
 @use "./pages/dashboard";
 @use "./pages/groups";
+@use "./pages/messages";
 @use "./pages/operations";
 @use "./pages/workspace";
 @use "./pages/notifications";
@@ -13,3 +14,5 @@
 @use "./pages/calendar";
 @use "./pages/request-filters";
 @use "./pages/request-details";
+@use "./pages/_message-filters.scss";
+@use "./pages/_message-details.scss";
