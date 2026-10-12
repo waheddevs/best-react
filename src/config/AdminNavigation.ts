@@ -6,23 +6,17 @@ export const adminNavigationItems: ReadonlyArray<{
 }> = [
   { href: "/admin", key: "dashboard" },
   { href: "/admin/requests", key: "requests" },
+  { href: "/admin/messages", key: "messages" },
+  { href: "/admin/notifications", key: "notifications" },
   { href: "/admin/students", key: "students" },
   { href: "/admin/teachers", key: "teachers" },
   { href: "/admin/groups", key: "groups" },
   { href: "/admin/courses", key: "courses" },
+  { href: "/admin/exams", key: "exams" },
   { href: "/admin/events", key: "events" },
-  { href: "/admin/locations", key: "locations" },
   { href: "/admin/schedule", key: "schedule" },
-  { href: "/admin/attendance", key: "attendance" },
   { href: "/admin/payments", key: "payments" },
-  { href: "/admin/tests", key: "tests" },
-  { href: "/admin/results", key: "results" },
-  { href: "/admin/library", key: "library" },
-  { href: "/admin/imports", key: "imports" },
-  { href: "/admin/notifications", key: "notifications" },
-  { href: "/admin/audit", key: "audit" },
-  { href: "/admin/reports", key: "reports" },
-  { href: "/admin/settings", key: "settings" },
+  { href: "/admin/salary", key: "salary" },
 ];
 
 export const adminDockNavigationKeys: ReadonlyArray<AdminNavigationKey> = [
@@ -30,18 +24,15 @@ export const adminDockNavigationKeys: ReadonlyArray<AdminNavigationKey> = [
   "students",
   "groups",
   "payments",
-  "settings",
+  "notifications",
 ];
 
 export const adminNavigationGroups: ReadonlyArray<{
   key: AdminNavigationGroupKey;
   items: ReadonlyArray<AdminNavigationKey>;
 }> = [
-  { key: "overview", items: ["dashboard", "requests"] },
+  { key: "overview", items: ["dashboard", "requests", "messages", "notifications"] },
   { key: "people", items: ["students", "teachers", "groups"] },
-  { key: "academics", items: ["courses", "schedule", "attendance", "tests", "results"] },
-  { key: "operations", items: ["events", "locations", "payments"] },
-  { key: "content", items: ["library", "imports"] },
-  { key: "insights", items: ["reports", "audit"] },
-  { key: "system", items: ["notifications", "settings"] },
+  { key: "academics", items: ["courses", "exams", "events", "schedule"] },
+  { key: "operations", items: ["payments", "salary"] },
 ];

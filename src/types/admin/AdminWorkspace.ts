@@ -1,26 +1,25 @@
+import type { AdminStudentDirectoryValues, AdminStudentStatus } from "./AdminStudents";
+import type { AdminTeacherStatus } from "./AdminTeachers";
+
 export type AdminNavigationKey =
   | "dashboard"
   | "requests"
+  | "messages"
   | "students"
   | "teachers"
   | "groups"
   | "courses"
+  | "exams"
   | "events"
-  | "locations"
   | "schedule"
-  | "attendance"
   | "payments"
-  | "tests"
-  | "results"
-  | "library"
-  | "imports"
+  | "salary"
   | "notifications"
-  | "audit"
-  | "reports"
   | "settings";
 
-export type AdminNavigationGroupKey =
-  "overview" | "people" | "academics" | "operations" | "content" | "insights" | "system";
+export type AdminNavigationGroupKey = "overview" | "people" | "academics" | "operations";
+
+export type AdminThemeMode = "light" | "dark";
 
 export type AdminWorkspaceRecord = {
   avatarUrl?: string | null;
@@ -31,6 +30,9 @@ export type AdminWorkspaceRecord = {
   id: string;
   meta: string;
   searchText?: string;
+  studentDirectory?: AdminStudentDirectoryValues;
+  studentStatus?: AdminStudentStatus;
+  teacherStatus?: AdminTeacherStatus;
   status: "success" | "warning" | "danger" | "info" | "neutral";
   title: string;
 };
@@ -38,6 +40,7 @@ export type AdminWorkspaceRecord = {
 export type AdminWorkspaceRecordField = {
   key: string;
   label: string;
+  tone?: "success" | "warning" | "danger" | "neutral";
   value: string;
 };
 
@@ -81,7 +84,12 @@ export type AdminWorkspaceCopy = {
     errorLabel: string;
     idRecordLabel: string;
     languageLabel: string;
+    lightModeLabel: string;
+    logoutCancelLabel: string;
+    logoutConfirmLabel: string;
     logoutLabel: string;
+    logoutMessage: string;
+    logoutTitle: string;
     menuClose: string;
     menuOpen: string;
     nextLabel: string;
@@ -91,15 +99,15 @@ export type AdminWorkspaceCopy = {
     recordsLabel: string;
     selectedLabel: string;
     clearSelectionLabel: string;
-    unavailableNotice: string;
     searchLabel: string;
     searchPlaceholder: string;
     skipToContentLabel: string;
     retryLabel: string;
     sidebarCollapse: string;
     sidebarExpand: string;
-    stackLabel: string;
     statusLabel: string;
+    darkModeLabel: string;
+    welcomeLabel: string;
     workspaceLabel: string;
   };
   navigation: Record<AdminNavigationKey, string>;

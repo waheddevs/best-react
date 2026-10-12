@@ -1,13 +1,10 @@
 export type AdminDirectoryCopy = {
-  activeGroupsLabel: string;
   activeLabel: string;
   amountLabel: string;
-  averageLabel: string;
   billingMonthLabel: string;
   branchLabel: string;
   branchesLabel: string;
   capacityLabel: string;
-  categoryLabel: string;
   contactLabel: string;
   contactRequestsLabel: string;
   dateLabel: string;
@@ -22,18 +19,15 @@ export type AdminDirectoryCopy = {
   kindLabel: string;
   levelLabel: string;
   locationLabel: string;
-  nextLessonLabel: string;
+  messageLabel: string;
   outstandingLabel: string;
   phoneLabel: string;
   receivedLabel: string;
   roomLabel: string;
   scheduleLabel: string;
-  scheduledLessonsLabel: string;
-  scoredTestsLabel: string;
   subjectLabel: string;
   publishedLabel: string;
   timelineLabel: string;
   totalAmountLabel: string;
   upcomingLabel: string;
-  yesLabel: string;
 };

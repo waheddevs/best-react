@@ -6,27 +6,22 @@ import { auth } from "@/Auth";
 import type { Locale } from "@/config/Locales";
 import { getAdminDirectoryCopy } from "@/dictionaries/admin/AdminDirectory";
 import { getAdminOperationsCopy } from "@/dictionaries/admin/AdminOperations";
+import { getAdminStudentsCopy } from "@/dictionaries/admin/AdminStudents";
+import { getAdminTeachersCopy } from "@/dictionaries/admin/AdminTeachers";
 import { getAdminStatusLabel, getAdminWorkspaceCopy } from "@/dictionaries/admin/AdminWorkspace";
 import {
-  AdminAttendanceDocument,
-  AdminAuditLogsDocument,
   AdminContactRequestsDocument,
+  type AdminContactRequestsQuery,
   AdminCoursesDocument,
   AdminEventRegistrationsDocument,
   AdminEventsDocument,
   AdminExamRegistrationsDocument,
-  AdminGroupProgressesDocument,
   AdminGroupsDocument,
-  AdminLibraryItemsDocument,
-  AdminLocationsDocument,
-  AdminMediaObjectsDocument,
   AdminNotificationsDocument,
   AdminOperationalOverviewDocument,
   AdminProfileDocument,
   type AdminProfileQuery,
   AdminScheduleDocument,
-  AdminStudentsDocument,
-  AdminTestsDocument,
   AdminTuitionLedgerDocument,
   AdminUsersDocument,
 } from "@/gql/graphql";
@@ -40,6 +35,9 @@ import type {
   AdminWorkspaceRecord,
   AdminWorkspaceRecordField,
 } from "@/types/admin/AdminWorkspace";
+import type { AdminProvisionGroupOption } from "@/types/admin/AdminProvisionUser";
+import type { AdminStudentStatus } from "@/types/admin/AdminStudents";
+import type { AdminTeacherStatus } from "@/types/admin/AdminTeachers";
 
 type Connection<T> = {
   edges: Array<{ node: T }>;
@@ -49,6 +47,7 @@ type Status = AdminWorkspaceRecord["status"];
 type DataResult = {
   records: AdminWorkspaceRecord[];
   metrics?: AdminWorkspaceMetric[];
+  provisionGroups?: AdminProvisionGroupOption[];
 };
 
 async function adminQuery<T>(
@@ -90,6 +89,13 @@ async function allNodes<T>(
     after = connection.pageInfo.endCursor;
   } while (true);
   return nodes;
+}
+
+export async function loadAdminMessages() {
+  return allNodes<AdminContactRequestsQuery["adminContactRequests"]["edges"][number]["node"]>(
+    AdminContactRequestsDocument,
+    "adminContactRequests",
+  );
 }
 
 function tone(value: string): Status {
@@ -142,8 +148,13 @@ function record(
   return { id, title, meta, detail, status, href, avatarUrl, group };
 }
 
-function field(key: string, label: string, value: string): AdminWorkspaceRecordField {
-  return { key, label, value };
+function field(
+  key: string,
+  label: string,
+  value: string,
+  tone?: AdminWorkspaceRecordField["tone"],
+): AdminWorkspaceRecordField {
+  return { key, label, tone, value };
 }
 
 function withFields(
@@ -178,25 +189,24 @@ export async function loadAdminWorkspaceData(
   const directory = getAdminDirectoryCopy(locale);
   const operations = getAdminOperationsCopy(locale);
   switch (sectionKey) {
+    case "exams":
+    case "salary":
+      return { records: [] };
     case "dashboard": {
       const labels = getAdminWorkspaceCopy(locale);
-      const data = await adminQuery<{
-        adminOperationalOverview: {
-          activeGroups: number;
-          activeUsers: number;
-          pendingIntakes: number;
-          pendingMedia: number;
-          unreadNotifications: number;
-        };
-        adminAcademicOverview: {
-          activeStudentCount: number;
-          activeTeacherCount: number;
-          assignedTestCount: number;
-          completionPercentage: number;
-        };
-      }>(AdminOperationalOverviewDocument);
+      type DashboardUser = { id: string };
+      const [data, students, teachers] = await Promise.all([
+        adminQuery<{
+          adminOperationalOverview: {
+            activeGroups: number;
+            pendingIntakes: number;
+            unreadNotifications: number;
+          };
+        }>(AdminOperationalOverviewDocument),
+        allNodes<DashboardUser>(AdminUsersDocument, "adminUsers", { role: "STUDENT" }),
+        allNodes<DashboardUser>(AdminUsersDocument, "adminUsers", { role: "TEACHER" }),
+      ]);
       const op = data.adminOperationalOverview;
-      const academic = data.adminAcademicOverview;
       return {
         metrics: [
           {
@@ -209,19 +219,19 @@ export async function loadAdminWorkspaceData(
             href: "/admin/students",
             label: labels.navigation.students,
             tone: "cyan",
-            value: String(academic.activeStudentCount),
+            value: String(students.length),
           },
           {
             href: "/admin/teachers",
             label: labels.navigation.teachers,
             tone: "navy",
-            value: String(academic.activeTeacherCount),
+            value: String(teachers.length),
           },
           {
             href: "/admin/requests",
             label: labels.common.openQueueLabel,
             tone: "amber",
-            value: String(op.pendingIntakes + op.pendingMedia),
+            value: String(op.pendingIntakes),
           },
         ],
         records: [
@@ -234,22 +244,36 @@ export async function loadAdminWorkspaceData(
             "/admin/requests",
           ),
           record(
-            "media",
-            labels.navigation.imports,
-            String(op.pendingMedia),
+            "notifications",
+            labels.navigation.notifications,
+            String(op.unreadNotifications),
             labels.common.openQueueLabel,
-            op.pendingMedia ? "warning" : "success",
-            "/admin/imports",
-          ),
-          record(
-            "tests",
-            labels.navigation.tests,
-            String(academic.assignedTestCount),
-            labels.common.all,
-            "info",
-            "/admin/tests",
+            op.unreadNotifications ? "warning" : "success",
+            "/admin/notifications",
           ),
         ],
+      };
+    }
+    case "messages": {
+      const messages = await loadAdminMessages();
+      return {
+        records: messages.map((item) =>
+          withFields(
+            record(
+              item.id,
+              item.name,
+              item.subject ?? directory.contactRequestsLabel,
+              getAdminStatusLabel(locale, item.status),
+              tone(item.status),
+            ),
+            [
+              field("contact", directory.contactLabel, item.email ?? item.phone ?? "—"),
+              field("subject", directory.subjectLabel, item.subject ?? "—"),
+              field("message", directory.messageLabel, item.message ?? "—"),
+              field("received", directory.receivedLabel, date(item.createdAt, locale)),
+            ],
+          ),
+        ),
       };
     }
     case "requests": {
@@ -262,23 +286,18 @@ export async function loadAdminWorkspaceData(
         email?: string | null;
         phone?: string | null;
       };
-      const [contacts, events, exams] = await Promise.all([
-        allNodes<Intake>(AdminContactRequestsDocument, "adminContactRequests"),
+      const [events, exams] = await Promise.all([
         allNodes<Intake>(AdminEventRegistrationsDocument, "adminEventRegistrations"),
         allNodes<Intake>(AdminExamRegistrationsDocument, "adminExamRegistrations"),
       ]);
       const items = [
-        ...contacts.map((item) => ({ ...item, sourceLabel: directory.contactRequestsLabel })),
         ...events.map((item) => ({ ...item, sourceLabel: directory.eventRegistrationsLabel })),
         ...exams.map((item) => ({ ...item, sourceLabel: directory.examRegistrationsLabel })),
       ].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
       return {
         metrics: [
-          { label: directory.contactRequestsLabel, value: String(contacts.length) },
-          {
-            label: directory.eventRegistrationsLabel,
-            value: String(events.length + exams.length),
-          },
+          { label: directory.eventRegistrationsLabel, value: String(events.length) },
+          { label: directory.examRegistrationsLabel, value: String(exams.length) },
         ],
         records: items.map((item) =>
           withFields(
@@ -300,54 +319,110 @@ export async function loadAdminWorkspaceData(
     }
     case "students": {
       type Student = {
-        studentId: string;
+        activeGroupId?: string | null;
+        activeGroupName?: string | null;
+        activeMembershipStartedAt?: string | null;
+        activeTeacherId?: string | null;
+        activeTeacherName?: string | null;
+        createdAt: string;
+        id: string;
         displayName: string;
-        currentGroupName?: string | null;
+        email?: string | null;
+        phone?: string | null;
+        branchName?: string | null;
         status: string;
-        averagePercentage?: number | null;
-        scoredTestCount: number;
       };
-      const nodes = await allNodes<Student>(AdminStudentsDocument, "adminStudents");
-      const avatarUrls = await adminAvatarUrlsFor(nodes.map((item) => item.studentId));
-      const scoredStudents = nodes.filter(
-        (item): item is Student & { averagePercentage: number } =>
-          item.averagePercentage !== null && item.averagePercentage !== undefined,
+      type TuitionEntry = {
+        outstandingAmountUzs: string;
+        status: string;
+        studentId: string;
+      };
+      type ProvisionGroup = {
+        activeStudentCount: number;
+        category: AdminProvisionGroupOption["category"] | null;
+        id: string;
+        name: string;
+      };
+      const [nodes, tuitionEntries, groupNodes] = await Promise.all([
+        allNodes<Student>(AdminUsersDocument, "adminUsers", { role: "STUDENT" }),
+        allNodes<TuitionEntry>(AdminTuitionLedgerDocument, "adminTuitionLedger"),
+        allNodes<ProvisionGroup>(AdminGroupsDocument, "adminGroups", { status: "ACTIVE" }),
+      ]);
+      const avatarUrls = await adminAvatarUrlsFor(nodes.map((item) => item.id));
+      const debtorIds = new Set(
+        tuitionEntries
+          .filter(
+            (entry) => entry.status === "OVERDUE" && BigInt(entry.outstandingAmountUzs) > BigInt(0),
+          )
+          .map((entry) => entry.studentId),
       );
-      const average = scoredStudents.length
-        ? `${Math.round(scoredStudents.reduce((sum, item) => sum + item.averagePercentage, 0) / scoredStudents.length)}%`
-        : "—";
+      const studentCopy = getAdminStudentsCopy(locale);
+      const tuitionByStudent = new Map<string, TuitionEntry[]>();
+      tuitionEntries.forEach((entry) => {
+        const entries = tuitionByStudent.get(entry.studentId) ?? [];
+        entries.push(entry);
+        tuitionByStudent.set(entry.studentId, entries);
+      });
+      const resolveStudentStatus = (student: Student): AdminStudentStatus => {
+        if (student.status === "DELETED") return "DEPARTED";
+        if (student.status === "INACTIVE") return "PAUSED";
+        if (debtorIds.has(student.id)) return "DEBTOR";
+        return "ACTIVE";
+      };
+
       return {
-        metrics: [
-          {
-            label: directory.activeLabel,
-            value: String(nodes.filter((item) => item.status === "ACTIVE").length),
-          },
-          { label: directory.averageLabel, value: average },
-        ],
-        records: nodes.map((item) =>
-          withFields(
-            record(
-              item.studentId,
-              item.displayName,
-              item.currentGroupName ?? "—",
-              getAdminStatusLabel(locale, item.status),
-              tone(item.status),
-              `/admin/students/${encodeURIComponent(item.studentId)}`,
-              avatarUrls.get(item.studentId) ?? null,
-            ),
-            [
-              field("group", directory.groupLabel, item.currentGroupName ?? "—"),
-              field(
-                "average",
-                directory.averageLabel,
-                item.averagePercentage === null || item.averagePercentage === undefined
-                  ? "—"
-                  : `${Math.round(item.averagePercentage)}%`,
-              ),
-              field("tests", directory.scoredTestsLabel, String(item.scoredTestCount)),
-            ],
-          ),
+        provisionGroups: groupNodes.filter(
+          (group): group is ProvisionGroup & { category: AdminProvisionGroupOption["category"] } =>
+            group.category !== null,
         ),
+        records: nodes.map((item) => {
+          const studentTuition = tuitionByStudent.get(item.id) ?? [];
+          const paymentIsPaid =
+            studentTuition.length > 0 &&
+            studentTuition.every(
+              (entry) =>
+                entry.status === "PAID" && BigInt(entry.outstandingAmountUzs) === BigInt(0),
+            );
+          const payment = paymentIsPaid
+            ? { label: studentCopy.paymentPaidLabel, tone: "success" as const }
+            : { label: studentCopy.paymentUnpaidLabel, tone: "danger" as const };
+          const studentStatus = resolveStudentStatus(item);
+          const statusTone: Status =
+            studentStatus === "ACTIVE"
+              ? "success"
+              : studentStatus === "PAUSED"
+                ? "warning"
+                : studentStatus === "DEBTOR"
+                  ? "danger"
+                  : "neutral";
+
+          return {
+            ...withFields(
+              record(
+                item.id,
+                item.displayName,
+                item.branchName ?? item.email ?? "—",
+                studentCopy.statusLabels[studentStatus],
+                statusTone,
+                `/admin/students/${encodeURIComponent(item.id)}`,
+                avatarUrls.get(item.id) ?? null,
+              ),
+              [
+                field("phone", directory.phoneLabel, item.phone ?? "—"),
+                field("email", directory.emailLabel, item.email ?? "—"),
+                field("payment", studentCopy.paymentLabel, payment.label, payment.tone),
+              ],
+            ),
+            studentDirectory: {
+              activeGroupId: item.activeGroupId ?? null,
+              activeGroupName: item.activeGroupName ?? null,
+              activeMembershipStartedAt: item.activeMembershipStartedAt ?? null,
+              activeTeacherId: item.activeTeacherId ?? null,
+              activeTeacherName: item.activeTeacherName ?? null,
+            },
+            studentStatus,
+          };
+        }),
       };
     }
     case "teachers": {
@@ -357,11 +432,23 @@ export async function loadAdminWorkspaceData(
         email?: string | null;
         branchName?: string | null;
         phone?: string | null;
-        teacherSubject?: string | null;
         status: string;
       };
-      const nodes = await allNodes<User>(AdminUsersDocument, "adminUsers", { role: "TEACHER" });
+      type Group = {
+        status: string;
+        teacherId: string;
+      };
+      const [nodes, groups] = await Promise.all([
+        allNodes<User>(AdminUsersDocument, "adminUsers", { role: "TEACHER" }),
+        allNodes<Group>(AdminGroupsDocument, "adminGroups"),
+      ]);
       const avatarUrls = await adminAvatarUrlsFor(nodes.map((item) => item.id));
+      const teacherCopy = getAdminTeachersCopy(locale);
+      const activeGroupCounts = groups.reduce<Map<string, number>>((counts, group) => {
+        if (group.status !== "ACTIVE") return counts;
+        counts.set(group.teacherId, (counts.get(group.teacherId) ?? 0) + 1);
+        return counts;
+      }, new Map());
       return {
         metrics: [
           {
@@ -373,27 +460,33 @@ export async function loadAdminWorkspaceData(
             value: String(new Set(nodes.map((item) => item.branchName).filter(Boolean)).size),
           },
         ],
-        records: nodes.map((item) =>
-          withFields(
-            record(
-              item.id,
-              item.displayName,
-              [item.teacherSubject, item.branchName].filter(Boolean).join(" · ") ||
-                item.email ||
-                "—",
-              getAdminStatusLabel(locale, item.status),
-              tone(item.status),
-              `/admin/teachers/${encodeURIComponent(item.id)}`,
-              avatarUrls.get(item.id) ?? null,
+        records: nodes.map((item) => {
+          const teacherStatus: AdminTeacherStatus =
+            item.status === "INACTIVE" ? "PAUSED" : "ACTIVE";
+          return {
+            ...withFields(
+              record(
+                item.id,
+                item.displayName,
+                item.email || "—",
+                teacherCopy.statusLabels[teacherStatus],
+                tone(item.status),
+                `/admin/teachers/${encodeURIComponent(item.id)}`,
+                avatarUrls.get(item.id) ?? null,
+              ),
+              [
+                field("email", directory.emailLabel, item.email ?? "—"),
+                field("phone", directory.phoneLabel, item.phone ?? "—"),
+                field(
+                  "groups",
+                  teacherCopy.groupsLabel,
+                  String(activeGroupCounts.get(item.id) ?? 0),
+                ),
+              ],
             ),
-            [
-              field("subject", directory.subjectLabel, item.teacherSubject ?? "—"),
-              field("branch", directory.branchLabel, item.branchName ?? "—"),
-              field("email", directory.emailLabel, item.email ?? "—"),
-              field("phone", directory.phoneLabel, item.phone ?? "—"),
-            ],
-          ),
-        ),
+            teacherStatus,
+          };
+        }),
       };
     }
     case "groups": {
@@ -547,57 +640,12 @@ export async function loadAdminWorkspaceData(
         ),
       };
     }
-    case "locations": {
-      const data = await adminQuery<{
-        adminLocations: Array<{
-          room: string;
-          activeGroupCount: number;
-          scheduledLessonCount: number;
-          nextLessonAt?: string | null;
-        }>;
-      }>(AdminLocationsDocument);
-      const activeGroupTotal = data.adminLocations.reduce(
-        (sum, item) => sum + item.activeGroupCount,
-        0,
-      );
-      const scheduledLessonTotal = data.adminLocations.reduce(
-        (sum, item) => sum + item.scheduledLessonCount,
-        0,
-      );
-      return {
-        metrics: [
-          { label: directory.activeGroupsLabel, value: String(activeGroupTotal) },
-          { label: directory.scheduledLessonsLabel, value: String(scheduledLessonTotal) },
-        ],
-        records: data.adminLocations.map((item) =>
-          withFields(
-            record(
-              item.room,
-              item.room,
-              String(item.scheduledLessonCount),
-              getAdminStatusLabel(locale, item.activeGroupCount ? "ACTIVE" : "INACTIVE"),
-              item.activeGroupCount ? "success" : "neutral",
-            ),
-            [
-              field("groups", directory.activeGroupsLabel, String(item.activeGroupCount)),
-              field("lessons", directory.scheduledLessonsLabel, String(item.scheduledLessonCount)),
-              field(
-                "nextLesson",
-                directory.nextLessonLabel,
-                item.nextLessonAt ? date(item.nextLessonAt, locale) : "—",
-              ),
-            ],
-          ),
-        ),
-      };
-    }
-    case "schedule":
-    case "attendance": {
+    case "schedule": {
       const now = new Date();
       const from = new Date(now);
-      from.setDate(from.getDate() - (sectionKey === "attendance" ? 7 : 30));
+      from.setDate(from.getDate() - 30);
       const to = new Date(now);
-      to.setDate(to.getDate() + (sectionKey === "attendance" ? 0 : 90));
+      to.setDate(to.getDate() + 90);
       type Lesson = {
         id: string;
         groupId: string;
@@ -611,60 +659,6 @@ export async function loadAdminWorkspaceData(
         from: from.toISOString(),
         to: to.toISOString(),
       });
-      if (sectionKey === "attendance") {
-        type Attendance = {
-          id: string;
-          studentId: string;
-          studentName: string;
-          status: string;
-          note?: string | null;
-          recordedAt: string;
-        };
-        const rows = await Promise.all(
-          data.adminSchedule
-            .filter((lesson) => new Date(lesson.startsAt) <= now)
-            .map(async (lesson) => {
-              const result = await adminQuery<{ adminAttendance: Attendance[] }>(
-                AdminAttendanceDocument,
-                { lessonId: lesson.id },
-              );
-              const lessonTitle =
-                lesson.translations.find((translation) => translation.language === language)
-                  ?.title ?? lesson.groupId;
-              return result.adminAttendance.map((entry) =>
-                withFields(
-                  record(
-                    entry.id,
-                    entry.studentName,
-                    `${lessonTitle} · ${dateTime(lesson.startsAt, locale)}`,
-                    getAdminStatusLabel(locale, entry.status),
-                    tone(entry.status),
-                  ),
-                  [
-                    field("lesson", operations.lessonLabel, lessonTitle),
-                    field("date", directory.dateLabel, dateTime(lesson.startsAt, locale)),
-                    field("recorded", operations.recordedLabel, dateTime(entry.recordedAt, locale)),
-                    field("note", operations.noteLabel, entry.note ?? "—"),
-                  ],
-                ),
-              );
-            }),
-        );
-        const records = rows.flat();
-        return {
-          metrics: [
-            {
-              label: getAdminStatusLabel(locale, "PRESENT"),
-              value: String(records.filter((item) => item.status === "success").length),
-            },
-            {
-              label: getAdminStatusLabel(locale, "ABSENT"),
-              value: String(records.filter((item) => item.status === "danger").length),
-            },
-          ],
-          records,
-        };
-      }
       const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tashkent" }).format(now);
       return {
         metrics: [
@@ -747,183 +741,6 @@ export async function loadAdminWorkspaceData(
         ),
       };
     }
-    case "tests": {
-      type Test = {
-        id: string;
-        title: string;
-        groupName: string;
-        teacherDisplayName: string;
-        questionCount: number;
-        attemptCount: number;
-        awaitingReviewCount: number;
-        status: string;
-      };
-      const nodes = await allNodes<Test>(AdminTestsDocument, "adminTests", { language });
-      return {
-        metrics: [
-          {
-            label: operations.totalAttemptsLabel,
-            value: String(nodes.reduce((sum, item) => sum + item.attemptCount, 0)),
-          },
-          {
-            label: operations.awaitingReviewLabel,
-            value: String(nodes.reduce((sum, item) => sum + item.awaitingReviewCount, 0)),
-          },
-        ],
-        records: nodes.map((item) =>
-          withFields(
-            record(
-              item.id,
-              item.title,
-              `${item.groupName} · ${item.questionCount}`,
-              item.awaitingReviewCount
-                ? `${operations.awaitingReviewLabel}: ${item.awaitingReviewCount}`
-                : getAdminStatusLabel(locale, item.status),
-              item.awaitingReviewCount ? "warning" : tone(item.status),
-              `/admin/tests/${encodeURIComponent(item.id)}`,
-            ),
-            [
-              field("group", directory.groupLabel, item.groupName),
-              field("teacher", operations.teacherLabel, item.teacherDisplayName),
-              field("questions", operations.questionCountLabel, String(item.questionCount)),
-              field("attempts", operations.attemptCountLabel, String(item.attemptCount)),
-            ],
-          ),
-        ),
-      };
-    }
-    case "results":
-    case "reports": {
-      type Progress = {
-        groupId: string;
-        groupName: string;
-        teacherDisplayName: string;
-        completionPercentage: number;
-        averagePercentage?: number | null;
-        groupStatus: string;
-      };
-      const nodes = await allNodes<Progress>(AdminGroupProgressesDocument, "adminGroupProgresses");
-      const averageCompletion = nodes.length
-        ? Math.round(nodes.reduce((sum, item) => sum + item.completionPercentage, 0) / nodes.length)
-        : 0;
-      const scored = nodes.filter(
-        (item): item is Progress & { averagePercentage: number } =>
-          item.averagePercentage !== null && item.averagePercentage !== undefined,
-      );
-      const averageScore = scored.length
-        ? Math.round(scored.reduce((sum, item) => sum + item.averagePercentage, 0) / scored.length)
-        : 0;
-      return {
-        metrics: [
-          { label: operations.completionLabel, value: `${averageCompletion}%` },
-          { label: operations.averageScoreLabel, value: `${averageScore}%` },
-        ],
-        records: nodes.map((item) =>
-          withFields(
-            record(
-              item.groupId,
-              item.groupName,
-              item.teacherDisplayName,
-              `${item.completionPercentage}%`,
-              tone(item.groupStatus),
-            ),
-            [
-              field("teacher", operations.teacherLabel, item.teacherDisplayName),
-              field("completion", operations.completionLabel, `${item.completionPercentage}%`),
-              field(
-                "average",
-                operations.averageScoreLabel,
-                item.averagePercentage === null || item.averagePercentage === undefined
-                  ? "—"
-                  : `${Math.round(item.averagePercentage)}%`,
-              ),
-            ],
-          ),
-        ),
-      };
-    }
-    case "library": {
-      type Item = {
-        id: string;
-        title: string;
-        ownerName: string;
-        status: string;
-        updatedAt: string;
-      };
-      const nodes = await allNodes<Item>(AdminLibraryItemsDocument, "adminLibraryItems");
-      return {
-        metrics: [
-          {
-            label: directory.publishedLabel,
-            value: String(nodes.filter((item) => item.status === "PUBLISHED").length),
-          },
-          {
-            label: operations.ownerLabel,
-            value: String(new Set(nodes.map((item) => item.ownerName)).size),
-          },
-        ],
-        records: nodes.map((item) =>
-          withFields(
-            record(
-              item.id,
-              item.title,
-              `${item.ownerName} · ${date(item.updatedAt, locale)}`,
-              getAdminStatusLabel(locale, item.status),
-              tone(item.status),
-              `/admin/library/${encodeURIComponent(item.id)}`,
-            ),
-            [
-              field("owner", operations.ownerLabel, item.ownerName),
-              field("updated", operations.updatedLabel, dateTime(item.updatedAt, locale)),
-            ],
-          ),
-        ),
-      };
-    }
-    case "imports": {
-      type Media = {
-        id: string;
-        originalName: string;
-        mimeType: string;
-        status: string;
-        malwareStatus: string;
-        createdAt: string;
-      };
-      const nodes = await allNodes<Media>(AdminMediaObjectsDocument, "adminMediaObjects");
-      return {
-        metrics: [
-          {
-            label: operations.cleanFilesLabel,
-            value: String(nodes.filter((item) => item.malwareStatus === "CLEAN").length),
-          },
-          {
-            label: getAdminStatusLabel(locale, "VERIFYING"),
-            value: String(nodes.filter((item) => item.malwareStatus === "VERIFYING").length),
-          },
-        ],
-        records: nodes.map((item) =>
-          withFields(
-            record(
-              item.id,
-              item.originalName,
-              `${item.mimeType} · ${date(item.createdAt, locale)}`,
-              getAdminStatusLabel(locale, item.status),
-              tone(`${item.status} ${item.malwareStatus}`),
-              `/admin/imports/${encodeURIComponent(item.id)}`,
-            ),
-            [
-              field("mime", operations.mimeTypeLabel, item.mimeType),
-              field(
-                "malware",
-                operations.malwareStatusLabel,
-                getAdminStatusLabel(locale, item.malwareStatus),
-              ),
-              field("created", operations.createdLabel, dateTime(item.createdAt, locale)),
-            ],
-          ),
-        ),
-      };
-    }
     case "notifications": {
       type Notification = {
         id: string;
@@ -942,47 +759,6 @@ export async function loadAdminWorkspaceData(
             item.body ?? date(item.createdAt, locale),
             getAdminStatusLabel(locale, item.readAt ? "READ" : "UNREAD"),
             item.readAt ? "neutral" : "warning",
-          ),
-        ),
-      };
-    }
-    case "audit": {
-      type Audit = {
-        id: string;
-        action: string;
-        actorId?: string | null;
-        targetId: string;
-        targetType: string;
-        reason?: string | null;
-        createdAt: string;
-      };
-      const nodes = await allNodes<Audit>(AdminAuditLogsDocument, "adminAuditLogs");
-      return {
-        metrics: [
-          {
-            label: operations.actorLabel,
-            value: String(new Set(nodes.map((item) => item.actorId).filter(Boolean)).size),
-          },
-          {
-            label: operations.targetLabel,
-            value: String(new Set(nodes.map((item) => item.targetType)).size),
-          },
-        ],
-        records: nodes.map((item) =>
-          withFields(
-            record(
-              item.id,
-              item.action,
-              `${item.targetType} · ${item.targetId} · ${dateTime(item.createdAt, locale)}`,
-              item.reason ?? "—",
-              "neutral",
-            ),
-            [
-              field("target", operations.targetLabel, `${item.targetType} · ${item.targetId}`),
-              field("actor", operations.actorLabel, item.actorId ?? "—"),
-              field("created", operations.createdLabel, dateTime(item.createdAt, locale)),
-              field("reason", operations.noteLabel, item.reason ?? "—"),
-            ],
           ),
         ),
       };

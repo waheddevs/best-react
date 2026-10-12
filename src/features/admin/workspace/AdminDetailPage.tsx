@@ -28,7 +28,6 @@ export function AdminDetailPage({ backHref, common, locale, record }: AdminDetai
             displayName={record.title}
           />
         ) : null}
-        <small>{record.id}</small>
         <h1>{record.title}</h1>
         <p>{record.meta}</p>
         <span className={`adminWorkspace__status adminWorkspace__status_${record.status}`}>

@@ -36,6 +36,29 @@ Teacher or Admin navigation, routes, dictionaries, GraphQL documents, generated
 client contracts, dashboard queues, or preview data. Historical transfer
 language elsewhere in this document is superseded by this decision.
 
+The Admin Attendance, Tests, Results, Locations, Library, Imports, Reports, and
+Audit sections were removed on 2026-10-11. Do not expose their Admin navigation,
+routes, dictionaries, GraphQL operations, generated client contracts, dashboard
+cards, or Admin-only backend projections. Shared Student and Teacher learning
+and Library flows, schedule room fields, media processing, and internal audit
+writes remain active. Historical Admin inventory for these eight sections elsewhere in this
+document is superseded by this decision.
+
+The Admin sidebar order was updated on 2026-10-11. Academics contains Courses,
+Exams, Events, and Schedule in that order. The former Operations group is named
+Finance and contains Payments followed by Salary. Admin Exams remains a localized
+placeholder. On 2026-10-11 the owner approved connected Admin Groups, Schedule,
+Payments, Salary statements and Settings. Salary supports draft creation,
+editing and finalization of base/bonus/deduction calculations; payroll execution
+remains excluded. Their copied presentation stays under Admin-owned directories.
+
+The Admin Overview group contains Dashboard, Requests, Messages, and
+Notifications in that order. Messages is the protected Admin projection of
+public Contact form submissions: reuse the persisted `ContactRequest` contract,
+show sender, subject, message, contact, received time, and status, and never
+duplicate this data in frontend fixtures. Requests contains event and exam
+registrations; Contact messages belong to Messages.
+
 ## 2. Non-negotiable scope boundaries
 
 Do not implement or scaffold any of the following outside the approved
@@ -2470,6 +2493,7 @@ Create these localized routes:
 ```text
 /[locale]/admin
 /[locale]/admin/requests
+/[locale]/admin/messages
 /[locale]/admin/students
 /[locale]/admin/students/[studentId]
 /[locale]/admin/teachers
@@ -2478,23 +2502,14 @@ Create these localized routes:
 /[locale]/admin/groups/[slug]
 /[locale]/admin/courses
 /[locale]/admin/courses/[slug]
+/[locale]/admin/exams
 /[locale]/admin/events
 /[locale]/admin/events/[slug]
-/[locale]/admin/locations
 /[locale]/admin/schedule
-/[locale]/admin/attendance
 /[locale]/admin/payments
 /[locale]/admin/payments/[recordId]
-/[locale]/admin/tests
-/[locale]/admin/tests/[testId]
-/[locale]/admin/results
-/[locale]/admin/library
-/[locale]/admin/library/[resourceId]
-/[locale]/admin/imports
-/[locale]/admin/imports/[jobId]
+/[locale]/admin/salary
 /[locale]/admin/notifications
-/[locale]/admin/audit
-/[locale]/admin/reports
 /[locale]/admin/settings
 ```
 
@@ -2504,9 +2519,9 @@ of public navigation and sitemap and mark them `noindex, nofollow`.
 ### Admin application shell
 
 - Use a dedicated `(admin)/layout.tsx` with no public Navbar or Footer.
-- Desktop uses a persistent collapsible side rail, top command/search area,
-  branch context, notification/review queue shortcuts, localized Admin identity,
-  and bounded but data-dense content.
+- Desktop uses a persistent collapsible side rail, a card-style topbar with a
+  localized welcome label and Admin identity, language and notification
+  controls, and bounded but data-dense content.
 - Mobile uses an accessible Drawer and compact bottom navigation for Dashboard,
   Students, Groups, Payments, and Settings; all other destinations remain in
   the Drawer.
@@ -4177,3 +4192,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Approved Admin editorial expansion â€” 2026-10-11
+
+The owner approved connected Overview, Requests (course/event/exam registrations), Notifications, Courses, public Exam offerings/sessions, and Events. Reuse existing persisted public content; Admin editing includes all translations and nested content. Contact submissions stay in Messages. Admin dropdowns and styles remain Admin-owned copies of the approved directory design. No public test-taking or payment execution is introduced.

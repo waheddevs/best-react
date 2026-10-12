@@ -1,25 +1,6 @@
 export type AdminOperationsCopy = {
-  actorLabel: string;
-  attemptCountLabel: string;
-  averageScoreLabel: string;
-  awaitingReviewLabel: string;
-  cleanFilesLabel: string;
-  completionLabel: string;
-  createdLabel: string;
   endTimeLabel: string;
-  excusedLabel: string;
-  lessonLabel: string;
-  malwareStatusLabel: string;
-  mimeTypeLabel: string;
-  noteLabel: string;
-  ownerLabel: string;
-  questionCountLabel: string;
-  recordedLabel: string;
   startTimeLabel: string;
-  targetLabel: string;
-  teacherLabel: string;
   todayLabel: string;
-  totalAttemptsLabel: string;
   totalLessonsLabel: string;
-  updatedLabel: string;
 };
