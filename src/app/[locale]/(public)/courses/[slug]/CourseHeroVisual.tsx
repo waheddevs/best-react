@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CourseImage } from "@/features/courses/CourseImage";
 
 import { HeroVisualFrame } from "@/components/motion/HeroVisualFrame";
 import { LiveIllustration } from "@/components/motion/LiveIllustration";
@@ -13,11 +13,12 @@ type CourseHeroVisualProps = {
 export function CourseHeroVisual({ course, locale }: CourseHeroVisualProps) {
   return (
     <HeroVisualFrame className="courses__detailHeroVisual">
-      {course.image && course.imageAlt ? (
-        <Image
-          alt={course.imageAlt[locale]}
+      {course.image || course.coverMediaId ? (
+        <CourseImage
+          courseId={course.id}
+          uploaded={Boolean(course.coverMediaId)}
+          alt={course.imageAlt?.[locale] || course.title[locale]}
           className="courses__detailHeroImage"
-          fill
           priority
           sizes="(min-width: 1024px) 42vw, 100vw"
           src={course.image}

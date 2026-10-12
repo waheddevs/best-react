@@ -14,6 +14,7 @@ export type CourseTrack = {
 };
 
 export type PublicCourse = {
+  coverMediaId?: string;
   accent: CourseAccent;
   audience: LocalizedCourseText;
   category: CourseCategory;

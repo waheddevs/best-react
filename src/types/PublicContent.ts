@@ -6,6 +6,7 @@ import type { EventSlug } from "@/types/EventDetail";
 export type LocalizedText = Record<Locale, string>;
 
 export type PublicEvent = {
+  coverMediaId?: string;
   id?: string;
   slug: EventSlug;
   status: "upcoming" | "past";

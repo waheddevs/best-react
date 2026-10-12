@@ -38,6 +38,7 @@ export function mapPublicCourse(node: PublicCourseQuery["publicCourse"]): Public
     highlights: localized(node.highlights),
     ...(node.heroVariant === "immersive" ? { heroVariant: "immersive" as const } : {}),
     id: String(node.id),
+    ...(node.coverMediaId ? { coverMediaId: node.coverMediaId } : {}),
     ...(node.imagePath ? { image: node.imagePath } : {}),
     ...(node.imageAlt ? { imageAlt: localized(node.imageAlt) } : {}),
     level: localized(node.level ?? ""),
@@ -63,6 +64,7 @@ export function mapPublicCourse(node: PublicCourseQuery["publicCourse"]): Public
 
 export function mapPublicEvent(node: PublicEventQuery["publicEvent"]): PublicEvent {
   return {
+    ...(node.coverMediaId ? { coverMediaId: node.coverMediaId } : {}),
     dateLabel: localized(node.dateLabel ?? formatDate(node.startsAt, "en")),
     durationLabel: localized(node.durationLabel ?? ""),
     formatLabel: localized(node.formatLabel ?? ""),

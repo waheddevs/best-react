@@ -13,6 +13,7 @@ query PublicCourses($language: Language!, $first: Int = 50) {
         position
         heroVariant
         imagePath
+        coverMediaId
         posterImagePath
         title
         description
@@ -56,6 +57,7 @@ query PublicCourse($language: Language!, $slug: String!) {
     position
     heroVariant
     imagePath
+    coverMediaId
     posterImagePath
     title
     description
@@ -100,6 +102,7 @@ query PublicEvents($language: Language!, $first: Int = 50) {
         location
         imagePath
         title
+        coverMediaId
         description
         imageAlt
         formatLabel
@@ -142,6 +145,7 @@ query PublicEvent($language: Language!, $slug: String!) {
     location
     imagePath
     title
+    coverMediaId
     description
     imageAlt
     formatLabel

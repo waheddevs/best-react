@@ -5,7 +5,7 @@ import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
 import LocationOnRounded from "@mui/icons-material/LocationOnRounded";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 import TimelapseRounded from "@mui/icons-material/TimelapseRounded";
-import Image from "next/image";
+import { EventImage } from "@/features/events/EventImage";
 import type { MouseEvent } from "react";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
@@ -36,7 +36,9 @@ export function EventCard({ event, locale, copy, variant = "summary" }: EventCar
     return (
       <article className="events__catalogCard">
         <div className="events__catalogCardMedia">
-          <Image
+          <EventImage
+            eventId={event.id}
+            uploaded={Boolean(event.coverMediaId)}
             alt={event.imageAlt[locale]}
             className="events__catalogCardImage"
             fill

@@ -1,0 +1,46 @@
+mutation AdminCourseUploadIntent($input: CreateMediaUploadIntentInput!) {
+  createMediaUploadIntent(input: $input) {
+    uploadIntent {
+      mediaObjectId
+      method
+      url
+      requiredHeaders {
+        name
+        value
+      }
+    }
+  }
+}
+
+mutation AdminConfirmCourseUpload($input: MediaObjectReferenceInput!) {
+  confirmMediaUpload(input: $input) {
+    mediaObject {
+      id
+      status
+      malwareStatus
+    }
+  }
+}
+
+mutation AdminCourseImagePreview($input: MediaObjectReferenceInput!) {
+  createMediaDownloadIntent(input: $input) {
+    downloadIntent {
+      url
+      expiresAt
+    }
+  }
+}
+
+query AdminCourseCover($courseId: String!) {
+  adminCourseCover(courseId: $courseId) {
+    url
+    expiresAt
+  }
+}
+
+query PublicCourseCover($courseId: String!) {
+  publicCourseCover(courseId: $courseId) {
+    url
+    expiresAt
+  }
+}

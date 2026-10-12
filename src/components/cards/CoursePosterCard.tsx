@@ -1,5 +1,5 @@
 import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
-import Image from "next/image";
+import { CourseImage } from "@/features/courses/CourseImage";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { getButtonClassName } from "@/components/ui/ButtonStyles";
@@ -14,7 +14,7 @@ type CoursePosterCardProps = {
 };
 
 export function CoursePosterCard({ course, locale, copy }: CoursePosterCardProps) {
-  if (!course.posterImage || !course.posterAlt || !course.posterTitle) return null;
+  if (!course.posterImage && !course.coverMediaId) return null;
 
   return (
     <article className="publicShared__coursePosterCard">
@@ -23,17 +23,20 @@ export function CoursePosterCard({ course, locale, copy }: CoursePosterCardProps
         className="publicShared__coursePosterLink"
         href={`/${locale}/courses/${course.slug}`}
       >
-        <Image
-          alt={course.posterAlt[locale]}
+        <CourseImage
+          courseId={course.id}
+          courseSlug={course.slug}
+          uploaded={!course.posterImage && Boolean(course.coverMediaId)}
+          alt={course.posterAlt?.[locale] || course.title[locale]}
           className="publicShared__coursePosterImage"
-          data-course={course.slug}
-          fill
           sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 31vw, 24rem"
           src={course.posterImage}
         />
         <span aria-hidden="true" className="publicShared__coursePosterScrim" />
         <div className="publicShared__coursePosterContent">
-          <h2 className="publicShared__coursePosterTitle">{course.posterTitle[locale]}</h2>
+          <h2 className="publicShared__coursePosterTitle">
+            {course.posterTitle?.[locale] || course.title[locale]}
+          </h2>
           <span
             className={getButtonClassName({
               className: "publicShared__coursePosterAction",

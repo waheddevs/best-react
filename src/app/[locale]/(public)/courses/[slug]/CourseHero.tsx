@@ -1,6 +1,6 @@
 import AutoAwesomeRounded from "@mui/icons-material/AutoAwesomeRounded";
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
-import Image from "next/image";
+import { CourseImage } from "@/features/courses/CourseImage";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -19,13 +19,14 @@ type CourseHeroProps = {
 };
 
 export function CourseHero({ course, locale, copy }: CourseHeroProps) {
-  if (course.heroVariant === "immersive" && course.image && course.imageAlt) {
+  if (course.heroVariant === "immersive" && (course.image || course.coverMediaId)) {
     return (
       <section className="courses__immersiveHero">
-        <Image
-          alt={course.imageAlt[locale]}
+        <CourseImage
+          courseId={course.id}
+          uploaded={Boolean(course.coverMediaId)}
+          alt={course.imageAlt?.[locale] || course.title[locale]}
           className="courses__immersiveHeroImage"
-          fill
           priority
           sizes="100vw"
           src={course.image}

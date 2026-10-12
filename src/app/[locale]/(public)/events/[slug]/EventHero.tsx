@@ -3,7 +3,7 @@ import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
 import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
 import LocationOnRounded from "@mui/icons-material/LocationOnRounded";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
-import Image from "next/image";
+import { EventImage } from "@/features/events/EventImage";
 
 import { ScrollToTopLink } from "@/components/navigation/ScrollToTopLink";
 import { Container } from "@/components/ui/Container";
@@ -38,7 +38,9 @@ export function EventHero({ event, locale, copy }: EventHeroProps) {
 
         <div className="events__detailHeroGrid">
           <EventHeroMotion className="events__detailHeroVisual" variant="visual">
-            <Image
+            <EventImage
+              eventId={event.id}
+              uploaded={Boolean(event.coverMediaId)}
               alt={event.imageAlt[locale]}
               className="events__detailHeroImage"
               fill
