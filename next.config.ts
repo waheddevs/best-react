@@ -6,6 +6,7 @@ function getGraphqlUrl(baseUrl: string) {
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  output: "standalone",
   experimental: {
     proxyTimeout: 2_700_000,
   },

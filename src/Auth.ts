@@ -16,6 +16,13 @@ const developmentSecret =
 const accessTokenRefreshWindowMilliseconds = 5 * 60 * 1_000;
 const refreshRetryDelayMilliseconds = 30 * 1_000;
 const pendingRefreshes = new Map<string, Promise<RefreshedCredentialSession>>();
+const secureCookies = process.env.NODE_ENV === "production";
+const cookieOptions = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  path: "/",
+  secure: secureCookies,
+};
 
 function refreshSessionOnce(refreshToken: string): Promise<RefreshedCredentialSession> {
   const key = refreshToken.slice(0, refreshToken.indexOf("."));
@@ -33,6 +40,21 @@ function refreshSessionOnce(refreshToken: string): Promise<RefreshedCredentialSe
 }
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
+  // Cookies are shared across ports on one host. Keep BEST separate from other apps.
+  cookies: {
+    sessionToken: {
+      name: `${secureCookies ? "__Secure-" : ""}best-lc.session-token`,
+      options: cookieOptions,
+    },
+    csrfToken: {
+      name: `${secureCookies ? "__Host-" : ""}best-lc.csrf-token`,
+      options: cookieOptions,
+    },
+    callbackUrl: {
+      name: `${secureCookies ? "__Secure-" : ""}best-lc.callback-url`,
+      options: cookieOptions,
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (

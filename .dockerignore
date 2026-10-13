@@ -1,0 +1,12 @@
+.git
+.next
+.tmp
+.yarn
+node_modules
+.env*
+*.log
+*.pem
+*.key
+*.dump
+*.tsbuildinfo
+.vscode
