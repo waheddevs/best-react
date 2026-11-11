@@ -11,6 +11,8 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    // Local verification fixtures and generated test artifacts are not application sources.
+    ".tmp/**",
     "next-env.d.ts",
     "src/gql/**",
   ]),

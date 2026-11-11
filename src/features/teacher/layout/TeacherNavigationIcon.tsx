@@ -7,6 +7,7 @@ import ManageAccountsRounded from "@mui/icons-material/ManageAccountsRounded";
 import NotificationsNoneRounded from "@mui/icons-material/NotificationsNoneRounded";
 import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
 import TaskAltRounded from "@mui/icons-material/TaskAltRounded";
+import AutoAwesomeRounded from "@mui/icons-material/AutoAwesomeRounded";
 
 import type { TeacherNavigationKey } from "@/types/teacher/Teacher";
 
@@ -16,6 +17,7 @@ type TeacherNavigationIconProps = {
 
 export function TeacherNavigationIcon({ navigationKey }: TeacherNavigationIconProps) {
   const icons = {
+    aiAssistant: AutoAwesomeRounded,
     dashboard: DashboardRounded,
     finance: AccountBalanceWalletRounded,
     groups: GroupsRounded,

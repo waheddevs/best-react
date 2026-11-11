@@ -1,0 +1,446 @@
+﻿/* LAUNCHER */
+.teacherAi__launcherDock {
+  position: fixed;
+  right: max(2rem, env(safe-area-inset-right));
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  z-index: 35;
+
+  @media (min-width: 1500px) {
+    &[data-open="true"] {
+      right: calc(25rem + 2rem);
+    }
+  }
+  @media (max-width: 767px) {
+    right: max(1.25rem, env(safe-area-inset-right));
+    bottom: calc(6rem + env(safe-area-inset-bottom));
+  }
+}
+.teacherAi__launcher.publicShared__iconButton {
+  color: var(--teacher-primary);
+  background: var(--teacher-surface);
+  box-shadow: var(--teacher-shadow);
+}
+
+/* PAGE LAYOUT */
+.teacherAi {
+  color: var(--teacher-text);
+
+  &__intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    p {
+      margin: 0;
+      color: var(--teacher-muted);
+      font-size: 0.88rem;
+    }
+  }
+  &__layout {
+    display: grid;
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: 1.25rem;
+    height: max(36rem, calc(100dvh - 15rem));
+  }
+  &__workspaceConversation {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    > .teacherShared__pageHeader {
+      padding-right: 18rem;
+      min-height: 4.25rem;
+    }
+  }
+  @media (max-width: 1199px) {
+    &__layout {
+      grid-template-columns: 13rem minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 767px) {
+    &__intro {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    &__layout {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto;
+    }
+    &__workspaceConversation {
+      height: max(34rem, calc(100svh - 10rem));
+    }
+  }
+}
+
+/* SIDE PANEL */
+.teacherShell:has(> .teacherAi__panel) {
+  grid-template-columns: 16rem minmax(0, 1fr) 25rem;
+}
+.teacherAi__panel,
+.teacherAi__drawer {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--teacher-text);
+  background: var(--teacher-surface);
+}
+.teacherAi__panel {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  border-left: 1px solid var(--teacher-border);
+}
+.teacherAi__drawer {
+  width: min(100vw, 27rem);
+  height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+}
+
+/* CONVERSATION HEADER */
+.teacherAi__header {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--teacher-border);
+  > div:first-child {
+    flex: 1 1 8rem;
+    min-width: 0;
+  }
+  h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0.5rem;
+  }
+  &Actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 0.25rem;
+  }
+}
+.teacherAi__iconLink {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+/* HISTORY */
+.teacherAi__history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  min-height: 0;
+  padding: 1.25rem;
+  overflow: auto;
+  &Filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  &List {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    min-width: 0;
+    > p {
+      margin: 0;
+      color: var(--teacher-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    button {
+      justify-content: flex-start;
+      width: 100%;
+      min-width: 0;
+      text-align: left;
+    }
+    button > span:not(.publicShared__buttonIcon) {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  &Footer {
+    margin-top: auto;
+    color: var(--teacher-muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  @media (max-width: 767px) {
+    max-height: 15rem;
+    padding: 1rem;
+    &List {
+      display: flex;
+      overflow-x: auto;
+      flex-shrink: 0;
+      padding-bottom: 0.25rem;
+      button {
+        flex: 0 0 auto;
+        max-width: 14rem;
+        width: auto;
+      }
+    }
+    &Footer {
+      display: none;
+    }
+  }
+}
+
+/* MESSAGES AND EMPTY STATE */
+.teacherAi__conversation {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.teacherAi__messages {
+  flex: 1;
+  min-height: 6rem;
+  padding: 1.25rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 1rem;
+}
+.teacherAi__welcome {
+  max-width: 38rem;
+  margin: auto;
+  padding-block: 1.5rem;
+  &Icon {
+    margin: 0 0 1rem;
+  }
+  > p {
+    max-width: none;
+    margin-inline: 0;
+  }
+  > small {
+    display: block;
+    margin-top: 1.25rem;
+    color: var(--teacher-muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+}
+.teacherAi__starters {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  button {
+    justify-content: space-between;
+    text-align: left;
+    white-space: normal;
+  }
+}
+.teacherAi__message {
+  max-width: 46rem;
+  margin: 0 auto 1.25rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  overflow-wrap: anywhere;
+  &[data-kind="user"] {
+    border: 1px solid var(--teacher-border);
+    background: var(--teacher-surface-subtle);
+  }
+  &Label {
+    color: var(--teacher-primary);
+    font-size: 0.8rem;
+  }
+}
+.teacherAi__markdown {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  p {
+    margin-block: 0.6rem;
+    white-space: pre-wrap;
+  }
+  h3 {
+    margin-block: 1rem 0.5rem;
+    color: var(--teacher-heading);
+    font-size: 1rem;
+  }
+  ul {
+    margin-block: 0.25rem;
+    padding-left: 1.5rem;
+  }
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem;
+    border: 1px solid var(--teacher-border);
+    border-radius: 0.75rem;
+    background: var(--teacher-surface-subtle);
+    font-size: 0.8rem;
+  }
+  :not(pre) > code {
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.25rem;
+    background: var(--teacher-surface-subtle);
+  }
+}
+
+/* COMPOSER */
+.teacherAi__composer {
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.85rem;
+  background: var(--teacher-surface);
+  overflow: hidden;
+  &:focus-within {
+    outline: 2px solid var(--teacher-primary);
+    outline-offset: 2px;
+  }
+  &Area {
+    flex-shrink: 0;
+    padding: 1rem 1.25rem max(1rem, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--teacher-border);
+  }
+  textarea {
+    display: block;
+    width: 100%;
+    min-height: 4rem;
+    max-height: 9rem;
+    resize: vertical;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--teacher-text);
+    padding: 0.85rem 1rem;
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  textarea::placeholder {
+    color: var(--teacher-muted);
+  }
+  &Bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 0.75rem 0.75rem 1rem;
+    small {
+      color: var(--teacher-muted);
+      font-size: 0.75rem;
+    }
+  }
+}
+.teacherAi__hint,
+.teacherAi__disclaimer {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--teacher-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.teacherAi__consent {
+  max-height: 12rem;
+  overflow: auto;
+  margin-bottom: 1rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.85rem;
+  padding: 0.75rem;
+  color: var(--teacher-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  summary {
+    color: var(--teacher-heading);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  p {
+    margin-block: 0.75rem;
+  }
+  label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    color: var(--teacher-text);
+    cursor: pointer;
+  }
+  input {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.3rem;
+    accent-color: var(--teacher-primary);
+  }
+}
+
+/* FEEDBACK AND DIALOGS */
+.teacherAi__notice {
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--teacher-border);
+  border-radius: 0.85rem;
+  background: var(--teacher-surface-subtle);
+  color: var(--teacher-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  p {
+    margin: 0;
+  }
+}
+.teacherAi__status,
+.teacherAi__run {
+  color: var(--teacher-muted);
+  font-size: 0.85rem;
+}
+.teacherAi__run {
+  max-width: 46rem;
+  margin: auto;
+  p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.6;
+  }
+}
+.teacherAi__statusDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--teacher-brand);
+}
+.teacherAi__newMessages {
+  position: absolute;
+  bottom: 14rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  white-space: nowrap;
+}
+.teacherAi__dialog {
+  padding: 1.5rem;
+  width: min(28rem, 90vw);
+  background: var(--teacher-surface);
+  color: var(--teacher-text);
+  > h2 {
+    margin-bottom: 1.5rem;
+  }
+  p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  &Actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+}

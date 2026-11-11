@@ -304,6 +304,10 @@ const teacherCopy = {
       unsavedTitle: "Preview holati yangilandi",
     },
     metadata: {
+      aiAssistant: {
+        title: "AI yordamchi",
+        description: "O‘qituvchi uchun dars tayyorlash yordamchisi.",
+      },
       dashboard: {
         description: "BEST LC o‘qituvchi ish maydoni.",
         title: "O‘qituvchi bosh sahifasi",
@@ -324,6 +328,7 @@ const teacherCopy = {
       },
     },
     navigation: {
+      aiAssistant: "AI yordamchi",
       dashboard: "Bosh sahifa",
       finance: "Moliya",
       groups: "Guruhlar",
@@ -719,6 +724,7 @@ const teacherCopy = {
       unsavedTitle: "Preview-состояние обновлено",
     },
     metadata: {
+      aiAssistant: { title: "AI-помощник", description: "Умный помощник для подготовки к урокам." },
       dashboard: {
         description: "Рабочее пространство учителя BEST LC.",
         title: "Главная учителя",
@@ -733,6 +739,7 @@ const teacherCopy = {
       tasks: { description: "Задачи учителя по посещаемости и связи.", title: "Задачи" },
     },
     navigation: {
+      aiAssistant: "AI-помощник",
       dashboard: "Главная",
       finance: "Финансы",
       groups: "Группы",
@@ -1127,6 +1134,10 @@ const teacherCopy = {
       unsavedTitle: "Preview state updated",
     },
     metadata: {
+      aiAssistant: {
+        title: "AI Assistant",
+        description: "A teaching assistant for lesson preparation.",
+      },
       dashboard: { description: "BEST LC teacher workspace.", title: "Teacher Dashboard" },
       finance: { description: "Read-only financial indicators for the teacher.", title: "Finance" },
       groups: { description: "Teacher groups and student lists.", title: "Groups" },
@@ -1138,6 +1149,7 @@ const teacherCopy = {
       tasks: { description: "Teacher attendance and contact tasks.", title: "Tasks" },
     },
     navigation: {
+      aiAssistant: "AI Assistant",
       dashboard: "Dashboard",
       finance: "Finance",
       groups: "Groups",

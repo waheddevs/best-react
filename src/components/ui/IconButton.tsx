@@ -5,7 +5,7 @@ import MuiIconButton, {
 } from "@mui/material/IconButton";
 
 type IconButtonProps = Omit<MuiIconButtonProps, "aria-label" | "size"> & {
-  controlSize?: "small" | "medium";
+  controlSize?: "small" | "medium" | "large";
   label: string;
   variant?: "ghost" | "soft";
 };
@@ -17,8 +17,11 @@ export function IconButton({
   variant = "ghost",
   ...buttonProps
 }: IconButtonProps) {
-  const sizeClassName =
-    controlSize === "small" ? "publicShared__iconButtonSmall" : "publicShared__iconButtonMedium";
+  const sizeClassName = {
+    small: "publicShared__iconButtonSmall",
+    medium: "publicShared__iconButtonMedium",
+    large: "publicShared__iconButtonLarge",
+  }[controlSize];
   const variantClassName =
     variant === "soft" ? "publicShared__iconButtonSoft" : "publicShared__iconButtonGhost";
 

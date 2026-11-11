@@ -339,6 +339,27 @@ authoring, import, validation, publication, delivery, scoring, and review fully
 deterministic. Do not add AI provider SDKs, credentials, generation operations,
 assistant UI, or AI evaluation without a new explicit scope change.
 
+## 2G. Approved Teacher AI chat exception — 2026-11-06
+
+The owner requested implementation of `docs/AI_INTEGRATION_PLAN.md`, then
+specified a zero-dollar budget and free OpenRouter models only. This narrow
+exception supersedes section 2F only for Teacher text assistance in a shared
+right-side panel and dedicated AI Assistant page. Student/Admin AI, AI grading,
+automatic publication, database context, tools and human messaging stay excluded.
+
+Record the backend data design before migrations. Start disabled; use only a
+pinned `:free` model with verified zero pricing, no paid fallback and bounded
+request quotas. Keep provider credentials server-only. No provider activation
+until model/privacy review, pilot accounts and retention/processing notice are
+resolved. Do not fabricate replies or successful persistence in the meantime.
+
+The 2026-11-08 Teacher AI visual refinement uses the existing Teacher page
+header, content gutters, cards, section typography, semantic colors and shared
+Button/IconButton variants. Do not give AI a separate visual system or remove
+the standard page gutters. Its launcher belongs near the lower-right corner,
+with a 56 px shared large icon control, desktop edge spacing and mobile clearance
+above the bottom navigation and device safe area; it is not a topbar action.
+
 ## 3. Required technical stack
 
 - Latest stable **Next.js** using the **App Router**

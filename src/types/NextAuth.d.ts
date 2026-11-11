@@ -4,7 +4,7 @@ import type { BackendAuthRole } from "@/types/Auth";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    bestApi?: { accessToken: string; expiresAt: number; role: BackendAuthRole };
+    bestApi?: { accessToken: string; expiresAt: number; role: BackendAuthRole; userId?: string };
     bestApiError?: "REFRESH_TOKEN_ERROR" | "SERVICE_UNAVAILABLE";
   }
 

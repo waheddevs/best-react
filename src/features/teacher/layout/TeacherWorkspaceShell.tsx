@@ -11,6 +11,10 @@ import { TeacherMobileNavigation } from "@/features/teacher/layout/TeacherMobile
 import { TeacherSidebar } from "@/features/teacher/layout/TeacherSidebar";
 import { TeacherThemeProvider } from "@/features/teacher/layout/TeacherThemeProvider";
 import { TeacherTopbar } from "@/features/teacher/layout/TeacherTopbar";
+import { TeacherAiProvider } from "@/features/teacher/ai/TeacherAiProvider";
+import { TeacherAiPanel } from "@/features/teacher/ai/TeacherAiPanel";
+import { TeacherAiLauncher } from "@/features/teacher/ai/TeacherAiLauncher";
+import { useTeacherAi } from "@/hooks/teacher/ai/useTeacherAi";
 import type { TeacherCopy } from "@/types/teacher/Teacher";
 import type {
   TeacherNoticeState,
@@ -38,7 +42,17 @@ const topAlignedPaths = [
   "/teacher/notifications",
 ];
 
-export function TeacherWorkspaceShell({
+export function TeacherWorkspaceShell(props: TeacherWorkspaceShellProps) {
+  return (
+    <TeacherThemeProvider>
+      <TeacherAiProvider locale={props.locale} connected={props.connected}>
+        <TeacherWorkspaceContent {...props} />
+      </TeacherAiProvider>
+    </TeacherThemeProvider>
+  );
+}
+
+function TeacherWorkspaceContent({
   children,
   connected,
   copy,
@@ -49,6 +63,7 @@ export function TeacherWorkspaceShell({
 }: TeacherWorkspaceShellProps) {
   /* HOOKS */
   const pathname = usePathname();
+  const ai = useTeacherAi();
   const normalizedPathname = pathname.replace(/\/+$/, "");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isDashboard = normalizedPathname === `/${locale}/teacher`;
@@ -57,6 +72,7 @@ export function TeacherWorkspaceShell({
   const hasTopAlignedHeader =
     topAlignedPaths.some((path) => normalizedPathname === `/${locale}${path}`) ||
     normalizedPathname.startsWith(`/${locale}/teacher/groups/`) ||
+    ai.expanded ||
     isPracticeDetail ||
     isResultDetail;
   const pageTitle = useMemo(() => {
@@ -74,6 +90,7 @@ export function TeacherWorkspaceShell({
 
   /* HANDLERS */
   const handleDrawerOpen = () => {
+    ai.handleClose();
     setIsDrawerOpen(true);
   };
 
@@ -82,42 +99,43 @@ export function TeacherWorkspaceShell({
   };
 
   return (
-    <TeacherThemeProvider>
-      <div className="teacherShell">
-        <aside className="teacherShell__desktopSidebar">
-          <TeacherSidebar copy={copy} locale={locale} />
-        </aside>
+    <div className="teacherShell">
+      <aside className="teacherShell__desktopSidebar">
+        <TeacherSidebar copy={copy} locale={locale} />
+      </aside>
 
-        <Drawer
-          ModalProps={{ keepMounted: true }}
-          onClose={handleDrawerClose}
-          open={isDrawerOpen}
-          slotProps={{ paper: { className: "teacherShell__drawerPaper" } }}
-        >
-          <TeacherSidebar copy={copy} locale={locale} onNavigate={handleDrawerClose} />
-        </Drawer>
+      <Drawer
+        ModalProps={{ keepMounted: true }}
+        onClose={handleDrawerClose}
+        open={isDrawerOpen}
+        slotProps={{ paper: { className: "teacherShell__drawerPaper" } }}
+      >
+        <TeacherSidebar copy={copy} locale={locale} onNavigate={handleDrawerClose} />
+      </Drawer>
 
-        <div
-          className="teacherShell__workspace"
-          data-dashboard={isDashboard}
-          data-practice-detail={isPracticeDetail}
-          data-top-aligned={hasTopAlignedHeader}
-        >
-          <TeacherTopbar
-            connected={connected}
-            copy={copy}
-            initialNotificationError={initialNotificationError}
-            locale={locale}
-            notices={notices}
-            onMenuOpen={handleDrawerOpen}
-            pageTitle={pageTitle}
-            profile={profile}
-          />
-          <div className="teacherShell__content">{children}</div>
-        </div>
-
-        <TeacherMobileNavigation copy={copy} locale={locale} />
+      <div
+        className="teacherShell__workspace"
+        data-dashboard={isDashboard}
+        data-ai-workspace={ai.expanded}
+        data-practice-detail={isPracticeDetail}
+        data-top-aligned={hasTopAlignedHeader}
+      >
+        <TeacherTopbar
+          connected={connected}
+          copy={copy}
+          initialNotificationError={initialNotificationError}
+          locale={locale}
+          notices={notices}
+          onMenuOpen={handleDrawerOpen}
+          pageTitle={pageTitle}
+          profile={profile}
+        />
+        <div className="teacherShell__content">{children}</div>
       </div>
-    </TeacherThemeProvider>
+
+      <TeacherMobileNavigation copy={copy} locale={locale} />
+      <TeacherAiLauncher />
+      <TeacherAiPanel />
+    </div>
   );
 }

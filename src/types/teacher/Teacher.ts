@@ -5,6 +5,7 @@ export type LocalizedText = Record<Locale, string>;
 export type TeacherThemeMode = "light" | "dark";
 
 export type TeacherNavigationKey =
+  | "aiAssistant"
   | "dashboard"
   | "groups"
   | "library"

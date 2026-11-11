@@ -142,6 +142,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           accessToken: token.bestApiAccessToken,
           expiresAt: token.bestApiExpiresAt,
           role: token.bestApiRole,
+          userId: token.sub,
         };
       }
       return session;

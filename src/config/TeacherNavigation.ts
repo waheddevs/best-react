@@ -11,6 +11,7 @@ export const teacherNavigationItems: TeacherNavigationItem[] = [
   { href: "/teacher", key: "dashboard", mobilePrimary: true, sidebarVisible: true },
   { href: "/teacher/groups", key: "groups", mobilePrimary: true, sidebarVisible: true },
   { href: "/teacher/library", key: "library", mobilePrimary: false, sidebarVisible: true },
+  { href: "/teacher/ai-assistant", key: "aiAssistant", mobilePrimary: false, sidebarVisible: true },
   { href: "/teacher/reception", key: "reception", mobilePrimary: false, sidebarVisible: true },
   {
     href: "/teacher/notifications",

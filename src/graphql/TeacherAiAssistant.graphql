@@ -1,0 +1,134 @@
+query TeacherAiAvailability {
+  teacherAiAvailability {
+    available
+    maxInputCharacters
+    retentionDays
+    noticeVersion
+    model
+  }
+}
+
+query TeacherAiConversations($first: Int!, $after: String, $archived: Boolean!) {
+  teacherAiConversations(first: $first, after: $after, archived: $archived) {
+    items {
+      id
+      title
+      createdAt
+      updatedAt
+      expiresAt
+      archivedAt
+    }
+    hasMore
+    cursor
+  }
+}
+
+query TeacherAiConversation($id: ID!, $first: Int!, $before: String) {
+  teacherAiConversation(id: $id, first: $first, before: $before) {
+    id
+    title
+    createdAt
+    updatedAt
+    expiresAt
+    archivedAt
+    messages {
+      id
+      sequence
+      kind
+      content
+      createdAt
+    }
+    latestRun {
+      id
+      conversationId
+      status
+      safeErrorCode
+      retryable
+      createdAt
+      completedAt
+    }
+    hasOlder
+    olderCursor
+  }
+}
+
+query TeacherAiChatRun($id: ID!) {
+  teacherAiChatRun(id: $id) {
+    id
+    conversationId
+    status
+    safeErrorCode
+    retryable
+    createdAt
+    completedAt
+  }
+}
+
+mutation CreateTeacherAiConversation($input: CreateTeacherAiConversationInput!) {
+  createTeacherAiConversation(input: $input) {
+    id
+    title
+    createdAt
+    updatedAt
+    expiresAt
+    archivedAt
+  }
+}
+
+mutation SendTeacherAiMessage($input: SendTeacherAiMessageInput!) {
+  sendTeacherAiMessage(input: $input) {
+    id
+    conversationId
+    status
+    safeErrorCode
+    retryable
+    createdAt
+    completedAt
+  }
+}
+
+mutation RetryTeacherAiChatRun($input: RetryTeacherAiChatRunInput!) {
+  retryTeacherAiChatRun(input: $input) {
+    id
+    conversationId
+    status
+    safeErrorCode
+    retryable
+    createdAt
+    completedAt
+  }
+}
+
+mutation CancelTeacherAiChatRun($id: ID!) {
+  cancelTeacherAiChatRun(id: $id) {
+    id
+    conversationId
+    status
+    safeErrorCode
+    retryable
+    createdAt
+    completedAt
+  }
+}
+
+mutation RenameTeacherAiConversation($input: RenameTeacherAiConversationInput!) {
+  renameTeacherAiConversation(input: $input) {
+    id
+    title
+    createdAt
+    updatedAt
+    expiresAt
+    archivedAt
+  }
+}
+
+mutation ArchiveTeacherAiConversation($id: ID!) {
+  archiveTeacherAiConversation(id: $id) {
+    id
+    title
+    createdAt
+    updatedAt
+    expiresAt
+    archivedAt
+  }
+}

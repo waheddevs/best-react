@@ -354,6 +354,9 @@ body[data-teacher-theme="dark"] .teacherShell {
   &Leading {
     display: none;
   }
+  &Actions {
+    flex-shrink: 0;
+  }
   &Leading > div:last-child {
     display: grid;
     min-width: 0px;
